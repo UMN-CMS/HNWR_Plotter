@@ -3,6 +3,8 @@
 
 void Draw_FakeRate(){
 
+  bool OnlyNorm = false;
+
   setTDRStyle();
 
   gStyle->SetOptStat(0);
@@ -14,7 +16,7 @@ void Draw_FakeRate(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString OutPutSubDir = "180731_FirstTry";
+  TString OutPutSubDir = "180820_FixMu8Norm";
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
@@ -190,6 +192,10 @@ void Draw_FakeRate(){
 
           TString var = Norm_vars.at(it_var);
 
+          if(OnlyNorm){
+            if(var!="Z_CR_Z_Mass") continue;
+          }
+
           TCanvas *c_norm = new TCanvas("c_norm", "", 600, 600);
 
           TPad *c_norm_up = new TPad("c_norm_up", "", 0, 0.25, 1, 1);
@@ -259,6 +265,15 @@ void Draw_FakeRate(){
           double y_max = max( GetMaximum(hist_DATA), GetMaximum(hist_bkgd) );
           dummy->GetYaxis()->SetRangeUser(1., 5.*y_max);
 
+          if(OnlyNorm && var=="Z_CR_Z_Mass"){
+            double total_DATA = hist_DATA->Integral();
+            double total_Exp = hist_bkgd->Integral();
+            cout << trig << "\t" << total_DATA/total_Exp << endl;
+            c_norm->Close();
+            delete c_norm;
+            continue;
+          }
+
           c_norm_down->cd();
 
           TH1D *hist_ratio = (TH1D *)hist_DATA->Clone();
@@ -293,6 +308,7 @@ void Draw_FakeRate(){
 
 
       }
+      if(OnlyNorm) continue;
 
       //==== Run over single varialbes, and get Fake Rates
 
@@ -652,7 +668,7 @@ void Draw_FakeRate(){
 
       } // END Loop AwayJet Pt
 
-      outfile_FR->Close();
+      if(outfile_FR) outfile_FR->Close();
 
     } // END Loop ID
 

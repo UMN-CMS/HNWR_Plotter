@@ -4,6 +4,7 @@
 void Draw_FakeRate(){
 
   bool OnlyNorm = false;
+  bool UsePtCone = false;
 
   setTDRStyle();
 
@@ -16,7 +17,7 @@ void Draw_FakeRate(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString OutPutSubDir = "180820_FixMu8Norm";
+  TString OutPutSubDir = "181015_AddElectronLooseIPCut";
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
@@ -99,6 +100,7 @@ void Draw_FakeRate(){
     "RelIso", "MiniRelIso",
     "dXY", "dXYSig", "dZ", "dZSig", "IP3D", "IP3DSig",
     "Chi2", "MVANoIso",
+    "TrkRelIso",
     "dPhi", "JetPtOverLeptonPt", "MET", "MT",
   };
   vector<TString> xtitles = {
@@ -107,6 +109,7 @@ void Draw_FakeRate(){
     "RelIso", "MiniRelIso",
     "|dXY| (cm)", "|dXYSig|", "|dZ| (cm)", "|dZSig|", "IP3D (cm)", "IP3DSig",
     "#chi^{2}", "MVA (No iso)",
+    "TrkRelIso",
     "#Delta#phi", "p_{T,jet}/p_{T,Lepton}", "#slash{E}_{T}^{miss} (GeV)", "M_{T}(W-tagged Lepton, #slash{E}_{T}^{miss}) (GeV)",
   };
   vector<int> rebins = {
@@ -115,6 +118,7 @@ void Draw_FakeRate(){
     1, 1,
     10, 1, 10, 1, 10, 1,
     1, 5,
+    1,
     1, 1, 1, 1,
   };
   vector<double> x_maxs = {
@@ -123,6 +127,7 @@ void Draw_FakeRate(){
     1.0, 1.0,
     0.5, 10, 0.5, 10, 0.5, 10,
     50, 1,
+    1.0,
     4, 2, 100, 50,
   };
 
@@ -274,6 +279,10 @@ void Draw_FakeRate(){
             continue;
           }
 
+          if(var.Contains("Z_Mass")){
+            cout << "[Trigger Norm] " << ID << "\t" << trig << "\t" << hist_DATA->Integral()/hist_bkgd->Integral() << endl;
+          }
+
           c_norm_down->cd();
 
           TH1D *hist_ratio = (TH1D *)hist_DATA->Clone();
@@ -318,6 +327,7 @@ void Draw_FakeRate(){
 
         if(Lepton=="Electron"){
           if(var=="Chi2") continue;
+          if(var=="TrkRelIso") continue;
         }
         if(Lepton=="Muon"){
           if(var=="MVANoIso") continue;
@@ -603,6 +613,9 @@ void Draw_FakeRate(){
 
       //==== For 2D plots
 
+      TString Which2DToUse = "Pt_vs_Eta";
+      if(UsePtCone) Which2DToUse = "PtCone_vs_Eta";
+
       TFile *outfile_FR = new TFile(this_dirname+"/"+Lepton+"_"+ID+"_FakeRates.root","RECREATE");
       for(unsigned int it_jpt=0; it_jpt<AwayJetMinPts.size(); it_jpt++){
 
@@ -612,13 +625,13 @@ void Draw_FakeRate(){
         canvas_margin(c_FR_2D);
         c_FR_2D->cd();
 
-        TH2D *hist_DATA_Den = (TH2D *)file_DATA->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Den_"+"PtCone_vs_Eta");
-        TH2D *hist_DATA_Num = (TH2D *)file_DATA->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Num_"+"PtCone_vs_Eta");
+        TH2D *hist_DATA_Den = (TH2D *)file_DATA->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Den_"+Which2DToUse);
+        TH2D *hist_DATA_Num = (TH2D *)file_DATA->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Num_"+Which2DToUse);
 
         for(unsigned int it_sample=0; it_sample<Prompt_samples.size(); it_sample++){
           TFile *filetemp = new TFile(base_filepath+"/CalcFakeRate_"+Prompt_samples.at(it_sample)+".root");
-          TH2D *histtemp_Den = (TH2D *)filetemp->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Den_"+"PtCone_vs_Eta");
-          TH2D *histtemp_Num = (TH2D *)filetemp->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Num_"+"PtCone_vs_Eta");
+          TH2D *histtemp_Den = (TH2D *)filetemp->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Den_"+Which2DToUse);
+          TH2D *histtemp_Num = (TH2D *)filetemp->Get(Lepton+"_"+ID+"/"+Lepton+"_"+ID+"_DATA_AwayJetPt"+this_AwayJetPt+"_Num_"+Which2DToUse);
 
           if(histtemp_Den){
             hist_DATA_Den->Add(histtemp_Den, -1.);
@@ -661,8 +674,8 @@ void Draw_FakeRate(){
         hist_FR_2D->Draw("colztext");
         hist_FR_2D->GetXaxis()->SetRangeUser(40,200);
 
-        c_FR_2D->SaveAs(this_dirname+"/2D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+"PtCone_vs_Eta"+".pdf");
-        c_FR_2D->SaveAs(this_dirname+"/2D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+"PtCone_vs_Eta"+".png");
+        c_FR_2D->SaveAs(this_dirname+"/2D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+Which2DToUse+".pdf");
+        c_FR_2D->SaveAs(this_dirname+"/2D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+Which2DToUse+".png");
         c_FR_2D->Close();
 
 

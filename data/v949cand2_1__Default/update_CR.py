@@ -1,7 +1,7 @@
 import os
 
-#which = "CR"
-which = "SR"
+which = "CR"
+#which = "SR"
 
 files = [
 which+'_rebins.txt',
@@ -66,8 +66,6 @@ for f in files:
           tmpf.write(line.replace('-999\t-999','70\t110'))
         elif "mlllt150" in region:
           tmpf.write(line.replace('-999\t-999','0\t150'))
-        elif "mllgt150" in region:
-          tmpf.write(line.replace('-999\t-999','50\t1000'))
         else:
           tmpf.write(line.replace('-999\t-999','0\t1000'))
 

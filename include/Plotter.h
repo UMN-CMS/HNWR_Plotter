@@ -29,6 +29,8 @@ public:
   enum signal_class{
     NoClass = -1,
     All = 0,
+    Resolved = 1,
+    Boosted = 2,
   };
   vector<signal_class> AllSignalClasses;
   signal_class CurrentSC;

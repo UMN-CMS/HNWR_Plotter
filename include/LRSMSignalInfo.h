@@ -20,6 +20,7 @@ public :
   //==== Get All Mass Info
   void GetMassMaps();
   void GetMassMapsPlot();
+  void GetMassMapsSigDist();
   int NTotalMass;
   map< int, vector<int> > maps_WR_to_N;
   map< int, vector<int> > maps_N_to_WR;
@@ -98,6 +99,32 @@ void LRSMSignalInfo::GetMassMapsPlot(){
   };
   vector<int> m_Ns = {
 100, 300, 100, 400, 900, 100, 2200, 3300, 100, 3400, 6300, 
+  };
+
+  maps_WR_to_N.clear();
+  maps_N_to_WR.clear();
+  NTotalMass = 0;
+
+  for(unsigned int i=0; i<m_WRs.size(); i++){
+
+    int m_WR = m_WRs.at(i);
+    int m_N = m_Ns.at(i);
+
+    maps_WR_to_N[m_WR].push_back( m_N );
+    maps_N_to_WR[m_N].push_back( m_WR );
+    NTotalMass++;
+
+  }
+
+}
+
+void LRSMSignalInfo::GetMassMapsSigDist(){
+
+  vector<int> m_WRs = {
+400, 400, 1000, 1000, 1000, 1600, 1600, 1600, 1600, 2200, 2200, 2200, 2200, 2200, 2800, 2800, 2800, 2800, 2800, 3400, 3400, 3400, 3400, 3400, 4000, 4000, 4000, 4000, 4000, 4600, 4600, 4600, 4600, 4600, 5200, 5200, 5200, 5200, 5200, 5800, 5800, 5800, 5800, 5800, 6400, 6400, 6400, 6400, 6400, 7000, 7000, 7000, 7000, 7000, 
+  };
+  vector<int> m_Ns = {
+100, 300, 100, 400, 900, 100, 400, 1000, 1500, 100, 400, 1000, 1600, 2100, 100, 400, 1000, 1600, 2700, 100, 400, 1000, 1600, 3300, 100, 400, 1000, 1600, 3900, 100, 400, 1000, 1600, 4500, 100, 400, 1000, 1600, 5100, 100, 400, 1000, 1600, 5700, 100, 400, 1000, 1600, 6300, 100, 400, 1000, 1600, 6900, 
   };
 
   maps_WR_to_N.clear();

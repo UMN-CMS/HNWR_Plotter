@@ -17,7 +17,7 @@ void Draw_FakeRate(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString OutPutSubDir = "181015_AddElectronLooseIPCut";
+  TString OutPutSubDir = "181020_TightenVetoID";
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
@@ -51,19 +51,25 @@ void Draw_FakeRate(){
   //==== Prompt MC Samples
 
   vector<TString> Prompt_samples = {
+    "VVV",
     "VV",
+    "SingleTop",
     "TT_powheg",
-    "DYJets",
+    "DY",
     "WJets_MG", 
   };
   vector<TString> Prompt_alias = {
+    "Triboson",
     "Diboson",
+    "top",
     "t#bar{t}",
     "DY",
     "W",
   };
   vector<Color_t> Prompt_sample_colors = {
+    kCyan,
     kBlue,
+    kMagenta,
     kRed,
     kYellow,
     kGreen,
@@ -169,7 +175,7 @@ void Draw_FakeRate(){
 
     //==== Data pt-binning
     //====                                           75 = ptcut
-    vector<double>     tmp_ptbinnings = {10,15,20,25,30,40,50,60,100,200,500,1000};
+    vector<double>     tmp_ptbinnings = {10,15,20,25,35,40,50,60,100,200,500,1000};
     if(Lepton=="Muon") tmp_ptbinnings = {10,15,20,25,30,40,55,60,100,200,500,1000};
 
     const int n_ptarray = tmp_ptbinnings.size()-1;

@@ -43,7 +43,7 @@ void Draw_SignalDistribution(int xxx=0){
   //==== WR mass
 
   LRSMSignalInfo lrsminfo;
-  lrsminfo.GetMassMaps();
+  lrsminfo.GetMassMapsSigDist();
 
   vector<TString> channels = {
     "MuMu",
@@ -78,7 +78,7 @@ void Draw_SignalDistribution(int xxx=0){
         "HNFatJet_SDMass", "HNFatJet_Mass",
         "ZCand_Mass",
         "WRCand_Mass", "WRCand_Pt",
-        "NCand_Mass", "NCans_Pt",
+        "NCand_Mass", "NCand_Pt",
         "dPhi_lJ",
         "MET", 
       };
@@ -132,12 +132,38 @@ void Draw_SignalDistribution(int xxx=0){
           x_max = 3000.;
           n_rebin = 50;
         }
+        if(var.Contains("WRCand_Pt")){
+          x_min = 0.;
+          x_max = 3000.;
+          n_rebin = 50;
+        }
+        if(var.Contains("NCand_Pt")){
+          x_min = 0.;
+          x_max = 3000.;
+          n_rebin = 10;
+        }
         if(var.Contains("WRCand_Mass")){
           x_max = 8000.;
           n_rebin = 10;
         }
         if(var.Contains("ZCand_Mass")){
           x_max = 500.;
+          n_rebin = 10;
+        }
+        if(var.Contains("NCand_Mass")){
+          x_max = 2000.;
+          n_rebin = 2;
+        }
+        if(var.Contains("HNFatJet_Mass")){
+          x_max = 2000.;
+          n_rebin = 20;
+        }
+        if(var.Contains("HNFatJet_SDMass")){
+          x_max = 2000.;
+          n_rebin = 20;
+        }
+        if(var.Contains("MET")){
+          x_max = 1000.;
           n_rebin = 10;
         }
         if(var.Contains("Size")){
@@ -181,8 +207,8 @@ void Draw_SignalDistribution(int xxx=0){
           n_rebin = 1;
         }
         if(var.Contains("dPhi")){
-          x_max = 0.;
-          x_min = 4.;
+          x_min = 0.;
+          x_max = 4.;
           n_rebin = 1;
         }
 
@@ -219,14 +245,13 @@ void Draw_SignalDistribution(int xxx=0){
 
         hist_dummy->GetYaxis()->SetRangeUser(0., 1.1);
 
-/*
+
         bool XAxisLog = false;
         if(var.Contains("Pt")){
-          XAxisLog = true;
-          if(!var.Contains("PtRatio") && !var.Contains("PtRel")){
-            c1->SetLogx();
-          }
+          hist_dummy->GetXaxis()->SetRangeUser(10., x_max);
+          c1->SetLogx();
         }
+/*
         bool YAxisLog = false;
         if(var.Contains("Iso")&&var.Contains("Rel")){
           YAxisLog = true;
@@ -234,12 +259,12 @@ void Draw_SignalDistribution(int xxx=0){
           hist_dummy->GetXaxis()->SetRangeUser(0.001, 2.);
           c1->SetLogy();
         }
-
+*/
         if(var.Contains("DeltaR")){
           hist_dummy->GetXaxis()->SetRangeUser(0., 5.0);
           n_rebin = 1;
         }
-*/
+
         hist_dummy->Rebin(n_rebin);
         hist_dummy->GetYaxis()->SetTitle("Events");
         hist_dummy->GetXaxis()->SetTitle(xtitles.at(it_var));
@@ -340,7 +365,7 @@ void Draw_SignalDistribution(int xxx=0){
             hist->Rebin(n_rebin);
             hist->SetLineColor(colors.at(it_WR));
             hist->SetLineWidth(2);
-            //hist->SetLineStyle(it_N+1);
+            hist->SetLineStyle(it_N+1);
             double this_scale = hist->Integral();
             if(CheckIsoPass) this_scale = hist->GetBinContent(1);
             else if(PassOrFail) this_scale = hist->Integral();

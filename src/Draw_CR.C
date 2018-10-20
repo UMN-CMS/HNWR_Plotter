@@ -1,7 +1,7 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_SR(int XXX=0, bool MakeShape=false){
+void Draw_CR(int XXX=0, bool MakeShape=false){
 
   bool ScaleMC = false;
 
@@ -92,25 +92,15 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     m.samples_to_use = {"VV_incl", "DY", "ttbar", "WJets_MG"};
 
     m.histname_suffix = {
-
-      "HNWR_SingleElectron_OneLepton_AwayFatJet",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithLepton100GeV",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithLepton100GeV_WRCandPtlt200",
-      "HNWR_SingleElectron_OneLepton_AwayDiJet",
-
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJet",
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJetWithLepton100GeV",
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJetWithLepton100GeV_WRCandPtlt200",
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayDiJet",
-
+      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJet_WRCandPtgt200",
+      "HNWR_SingleElectron_OneLepton_AwayFatJet_WRCandPtgt200",
 
 /*
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_OS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_OS",
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_SS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_SS",
+      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_mlllt150_OS",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_OS",
+      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_mlllt150_SS",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_SS",
 */
-
     };
 
   }
@@ -120,8 +110,8 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     m.samples_to_use = {"WJets_MG", "VV_incl", "ttbar", "DY"};
 
     m.histname_suffix = {
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_OS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_OS",
+      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_mlllt150_OS",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_OS",
     };
 
   }
@@ -132,8 +122,8 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 
     m.histname_suffix = {
 
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_SS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_SS",
+      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_mlllt150_SS",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_SS",
 
     };
 
@@ -171,7 +161,7 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
     "# of jets", "# of b-tagged jets",
-    "m_{N} (GeV)", "m_{W_{R}} (GeV)",
+    "m_{N} (GeV)", "m_{WR} (GeV)",
     "p_{T} of N (GeV)", "p_{T} of W (GeV)",
   };
 
@@ -207,28 +197,28 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 */
 /*
   m.histname = {
-    "WRCand_Mass"
+    "ZCand_Mass"
   };
   m.x_title = {
-    "m_{WR} (GeV)",
+    "m(ll) (GeV)"
   };
   m.units = {
     "GeV",
   };
-*/
+
 
   if(MakeShape){
     m.histname = {
-      "WRCand_Mass"
+      "ZP_Mass"
     };
     m.x_title = {
-      "m_{W_{R}} (GeV)",
+      "m_{Z'} (GeV)"
     };
     m.units = {
       "GeV",
     };
   }
-
+*/
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
     //==== PD
@@ -282,8 +272,7 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     if(ScaleMC) m.ApplyMCNormSF.push_back(true);
     else m.ApplyMCNormSF.push_back(false);
 
-    m.drawdata.push_back(false);
-    //m.drawdata.push_back(true);
+    m.drawdata.push_back(true);
 
     m.drawratio.push_back(true);
 
@@ -330,80 +319,12 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 
   m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/Syst.txt");
 
-  //=============================
-  //==== set signal mass points
-  //=============================
-
-  LRSMSignalInfo lrsminfo;
-  lrsminfo.GetMassMapsPlot();
-  vector<Color_t> colors_WR = {kGreen, kViolet, kGray, kOrange};
-
-  int it_sig=-1;
-  for(map< int, vector<int> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
-
-    it_sig++;
-
-    int m_WR = it->first;
-    vector<int> this_m_Ns = it->second;
-
-    for(int it_N=0; it_N<this_m_Ns.size(); it_N++){
-
-      int m_N = this_m_Ns.at(it_N);
-
-      LRSMSignalInfo lrsminfo;
-      lrsminfo.prod_channel="SchWR";
-      lrsminfo.generator="aMCNLO";
-      lrsminfo.lep_channel = "EE";
-      lrsminfo.mass_WR = m_WR;
-      lrsminfo.mass_N = m_N;
-      lrsminfo.SetNames();
-
-      m.signal_LRSMinfo.push_back(lrsminfo);
-      m.signal_color.push_back(colors_WR.at(it_sig));
-      m.signal_style.push_back(it_N+1);
-      m.signal_draw.push_back(true);
-
-
-      //==== copy MuMu from EE
-      lrsminfo.lep_channel = "MuMu";
-      lrsminfo.SetNames();
-      m.signal_LRSMinfo.push_back(lrsminfo);
-      m.signal_color.push_back(colors_WR.at(it_sig));
-      m.signal_style.push_back(it_N+1);
-      m.signal_draw.push_back(true);
-
-    }
-
-  }
-
-  //=====================================
-  //==== set signal mass for each class
-  //=====================================
-
-  for(unsigned int i=0; i<m.signal_LRSMinfo.size(); i++){
-    LRSMSignalInfo this_lrsm = m.signal_LRSMinfo.at(i);
-
-    double m_WR = this_lrsm.mass_WR;
-    double m_N = this_lrsm.mass_N;
-
-    if(m_N/m_WR < 0.3){
-      m.map_class_to_LRSMSignalInfo[Plotter::Boosted].push_back( this_lrsm );
-    }
-    else{
-      m.map_class_to_LRSMSignalInfo[Plotter::Resolved].push_back( this_lrsm );
-    }
-
-    //m.map_class_to_LRSMSignalInfo[Plotter::All].push_back( this_lrsm );
-
-  }
-  m.AllSignalClasses = {Plotter::Resolved, Plotter::Boosted};
-
   //=============
   //==== rebins
   //=============
   
   //==== script to generate rebins
-  ofstream skeleton_rebins("./data/tmp_SR_rebins.txt", ios::trunc);
+  ofstream skeleton_rebins("./data/tmp_CR_rebins.txt", ios::trunc);
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
     for(unsigned int j=0; j<m.histname.size(); j++){
       skeleton_rebins
@@ -413,14 +334,14 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   }
   skeleton_rebins.close();
 
-  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/SR_rebins.txt");
+  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/CR_rebins.txt");
 
   //=============
   //==== y_maxs
   //=============
   
   //==== script to generate rebins
-  ofstream skeleton_y_maxs("./data/tmp_SR_yaxis.txt", ios::trunc);
+  ofstream skeleton_y_maxs("./data/tmp_CR_yaxis.txt", ios::trunc);
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
     for(unsigned int j=0; j<m.histname.size(); j++){
       skeleton_y_maxs
@@ -435,14 +356,14 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   m.default_y_max = 20.;
   m.default_y_min = 0.;
 
-  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/SR_yaxis.txt"); 
+  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/CR_yaxis.txt"); 
 
   //=============
   //==== x_mins
   //=============
 
   //==== script to generate rebins
-  ofstream skeleton_x_mins("./data/tmp_SR_xaxis.txt", ios::trunc);
+  ofstream skeleton_x_mins("./data/tmp_CR_xaxis.txt", ios::trunc);
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
     for(unsigned int j=0; j<m.histname.size(); j++){
       skeleton_x_mins
@@ -452,7 +373,7 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   }
   skeleton_x_mins.close();
 
-  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/SR_xaxis.txt");
+  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/CR_xaxis.txt");
 
   //===============
   //==== k-factor
@@ -470,9 +391,9 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/";
   m.make_plot_directory();
-  m.outputdir_for_shape = ENV_PLOT_PATH+"/"+dataset+"/FilesForShapes/SR/";
+  m.outputdir_for_shape = ENV_PLOT_PATH+"/"+dataset+"/FilesForShapes/CR/";
   
   //==========================
   //==== finally, draw plots

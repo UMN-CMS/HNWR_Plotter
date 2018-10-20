@@ -12,42 +12,38 @@ void Draw_SignalEfficiency(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
+/*
+  //==== If you have test directory
+  TString whichDir = "TightenVetoLeptons";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/"+whichDir+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/"+whichDir+"/";
+*/
+
+  //=== If not, use geenral
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/";
 
+
+
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
-
-  // lrsminfo.maps_WR_to_N;
-  // lrsminfo.maps_N_to_WR;
 
   vector<TString> Configs = {
     "HNWR",
   };
 
-/*
   vector<TString> regions = {
-    "SingleLepton_WithFatJet",
-    "DiLepton_TwoJetNoFatJet",
-  };
-  vector<Color_t> colors = {
-    kBlue,
-    kRed,
-  };
-  vector<TString> region_aliases = {
-    "AK8",
-    "Two AK4",
-  };
-*/
-
-  vector<TString> regions = {
-    "OneLepton_AwayFatJet",
+    //"OneLepton_AwayFatJet",
+    //"OneLepton_AwayFatJetWithLepton",
+    "OneLepton_AwayFatJetWithLepton100GeV",
     "OneLepton_AwayDiJet",
     "TwoLepton_TwoJet",
     //"TwoLepton_FatJet",
     //"TwoLepton_TwoJetNoFatJet",
   };
   vector<Color_t> colors = {
+    //kBlue,
+    //kCyan,
     kBlue,
     kRed,
     kViolet,
@@ -55,7 +51,9 @@ void Draw_SignalEfficiency(){
     //kViolet,
   };
   vector<TString> region_aliases = {
-    "OneLepton+AK8",
+    //"OneLepton+AK8",
+    //"OneLepton+AK8(w/ Lepton)",
+    "OneLepton(p_{T}>100GeV)+AK8(w/ Lepton)",
     "OneLepton+2AK4",
     "TwoLepton+2AK4",
     //"TwoLepton+AK8",

@@ -740,9 +740,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
   //==== signal_class
   CurrentSC = NoClass;
 
-  CurrentSC = All; //FIXME
+  if(histname_suffix[i_cut].Contains("OneLepton")) CurrentSC = Boosted;
+  else CurrentSC = Resolved;
 
-  
   //==== y=0 line
   double x_0[2], y_0[2];
   x_0[0] = -5000;  y_0[0] = 0;

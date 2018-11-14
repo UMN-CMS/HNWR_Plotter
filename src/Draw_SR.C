@@ -38,49 +38,31 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   //=========================
   //==== set sample mapping
   //=========================
-  
+
   m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
-  m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-  m.map_sample_string_to_list["ZToLL_M_50_120"] = {"ZToLL_M_50_120"};
-  m.map_sample_string_to_list["ZToLL_M_120_200"] = {"ZToLL_M_120_200"};
-  m.map_sample_string_to_list["ZToLL_M_200_400"] = {"ZToLL_M_200_400"};
-  m.map_sample_string_to_list["ZToLL_M_400_800"] = {"ZToLL_M_400_800"};
-  m.map_sample_string_to_list["ZToLL_M_800_1400"] = {"ZToLL_M_800_1400"};
-  m.map_sample_string_to_list["ZToLL_M_1400_2300"] = {"ZToLL_M_1400_2300"};
-  m.map_sample_string_to_list["ZToLL_M_2300_3500"] = {"ZToLL_M_2300_3500"};
-  m.map_sample_string_to_list["ZToLL_M_3500_4500"] = {"ZToLL_M_3500_4500"};
-  m.map_sample_string_to_list["ZToLL_M_4500_6000"] = {"ZToLL_M_4500_6000"};
-  m.map_sample_string_to_list["ZToLL_M_6000_Inf"] = {"ZToLL_M_6000_Inf"};
+  m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
   m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
   m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
   m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-  m.map_sample_string_to_list["WW_excl"] = {"WWTo2L2Nu_powheg"};
   m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+  m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+  m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
+  m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
   m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
   m.map_sample_string_to_list["fake"] = {"fake"};
-  m.map_sample_string_to_list["FromEMu"] = {"FromEMu"};
 
   m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+  m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
   m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
-  m.map_sample_string_to_legendinfo["ZToLL_M_50_120"] = make_pair("m(Z) : 50-120", kRed-2);
-  m.map_sample_string_to_legendinfo["ZToLL_M_120_200"] = make_pair("m(Z) : 120-200", kRed-10);
-  m.map_sample_string_to_legendinfo["ZToLL_M_200_400"] = make_pair("m(Z) : 200-400", kOrange);
-  m.map_sample_string_to_legendinfo["ZToLL_M_400_800"] = make_pair("m(Z) : 400-800", kYellow);
-  m.map_sample_string_to_legendinfo["ZToLL_M_800_1400"] = make_pair("m(Z) : 800-1400", kGreen+3);
-  m.map_sample_string_to_legendinfo["ZToLL_M_1400_2300"] = make_pair("m(Z) : 1400-2300", kBlue+3);
-  m.map_sample_string_to_legendinfo["ZToLL_M_2300_3500"] = make_pair("m(Z) : 2300-3500", kViolet);
-  m.map_sample_string_to_legendinfo["ZToLL_M_3500_4500"] = make_pair("m(Z) : 3500-4500", kGray);
-  m.map_sample_string_to_legendinfo["ZToLL_M_4500_6000"] = make_pair("m(Z) : 4500-6000", kGray+2);
-  m.map_sample_string_to_legendinfo["ZToLL_M_6000_Inf"] = make_pair("m(Z) : 6000-Inf", kBlack);
-  m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
   m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
   m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
-  m.map_sample_string_to_legendinfo["WW_excl"] = make_pair("diboson", kSpring-1);
   m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+  m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+  m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+  m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
   m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
   m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
-  m.map_sample_string_to_legendinfo["FromEMu"] = make_pair("Flavour Symm.", kRed);
-  
+
   //===============================
   //==== set and make sample list
   //===============================
@@ -89,27 +71,25 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 
   //==== One Lepton
   if(XXX==0){
-    m.samples_to_use = {"VV_incl", "DY", "ttbar", "WJets_MG"};
+    m.samples_to_use = {"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar"};
 
     m.histname_suffix = {
 
-      "HNWR_SingleElectron_OneLepton_AwayFatJet",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithLepton100GeV",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithLepton100GeV_WRCandPtlt200",
-      "HNWR_SingleElectron_OneLepton_AwayDiJet",
+      "HNWR_SingleMuon_OneLepton_AwayFatJetWithSFLepton",
+      "HNWR_SingleElectron_OneLepton_AwayFatJetWithSFLepton",
 
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJet",
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJetWithLepton100GeV",
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayFatJetWithLepton100GeV_WRCandPtlt200",
-      "HNWR_SingleMuon_IsoMu27_OneLepton_AwayDiJet",
-
+      "HNWR_SingleMuon_OneLepton_AwayFatJetWithSFLepton100GeV",
+      "HNWR_SingleElectron_OneLepton_AwayFatJetWithSFLepton100GeV",
 
 /*
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_OS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_OS",
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_SS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_SS",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_OS",
+      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_OS",
+
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_SS",
+      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_SS",
 */
+
+
 
     };
 
@@ -117,23 +97,25 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 
   //==== Two Lepton OS
   if(XXX==1){
-    m.samples_to_use = {"WJets_MG", "VV_incl", "ttbar", "DY"};
+    m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "DY"};
 
     m.histname_suffix = {
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_OS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_OS",
+
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_OS",
+      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_OS",
+
     };
 
   }
 
   //==== Two Lepton SS
   if(XXX==2){
-    m.samples_to_use = {"VV_incl", "fake", "chargeflip"};
+    m.samples_to_use = {"VVV", "VV_incl", "fake", "chargeflip"};
 
     m.histname_suffix = {
 
-      "HNWR_SingleMuon_IsoMu27_TwoLepton_TwoJet_SS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_SS",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_SS",
+      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_SS",
 
     };
 
@@ -144,13 +126,13 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   //============================
   
   m.histname = {
-    "NEvent",
+    "NEvent", "nPileUp", "nPV",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
     "dPhi_ll",
     "Jet_0_Pt", "Jet_0_Eta",
     "Jet_1_Pt", "Jet_1_Eta",
-    "HNFatJet_Pt", "HNFatJet_Eta", "HNFatJet_Mass",
+    "HNFatJet_Pt", "HNFatJet_Eta", "HNFatJet_Mass", "HNFatJet_SDMass",
     "ZCand_Mass", "dR_ll",
     "MET", "HT",
     "MT",
@@ -160,13 +142,13 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   };
 
   m.x_title = {
-    "# of events",
+    "# of events", "# of PU", "# of PV",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton TrkRelIso",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton TrkRelIso",
     "#DeltaR(l_{1},l_{2})",
     "Leading jet p_{T} (GeV)", "Leading jet #eta",
     "Subleading jet p_{T} (GeV)", "Subleading jet #eta",
-    "Away AK8 jet p_{T} (GeV)", "Away AK8 jet #eta", "Away AK8 jet Mass",
+    "Away AK8 jet p_{T} (GeV)", "Away AK8 jet #eta", "Away AK8 jet Mass", "Away AK8 jet SFMass",
     "m(ll) (GeV)", "#DeltaR(ll)",
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
@@ -176,13 +158,13 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   };
 
   m.units = {
-    "int",
+    "int", "int", "int",
     "GeV", "", "",
     "GeV", "", "",
     "",
     "GeV", "",
     "GeV", "",
-    "GeV", "", "GeV",
+    "GeV", "", "GeV", "GeV",
     "GeV", "GeV",
     "GeV", "GeV",
     "GeV",
@@ -231,22 +213,16 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
+    TString this_region = m.histname_suffix.at(i);
     //==== PD
-    if(m.histname_suffix.at(i).Contains("DiMuon")){
-      m.PrimaryDataset.push_back("DoubleMuon");
-      m.LeptonChannels.push_back(21);
-    }
-    else if(m.histname_suffix.at(i).Contains("SingleElectron")){
+    if(this_region.Contains("SingleElectron")){
       m.PrimaryDataset.push_back("SingleElectron");
-      m.LeptonChannels.push_back(22);
     }
-    else if(m.histname_suffix.at(i).Contains("SingleMuon")){
+    else if(this_region.Contains("SingleMuon")){
       m.PrimaryDataset.push_back("SingleMuon");
-      m.LeptonChannels.push_back(21); //FIXME
     }
-    else if(m.histname_suffix.at(i).Contains("DiPhoton")){
-      m.PrimaryDataset.push_back("DoubleEG");
-      m.LeptonChannels.push_back(22); //FIXME
+    else if(this_region.Contains("EMu")){
+      m.PrimaryDataset.push_back("SingleMuon");
     }
     else{
       cout << "ERROR : PD not correct" << endl;
@@ -254,21 +230,76 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     }
 
     //==== RegionType : + when SS, - when OS
-    bool IsSS = m.histname_suffix.at(i).Contains("_SS");
+    bool IsSS = this_region.Contains("_SS");
     int int_IsSS = +1;
     if(!IsSS) int_IsSS = -1;
 
-    if(m.histname_suffix.at(i).Contains("SR")){
-      m.RegionType.push_back(int_IsSS);
+    if(this_region.Contains("OneLepton_AwayFatJet")){
+      if(this_region.Contains("WithOF")){
+        if(this_region.Contains("SingleElectron")){
+          m.LeptonChannels.push_back(int_IsSS*1);
+          m.RegionType.push_back(12);
+        }
+        else if(this_region.Contains("SingleMuon")){
+          m.LeptonChannels.push_back(int_IsSS*2);
+          m.RegionType.push_back(11);
+        }
+        else{
+          cout << "OneLepton_AwayFatJet && WithOF but WTF : " << this_region << endl;
+          return;
+        }
+      }
+      else{
+        m.RegionType.push_back(10);
+        if(this_region.Contains("SingleElectron")){
+          m.LeptonChannels.push_back(1);
+        }
+        else if(this_region.Contains("SingleMuon")){
+          m.LeptonChannels.push_back(2);
+        }
+        else{
+          cout << "OneLepton_AwayFatJet && !(WithOF) but WTF : " << this_region << endl;
+          return;
+        }
+      }
     }
-    else if(m.histname_suffix.at(i).Contains("CR1")){
-      m.RegionType.push_back(int_IsSS*10);
-    }
-    else if(m.histname_suffix.at(i).Contains("CR2")){
-      m.RegionType.push_back(int_IsSS*20);
-    }
-    else if(m.histname_suffix.at(i).Contains("CR3")){
-      m.RegionType.push_back(int_IsSS*30);
+    else if(this_region.Contains("TwoLepton_TwoJet")){
+      if(this_region.Contains("EMu")){
+        m.LeptonChannels.push_back(int_IsSS*23);
+        m.RegionType.push_back(22);
+      }
+      else if(this_region.Contains("mlllt150")){
+        if(this_region.Contains("SingleElectron")){
+          m.LeptonChannels.push_back(int_IsSS*21);
+          m.RegionType.push_back(21);
+        }
+        else if(this_region.Contains("SingleMuon")){
+          m.LeptonChannels.push_back(int_IsSS*22);
+          m.RegionType.push_back(21);
+        }
+        else{
+          cout << "TwoLepton_TwoJet && !EMu && mlllt150 but WTF" << endl;
+          return;
+        }
+      }
+      else if(this_region.Contains("mllgt150")){
+        if(this_region.Contains("SingleElectron")){
+          m.LeptonChannels.push_back(int_IsSS*21);
+          m.RegionType.push_back(20);
+        }
+        else if(this_region.Contains("SingleMuon")){
+          m.LeptonChannels.push_back(int_IsSS*22);
+          m.RegionType.push_back(20);
+        }
+        else{
+          cout << "TwoLepton_TwoJet && !EMu && mllgt150 but WTF" << endl;
+          return;
+        }
+      }
+      else{
+        cout << "TwoLepton_TwoJet but WTF : " << this_region << endl;
+        return;
+      }
     }
     else{
       m.RegionType.push_back(0);
@@ -283,12 +314,10 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     else m.ApplyMCNormSF.push_back(false);
 
     m.drawdata.push_back(false);
-    //m.drawdata.push_back(true);
 
     m.drawratio.push_back(true);
 
   }
-
 
 /*
   //==== FIXME test
@@ -339,16 +368,16 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   vector<Color_t> colors_WR = {kGreen, kViolet, kGray, kOrange};
 
   int it_sig=-1;
-  for(map< int, vector<int> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
+  for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
 
     it_sig++;
 
-    int m_WR = it->first;
-    vector<int> this_m_Ns = it->second;
+    double m_WR = it->first;
+    vector<double> this_m_Ns = it->second;
 
     for(int it_N=0; it_N<this_m_Ns.size(); it_N++){
 
-      int m_N = this_m_Ns.at(it_N);
+      double m_N = this_m_Ns.at(it_N);
 
       LRSMSignalInfo lrsminfo;
       lrsminfo.prod_channel="SchWR";

@@ -68,7 +68,7 @@ void Draw_SignalDistribution(int xxx=0){
       TString channel = channels.at(it_channel);
 
       TString Suffix = "SingleElectron";
-      if(channel=="MuMu") Suffix = "SingleMuon_IsoMu27";
+      if(channel=="MuMu") Suffix = "SingleMuon";
 
       vector<TString> vars, xtitles;
 
@@ -86,7 +86,7 @@ void Draw_SignalDistribution(int xxx=0){
       xtitles = {
         "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton PFRelIso", "Leading lepton TrkRelIso",
         "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton PFRelIso", "Subleading lepton TrkRelIso",
-        "Away AK8 jet SF Mass", "Away AK8 jet Mass",
+        "Away AK8 jet SD Mass", "Away AK8 jet Mass",
         "m_{ll} (GeV)",
         "m_{WR} (GeV)", "p_{T} of WR (GeV)",
         "m_{N} (GeV)", "p_{T} of N (GeV)",
@@ -151,15 +151,15 @@ void Draw_SignalDistribution(int xxx=0){
           n_rebin = 10;
         }
         if(var.Contains("NCand_Mass")){
-          x_max = 2000.;
+          x_max = 1000.;
           n_rebin = 2;
         }
         if(var.Contains("HNFatJet_Mass")){
-          x_max = 2000.;
+          x_max = 1000.;
           n_rebin = 20;
         }
         if(var.Contains("HNFatJet_SDMass")){
-          x_max = 2000.;
+          x_max = 1000.;
           n_rebin = 20;
         }
         if(var.Contains("MET")){
@@ -332,17 +332,17 @@ void Draw_SignalDistribution(int xxx=0){
 
 
         int it_WR = -1;
-        for(map< int, vector<int> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
+        for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
 
           it_WR++;
           if(it_WR>=colors.size()) break;
 
-          int m_WR = it->first;
-          vector<int> this_m_Ns = it->second;
+          double m_WR = it->first;
+          vector<double> this_m_Ns = it->second;
 
           for(int it_N=0; it_N<this_m_Ns.size(); it_N++){
 
-            int m_N = this_m_Ns.at(it_N);
+            double m_N = this_m_Ns.at(it_N);
 
             //cout << "  mN = " << hnmass << endl;
             LRSMSignalInfo this_lrsminfo;

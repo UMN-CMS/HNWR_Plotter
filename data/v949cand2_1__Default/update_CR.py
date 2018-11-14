@@ -35,6 +35,9 @@ for f in files:
       elif "MET" in var or "HT" in var or "MT" in var:
         tmpf.write(line.replace('-999','10'))
 
+      elif "HNFatJet_SDMass" in var:
+        tmpf.write(line.replace('-999','10'))
+
       elif "HNFatJet_Mass" in var:
         tmpf.write(line.replace('-999','10'))
 
@@ -71,8 +74,10 @@ for f in files:
 
       elif "MET" in var: 
         tmpf.write(line.replace('-999\t-999','0\t300'))
+      elif "HNFatJet_SDMass" in var:
+        tmpf.write(line.replace('-999\t-999','0\t1000'))
       elif "HNFatJet_Mass" in var:
-        tmpf.write(line.replace('-999\t-999','0\t500'))
+        tmpf.write(line.replace('-999\t-999','0\t1000'))
       elif "HT" in var:
         tmpf.write(line.replace('-999\t-999','0\t800'))
       elif "MT" in var:
@@ -83,6 +88,9 @@ for f in files:
 
       elif "WRCand_Mass" in var:
         tmpf.write(line.replace('-999\t-999','0\t5500'))
+
+      elif ("nPileUp" in var) or ("nPV" in var):
+        tmpf.write(line.replace('-999\t-999','0\t100'))
 
       else:
         tmpf.write(line)

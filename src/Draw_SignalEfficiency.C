@@ -3,6 +3,8 @@
 
 void Draw_SignalEfficiency(){
 
+  bool IsCR = true;
+
   gStyle->SetOptStat(0);
 
   TH1::SetDefaultSumw2(true);
@@ -14,16 +16,21 @@ void Draw_SignalEfficiency(){
 
 /*
   //==== If you have test directory
-  TString whichDir = "TightenVetoLeptons";
+  TString whichDir = "181029_TestSDMassEff";
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/"+whichDir+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/"+whichDir+"/";
 */
+
 
   //=== If not, use geenral
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/";
 
 
+  if(IsCR){
+    base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/";
+    base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/CR/";
+  }
 
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
@@ -33,41 +40,42 @@ void Draw_SignalEfficiency(){
   };
 
   vector<TString> regions = {
-    //"OneLepton_AwayFatJet",
-    //"OneLepton_AwayFatJetWithLepton",
-    "OneLepton_AwayFatJetWithLepton100GeV",
-    "OneLepton_AwayDiJet",
-    "TwoLepton_TwoJet",
-    //"TwoLepton_FatJet",
-    //"TwoLepton_TwoJetNoFatJet",
+    "OneLepton_AwayFatJetWithSFLepton100GeV",
+    "TwoLepton_TwoJet_mllgt150",
   };
   vector<Color_t> colors = {
-    //kBlue,
-    //kCyan,
     kBlue,
     kRed,
-    kViolet,
-    //kGreen,
-    //kViolet,
   };
   vector<TString> region_aliases = {
-    //"OneLepton+AK8",
-    //"OneLepton+AK8(w/ Lepton)",
-    "OneLepton(p_{T}>100GeV)+AK8(w/ Lepton)",
-    "OneLepton+2AK4",
-    "TwoLepton+2AK4",
-    //"TwoLepton+AK8",
-    //"TwoLepton+2AK4",
+    "Boosted SR",
+    "Resolved SR",
   };
+
+  if(IsCR){
+    regions = {
+      "OneLepton_AwayFatJetWithOFLepton",
+      "TwoLepton_TwoJet_mlllt150",
+      "HNWR_EMu_TwoLepton_TwoJet",
+    };
+    colors = {
+      kBlue,
+      kRed,
+      kGreen,
+    };
+    region_aliases = {
+      "Boosted CR",
+      "Resolved SR (revered m(ll))",
+      "Resolved SR (e#mu)",
+    };
+  }
 
 
   vector< TString > Suffixs = {
 
-    "SingleMuon_Mu50", // at least two muons
-    "SingleMuon_IsoMu27",
+    //"SingleElectron",
+    "SingleMuon",
 
-    //"SingleMuon",
-    //"SingleElectron", // at least two muons
   };
 
   double xxx[1],yyy[1];
@@ -81,10 +89,10 @@ void Draw_SignalEfficiency(){
 
     TString Config = Configs.at(it_Config);
 
-    for(map< int, vector<int> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
+    for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
 
-      int m_WR = it->first;
-      vector<int> this_m_Ns = it->second;
+      double m_WR = it->first;
+      vector<double> this_m_Ns = it->second;
 
       for(unsigned int it_Suffix=0; it_Suffix<Suffixs.size(); it_Suffix++){
 
@@ -104,6 +112,7 @@ void Draw_SignalEfficiency(){
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
+        if(IsCR) hist_dummy->GetYaxis()->SetRangeUser(0., 0.2);
         hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
         hist_dummy->GetYaxis()->SetTitle("Efficiency");
 
@@ -116,7 +125,7 @@ void Draw_SignalEfficiency(){
         lg->SetBorderSize(0);
         lg->SetFillStyle(0);
 
-        lg->AddEntry(forlg, "Combined", "pl");
+        if(!IsCR) lg->AddEntry(forlg, "Combined", "pl");
 
         const int n_mass = this_m_Ns.size();
         double x_total[n_mass], y_total[n_mass];
@@ -135,7 +144,7 @@ void Draw_SignalEfficiency(){
 
           for(int it_N=0; it_N<this_m_Ns.size(); it_N++){
 
-            int m_N = this_m_Ns.at(it_N);
+            double m_N = this_m_Ns.at(it_N);
 
             //cout << m_N <<", ";
 
@@ -146,9 +155,11 @@ void Draw_SignalEfficiency(){
             TH1D *hist_Den = (TH1D *)file->Get("NoCut_"+Config);
             TH1D *hist = (TH1D *)file->Get(dirname+"/NEvent_"+dirname);
 
+            double this_yield = 0;
             double this_eff = 0;
             if(hist){
               double this_Den = hist_Den->GetEntries();
+              this_yield = hist->GetBinContent(1);
               this_eff = hist->GetEntries()/this_Den;
             }
             x[it_N] = m_N;
@@ -156,6 +167,8 @@ void Draw_SignalEfficiency(){
 
             x_total[it_N] = m_N;
             y_total[it_N] += this_eff;
+
+            if(IsCR) cout << region << "\t" << m_WR << "\t" << m_N << "\t" << this_yield << endl;
 
             file->Close();
 
@@ -181,7 +194,7 @@ void Draw_SignalEfficiency(){
         gr_eff_total->SetLineWidth(3);
         gr_eff_total->SetMarkerStyle(15); 
         gr_eff_total->SetMarkerColor(kBlack);
-        gr_eff_total->Draw("lpsame");
+        if(!IsCR) gr_eff_total->Draw("lpsame");
 
         lg->Draw();
 

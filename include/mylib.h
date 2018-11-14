@@ -316,7 +316,34 @@ TH1D* DivideHistograms(TH1D *hist_Den, TH1D *hist_Num){
 }
 
 
+TH1D *GetStatUpDown(TH1D *hist, int sys){
 
+  TH1D *out = (TH1D *)hist->Clone();
+  for(int i=1; i<=hist->GetXaxis()->GetNbins(); i++){
+
+    double y = hist->GetBinContent(i);
+    double e = hist->GetBinError(i);
+
+    out->SetBinContent(i, y + (double)sys * e );
+
+  }
+  return out;
+
+}
+
+TH1D *GetScaleUpDown(TH1D *hist, double sys){
+
+  TH1D *out = (TH1D *)hist->Clone();
+  for(int i=1; i<=hist->GetXaxis()->GetNbins(); i++){
+
+    double y = hist->GetBinContent(i);
+
+    out->SetBinContent(i, y + sys*y );
+
+  }
+  return out;
+
+}
 
 
 

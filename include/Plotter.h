@@ -29,8 +29,8 @@ public:
   enum signal_class{
     NoClass = -1,
     All = 0,
-    Resolved = 1,
-    Boosted = 2,
+    Boosted = 1,
+    Resolved = 2,
   };
   vector<signal_class> AllSignalClasses;
   signal_class CurrentSC;
@@ -111,6 +111,7 @@ public:
   double log_of_generation_mixing;
 
   bool ZeroDataCheckCut(double xlow, double xhigh);
+  vector<double> GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> &hist_signal);
 
 };
 #endif

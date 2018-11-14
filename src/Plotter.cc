@@ -185,12 +185,10 @@ void Plotter::draw_hist(){
 
 /*
         //==== rebin here
-        if(histname[i_var]=="ZP_Mass" || histname[i_var].Contains("_0_Pt") || histname[i_var].Contains("_1_Pt")){
+        if(histname[i_var]=="WRCand_Mass"){
 
           vector<double> vec_bins;
-          if(histname[i_var]=="ZP_Mass") vec_bins = {0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2500, 3500, 5000, 5500};
-          else if(histname[i_var].Contains("_0_Pt")) vec_bins = {0, 40, 75, 90, 120, 150, 180, 210, 270, 330, 390, 1000};
-          else if(histname[i_var].Contains("_1_Pt")) vec_bins = {0, 40, 75, 90, 120, 150, 180, 210, 1000};
+          if(histname[i_var]=="WRCand_Mass") vec_bins = {0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2500, 3500, 5000, 5500, 8000};
           else{ }
           const int n_bin = vec_bins.size()-1;
           double pt2array[n_bin+1];
@@ -201,8 +199,7 @@ void Plotter::draw_hist(){
         else{
           hist_temp->Rebin( n_rebin() );
         }
-  */
-
+*/ //USE BELOW
         hist_temp->Rebin( n_rebin() );
       
         //==== set X-axis range
@@ -774,7 +771,36 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
   else{
     canvas_margin(c1);
   }
-  
+
+  bool IsMergeZeroBackground = false;
+  if(histname[i_var]=="WRCand_Mass"){
+    vector<double> new_binval = GetRebinZeroBackground(mc_stack, mc_staterror, mc_allerror, hist_data, hist_signal);
+    if(new_binval.size()>0){
+      IsMergeZeroBackground = true;
+
+      const int new_nbins = new_binval.size()-1;
+      double new_binvals[new_nbins+1];
+      for(int i=0;i<new_nbins+1;i++) new_binvals[i] = new_binval.at(i);
+
+      THStack *new_mc_stack = new THStack("new_mc_stack", "");
+      TList *list_stack = mc_stack->GetHists();
+      for(int i=0; i<list_stack->Capacity(); i++){
+        TH1D *this_hist = (TH1D *)list_stack->At(i);
+        this_hist = (TH1D *)this_hist->Rebin(new_nbins, "hnew1", new_binvals);
+        new_mc_stack->Add(this_hist);
+      }
+      mc_stack = new_mc_stack;
+
+      mc_staterror = (TH1D *)mc_staterror->Rebin(new_nbins, "hnew1", new_binvals);
+      mc_allerror = (TH1D *)mc_allerror->Rebin(new_nbins, "hnew1", new_binvals);
+      hist_data = (TH1D *)hist_data->Rebin(new_nbins, "hnew1", new_binvals);
+
+      for(unsigned int i=0; i<hist_signal.size(); i++){
+        hist_signal.at(i) = (TH1D *)hist_signal.at(i)->Rebin(new_nbins, "hnew1", new_binvals);
+      }
+    }
+  }
+
   //==== empty histogram for axis
   TH1D *hist_empty = (TH1D*)mc_stack->GetHists()->At(0)->Clone();
   hist_empty->SetName("DUMMY_FOR_AXIS");
@@ -1272,8 +1298,7 @@ TString Plotter::DoubleToString(double dx){
   if(units[i_var]=="int"){
     return "Events";
   }
-  //else if(histname[i_var].Contains("secondLepton_Pt")){ //FIXME not yet
-  else if(0){
+  else if(histname[i_var].Contains("WRCand_Mass")){ //XXX REBIN XXX
     return "Events / bin";
   }
   else{
@@ -1438,38 +1463,58 @@ TString Plotter::GetStringChannelRegion(int A, int B){
   //==== channel type
 
   TString channel = "";
-  //==== A = 1 : mm
-  //==== A = 2 : ee
-  //==== A = 3 : em
+  //==== A%10 : # of leptons
+  //==== Last digit of A = 1 : ee
+  //====                   2 : mm
+  //====                   3 : em
 
+  if(A==0) channel = "l";
+  else if(A==1) channel = "e";
+  else if(A==2) channel = "#mu";
   //==== Lepton Combined
-  if(A==20) channel = "ee,#mu#mu,e#mu";
+  else if(A==20) channel = "ee,#mu#mu,e#mu";
   //==== mumu
-  if(abs(A)==21) channel = "#mu#mu";
+  else if(abs(A)==21) channel = "ee";
   //==== ee
-  if(abs(A)==22) channel = "ee";
+  else if(abs(A)==22) channel = "#mu#mu";
   //==== emu
-  if(abs(A)==23) channel = "e#mu";
+  else if(abs(A)==23) channel = "e#mu";
   //==== three lepton
-  if(abs(A)==30) channel = "3l";
+  else if(abs(A)==30) channel = "3l";
   //==== four lepton
-  if(abs(A)==40) channel = "4l";
+  else if(abs(A)==40) channel = "4l";
+  else{
+  }
 
   //==== SS(+) of OS(-)
-  if(A>0) channel = channel+" (SS)";
-  else    channel = channel+" (OS)";
+  if(abs(A)>=20 && abs(A)<=29){
+    if(A>0) channel = channel+" (SS)";
+    else    channel = channel+" (OS)";
+  }
 
   TString region = "";
-  //==== B = 1 : SR
-  //==== B = 10 : CR1
-  //==== B = 20 : CR2
-  //==== B = 30 : CR3
-  if(abs(B)==1) region = "SR";
+  //==== B%10 = 1 : Boosted
+  //==== Last digit of B = 0 : SR
+  //====                 = 1 : CR with el-jet
+  //====                 = 2 : CR with mu-jet
+  //====                 = 3 : CR
 
-  if(abs(B)==10) region = "CR1";
-  if(abs(B)==20) region = "CR2";
-  if(abs(B)==30) region = "CR3";
+  //====        2 : Resolved
+  //==== Last digit of B = 0 : SR
+  //====                 = 1 : CR with reversed m(ll)
+  //====                 = 2 : CR without m(ll) cut (emu only)
 
+  if(abs(B)==10) region = "Boosted SR";
+  else if(abs(B)==11) region = "Boosted CR w/ e-Jet";
+  else if(abs(B)==12) region = "Boosted CR w/ #mu-Jet";
+  else if(abs(B)==12) region = "Boosted CR";
+
+  else if(abs(B)==20) region = "Resolved SR";
+  else if(abs(B)==21) region = "Resolved CR (reversed m(ll))";
+  else if(abs(B)==22) region = "Resolved CR";
+  else{
+
+  }
 
 
   if(A==20) return region;
@@ -1494,3 +1539,50 @@ bool Plotter::ZeroDataCheckCut(double xlow, double xhigh){
 
 }
 
+vector<double> Plotter::GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> &hist_signal){
+
+  int original_nbins = mc_allerror->GetXaxis()->GetNbins();
+  vector<double> original_binval;
+  for(int i=1; i<=original_nbins; i++){
+    original_binval.push_back(mc_allerror->GetXaxis()->GetBinLowEdge(i));
+  }
+  original_binval.push_back(mc_allerror->GetXaxis()->GetBinUpEdge(original_nbins));
+
+  //==== [original_binval]
+  //====   99    99    77    22     0     1     3
+  //==== 0-----1-----2-----3-----4-----5-----6-----7
+  //====   (1)   (2)   (3)   (4)   (5)   (6)   (7)
+  //==== [new_binval]
+  //==== 0-----1-----2-----3-----4-----------------5
+
+  vector<double> new_binval;
+  for(int i=0; i<original_binval.size(); i++){
+    double thisval = original_binval.at(i);
+    if( mc_allerror->GetXaxis()->GetBinUpEdge(i) <= 500 ){
+      new_binval.push_back(thisval);
+    }
+    else{
+      if(mc_allerror->GetBinContent(i+1)<=0.){
+        new_binval.push_back( original_binval.at( original_binval.size()-1 ) );
+        break;
+      }
+      else{
+        new_binval.push_back(thisval);
+      }
+    }
+  }
+/*
+  //==== DEBUG
+  for(unsigned int j=1; j<original_binval.size()-1; j++){
+    cout << "["<<mc_allerror->GetXaxis()->GetBinLowEdge(j) << ", " << mc_allerror->GetXaxis()->GetBinUpEdge(j) << "] " << mc_allerror->GetBinContent(j) << endl;
+  }
+  for(unsigned int i=0; i<new_binval.size(); i++){
+    cout << new_binval.at(i) << ",";
+  }
+  cout << endl;
+*/
+
+
+  return new_binval;
+
+}

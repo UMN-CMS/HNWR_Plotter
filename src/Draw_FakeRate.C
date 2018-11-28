@@ -17,7 +17,7 @@ void Draw_FakeRate(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString OutPutSubDir = "181020_TightenVetoID";
+  TString OutPutSubDir = "181117_RemoveMETMT";
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";

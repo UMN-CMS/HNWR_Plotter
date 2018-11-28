@@ -72,6 +72,7 @@ public:
   bool DoDebug;
   unsigned int i_cut, i_var, i_file;
   TString filename_prefix, filename_suffix, data_class, plotpath, thiscut_plotpath;
+  TString filename_skim;
   vector<TString> histname_suffix, bkglist, samples_to_use, histname, x_title, units, PrimaryDataset;
   vector<bool> drawdata, ApplyMCNormSF, drawratio;
   //==== shape

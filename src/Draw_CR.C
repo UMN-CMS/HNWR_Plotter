@@ -5,6 +5,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
 
   bool ScaleMC = false;
   bool UseBinnedDY = false;
+  bool UsePromptMC = true;
 
   //==============
   //==== get env
@@ -35,7 +36,8 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   
   m.filename_prefix = "HNWRAnalyzer";
   m.filename_suffix = ".root";
-  
+  m.filename_skim = "_SkimTree_LRSMHighPt";
+
   //=========================
   //==== set sample mapping
   //=========================
@@ -73,6 +75,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   //==== One Lepton
   if(XXX==0){
     m.samples_to_use = {"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar"};
+    if(UsePromptMC) m.samples_to_use = {"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "fake", "ttbar"};
 
     m.histname_suffix = {
 
@@ -101,6 +104,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   if(XXX==1){
     m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "DY"};
     if(UseBinnedDY) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "ZToLL"};
+    if(UsePromptMC) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "fake", "ttbar", "DY"};
 
     m.histname_suffix = {
       "HNWR_EMu_TwoLepton_TwoJet_OS",
@@ -436,7 +440,8 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   //===============================
 
   m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/";
-  if(UseBinnedDY) m.plotpath += "BinnedDY/";
+  if(UseBinnedDY) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/BinnedDY/";
+  if(UsePromptMC) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/UsePromptMC/";
 
   m.make_plot_directory();
   m.outputdir_for_shape = ENV_PLOT_PATH+"/"+dataset+"/FilesForShapes/CR/";

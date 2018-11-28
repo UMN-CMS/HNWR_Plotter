@@ -85,8 +85,6 @@ void Draw_Validation(int XXX=0){
     vector<TString> paramnames = {
       "POG",
       "POGHighPt",
-      "HNPair",
-      "HNWR",
     };
 
     vector<TString> regions = {
@@ -107,6 +105,10 @@ void Draw_Validation(int XXX=0){
       "SingleElectron_ZMassgt50_SS",
       "SingleElectron_WithBJet_METgt30_SS",
 
+/*
+      "SingleMuon_W_CR",
+      "SingleElectron_W_CR",
+*/
     };
 
     for(unsigned int i=0; i<paramnames.size(); i++){
@@ -125,8 +127,6 @@ void Draw_Validation(int XXX=0){
     vector<TString> paramnames = {
       "POG",
       "POGHighPt",
-      "HNPair",
-      "HNWR",
     };
 
     vector<TString> regions = {
@@ -147,7 +147,7 @@ void Draw_Validation(int XXX=0){
   //============================
   
   m.histname = {
-    "NEvent",
+    "NEvent", "nPileUp", "nPV", "nPUForReweight",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_RelIso", "Lepton_0_MiniRelIso", "Lepton_0_MVANoIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_RelIso", "Lepton_1_MiniRelIso", "Lepton_1_MVANoIso",
     "ZCand_Mass", "ZCand_Pt", "ZCand_Eta",
@@ -157,7 +157,7 @@ void Draw_Validation(int XXX=0){
   };
 
   m.x_title = {
-    "# of events",
+    "# of events", "# of PU", "# of PV", "# of PV",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton RelIso","Leading lepton MiniRelIso","Leading lepton MVA (NoIso)",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton RelIso","Subleading lepton MiniRelIso","Subleading lepton MVA (NoIso)",
     "m(Z) (GeV)", "Z p_{T} (GeV)", "Z #eta",
@@ -167,7 +167,7 @@ void Draw_Validation(int XXX=0){
   };
 
   m.units = {
-    "int",
+    "int", "int", "int", "int",
     "GeV", "", "", "", "",
     "GeV", "", "", "", "",
     "GeV", "GeV", "",

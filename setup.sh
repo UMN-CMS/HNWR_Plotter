@@ -17,8 +17,8 @@ export WWW_PLOT_PATH=/eos/user/j/jskim/www/HNWR_13TeV/
 export SCRIPT_DIR=$PLOTTER_WORKING_DIR/script/
 export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$PLOTTER_WORKING_DIR/include/:$PLOTTER_WORKING_DIR/src/
 
-export CATVERSION="v949cand2_1"
-export CATANVERSION="v949cand2_1__Default"
+export CATVERSION="v949cand2_2"
+export CATANVERSION="v949cand2_2__Default"
 
 alias lqout='cd '$PLOT_PATH
 alias webout='cd '$WWW_PLOT_PATH

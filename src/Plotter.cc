@@ -12,6 +12,8 @@ Plotter::Plotter(){
   MakeShape = false;
   gErrorIgnoreLevel = kError;
 
+  filename_skim = "";
+
 }
 
 Plotter::~Plotter(){
@@ -97,12 +99,12 @@ void Plotter::draw_hist(){
         if( i_file < bkglist.size() ){
           TString tmp = bkglist[i_file];
           if(bkglist[i_file].Contains("fake") || bkglist[i_file].Contains("chargeflip") || bkglist[i_file].Contains("FromEMu") ) tmp += "_"+PrimaryDataset[i_cut];
-          filepath = "./rootfiles/"+data_class+"/"+filename_prefix+"_"+tmp+filename_suffix;
+          filepath = "./rootfiles/"+data_class+"/"+filename_prefix+filename_skim+"_"+tmp+filename_suffix;
           current_sample = bkglist[i_file];
         }
         //==== data for i_file = bkglist.size()
         else if( i_file == bkglist.size() ){
-          filepath = "./rootfiles/"+data_class+"/"+filename_prefix+"_data_"+PrimaryDataset[i_cut]+filename_suffix;
+          filepath = "./rootfiles/"+data_class+"/"+filename_prefix+filename_skim+"_data_"+PrimaryDataset[i_cut]+filename_suffix;
           current_sample = "data";
         }
         //==== signal starting from i_file = bkglist.size()+1

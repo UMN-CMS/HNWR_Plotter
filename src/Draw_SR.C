@@ -1,7 +1,7 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_SR(int XXX=0, bool MakeShape=false){
+void Draw_SR(int XXX=0){
 
   bool ScaleMC = false;
 
@@ -20,7 +20,6 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
   
   Plotter m;
   m.DoDebug = false;
-  m.MakeShape = MakeShape;
   
   //=====================
   //==== set data class
@@ -198,18 +197,6 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
     "GeV",
   };
 */
-
-  if(MakeShape){
-    m.histname = {
-      "WRCand_Mass"
-    };
-    m.x_title = {
-      "m_{W_{R}} (GeV)",
-    };
-    m.units = {
-      "GeV",
-    };
-  }
 
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
@@ -501,7 +488,6 @@ void Draw_SR(int XXX=0, bool MakeShape=false){
 
   m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/";
   m.make_plot_directory();
-  m.outputdir_for_shape = ENV_PLOT_PATH+"/"+dataset+"/FilesForShapes/SR/";
   
   //==========================
   //==== finally, draw plots

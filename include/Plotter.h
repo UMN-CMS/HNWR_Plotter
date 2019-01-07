@@ -53,7 +53,7 @@ public:
   void clear_legend_info();
   void fill_legend(TLegend *lg, TH1D *hist);
   void draw_legend(TLegend *lg, bool DrawData);
-  void draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData, TFile *outputf);
+  void draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData);
 
   int n_rebin();
   double y_max();
@@ -75,9 +75,6 @@ public:
   TString filename_skim;
   vector<TString> histname_suffix, bkglist, samples_to_use, histname, x_title, units, PrimaryDataset;
   vector<bool> drawdata, ApplyMCNormSF, drawratio;
-  //==== shape
-  bool MakeShape;
-  TString outputdir_for_shape, thisoutputdir_for_shape;
 
   //==== channel type
   vector<int> LeptonChannels, RegionType;

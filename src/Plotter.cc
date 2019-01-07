@@ -9,7 +9,6 @@ Plotter::Plotter(){
 
   gStyle->SetOptStat(0);
   DoDebug = false;
-  MakeShape = false;
   gErrorIgnoreLevel = kError;
 
   filename_skim = "";
@@ -33,13 +32,6 @@ void Plotter::draw_hist(){
     if(DoDebug) cout << "[draw_hist] plotpath = " << plotpath << endl;
     thiscut_plotpath = plotpath+"/"+histname_suffix[i_cut];
     if(ApplyMCNormSF.at(i_cut)) thiscut_plotpath = plotpath+"/MCNormSFed"+histname_suffix[i_cut];
-
-    TFile *outputfile = NULL;
-    thisoutputdir_for_shape = outputdir_for_shape+"/"+histname_suffix[i_cut]+"/";
-    mkdir(thisoutputdir_for_shape);
-    if(MakeShape){
-      outputfile = new TFile(thisoutputdir_for_shape+"/"+histname_suffix[i_cut]+".root", "RECREATE");
-    }
 
     cout
     << endl
@@ -274,6 +266,7 @@ void Plotter::draw_hist(){
 
           //==== MC Norm Scaling
           if(ApplyMCNormSF.at(i_cut)){
+            cout << current_sample << "\t" << analysisInputs.MCNormSF[current_sample] << endl;
             hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
           }
 
@@ -308,7 +301,7 @@ void Plotter::draw_hist(){
         //==== data for i_file = bkglist.size()
         else if( i_file == bkglist.size() ){
           hist_final->SetMarkerStyle(20);
-          hist_final->SetMarkerSize(1.6);
+          hist_final->SetMarkerSize(1.2);
           TString temp_hist_name(hist_final->GetName());
           hist_data = (TH1D*)hist_final->Clone();
         }
@@ -323,16 +316,6 @@ void Plotter::draw_hist(){
           //hist_final->SetName(temp_hist_name+"_signal_"+TString::Itoa(signal_LRSMinfo[signal_index], 10));
           //hist_final->SetName(temp_hist_name+"_signal_"+TString::Itoa(signal_LRSMinfo[signal_index], 10));
 
-          if(!MakeShape && histname_suffix[i_cut].Contains("SS")){
-            if(histname[i_var].Contains("MuMu")){
-              hist_final->Scale( 1./100. );
-            }
-            else if(histname[i_var].Contains("ElEl")){
-              hist_final->Scale( 1./10. );
-            }
-            else{
-            }
-          }
           //hist_final->Scale( 1 );
 
           hist_signal.push_back( (TH1D*)hist_final->Clone() );
@@ -380,18 +363,17 @@ void Plotter::draw_hist(){
         hist_data = (TH1D*)MC_stacked_allerr->Clone();
         hist_data->SetName(tmpname);
         hist_data->SetMarkerStyle(20);
-        hist_data->SetMarkerSize(1.6);
+        hist_data->SetMarkerSize(1.2);
         hist_data->SetMarkerColor(kBlack);
         hist_data->SetLineColor(kBlack);
       }
-      draw_canvas(MC_stacked, MC_stacked_staterr, MC_stacked_allerr, hist_data, hist_signal, lg, drawdata.at(i_cut), outputfile);
+      draw_canvas(MC_stacked, MC_stacked_staterr, MC_stacked_allerr, hist_data, hist_signal, lg, drawdata.at(i_cut));
 
       //==== legend is already deleted in draw_canvas()
       //delete lg; 
       
     } // END loop over variables
 
-    if(MakeShape) outputfile->Close();
     //system("rm "+thiscut_plotpath+"/hists.root");
 
 
@@ -732,7 +714,7 @@ void Plotter::draw_legend(TLegend* lg, bool DrawData){
   lg->Draw();
 }
 
-void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData, TFile *outputf){
+void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData){
 
   if(!hist_data) return;
 
@@ -824,18 +806,6 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
 
     if(drawratio.at(i_cut)) c1_up->SetLogy();
     else c1->SetLogy();
-
-    //====FIXME hotfix
-    if(histname[i_var]=="Z_Mass"){
-      if(histname_suffix[i_cut].Contains("OS") && !histname_suffix[i_cut].Contains("OnZ")){
-        if(drawratio.at(i_cut)){
-          c1_up->SetLogx();
-          c1_down->SetLogx();
-        }
-        else c1->SetLogx();
-      }
-    }
-
   }
   hist_empty->Draw("histsame");
   //==== hide X Label for top plot
@@ -959,6 +929,20 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
     TH1D *ratio_point = (TH1D *)hist_data->Clone();
     ratio_point->SetName(name_suffix+"_central");
 
+    TH1D *hist_empty_bottom = (TH1D *)ratio_point->Clone();
+    hist_empty_bottom->GetYaxis()->SetRangeUser(0.,2.0);
+    hist_empty_bottom->SetNdivisions(504,"Y");
+    //hist_empty_bottom->GetYaxis()->SetRangeUser(0,YmaxScale*GetMaximum(ratio_point,0.));
+    //hist_empty_bottom->GetYaxis()->SetRangeUser(0,1.9);
+    hist_empty_bottom->GetXaxis()->SetTitle(x_title[i_var]);
+    hist_empty_bottom->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
+    hist_empty_bottom->SetFillColor(0);
+    hist_empty_bottom->SetMarkerSize(0);
+    hist_empty_bottom->SetMarkerStyle(0);
+    hist_empty_bottom->SetLineColor(kWhite);
+    hist_empty_bottom->Draw("axis");
+    hist_axis(hist_empty, hist_empty_bottom);
+
     TH1D *tmp_ratio_point = (TH1D *)hist_data->Clone();
     tmp_ratio_point->Divide(mc_allerror);
     TGraphAsymmErrors *gr_ratio_point = new TGraphAsymmErrors(tmp_ratio_point);
@@ -1004,21 +988,53 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
         ratio_allerr->SetBinContent( i, 1. );
         ratio_allerr->SetBinError( i, mc_allerror->GetBinError(i)/ mc_allerror->GetBinContent(i) );
       }
-    }
+      else if(mc_allerror->GetBinContent(i)==0 && ratio_point->GetBinContent(i)==0){
+        ratio_point->SetBinContent( i, 0 );
+        ratio_point->SetBinError ( i, 0 );
+        gr_ratio_point->SetPoint(i-1, 0, 0);
+        gr_ratio_point->SetPointEYlow(i-1, 0);
+        gr_ratio_point->SetPointEXlow(i-1, 0);
+        gr_ratio_point->SetPointEYhigh(i-1, 0);
+        gr_ratio_point->SetPointEXhigh(i-1, 0);
+        ratio_staterr->SetBinContent( i, 1. );
+        ratio_staterr->SetBinError( i, 0);
+        ratio_allerr->SetBinContent( i, 1.);
+        ratio_allerr->SetBinError( i, 0.);
+      }
+      //==== If bkgd <= 0
+      else{
+        double this_max_ratio = 5.0;
+        double this_data = ratio_point->GetBinContent(i);
+        double this_data_err = ratio_point->GetBinError(i);
 
-    ratio_allerr->GetYaxis()->SetRangeUser(0,2.0);
-    ratio_allerr->SetNdivisions(504,"Y");
-    ratio_allerr->GetYaxis()->SetRangeUser(0,1.9);
-    ratio_allerr->GetXaxis()->SetTitle(x_title[i_var]);
-    ratio_allerr->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
-    ratio_allerr->SetFillColor(kOrange);
+        ratio_point->SetBinContent( i, this_max_ratio );
+        ratio_point->SetBinError ( i, this_data_err*this_max_ratio/this_data );
+
+        double tmp_x, tmp_y;
+        gr_ratio_point->GetPoint(i-1, tmp_x, tmp_y);
+        gr_ratio_point->SetPoint(i-1, tmp_x, this_max_ratio);
+        gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1)*this_max_ratio/this_data);
+        gr_ratio_point->SetPointEXlow(i-1, 0);
+        gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1)*this_max_ratio/this_data);
+        gr_ratio_point->SetPointEXhigh(i-1, 0);
+        ratio_staterr->SetBinContent( i, 1. );
+        ratio_staterr->SetBinError( i, 0);
+        ratio_allerr->SetBinContent( i, 1.);
+        ratio_allerr->SetBinError( i, 0.);
+      }
+    }
+    double this_ratio_min = min(0.8,1.1*GetMinimum(ratio_point,0.));
+    double this_ratio_max = max(1.2,1.1*GetMaximum(ratio_point,0.));
+    hist_empty_bottom->GetYaxis()->SetRangeUser(0.8,1.2);
+    //hist_empty_bottom->GetYaxis()->SetRangeUser(this_ratio_min,this_ratio_max);
+
+    ratio_allerr->SetFillColor(kGray);
     ratio_allerr->SetMarkerSize(0);
     ratio_allerr->SetMarkerStyle(0);
     ratio_allerr->SetLineColor(kWhite);
     ratio_allerr->Draw("E2same");
-    hist_axis(hist_empty, ratio_allerr);
 
-    ratio_staterr->SetFillColor(kCyan);
+    ratio_staterr->SetFillColor(kOrange+2);
     ratio_staterr->SetMarkerSize(0);
     ratio_staterr->SetMarkerStyle(0);
     ratio_staterr->SetLineColor(kWhite);
@@ -1036,7 +1052,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
     //lg_ratio->AddEntry(ratio_point, "Obs./Pred.", "p");
     lg_ratio->Draw();
 
-    ratio_allerr->Draw("axissame");
+    hist_empty_bottom->Draw("axissame");
 
     //==== y=1 line
     g1->Draw("same");
@@ -1089,22 +1105,8 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
   }
 
   mkdir(thiscut_plotpath);
-  if(!MakeShape){
-    c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".pdf");
-    c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".png");
-  }
-
-  //==== Write shape
-  if(MakeShape){
-    outputf->cd();
-    outputf->mkdir(histname[i_var]);
-    outputf->cd(histname[i_var]);
-    mc_staterror->Write();
-    hist_data->Write();
-    for(unsigned int it_sig=0;it_sig<hist_signal.size();it_sig++) hist_signal.at(it_sig)->Write();
-    outputf->cd();
-  }
-
+  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".pdf");
+  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".png");
 
   delete legend;
   delete c1;

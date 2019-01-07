@@ -3,6 +3,8 @@
 
 void Draw_CFRate(){
 
+  TString Year = "2017";
+
   setTDRStyle();
 
   gStyle->SetOptStat(0);
@@ -14,8 +16,8 @@ void Draw_CFRate(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcCFRate/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcCFRate/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcCFRate/"+Year+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcCFRate/"+Year+"/";
 
   if( !gSystem->mkdir(base_plotpath, kTRUE) ){
     cout

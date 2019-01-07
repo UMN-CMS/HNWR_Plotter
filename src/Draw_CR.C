@@ -1,11 +1,13 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_CR(int XXX=0, bool MakeShape=false){
+void Draw_CR(int XXX=0){
 
   bool ScaleMC = false;
   bool UseBinnedDY = false;
-  bool UsePromptMC = true;
+  bool UsePromptMC = false;
+
+  int Year = 2017;
 
   //==============
   //==== get env
@@ -22,13 +24,12 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   
   Plotter m;
   m.DoDebug = false;
-  m.MakeShape = MakeShape;
   
   //=====================
   //==== set data class
   //=====================
   
-  m.data_class = dataset+"/Regions/";
+  m.data_class = dataset+"/Regions/"+TString::Itoa(Year,10)+"/";
   
   //================================
   //==== set prefixes and suffixes
@@ -41,31 +42,46 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   //=========================
   //==== set sample mapping
   //=========================
-  
-  m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
-  m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
-  m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-  m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-  m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-  m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
-  m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-  m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
-  m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
-  m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
-  m.map_sample_string_to_list["fake"] = {"fake"};
 
-  m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
-  m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
-  m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
-  m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-  m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
-  m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-  m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
-  m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-  m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-  m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
-  m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
-  
+  if(Year==2016){
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
+
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+  }
+  else if(Year==2017){
+
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+    m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
+    m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
+    m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
+    m.map_sample_string_to_list["fake"] = {"fake"};
+
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
+    m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
+
+  }  
+
   //===============================
   //==== set and make sample list
   //===============================
@@ -85,12 +101,16 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
       "HNWR_SingleMuon_OneLepton_AwayFatJetWithOFLepton100GeV",
       "HNWR_SingleElectron_OneLepton_AwayFatJetWithOFLepton100GeV",
 
+
 /*
-      "HNWR_EMu_TwoLepton_TwoJet_OS",
+      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150",
       "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_OS",
       "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_OS",
 
-      "HNWR_EMu_TwoLepton_TwoJet_SS",
+      "HNWR_EMu_TwoLepton_TwoJet",
+      "HNWR_EMu_TwoLepton_TwoJet_OS",
+
       "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_SS",
       "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_SS",
 */
@@ -100,22 +120,36 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
 
   }
 
-  //==== Two Lepton OS
+  //==== Two Lepton OS; DY dominant
   if(XXX==1){
     m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "DY"};
     if(UseBinnedDY) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "ZToLL"};
     if(UsePromptMC) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "fake", "ttbar", "DY"};
 
     m.histname_suffix = {
-      "HNWR_EMu_TwoLepton_TwoJet_OS",
+      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150",
+      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150",
       "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_OS",
       "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_OS",
     };
 
   }
 
-  //==== Two Lepton SS
+  //==== Two Lepton OS; ttbar dominant
   if(XXX==2){
+    m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "DY", "ttbar"}; 
+    if(UseBinnedDY) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ZToLL", "ttbar"};
+    if(UsePromptMC) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "fake", "DY", "ttbar"};
+      
+    m.histname_suffix = {
+      "HNWR_EMu_TwoLepton_TwoJet",
+      "HNWR_EMu_TwoLepton_TwoJet_OS",
+    };
+
+  }
+
+  //==== Two Lepton SS
+  if(XXX==3){
     m.samples_to_use = {"VVV", "VV_incl", "fake", "chargeflip"};
 
     m.histname_suffix = {
@@ -205,19 +239,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
     "GeV",
   };
 */
-/*
-  if(MakeShape){
-    m.histname = {
-      "ZP_Mass"
-    };
-    m.x_title = {
-      "m_{Z'} (GeV)"
-    };
-    m.units = {
-      "GeV",
-    };
-  }
-*/
+
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
     TString this_region = m.histname_suffix.at(i);
@@ -316,6 +338,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
     if(XXX==0) m.UseLogy.push_back(1);
     if(XXX==1) m.UseLogy.push_back(1);
     if(XXX==2) m.UseLogy.push_back(1);
+    if(XXX==3) m.UseLogy.push_back(1);
 
     if(ScaleMC) m.ApplyMCNormSF.push_back(true);
     else m.ApplyMCNormSF.push_back(false);
@@ -359,13 +382,13 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   //==== Fill MCNorm SF
   //=====================
 
-  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/MCSF.txt", m.bkglist);
+  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/MCSF.txt", m.bkglist);
 
   //======================
   //==== Get Systematics
   //======================
 
-  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/Syst.txt");
+  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Syst.txt");
 
   //=============
   //==== rebins
@@ -382,7 +405,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   }
   skeleton_rebins.close();
 
-  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/CR_rebins.txt");
+  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/CR_rebins.txt");
 
   //=============
   //==== y_maxs
@@ -404,7 +427,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   m.default_y_max = 20.;
   m.default_y_min = 0.;
 
-  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/CR_yaxis.txt"); 
+  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/CR_yaxis.txt"); 
 
   //=============
   //==== x_mins
@@ -421,7 +444,7 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   }
   skeleton_x_mins.close();
 
-  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/CR_xaxis.txt");
+  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/CR_xaxis.txt");
 
   //===============
   //==== k-factor
@@ -439,13 +462,12 @@ void Draw_CR(int XXX=0, bool MakeShape=false){
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/";
-  if(UseBinnedDY) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/BinnedDY/";
-  if(UsePromptMC) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/UsePromptMC/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/"+TString::Itoa(Year,10)+"/";;
+  if(UseBinnedDY) m.plotpath += "/BinnedDY/";
+  if(UsePromptMC) m.plotpath += "/UsePromptMC/";
 
   m.make_plot_directory();
-  m.outputdir_for_shape = ENV_PLOT_PATH+"/"+dataset+"/FilesForShapes/CR/";
-  
+
   //==========================
   //==== finally, draw plots
   //==========================

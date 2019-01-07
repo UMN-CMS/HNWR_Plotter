@@ -3,7 +3,7 @@
 
 void Draw_Limit(){
 
-  TString inputfile = "2018_11_12_064452__ForJetsx_sorted";
+  TString inputfile = "2018_12_18_171155__ChargeBlind_sorted";
 
 
   bool UseAsymptotic = true;
@@ -30,16 +30,20 @@ void Draw_Limit(){
   TString filename_thoery = WORKING_DIR+"/data/"+dataset+"/xsec_181004_Private_MuMu_NLO.txt";
 
   vector<TString> regions = {
-    "Combined",
-    //"OneLepton_AwayFatJetWithSFLepton100GeV",
+    //"Combined",
+    "OneLepton_AwayFatJetWithSFLepton100GeV",
+    "TwoLepton_TwoJet_mllgt150",
+    "OSandSSCombined",
     //"TwoLepton_TwoJet_mllgt150_OS",
     //"TwoLepton_TwoJet_mllgt150_SS",
   };
   vector<TString> aliases = {
-    "Combined",
+    //"Combined",
     "Boosted-SR",
-    "Resolved-SR (OS)",
-    "Resolved-SR (SS)",
+    "Resolved-SR (Charge blind)",
+    "Resolved-SR (OS SS combined)",
+    //"Resolved-SR (OS)",
+    //"Resolved-SR (SS)",
   };
   vector<Color_t> colors = {
     kBlack,
@@ -396,10 +400,10 @@ void Draw_Limit(){
           double this_exp = gr2d_limit_exp->Interpolate(x_center, y_center);
           if(this_xsec<=0||this_exp<=0) continue;
           double this_ratio = this_xsec/this_exp;
-          //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
+          cout << region << "\t" << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
 
           if(region=="Combined"){
-            cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
+            //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
           }
 
           hist2d_limit_exp_ratio->SetBinContent(it_x, it_y, this_ratio);
@@ -414,10 +418,6 @@ void Draw_Limit(){
         hist2d_limit_exp->GetZaxis()->SetLabelSize(0.03);
 
         hist2d_limit_exp->Draw("colzsame");
-
-        TFile *out = new TFile("out.root", "RECREATE");
-        hist2d_limit_exp->Write();
-        out->Close();
 
       }
 

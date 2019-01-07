@@ -4,8 +4,9 @@
 void Draw_Validation(int XXX=0){
 
   bool ScaleMC = false;
+  bool UseBinnedDY = true;
 
-  bool UseBinnedDY = false;
+  int Year = 2016;
 
   //==============
   //==== get env
@@ -27,7 +28,7 @@ void Draw_Validation(int XXX=0){
   //==== set data class
   //=====================
   
-  m.data_class = dataset+"/SKFlatValidation/";
+  m.data_class = dataset+"/SKFlatValidation/"+TString::Itoa(Year,10)+"/";
   
   //================================
   //==== set prefixes and suffixes
@@ -39,37 +40,34 @@ void Draw_Validation(int XXX=0){
   //=========================
   //==== set sample mapping
   //=========================
-  
-  m.map_sample_string_to_list["DY"] = {"DYJets_10to50_MG", "DYJets"};
-  m.map_sample_string_to_list["ZToLL_M_50_120"] = {"ZToLL_M_50_120"};
-  m.map_sample_string_to_list["ZToLL_M_120_200"] = {"ZToLL_M_120_200"};
-  m.map_sample_string_to_list["ZToLL_M_200_400"] = {"ZToLL_M_200_400"};
-  m.map_sample_string_to_list["ZToLL_M_400_800"] = {"ZToLL_M_400_800"};
-  m.map_sample_string_to_list["ZToLL_M_800_1400"] = {"ZToLL_M_800_1400"};
-  m.map_sample_string_to_list["ZToLL_M_1400_2300"] = {"ZToLL_M_1400_2300"};
-  m.map_sample_string_to_list["ZToLL_M_2300_3500"] = {"ZToLL_M_2300_3500"};
-  m.map_sample_string_to_list["ZToLL_M_3500_4500"] = {"ZToLL_M_3500_4500"};
-  m.map_sample_string_to_list["ZToLL_M_4500_6000"] = {"ZToLL_M_4500_6000"};
-  m.map_sample_string_to_list["ZToLL_M_6000_Inf"] = {"ZToLL_M_6000_Inf"};
-  m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-  m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-  m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
 
-  m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
-  m.map_sample_string_to_legendinfo["ZToLL_M_50_120"] = make_pair("m(Z) : 50-120", kRed-2);
-  m.map_sample_string_to_legendinfo["ZToLL_M_120_200"] = make_pair("m(Z) : 120-200", kRed-10);
-  m.map_sample_string_to_legendinfo["ZToLL_M_200_400"] = make_pair("m(Z) : 200-400", kOrange);
-  m.map_sample_string_to_legendinfo["ZToLL_M_400_800"] = make_pair("m(Z) : 400-800", kYellow);
-  m.map_sample_string_to_legendinfo["ZToLL_M_800_1400"] = make_pair("m(Z) : 800-1400", kGreen+3);
-  m.map_sample_string_to_legendinfo["ZToLL_M_1400_2300"] = make_pair("m(Z) : 1400-2300", kBlue+3);
-  m.map_sample_string_to_legendinfo["ZToLL_M_2300_3500"] = make_pair("m(Z) : 2300-3500", kViolet);
-  m.map_sample_string_to_legendinfo["ZToLL_M_3500_4500"] = make_pair("m(Z) : 3500-4500", kGray);
-  m.map_sample_string_to_legendinfo["ZToLL_M_4500_6000"] = make_pair("m(Z) : 4500-6000", kGray+2);
-  m.map_sample_string_to_legendinfo["ZToLL_M_6000_Inf"] = make_pair("m(Z) : 6000-Inf", kBlack);
-  m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
-  m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-  m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-  
+  if(Year==2016){
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
+
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+  }
+  else if(Year==2017){
+
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kRed-2);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+
+  }
+
   //===============================
   //==== set and make sample list
   //===============================
@@ -78,7 +76,7 @@ void Draw_Validation(int XXX=0){
 
   if(XXX==0){
     if(UseBinnedDY)
-      m.samples_to_use = {"WJets_MG", "VV_incl", "ttbar", "ZToLL_M_50_120", "ZToLL_M_120_200", "ZToLL_M_200_400", "ZToLL_M_400_800", "ZToLL_M_800_1400", "ZToLL_M_1400_2300", "ZToLL_M_2300_3500", "ZToLL_M_3500_4500", "ZToLL_M_4500_6000", "ZToLL_M_6000_Inf"};
+      m.samples_to_use = {"WJets_MG", "VV_incl", "ttbar", "ZToLL"};
     else
       m.samples_to_use = {"WJets_MG", "VV_incl", "ttbar", "DY"};
 
@@ -88,6 +86,7 @@ void Draw_Validation(int XXX=0){
     };
 
     vector<TString> regions = {
+
       "SingleMuon_OS",
       "SingleMuon_OnZ_OS",
       "SingleMuon_ZMassgt50_OS",
@@ -120,7 +119,7 @@ void Draw_Validation(int XXX=0){
   }
   if(XXX==1){
     if(UseBinnedDY)
-      m.samples_to_use = {"VV_incl", "ttbar", "ZToLL_M_50_120", "ZToLL_M_120_200", "ZToLL_M_200_400", "ZToLL_M_400_800", "ZToLL_M_800_1400", "ZToLL_M_1400_2300", "ZToLL_M_2300_3500", "ZToLL_M_3500_4500", "ZToLL_M_4500_6000", "ZToLL_M_6000_Inf", "WJets_MG"};
+      m.samples_to_use = {"VV_incl", "ttbar", "ZToLL", "WJets_MG"};
     else
       m.samples_to_use = {"VV_incl", "ttbar", "DY", "WJets_MG"};
 
@@ -217,10 +216,10 @@ void Draw_Validation(int XXX=0){
 
 
 /*
-  //==== FIXME test
-  m.histname = {"m_lljj_lljjWclosest", "m_llj"};
-  m.x_title = {"m(l^{#pm}l^{#pm}W_{jet}) (GeV)", "m(l^{#pm}l^{#pm}W_{jet}) (GeV)"};
-  m.units = {"GeV", "GeV"};
+  //==== test
+  m.histname = {"ZCand_Mass"};
+  m.x_title = {"m(Z) (GeV)"};
+  m.units = {"GeV"};
 */
 
   cout << "m.histname.size() = " <<  m.histname.size() << endl;

@@ -4,6 +4,8 @@
 
 void Make_ShapeForLimit(){
 
+  int Year = 2017;
+
   TString ShaprVarName = "WRCand_Mass";
   int n_rebin = 50;
 
@@ -27,8 +29,10 @@ void Make_ShapeForLimit(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+TString::Itoa(Year,10)+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/"+TString::Itoa(Year,10)+"/";
+
+  gSystem->mkdir(base_plotpath,kTRUE);
 
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
@@ -52,6 +56,7 @@ void Make_ShapeForLimit(){
 
   vector<TString> regions = {
     "OneLepton_AwayFatJetWithSFLepton100GeV",
+    "TwoLepton_TwoJet_mllgt150",
     "TwoLepton_TwoJet_mllgt150_OS",
     "TwoLepton_TwoJet_mllgt150_SS",
   };
@@ -66,6 +71,7 @@ void Make_ShapeForLimit(){
   };
   vector< vector<TString> > bkgdss = {
     bkgds_OneLepton,
+    bkgds_OS,
     bkgds_OS,
     bkgds_SS,
   };
@@ -138,7 +144,7 @@ void Make_ShapeForLimit(){
 
       //==== DATA
 
-      TFile *file_DATA = new TFile(base_filepath+"/HNWRAnalyzer_data_"+PD+".root");
+      TFile *file_DATA = new TFile(base_filepath+"/HNWRAnalyzer_SkimTree_LRSMHighPt_data_"+PD+".root");
       TDirectory *dir_DATA = (TDirectory *)file_DATA->Get(dirname);
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
@@ -181,10 +187,10 @@ void Make_ShapeForLimit(){
 
         for(unsigned int it_sample=0; it_sample<samplelist.size(); it_sample++){
           TString sample = samplelist.at(it_sample);
-          TString filename = "HNWRAnalyzer_"+sample+".root";
+          TString filename = "HNWRAnalyzer_SkimTree_LRSMHighPt_"+sample+".root";
           if(sample=="fake"||sample=="chargeflip"){
             if(syst!="Central") continue;
-            filename = "HNWRAnalyzer_"+sample+"_"+PD+".root";
+            filename = "HNWRAnalyzer_SkimTree_LRSMHighPt_"+sample+"_"+PD+".root";
           }
 
           TFile *file_sample = new TFile(base_filepath+"/"+filename);

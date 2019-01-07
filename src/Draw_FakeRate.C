@@ -3,6 +3,8 @@
 
 void Draw_FakeRate(){
 
+  TString Year = "2017";
+
   bool OnlyNorm = false;
   bool UsePtCone = false;
 
@@ -17,10 +19,10 @@ void Draw_FakeRate(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString OutPutSubDir = "181117_RemoveMETMT";
+  TString OutPutSubDir = "181210_UpdatedMu8Lumi";
 
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcFakeRate/"+OutPutSubDir+"/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/CalcFakeRate/"+Year+"/"+OutPutSubDir+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/CalcFakeRate/"+Year+"/"+OutPutSubDir+"/";
 
   if( !gSystem->mkdir(base_plotpath, kTRUE) ){
     cout

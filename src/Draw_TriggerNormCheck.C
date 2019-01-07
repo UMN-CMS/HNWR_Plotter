@@ -3,6 +3,8 @@
 
 void Draw_TriggerNormCheck(){
 
+  int Year = 2017;
+
   gStyle->SetOptStat(0);
 
   TH1::SetDefaultSumw2(true);
@@ -12,21 +14,21 @@ void Draw_TriggerNormCheck(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/TriggerNormCheck/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/TriggerNormCheck/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/TriggerNormCheck/"+TString::Itoa(Year,10)+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/TriggerNormCheck/"+TString::Itoa(Year,10)+"/";
 
   vector<TString> PDs = {
     "SingleMuon",
     "DoubleMuon",
     "SingleElectron",
-    "SinglePhoton",
+    //"SinglePhoton",
   };
 
   vector< vector<TString> > triggerlists = {
     {"HLT_Mu20_v", "HLT_Mu27_v", "HLT_Mu50_v"},
     {"HLT_Mu8_v", "HLT_Mu17_v"},
     {"HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v", "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v", "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v"},
-    {"HLT_Photon25_v", "HLT_Photon33_v", "HLT_Photon50_v", "HLT_Photon75_v", "HLT_Photon90_v", "HLT_Photon120_v", "HLT_Photon150_v", "HLT_Photon175_v", "HLT_Photon200_v"},
+    //{"HLT_Photon25_v", "HLT_Photon33_v", "HLT_Photon50_v", "HLT_Photon75_v", "HLT_Photon90_v", "HLT_Photon120_v", "HLT_Photon150_v", "HLT_Photon175_v", "HLT_Photon200_v"},
   };
 
   vector<TString> samples = {
@@ -157,6 +159,10 @@ void Draw_TriggerNormCheck(){
         hist_axis(dummy, hist_ratio);
 
         g1->Draw("same");
+
+        if(var=="Z_CR_Z_Mass"){
+          cout << PD << "\t" << trig << "\t" << hist_DATA->Integral() / hist_bkgd->Integral() << endl;
+        }
 
         c_norm->SaveAs(this_plotdir+trig+"_"+var+".pdf");
         c_norm->SaveAs(this_plotdir+trig+"_"+var+".png");

@@ -13,6 +13,8 @@ Plotter::Plotter(){
 
   filename_skim = "";
 
+  DataYear = 2016;
+
 }
 
 Plotter::~Plotter(){
@@ -721,7 +723,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
   //==== signal_class
   CurrentSC = NoClass;
 
-  if(histname_suffix[i_cut].Contains("OneLepton")) CurrentSC = Boosted;
+  if(histname_suffix[i_cut].Contains("Boosted")) CurrentSC = Boosted;
   else CurrentSC = Resolved;
 
   //==== y=0 line
@@ -902,7 +904,17 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
   //==== ymax
   double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
   //hist_empty->GetYaxis()->SetRangeUser( default_y_min, y_max() );
-  hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
+  if(histname_suffix[i_cut].Contains("Boosted") && histname[i_var]=="WRCand_Mass"){
+    if(histname_suffix[i_cut].Contains("SingleMuon")){
+      hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*1000. );
+    }
+    if(histname_suffix[i_cut].Contains("SingleElectron")){
+      hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*1000. );
+    }
+  }
+  else{
+    hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
+  }
 
   //==== legend
   legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
@@ -1058,6 +1070,8 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
     g1->Draw("same");
   }
 
+  if(DoDebug) cout << "[draw_canvas] " << "plots are all drawn" << endl;
+
   //==== write lumi on the top
   c1->cd();
 
@@ -1070,7 +1084,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
 
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);
-    latex_Lumi.DrawLatex(0.72, 0.96, "41.3 fb^{-1} (13 TeV)");
+    latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi()+" fb^{-1} (13 TeV)");
 
     TString str_channel = GetStringChannelRegion(LeptonChannels.at(i_cut), RegionType.at(i_cut));
     TLatex channelname;
@@ -1089,7 +1103,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
 
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);
-    latex_Lumi.DrawLatex(0.72, 0.96, "41.3 fb^{-1} (13 TeV)");
+    latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi()+" fb^{-1} (13 TeV)");
 
     TLatex latex_eemmem;
     latex_eemmem.SetNDC();
@@ -1104,7 +1118,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
 
   }
 
+  if(DoDebug) cout << "[draw_canvas] TLatex all done" << endl;
   mkdir(thiscut_plotpath);
+  if(DoDebug) cout << "[draw_canvas] output directory created : " << thiscut_plotpath << endl;
   c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".pdf");
   c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".png");
 
@@ -1460,6 +1476,19 @@ void Plotter::MakeTexFile(map< TString, TH1D * > hs){
 
 }
 
+TString Plotter::TotalLumi(){
+
+  if(DataYear==2016) return "35.9";
+  else if(DataYear==2017) return "41.5";
+  else if(DataYear==2018) return "60zz";
+  else{
+    //cout << "[Plotter::TotalLumi] Wrong DataYear" << DataYear << endl;
+    return "35.9";
+  }
+  
+
+}
+
 TString Plotter::GetStringChannelRegion(int A, int B){
 
   if(B==0) return "";
@@ -1472,9 +1501,9 @@ TString Plotter::GetStringChannelRegion(int A, int B){
   //====                   2 : mm
   //====                   3 : em
 
-  if(A==0) channel = "l";
-  else if(A==1) channel = "e";
-  else if(A==2) channel = "#mu";
+  if(A==10) channel = "l";
+  else if(A==11) channel = "e";
+  else if(A==12) channel = "#mu";
   //==== Lepton Combined
   else if(A==20) channel = "ee,#mu#mu,e#mu";
   //==== mumu
@@ -1492,8 +1521,8 @@ TString Plotter::GetStringChannelRegion(int A, int B){
 
   //==== SS(+) of OS(-)
   if(abs(A)>=20 && abs(A)<=29){
-    if(A>0) channel = channel+" (SS)";
-    else    channel = channel+" (OS)";
+    //if(A>0) channel = channel+" (SS)";
+    //else    channel = channel+" (OS)";
   }
 
   TString region = "";

@@ -76,6 +76,10 @@ public:
   vector<TString> histname_suffix, bkglist, samples_to_use, histname, x_title, units, PrimaryDataset;
   vector<bool> drawdata, ApplyMCNormSF, drawratio;
 
+  //=== Year
+  int DataYear;
+  TString TotalLumi();
+
   //==== channel type
   vector<int> LeptonChannels, RegionType;
   TString GetStringChannel(int A);

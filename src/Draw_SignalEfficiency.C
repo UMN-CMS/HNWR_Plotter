@@ -3,7 +3,9 @@
 
 void Draw_SignalEfficiency(){
 
-  bool IsCR = true;
+  TString Year = "2017";
+
+  bool IsCR = false;
 
   gStyle->SetOptStat(0);
 
@@ -23,8 +25,8 @@ void Draw_SignalEfficiency(){
 
 
   //=== If not, use geenral
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/Signal/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/"+Year+"/";
 
 
   if(IsCR){
@@ -40,8 +42,14 @@ void Draw_SignalEfficiency(){
   };
 
   vector<TString> regions = {
-    "OneLepton_AwayFatJetWithSFLepton100GeV",
-    "TwoLepton_TwoJet_mllgt150",
+    "Boosted",
+    "Resolved",
+
+/*
+    "NoTwoLepVetoAK4Jets_Boosted",
+    "TwoLepVetoAK4Jets",
+*/
+
   };
   vector<Color_t> colors = {
     kBlue,

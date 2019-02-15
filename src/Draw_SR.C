@@ -4,6 +4,10 @@
 void Draw_SR(int XXX=0){
 
   bool ScaleMC = false;
+  bool UseBinnedDY = false;
+  bool UsePromptMC = false;
+
+  int Year = 2016;
 
   //==============
   //==== get env
@@ -25,7 +29,7 @@ void Draw_SR(int XXX=0){
   //==== set data class
   //=====================
   
-  m.data_class = dataset+"/Regions/";
+  m.data_class = dataset+"/Regions/"+TString::Itoa(Year,10)+"/";
   
   //================================
   //==== set prefixes and suffixes
@@ -33,34 +37,50 @@ void Draw_SR(int XXX=0){
   
   m.filename_prefix = "HNWRAnalyzer";
   m.filename_suffix = ".root";
+  //m.filename_skim = "_SkimTree_LRSMHighPt";
   
   //=========================
   //==== set sample mapping
   //=========================
 
-  m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
-  m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
-  m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-  m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-  m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-  m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
-  m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-  m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
-  m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
-  m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
-  m.map_sample_string_to_list["fake"] = {"fake"};
+  if(Year==2016){
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
 
-  m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
-  m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
-  m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
-  m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-  m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
-  m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-  m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
-  m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-  m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-  m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
-  m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+  }
+  else if(Year==2017){
+
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+    m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
+    m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
+    m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
+    m.map_sample_string_to_list["fake"] = {"fake"};
+
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
+    m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
+
+  }
 
   //===============================
   //==== set and make sample list
@@ -70,25 +90,20 @@ void Draw_SR(int XXX=0){
 
   //==== One Lepton
   if(XXX==0){
-    m.samples_to_use = {"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
 
     m.histname_suffix = {
 
-      "HNWR_SingleMuon_OneLepton_AwayFatJetWithSFLepton",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithSFLepton",
+      "HNWR_SingleMuon_Boosted",
+      "HNWR_SingleMuon_Boosted_TwoLepton",
 
-      "HNWR_SingleMuon_OneLepton_AwayFatJetWithSFLepton100GeV",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithSFLepton100GeV",
+      "HNWR_SingleElectron_Boosted",
+      "HNWR_SingleElectron_Boosted_TwoLepton",
 
 /*
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_OS",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_OS",
-
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_SS",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_SS",
+      "HNWR_SingleElectron_Resolved",
+      "HNWR_SingleMuon_Resolved",
 */
-
-
 
     };
 
@@ -100,8 +115,8 @@ void Draw_SR(int XXX=0){
 
     m.histname_suffix = {
 
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_OS",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_OS",
+      "HNWR_SingleElectron_Resolved",
+      "HNWR_SingleMuon_Resolved",
 
     };
 
@@ -138,6 +153,7 @@ void Draw_SR(int XXX=0){
     "Jet_Size", "NBJets",
     "NCand_Mass", "WRCand_Mass",
     "NCand_Pt", "WRCand_Pt",
+    "LSFFatJet_Size",
   };
 
   m.x_title = {
@@ -154,6 +170,7 @@ void Draw_SR(int XXX=0){
     "# of jets", "# of b-tagged jets",
     "m_{N} (GeV)", "m_{W_{R}} (GeV)",
     "p_{T} of N (GeV)", "p_{T} of W (GeV)",
+    "# of merged jets",
   };
 
   m.units = {
@@ -170,6 +187,7 @@ void Draw_SR(int XXX=0){
     "int", "int",
     "GeV", "GeV",
     "GeV", "GeV",
+    "",
   };
 
 /*
@@ -186,7 +204,7 @@ void Draw_SR(int XXX=0){
     "GeV", "GeV",
   };
 */
-/*
+
   m.histname = {
     "WRCand_Mass"
   };
@@ -196,7 +214,7 @@ void Draw_SR(int XXX=0){
   m.units = {
     "GeV",
   };
-*/
+
 
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
@@ -221,70 +239,31 @@ void Draw_SR(int XXX=0){
     int int_IsSS = +1;
     if(!IsSS) int_IsSS = -1;
 
-    if(this_region.Contains("OneLepton_AwayFatJet")){
-      if(this_region.Contains("WithOF")){
-        if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(int_IsSS*1);
-          m.RegionType.push_back(12);
-        }
-        else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(int_IsSS*2);
-          m.RegionType.push_back(11);
-        }
-        else{
-          cout << "OneLepton_AwayFatJet && WithOF but WTF : " << this_region << endl;
-          return;
-        }
+    if(this_region.Contains("Boosted")){
+      if(this_region.Contains("SingleElectron")){
+        m.LeptonChannels.push_back(int_IsSS*11);
+        m.RegionType.push_back(10);
+      }
+      else if(this_region.Contains("SingleMuon")){
+        m.LeptonChannels.push_back(int_IsSS*12);
+        m.RegionType.push_back(10);
       }
       else{
-        m.RegionType.push_back(10);
-        if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(1);
-        }
-        else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(2);
-        }
-        else{
-          cout << "OneLepton_AwayFatJet && !(WithOF) but WTF : " << this_region << endl;
-          return;
-        }
+        cout << "Boosted but WTF : " << this_region << endl;
+        return;
       }
     }
-    else if(this_region.Contains("TwoLepton_TwoJet")){
-      if(this_region.Contains("EMu")){
-        m.LeptonChannels.push_back(int_IsSS*23);
-        m.RegionType.push_back(22);
+    else if(this_region.Contains("Resolved")){
+      if(this_region.Contains("SingleElectron")){
+        m.LeptonChannels.push_back(int_IsSS*21);
+        m.RegionType.push_back(20);
       }
-      else if(this_region.Contains("mlllt150")){
-        if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(int_IsSS*21);
-          m.RegionType.push_back(21);
-        }
-        else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(int_IsSS*22);
-          m.RegionType.push_back(21);
-        }
-        else{
-          cout << "TwoLepton_TwoJet && !EMu && mlllt150 but WTF" << endl;
-          return;
-        }
-      }
-      else if(this_region.Contains("mllgt150")){
-        if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(int_IsSS*21);
-          m.RegionType.push_back(20);
-        }
-        else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(int_IsSS*22);
-          m.RegionType.push_back(20);
-        }
-        else{
-          cout << "TwoLepton_TwoJet && !EMu && mllgt150 but WTF" << endl;
-          return;
-        }
+      else if(this_region.Contains("SingleMuon")){
+        m.LeptonChannels.push_back(int_IsSS*22);
+        m.RegionType.push_back(20);
       }
       else{
-        cout << "TwoLepton_TwoJet but WTF : " << this_region << endl;
+        cout << "Boosted but WTF" << endl;
         return;
       }
     }
@@ -338,13 +317,13 @@ void Draw_SR(int XXX=0){
   //==== Fill MCNorm SF
   //=====================
 
-  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/MCSF.txt", m.bkglist);
+  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/MCSF.txt", m.bkglist);
 
   //======================
   //==== Get Systematics
   //======================
 
-  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/Syst.txt");
+  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Syst.txt");
 
   //=============================
   //==== set signal mass points
@@ -352,7 +331,8 @@ void Draw_SR(int XXX=0){
 
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMapsPlot();
-  vector<Color_t> colors_WR = {kGreen, kViolet, kGray, kOrange};
+  //vector<Color_t> colors_WR = {kGreen, kViolet, kGray, kOrange};
+  vector<Color_t> colors_WR = {kBlack, kGray, kGray+2, kSpring};
 
   int it_sig=-1;
   for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
@@ -376,7 +356,7 @@ void Draw_SR(int XXX=0){
 
       m.signal_LRSMinfo.push_back(lrsminfo);
       m.signal_color.push_back(colors_WR.at(it_sig));
-      m.signal_style.push_back(it_N+1);
+      m.signal_style.push_back(it_N+2);
       m.signal_draw.push_back(true);
 
 
@@ -385,7 +365,7 @@ void Draw_SR(int XXX=0){
       lrsminfo.SetNames();
       m.signal_LRSMinfo.push_back(lrsminfo);
       m.signal_color.push_back(colors_WR.at(it_sig));
-      m.signal_style.push_back(it_N+1);
+      m.signal_style.push_back(it_N+2);
       m.signal_draw.push_back(true);
 
     }
@@ -429,7 +409,7 @@ void Draw_SR(int XXX=0){
   }
   skeleton_rebins.close();
 
-  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/SR_rebins.txt");
+  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_rebins.txt");
 
   //=============
   //==== y_maxs
@@ -451,7 +431,7 @@ void Draw_SR(int XXX=0){
   m.default_y_max = 20.;
   m.default_y_min = 0.;
 
-  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/SR_yaxis.txt"); 
+  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_yaxis.txt");
 
   //=============
   //==== x_mins
@@ -468,7 +448,7 @@ void Draw_SR(int XXX=0){
   }
   skeleton_x_mins.close();
 
-  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/SR_xaxis.txt");
+  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_xaxis.txt");
 
   //===============
   //==== k-factor
@@ -486,7 +466,7 @@ void Draw_SR(int XXX=0){
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
   m.make_plot_directory();
   
   //==========================

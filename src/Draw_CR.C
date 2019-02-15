@@ -180,6 +180,7 @@ void Draw_CR(int XXX=0){
     "Jet_Size", "NBJets",
     "NCand_Mass", "WRCand_Mass",
     "NCand_Pt", "WRCand_Pt",
+    "LSFFatJet_Size",
   };
 
   m.x_title = {
@@ -196,6 +197,7 @@ void Draw_CR(int XXX=0){
     "# of jets", "# of b-tagged jets",
     "m_{N} (GeV)", "m_{W_{R}} (GeV)",
     "p_{T} of N (GeV)", "p_{T} of W (GeV)",
+    "# of merged jets",
   };
 
   m.units = {
@@ -212,6 +214,7 @@ void Draw_CR(int XXX=0){
     "int", "int",
     "GeV", "GeV",
     "GeV", "GeV",
+    "",
   };
 
 /*

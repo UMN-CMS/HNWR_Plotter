@@ -4,9 +4,9 @@
 void Draw_Validation(int XXX=0){
 
   bool ScaleMC = false;
-  bool UseBinnedDY = true;
+  bool UseBinnedDY = false;
 
-  int Year = 2016;
+  int Year = 2017;
 
   //==============
   //==== get env
@@ -23,7 +23,8 @@ void Draw_Validation(int XXX=0){
   
   Plotter m;
   m.DoDebug = false;
-  
+  m.DataYear = Year;
+
   //=====================
   //==== set data class
   //=====================
@@ -42,7 +43,7 @@ void Draw_Validation(int XXX=0){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50", "DYJets"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
@@ -89,19 +90,19 @@ void Draw_Validation(int XXX=0){
 
       "SingleMuon_OS",
       "SingleMuon_OnZ_OS",
-      "SingleMuon_ZMassgt50_OS",
+      "SingleMuon_HigherDiLeptonPtCut_OS",
       "SingleMuon_WithBJet_METgt30_OS",
       "SingleElectron_OS",
       "SingleElectron_OnZ_OS",
-      "SingleElectron_ZMassgt50_OS",
+      "SingleElectron_HigherDiLeptonPtCut_OS",
       "SingleElectron_WithBJet_METgt30_OS",
       "SingleMuon_SS",
       "SingleMuon_OnZ_SS",
-      "SingleMuon_ZMassgt50_SS",
+      "SingleMuon_HigherDiLeptonPtCut_SS",
       "SingleMuon_WithBJet_METgt30_SS",
       "SingleElectron_SS",
       "SingleElectron_OnZ_SS",
-      "SingleElectron_ZMassgt50_SS",
+      "SingleElectron_HigherDiLeptonPtCut_SS",
       "SingleElectron_WithBJet_METgt30_SS",
 
 /*
@@ -221,7 +222,20 @@ void Draw_Validation(int XXX=0){
   m.x_title = {"m(Z) (GeV)"};
   m.units = {"GeV"};
 */
-
+/*
+  m.histname = {
+    "Lepton_0_Pt",
+    "Lepton_1_Pt",
+  };
+  m.x_title = {
+    "Leading lepton p_{T} (GeV)",
+    "Subleading lepton p_{T} (GeV)",
+  };
+  m.units = {
+    "GeV",
+    "GeV",
+  };
+*/
   cout << "m.histname.size() = " <<  m.histname.size() << endl;
   cout << "m.x_title.size() = " << m.x_title.size() << endl;
   cout << "m.units.size() = " << m.units.size() << endl;
@@ -285,7 +299,7 @@ void Draw_Validation(int XXX=0){
   }
   skeleton_rebins.close();
 
-  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/Validation_rebins.txt");
+  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Validation_rebins.txt");
 
   //=============
   //==== y_maxs
@@ -307,7 +321,7 @@ void Draw_Validation(int XXX=0){
   m.default_y_max = 20.;
   m.default_y_min = 0.;
 
-  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/Validation_yaxis.txt"); 
+  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Validation_yaxis.txt"); 
 
   //=============
   //==== x_mins
@@ -325,7 +339,7 @@ void Draw_Validation(int XXX=0){
   }
   skeleton_x_mins.close();
 
-  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/Validation_xaxis.txt");
+  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Validation_xaxis.txt");
 
   //===============
   //==== k-factor

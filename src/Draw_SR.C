@@ -7,7 +7,7 @@ void Draw_SR(int XXX=0){
   bool UseBinnedDY = false;
   bool UsePromptMC = false;
 
-  int Year = 2016;
+  int Year = 2017;
 
   //==============
   //==== get env
@@ -24,6 +24,7 @@ void Draw_SR(int XXX=0){
   
   Plotter m;
   m.DoDebug = false;
+  m.DataYear = Year;
   
   //=====================
   //==== set data class
@@ -94,42 +95,11 @@ void Draw_SR(int XXX=0){
 
     m.histname_suffix = {
 
-      "HNWR_SingleMuon_Boosted",
-      "HNWR_SingleMuon_Boosted_TwoLepton",
+      "HNWR_SingleElectron_Resolved_SR",
+      "HNWR_SingleElectron_Boosted_SR",
 
-      "HNWR_SingleElectron_Boosted",
-      "HNWR_SingleElectron_Boosted_TwoLepton",
-
-/*
-      "HNWR_SingleElectron_Resolved",
-      "HNWR_SingleMuon_Resolved",
-*/
-
-    };
-
-  }
-
-  //==== Two Lepton OS
-  if(XXX==1){
-    m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "DY"};
-
-    m.histname_suffix = {
-
-      "HNWR_SingleElectron_Resolved",
-      "HNWR_SingleMuon_Resolved",
-
-    };
-
-  }
-
-  //==== Two Lepton SS
-  if(XXX==2){
-    m.samples_to_use = {"VVV", "VV_incl", "fake", "chargeflip"};
-
-    m.histname_suffix = {
-
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mllgt150_SS",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mllgt150_SS",
+      "HNWR_SingleMuon_Resolved_SR",
+      "HNWR_SingleMuon_Boosted_SR",
 
     };
 
@@ -147,7 +117,7 @@ void Draw_SR(int XXX=0){
     "Jet_0_Pt", "Jet_0_Eta",
     "Jet_1_Pt", "Jet_1_Eta",
     "HNFatJet_Pt", "HNFatJet_Eta", "HNFatJet_Mass", "HNFatJet_SDMass",
-    "ZCand_Mass", "dR_ll",
+    "ZCand_Pt", "ZCand_Mass", "dR_ll",
     "MET", "HT",
     "MT",
     "Jet_Size", "NBJets",
@@ -164,7 +134,7 @@ void Draw_SR(int XXX=0){
     "Leading jet p_{T} (GeV)", "Leading jet #eta",
     "Subleading jet p_{T} (GeV)", "Subleading jet #eta",
     "Away AK8 jet p_{T} (GeV)", "Away AK8 jet #eta", "Away AK8 jet Mass", "Away AK8 jet SFMass",
-    "m(ll) (GeV)", "#DeltaR(ll)",
+    "p_{T} of dilepton (GeV)", "m(ll) (GeV)", "#DeltaR(ll)",
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
     "# of jets", "# of b-tagged jets",
@@ -181,7 +151,7 @@ void Draw_SR(int XXX=0){
     "GeV", "",
     "GeV", "",
     "GeV", "", "GeV", "GeV",
-    "GeV", "GeV",
+    "GeV", "GeV", "GeV",
     "GeV", "GeV",
     "GeV",
     "int", "int",
@@ -204,7 +174,7 @@ void Draw_SR(int XXX=0){
     "GeV", "GeV",
   };
 */
-
+/*
   m.histname = {
     "WRCand_Mass"
   };
@@ -214,7 +184,18 @@ void Draw_SR(int XXX=0){
   m.units = {
     "GeV",
   };
-
+*/
+/*
+  m.histname = {
+    "ZCand_Pt"
+  };
+  m.x_title = {
+    "p_{T} of dilepton (GeV)",
+  };
+  m.units = {
+    "GeV",
+  };
+*/
 
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
@@ -239,21 +220,18 @@ void Draw_SR(int XXX=0){
     int int_IsSS = +1;
     if(!IsSS) int_IsSS = -1;
 
-    if(this_region.Contains("Boosted")){
+    if(this_region.Contains("Resolved")){
       if(this_region.Contains("SingleElectron")){
-        m.LeptonChannels.push_back(int_IsSS*11);
+        m.LeptonChannels.push_back(int_IsSS*21);
         m.RegionType.push_back(10);
       }
       else if(this_region.Contains("SingleMuon")){
-        m.LeptonChannels.push_back(int_IsSS*12);
+        m.LeptonChannels.push_back(int_IsSS*22);
         m.RegionType.push_back(10);
       }
-      else{
-        cout << "Boosted but WTF : " << this_region << endl;
-        return;
-      }
     }
-    else if(this_region.Contains("Resolved")){
+
+    else if(this_region.Contains("Boosted")){
       if(this_region.Contains("SingleElectron")){
         m.LeptonChannels.push_back(int_IsSS*21);
         m.RegionType.push_back(20);
@@ -262,11 +240,8 @@ void Draw_SR(int XXX=0){
         m.LeptonChannels.push_back(int_IsSS*22);
         m.RegionType.push_back(20);
       }
-      else{
-        cout << "Boosted but WTF" << endl;
-        return;
-      }
     }
+
     else{
       m.RegionType.push_back(0);
     }

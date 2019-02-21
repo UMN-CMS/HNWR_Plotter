@@ -268,7 +268,6 @@ void Plotter::draw_hist(){
 
           //==== MC Norm Scaling
           if(ApplyMCNormSF.at(i_cut)){
-            cout << current_sample << "\t" << analysisInputs.MCNormSF[current_sample] << endl;
             hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
           }
 
@@ -903,18 +902,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerr
 
   //==== ymax
   double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
-  //hist_empty->GetYaxis()->SetRangeUser( default_y_min, y_max() );
-  if(histname_suffix[i_cut].Contains("Boosted") && histname[i_var]=="WRCand_Mass"){
-    if(histname_suffix[i_cut].Contains("SingleMuon")){
-      hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*1000. );
-    }
-    if(histname_suffix[i_cut].Contains("SingleElectron")){
-      hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*1000. );
-    }
-  }
-  else{
-    hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
-  }
+  hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
 
   //==== legend
   legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
@@ -1480,7 +1468,7 @@ TString Plotter::TotalLumi(){
 
   if(DataYear==2016) return "35.9";
   else if(DataYear==2017) return "41.5";
-  else if(DataYear==2018) return "60zz";
+  else if(DataYear==2018) return "60.0";
   else{
     //cout << "[Plotter::TotalLumi] Wrong DataYear" << DataYear << endl;
     return "35.9";
@@ -1526,25 +1514,27 @@ TString Plotter::GetStringChannelRegion(int A, int B){
   }
 
   TString region = "";
-  //==== B%10 = 1 : Boosted
+
+  //==== B%10 = 1 : Resolved
+  //==== Last digit of B = 0 : SR
+  //====                 = 1 : CR for DY
+  //====                 = 2 : CR with emu
+
+  //==== B%10 = 2 : Boosted
   //==== Last digit of B = 0 : SR
   //====                 = 1 : CR with el-jet
   //====                 = 2 : CR with mu-jet
-  //====                 = 3 : CR
+  //====                 = 3 : CR for DY
 
-  //====        2 : Resolved
-  //==== Last digit of B = 0 : SR
-  //====                 = 1 : CR with reversed m(ll)
-  //====                 = 2 : CR without m(ll) cut (emu only)
+  if(abs(B)==10) region = "Resolved SR";
+  else if(abs(B)==11) region = "Resolved DY CR";
+  else if(abs(B)==12) region = "Resolved e#mu CR";
 
-  if(abs(B)==10) region = "Boosted SR";
-  else if(abs(B)==11) region = "Boosted CR w/ e-Jet";
-  else if(abs(B)==12) region = "Boosted CR w/ #mu-Jet";
-  else if(abs(B)==12) region = "Boosted CR";
+  else if(abs(B)==20) region = "Boosted SR";
+  else if(abs(B)==21) region = "Boosted CR w/ e-Jet";
+  else if(abs(B)==22) region = "Boosted CR w/ #mu-Jet";
+  else if(abs(B)==23) region = "Boosted DY CR";
 
-  else if(abs(B)==20) region = "Resolved SR";
-  else if(abs(B)==21) region = "Resolved CR (reversed m(ll))";
-  else if(abs(B)==22) region = "Resolved CR";
   else{
 
   }

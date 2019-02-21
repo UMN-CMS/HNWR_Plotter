@@ -3,10 +3,10 @@
 
 void Draw_Validation(int XXX=0){
 
-  bool ScaleMC = false;
+  bool ScaleMC = true;
   bool UseBinnedDY = false;
 
-  int Year = 2017;
+  int Year = 2018;
 
   //==============
   //==== get env
@@ -68,6 +68,14 @@ void Draw_Validation(int XXX=0){
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
+  else if(Year==2018){
+
+    m.map_sample_string_to_list["DY"] = {"DYJets_MG"};
+
+    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+
+  }
+
 
   //===============================
   //==== set and make sample list
@@ -92,18 +100,22 @@ void Draw_Validation(int XXX=0){
       "SingleMuon_OnZ_OS",
       "SingleMuon_HigherDiLeptonPtCut_OS",
       "SingleMuon_WithBJet_METgt30_OS",
+/*
       "SingleElectron_OS",
       "SingleElectron_OnZ_OS",
       "SingleElectron_HigherDiLeptonPtCut_OS",
       "SingleElectron_WithBJet_METgt30_OS",
+*/
       "SingleMuon_SS",
       "SingleMuon_OnZ_SS",
       "SingleMuon_HigherDiLeptonPtCut_SS",
       "SingleMuon_WithBJet_METgt30_SS",
+/*
       "SingleElectron_SS",
       "SingleElectron_OnZ_SS",
       "SingleElectron_HigherDiLeptonPtCut_SS",
       "SingleElectron_WithBJet_METgt30_SS",
+*/
 
 /*
       "SingleMuon_W_CR",
@@ -261,13 +273,13 @@ void Draw_Validation(int XXX=0){
   //==== Fill MCNorm SF
   //=====================
 
-  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/MCSF.txt", m.bkglist);
+  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/MCSF.txt", m.bkglist);
 
   //======================
   //==== Get Systematics
   //======================
 
-  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/Syst.txt");
+  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Syst.txt");
 
   //=============================
   //==== set signal mass points

@@ -27,7 +27,7 @@ for f in files:
       elif "Eta" in var:
         tmpf.write(line.replace('-999','5'))
       elif "ZCand_Mass" in var:
-        if "mlllt150" in region:
+        if "DYCR" in region:
           tmpf.write(line.replace('-999','1'))
         else:
           tmpf.write(line.replace('-999','50'))
@@ -63,12 +63,8 @@ for f in files:
       elif "_1_Pt" in var:
         tmpf.write(line.replace('-999\t-999','0\t1000'))
       elif "ZCand_Mass" in var:
-        if "CR1" in region:
+        if "DYCR" in region:
            tmpf.write(line.replace('-999\t-999','0\t150'))
-        elif "CR2" in region:
-          tmpf.write(line.replace('-999\t-999','70\t110'))
-        elif "mlllt150" in region:
-          tmpf.write(line.replace('-999\t-999','0\t150'))
         else:
           tmpf.write(line.replace('-999\t-999','0\t1000'))
 

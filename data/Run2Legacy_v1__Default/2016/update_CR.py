@@ -53,6 +53,9 @@ for f in files:
       elif "WRCand_Pt" in var:
         tmpf.write(line.replace('-999','5'))
 
+      elif "ZCand_Pt" in var:
+        tmpf.write(line.replace('-999','20'))
+
       else:
         tmpf.write(line)
 
@@ -91,6 +94,9 @@ for f in files:
 
       elif ("nPileUp" in var) or ("nPV" in var):
         tmpf.write(line.replace('-999\t-999','0\t100'))
+
+      elif "ZCand_Pt" in var:
+        tmpf.write(line.replace('-999\t-999','0\t1000'))
 
       else:
         tmpf.write(line)

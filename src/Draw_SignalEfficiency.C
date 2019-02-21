@@ -42,8 +42,8 @@ void Draw_SignalEfficiency(){
   };
 
   vector<TString> regions = {
-    "Boosted",
-    "Resolved",
+    "Boosted_SR",
+    "Resolved_SR",
 
 /*
     "NoTwoLepVetoAK4Jets_Boosted",
@@ -102,9 +102,13 @@ void Draw_SignalEfficiency(){
       double m_WR = it->first;
       vector<double> this_m_Ns = it->second;
 
+      cout << "m_WR = " << m_WR << endl;
+
       for(unsigned int it_Suffix=0; it_Suffix<Suffixs.size(); it_Suffix++){
 
         TString Suffix = Suffixs.at(it_Suffix);
+
+        cout << "  Suffix = " << Suffix << endl;
 
         TString channel = "EEJJ";
         if(Suffix.Contains("SingleMuon")) channel = "MuMuJJ";
@@ -148,6 +152,8 @@ void Draw_SignalEfficiency(){
           Color_t color = colors.at(it_region);
           TString region_alias = region_aliases.at(it_region);
 
+          cout << "    region = " << region << endl;
+
           double x[n_mass], y[n_mass];
 
           for(int it_N=0; it_N<this_m_Ns.size(); it_N++){
@@ -172,6 +178,8 @@ void Draw_SignalEfficiency(){
             }
             x[it_N] = m_N;
             y[it_N] = this_eff;
+
+            cout << "      m_WR = " << m_N << " : " << this_eff << endl;
 
             x_total[it_N] = m_N;
             y_total[it_N] += this_eff;

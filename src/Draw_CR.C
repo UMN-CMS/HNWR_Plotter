@@ -24,6 +24,7 @@ void Draw_CR(int XXX=0){
   
   Plotter m;
   m.DoDebug = false;
+  m.DataYear = Year;
   
   //=====================
   //==== set data class
@@ -37,7 +38,6 @@ void Draw_CR(int XXX=0){
   
   m.filename_prefix = "HNWRAnalyzer";
   m.filename_suffix = ".root";
-  m.filename_skim = "_SkimTree_LRSMHighPt";
 
   //=========================
   //==== set sample mapping
@@ -88,75 +88,60 @@ void Draw_CR(int XXX=0){
 
   //==== _Di<Lepton>_<JetSel>_<ifOffZ>_<charge>
 
-  //==== One Lepton
+  //==== DY CR, log scale
   if(XXX==0){
-    m.samples_to_use = {"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar"};
-    if(UsePromptMC) m.samples_to_use = {"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "fake", "ttbar"};
+
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "DY"};
+    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "ZToLL"};
 
     m.histname_suffix = {
 
-      "HNWR_SingleMuon_OneLepton_AwayFatJetWithOFLepton",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithOFLepton",
-
-      "HNWR_SingleMuon_OneLepton_AwayFatJetWithOFLepton100GeV",
-      "HNWR_SingleElectron_OneLepton_AwayFatJetWithOFLepton100GeV",
+      "HNWR_SingleElectron_Resolved_DYCR",
+      "HNWR_SingleMuon_Resolved_DYCR",
 
 
 /*
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_OS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_OS",
+      "HNWR_SingleElectron_Boosted_DYCR",
+      "HNWR_SingleMuon_Boosted_DYCR",
+      "HNWR_SingleElectron_EMu_Boosted_CR",
+      "HNWR_SingleMuon_EMu_Boosted_CR",
 
-      "HNWR_EMu_TwoLepton_TwoJet",
-      "HNWR_EMu_TwoLepton_TwoJet_OS",
-
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_SS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_SS",
+      "HNWR_EMu_Resolved_SR",
+      "HNWR_EMu_Resolved_DYCR",
 */
 
 
+
     };
 
   }
 
-  //==== Two Lepton OS; DY dominant
+  //==== DY CR, linear scale
   if(XXX==1){
-    m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "DY"};
-    if(UseBinnedDY) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "ZToLL"};
-    if(UsePromptMC) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "fake", "ttbar", "DY"};
+
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
+    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZToLL",  "ttbar"};
 
     m.histname_suffix = {
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_OS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_OS",
+
+      "HNWR_SingleElectron_Boosted_DYCR",
+      "HNWR_SingleMuon_Boosted_DYCR",
+      "HNWR_SingleElectron_EMu_Boosted_CR",
+      "HNWR_SingleMuon_EMu_Boosted_CR",
+
     };
 
   }
 
-  //==== Two Lepton OS; ttbar dominant
+  //==== EMu CR
   if(XXX==2){
-    m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "DY", "ttbar"}; 
-    if(UseBinnedDY) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "ZToLL", "ttbar"};
-    if(UsePromptMC) m.samples_to_use = {"SingleTop", "VVV", "WJets_MG", "VV_incl", "fake", "DY", "ttbar"};
-      
-    m.histname_suffix = {
-      "HNWR_EMu_TwoLepton_TwoJet",
-      "HNWR_EMu_TwoLepton_TwoJet_OS",
-    };
 
-  }
-
-  //==== Two Lepton SS
-  if(XXX==3){
-    m.samples_to_use = {"VVV", "VV_incl", "fake", "chargeflip"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
 
     m.histname_suffix = {
 
-      "HNWR_EMu_TwoLepton_TwoJet_SS",
-      "HNWR_SingleMuon_TwoLepton_TwoJet_mlllt150_SS",
-      "HNWR_SingleElectron_TwoLepton_TwoJet_mlllt150_SS",
+      "HNWR_EMu_Resolved_SR",
+      "HNWR_EMu_Resolved_DYCR",
 
     };
 
@@ -174,7 +159,7 @@ void Draw_CR(int XXX=0){
     "Jet_0_Pt", "Jet_0_Eta",
     "Jet_1_Pt", "Jet_1_Eta",
     "HNFatJet_Pt", "HNFatJet_Eta", "HNFatJet_Mass", "HNFatJet_SDMass",
-    "ZCand_Mass", "dR_ll",
+    "ZCand_Pt", "ZCand_Mass", "dR_ll",
     "MET", "HT",
     "MT",
     "Jet_Size", "NBJets",
@@ -191,7 +176,7 @@ void Draw_CR(int XXX=0){
     "Leading jet p_{T} (GeV)", "Leading jet #eta",
     "Subleading jet p_{T} (GeV)", "Subleading jet #eta",
     "Away AK8 jet p_{T} (GeV)", "Away AK8 jet #eta", "Away AK8 jet Mass", "Away AK8 jet SFMass",
-    "m(ll) (GeV)", "#DeltaR(ll)",
+    "p_{T} of dilepton (GeV)", "m(ll) (GeV)", "#DeltaR(ll)",
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
     "# of jets", "# of b-tagged jets",
@@ -208,7 +193,7 @@ void Draw_CR(int XXX=0){
     "GeV", "",
     "GeV", "",
     "GeV", "", "GeV", "GeV",
-    "GeV", "GeV",
+    "GeV", "GeV", "GeV",
     "GeV", "GeV",
     "GeV",
     "int", "int",
@@ -242,6 +227,17 @@ void Draw_CR(int XXX=0){
     "GeV",
   };
 */
+/*
+  m.histname = {
+    "ZCand_Pt"
+  };
+  m.x_title = {
+    "p_{T} of dilepton (GeV)",
+  };
+  m.units = {
+    "GeV",
+  };
+*/
 
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
 
@@ -266,72 +262,53 @@ void Draw_CR(int XXX=0){
     int int_IsSS = +1;
     if(!IsSS) int_IsSS = -1;
 
-    if(this_region.Contains("OneLepton_AwayFatJet")){
-      if(this_region.Contains("WithOF")){
+    if(this_region.Contains("DYCR")){
+
+      if(this_region.Contains("Resolved")){
         if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(1);
-          m.RegionType.push_back(12);
-        }
-        else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(2);
+          m.LeptonChannels.push_back(int_IsSS*21);
           m.RegionType.push_back(11);
         }
-        else{
-          cout << "OneLepton_AwayFatJet && WithOF but WTF : " << this_region << endl;
-          return;
+        else if(this_region.Contains("SingleMuon")){
+          m.LeptonChannels.push_back(int_IsSS*22);
+          m.RegionType.push_back(11);
+        }
+        else if(this_region.Contains("EMu")){
+          m.LeptonChannels.push_back(int_IsSS*23);
+          m.RegionType.push_back(12);
         }
       }
-      else{
-        m.RegionType.push_back(10);
+
+      else if(this_region.Contains("Boosted")){
         if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(1);
+          m.LeptonChannels.push_back(int_IsSS*21);
+          m.RegionType.push_back(23);
         }
         else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(2);
-        }
-        else{
-          cout << "OneLepton_AwayFatJet && !(WithOF) but WTF : " << this_region << endl;
-          return;
+          m.LeptonChannels.push_back(int_IsSS*22);
+          m.RegionType.push_back(23);
         }
       }
+
     }
-    else if(this_region.Contains("TwoLepton_TwoJet")){
-      if(this_region.Contains("EMu")){
+    else if(this_region.Contains("EMu")){
+
+      if(this_region.Contains("Resolved")){
         m.LeptonChannels.push_back(int_IsSS*23);
-        m.RegionType.push_back(22);
+        m.RegionType.push_back(12);
       }
-      else if(this_region.Contains("mlllt150")){
+      else if(this_region.Contains("Boosted")){
         if(this_region.Contains("SingleElectron")){
           m.LeptonChannels.push_back(int_IsSS*21);
-          m.RegionType.push_back(21);
+          m.RegionType.push_back(22);
         }
         else if(this_region.Contains("SingleMuon")){
           m.LeptonChannels.push_back(int_IsSS*22);
           m.RegionType.push_back(21);
         }
-        else{
-          cout << "TwoLepton_TwoJet && !EMu && mlllt150 but WTF" << endl;
-          return;
-        }
+
       }
-      else if(this_region.Contains("mllgt150")){
-        if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(int_IsSS*21);
-          m.RegionType.push_back(20);
-        }
-        else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(int_IsSS*22);
-          m.RegionType.push_back(20);
-        }
-        else{
-          cout << "TwoLepton_TwoJet && !EMu && mllgt150 but WTF" << endl;
-          return;
-        }
-      }
-      else{
-        cout << "TwoLepton_TwoJet but WTF : " << this_region << endl;
-        return;
-      }
+
     }
     else{
       m.RegionType.push_back(0);
@@ -339,7 +316,7 @@ void Draw_CR(int XXX=0){
 
     //==== Log plot boolean
     if(XXX==0) m.UseLogy.push_back(1);
-    if(XXX==1) m.UseLogy.push_back(1);
+    if(XXX==1) m.UseLogy.push_back(-1);
     if(XXX==2) m.UseLogy.push_back(1);
     if(XXX==3) m.UseLogy.push_back(1);
 

@@ -23,11 +23,11 @@ for f in files:
     if "rebins" in f:
 
       if "Pt" in var:
-        tmpf.write(line.replace('-999','10'))
+        tmpf.write(line.replace('-999','20'))
       elif "Eta" in var:
         tmpf.write(line.replace('-999','5'))
       elif "ZCand_Mass" in var:
-        if "mlllt150" in region:
+        if ("DYCR" in region) or ("OnZ" in region):
           tmpf.write(line.replace('-999','1'))
         else:
           tmpf.write(line.replace('-999','50'))
@@ -53,9 +53,6 @@ for f in files:
       elif "WRCand_Pt" in var:
         tmpf.write(line.replace('-999','5'))
 
-      elif "ZCand_Pt" in var:
-        tmpf.write(line.replace('-999','20'))
-
       else:
         tmpf.write(line)
 
@@ -64,14 +61,12 @@ for f in files:
       if "_0_Pt" in var:
         tmpf.write(line.replace('-999\t-999','0\t1000'))
       elif "_1_Pt" in var:
-        tmpf.write(line.replace('-999\t-999','0\t1000'))
+        tmpf.write(line.replace('-999\t-999','0\t500'))
       elif "ZCand_Mass" in var:
-        if "CR1" in region:
+        if "DYCR" in region:
            tmpf.write(line.replace('-999\t-999','0\t150'))
-        elif "CR2" in region:
-          tmpf.write(line.replace('-999\t-999','70\t110'))
-        elif "mlllt150" in region:
-          tmpf.write(line.replace('-999\t-999','0\t150'))
+        elif "OnZ" in region:
+           tmpf.write(line.replace('-999\t-999','70\t110'))
         else:
           tmpf.write(line.replace('-999\t-999','0\t1000'))
 
@@ -94,9 +89,6 @@ for f in files:
 
       elif ("nPileUp" in var) or ("nPV" in var):
         tmpf.write(line.replace('-999\t-999','0\t100'))
-
-      elif "ZCand_Pt" in var:
-        tmpf.write(line.replace('-999\t-999','0\t1000'))
 
       else:
         tmpf.write(line)

@@ -3,7 +3,9 @@
 
 void Draw_CR(int XXX=0){
 
-  bool ScaleMC = false;
+  bool ScaleMC = true;
+  bool UseDYPtReweight = true;
+
   bool UseBinnedDY = false;
   bool UsePromptMC = false;
 
@@ -44,12 +46,14 @@ void Draw_CR(int XXX=0){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["DY"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["DYJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
 
     m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["DYJets_Reweighted"] = make_pair("DY", kYellow);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
@@ -57,6 +61,7 @@ void Draw_CR(int XXX=0){
   else if(Year==2017){
 
     m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["DYJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
     m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
@@ -69,6 +74,7 @@ void Draw_CR(int XXX=0){
     m.map_sample_string_to_list["fake"] = {"fake"};
 
     m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["DYJets_Reweighted"] = make_pair("DY", kYellow);
     m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
@@ -93,11 +99,17 @@ void Draw_CR(int XXX=0){
 
     m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "DY"};
     if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "ZToLL"};
+    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "DYJets_Reweighted"};
 
     m.histname_suffix = {
 
       "HNWR_SingleElectron_Resolved_DYCR",
       "HNWR_SingleMuon_Resolved_DYCR",
+
+      "HNWR_SingleElectron_OnZ",
+      "HNWR_SingleMuon_OnZ",
+
+
 
 
 /*
@@ -121,6 +133,7 @@ void Draw_CR(int XXX=0){
 
     m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
     if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZToLL",  "ttbar"};
+    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DYJets_Reweighted", "ttbar"};
 
     m.histname_suffix = {
 
@@ -202,20 +215,17 @@ void Draw_CR(int XXX=0){
     "",
   };
 
-/*
+
   m.histname = {
     "Lepton_0_Pt", "Lepton_1_Pt",
-    "N_Mass", "ZP_Mass",
   };
   m.x_title = {
     "Leading lepton p_{T} (GeV)", "Subleading lepton p_{T} (GeV)",
-    "m_{N} (GeV)", "m_{Z'} (GeV)",
   };
   m.units = {
     "GeV", "GeV",
-    "GeV", "GeV",
   };
-*/
+
 /*
   m.histname = {
     "WRCand_Mass"
@@ -299,14 +309,26 @@ void Draw_CR(int XXX=0){
       }
       else if(this_region.Contains("Boosted")){
         if(this_region.Contains("SingleElectron")){
-          m.LeptonChannels.push_back(int_IsSS*21);
+          m.LeptonChannels.push_back(int_IsSS*23);
           m.RegionType.push_back(22);
         }
         else if(this_region.Contains("SingleMuon")){
-          m.LeptonChannels.push_back(int_IsSS*22);
+          m.LeptonChannels.push_back(int_IsSS*23);
           m.RegionType.push_back(21);
         }
 
+      }
+
+    }
+    else if(this_region.Contains("OnZ")){
+
+      if(this_region.Contains("SingleElectron")){
+        m.LeptonChannels.push_back(int_IsSS*21);
+        m.RegionType.push_back(30);
+      }
+      else if(this_region.Contains("SingleMuon")){
+        m.LeptonChannels.push_back(int_IsSS*22);
+        m.RegionType.push_back(30);
       }
 
     }
@@ -444,6 +466,7 @@ void Draw_CR(int XXX=0){
 
   m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/"+TString::Itoa(Year,10)+"/";;
   if(UseBinnedDY) m.plotpath += "/BinnedDY/";
+  if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
   if(UsePromptMC) m.plotpath += "/UsePromptMC/";
 
   m.make_plot_directory();

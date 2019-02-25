@@ -1,13 +1,14 @@
 #include "canvas_margin.h"
 #include "mylib.h"
 
-void Get_EMuRatio(){
+void Get_EMuRatio(int xxx=0){
 
   //gErrorIgnoreLevel = kFatal;
 
   setTDRStyle();
 
   TString Year = "2016";
+  if(xxx==1) Year = "2017";
 
   gStyle->SetOptStat(0);
 
@@ -40,7 +41,37 @@ void Get_EMuRatio(){
     };
 
     asym_samples = {
+"DYJets",
+"DYJets10to50",
+"WJets_MG",
+"WW_pythia",
+"WZ_pythia",
+"ZZ_pythia",
+    };
 
+  }
+
+  if(Year=="2017"){
+
+    sym_samples = {
+      "TTLL_powheg",
+    };
+
+    asym_samples = {
+"DYJets",
+"DYJets10to50_MG",
+"TTG",
+"TTLJ_powheg", "TTJJ_powheg",
+"WJets_MG",
+"WWW",
+"WWZ",
+"WW_pythia",
+"WZZ",
+"WZ_pythia",
+"ZZZ",
+"ZZ_pythia",
+"ttW",
+"ttZ",
     };
 
   }
@@ -145,14 +176,44 @@ void Get_EMuRatio(){
 
         hist_ee->SetLineColor(kRed);
         hist_mm->SetLineColor(kBlue);
+        hist_ee->SetLineWidth(3);
+        hist_mm->SetLineWidth(3);
 
-        hist_ee->Draw("histe1");
-        hist_mm->Draw("histsamee1");
+        if(it_SR==0){
+          hist_ee->Draw("histe1");
+          hist_axis(hist_ee);
+          hist_mm->Draw("histsamee1");
 
-        hist_ee->GetYaxis()->SetRangeUser(0., 1.0);
-        if(it_SR==1) hist_ee->GetYaxis()->SetRangeUser(0., 2.0);
-        if(it_SR==2) hist_ee->GetYaxis()->SetRangeUser(0., 4.0);
-        hist_ee->GetXaxis()->SetTitle(xtitle);
+          hist_ee->GetYaxis()->SetRangeUser(0., 1.0);
+          hist_ee->GetXaxis()->SetTitle(xtitle);
+          hist_ee->GetYaxis()->SetTitle("Ratio");
+          TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
+          lg->AddEntry(hist_ee, "ee/e#mu", "l");
+          lg->AddEntry(hist_mm, "#mu#mu/e#mu", "l");
+          lg->Draw();
+        }
+        else if(it_SR==1){
+          hist_ee->Draw("histe1");
+          hist_axis(hist_ee);
+
+          hist_ee->GetYaxis()->SetRangeUser(0., 1.5);
+          hist_ee->GetXaxis()->SetTitle(xtitle);
+          hist_ee->GetYaxis()->SetTitle("Ratio");
+          TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
+          lg->AddEntry(hist_ee, "ee/e#mu", "l");
+          lg->Draw();
+        }
+        else if(it_SR==2){
+          hist_mm->Draw("histe1");
+          hist_axis(hist_mm);
+        
+          hist_mm->GetYaxis()->SetRangeUser(0., 1.5);
+          hist_mm->GetXaxis()->SetTitle(xtitle);
+          hist_mm->GetYaxis()->SetTitle("Ratio");
+          TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
+          lg->AddEntry(hist_mm, "#mu#mu/e#mu", "l");
+          lg->Draw();
+        }
 
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
@@ -210,6 +271,12 @@ void Get_EMuRatio(){
         outfile->mkdir(region_ee);
         outfile->mkdir(region_mm);
       }
+      if(it_SR==1){
+        outfile->mkdir(region_ee);
+      }
+      if(it_SR==2){
+        outfile->mkdir(region_mm);
+      }
 
       for(unsigned it_var=0; it_var<vars_to_draw.size(); it_var++){
 
@@ -217,6 +284,18 @@ void Get_EMuRatio(){
 
         TH1D *hist_EMu = (TH1D *)file_EMu->Get(region_em+"/"+var+"_"+region_em);
         if(!hist_EMu) continue;
+
+        //==== Subtract non-TT
+        for(unsigned int it_asym=0; it_asym<asym_samples.size(); it_asym++){
+          TFile *file_asym = new TFile(base_filepath+"/HNWRAnalyzer_"+asym_samples.at(it_asym)+".root");
+          TH1D *hist_asym = (TH1D *)file_asym->Get(region_em+"/"+var+"_"+region_em);
+          if(!hist_asym){
+            file_asym->Close();
+            continue;
+          }
+          hist_EMu->Add(hist_asym,-1.);
+          file_asym->Close();
+        }
 
         if(it_SR==0){
           TH1D *hist_EE = (TH1D *)hist_EMu->Clone();

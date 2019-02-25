@@ -269,6 +269,35 @@ void Plotter::draw_hist(){
           //==== MC Norm Scaling
           if(ApplyMCNormSF.at(i_cut)){
             hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
+
+            //==== FIXME for DY
+            if(current_sample.Contains("DYJets")){
+              double DYNorm = 1.;
+              if(DataYear==2016){
+                if(PrimaryDataset[i_cut]=="SingleElectron") DYNorm = 0.92341;
+                else if(PrimaryDataset[i_cut]=="SingleMuon") DYNorm = 0.942421;
+                else{
+                  cout << "Wrong DY Norm" << endl;
+                  return;
+                }
+              }
+              else if(DataYear==2017){
+                if(PrimaryDataset[i_cut]=="SingleElectron") DYNorm = 0.907973;
+                else if(PrimaryDataset[i_cut]=="SingleMuon") DYNorm = 0.980094;
+                else{
+                  cout << "Wrong DY Norm" << endl;
+                  return;
+                }
+              }
+              else if(DataYear==2018){
+                cout << "DY NORN NOT YET SUPPORTED" << endl;
+                return;
+              }
+
+              hist_final->Scale(DYNorm);
+
+            }
+
           }
 
           //==== Add star error histogram now, just before adding systematic
@@ -1534,6 +1563,9 @@ TString Plotter::GetStringChannelRegion(int A, int B){
   else if(abs(B)==21) region = "Boosted CR w/ e-Jet";
   else if(abs(B)==22) region = "Boosted CR w/ #mu-Jet";
   else if(abs(B)==23) region = "Boosted DY CR";
+  else if(abs(B)==24) region = "Boosted OnZ CR";
+
+  else if(abs(B)==30) region = "OnZ";
 
   else{
 
@@ -1541,7 +1573,6 @@ TString Plotter::GetStringChannelRegion(int A, int B){
 
 
   if(A==20) return region;
-
   else return "#splitline{"+channel+"}{"+region+"}";
 
 

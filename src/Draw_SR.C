@@ -3,7 +3,9 @@
 
 void Draw_SR(int XXX=0){
 
-  bool ScaleMC = false;
+  bool ScaleMC = true;
+  bool UseEMuMethod = true;
+
   bool UseBinnedDY = false;
   bool UsePromptMC = false;
 
@@ -49,11 +51,13 @@ void Draw_SR(int XXX=0){
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
+    m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TT_powheg"};
 
     m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
   }
   else if(Year==2017){
 
@@ -68,6 +72,7 @@ void Draw_SR(int XXX=0){
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
     m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
     m.map_sample_string_to_list["fake"] = {"fake"};
+	  m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
 
     m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
     m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
@@ -80,6 +85,7 @@ void Draw_SR(int XXX=0){
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
     m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
 
   }
 
@@ -92,6 +98,7 @@ void Draw_SR(int XXX=0){
   //==== One Lepton
   if(XXX==0){
     m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
+    if(UseEMuMethod) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "EMuMethod"};
 
     m.histname_suffix = {
 
@@ -441,7 +448,9 @@ void Draw_SR(int XXX=0){
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
+  if(UseEMuMethod) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/EMuMethod/";
+  else            m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
+
   m.make_plot_directory();
   
   //==========================

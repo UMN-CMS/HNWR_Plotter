@@ -15,10 +15,8 @@ void Draw_FastVSFull(){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString temp_dir = "OldPDF";
-
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/HNWRSignalStudy/"+Year+"/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/FastVSFull/"+Year+"/"+temp_dir+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/FastVSFull/"+Year+"/";
 
   if( !gSystem->mkdir(base_plotpath, kTRUE) ){
     cout
@@ -236,16 +234,16 @@ void Draw_FastVSFull(){
           cout << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999) << "\t" << hist_FullMG->Integral(int_Start,999) << endl;
         }
 
-        //lg->AddEntry(hist_Fast, "(Fast) "+samplealias, "l");
-        //lg->AddEntry(hist_Full, "(Full) "+samplealias, "l");
+        lg->AddEntry(hist_Fast, "(Fast) "+samplealias, "l");
+        lg->AddEntry(hist_Full, "(Full) "+samplealias, "l");
 
-        TH1D *hist_for_legend = (TH1D *)hist_Fast->Clone();
-        hist_for_legend->SetFillColor(color);
-        lg->AddEntry(hist_for_legend, samplealias, "f");
+        //TH1D *hist_for_legend = (TH1D *)hist_Fast->Clone();
+        //hist_for_legend->SetFillColor(color);
+        //lg->AddEntry(hist_for_legend, samplealias, "f");
 
         y_max = max( y_max, GetMaximum(hist_Fast,0) );
         y_max = max( y_max, GetMaximum(hist_Full,0) );
-        y_max = max( y_max, GetMaximum(hist_FullMG,0) );
+        //y_max = max( y_max, GetMaximum(hist_FullMG,0) );
 
       } // END sample loop
 

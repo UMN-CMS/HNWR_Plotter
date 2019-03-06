@@ -87,7 +87,7 @@ for f in files:
       elif "WRCand_Mass" in var:
         tmpf.write(line.replace('-999\t-999','0\t5500'))
 
-      elif ("nPileUp" in var) or ("nPV" in var):
+      elif ("nPileUp" in var) or ("nPV" in var) or ("N_VTX" in var):
         tmpf.write(line.replace('-999\t-999','0\t100'))
 
       else:

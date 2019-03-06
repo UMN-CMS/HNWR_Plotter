@@ -1,15 +1,14 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_CR(int XXX=0){
+void Draw_CR(int WhichRegion=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 
-  bool ScaleMC = true;
-  bool UseDYPtReweight = true;
-
-  bool UseBinnedDY = false;
-  bool UsePromptMC = false;
-
+  //bool ScaleMC = false;
+  //bool UseDYPtReweight = false;
   int Year = 2017;
+
+  bool UseBinnedDY = true;
+  bool UsePromptMC = false;
 
   //==============
   //==== get env
@@ -46,37 +45,46 @@ void Draw_CR(int XXX=0){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["DY"] = {"DYJets10to50", "DYJets"};
-    m.map_sample_string_to_list["DYJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
 
-    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
-    m.map_sample_string_to_legendinfo["DYJets_Reweighted"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("Z+Jets", kRed-2);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jetse", 870);
+    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
   }
   else if(Year==2017){
 
-    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
-    m.map_sample_string_to_list["DYJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
     m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
     m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
     m.map_sample_string_to_list["fake"] = {"fake"};
 
-    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
-    m.map_sample_string_to_legendinfo["DYJets_Reweighted"] = make_pair("DY", kYellow);
-    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
-    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
+    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("Z+Jets", kRed-2);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
+    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
@@ -95,11 +103,11 @@ void Draw_CR(int XXX=0){
   //==== _Di<Lepton>_<JetSel>_<ifOffZ>_<charge>
 
   //==== DY CR, log scale
-  if(XXX==0){
+  if(WhichRegion==0){
 
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "DY"};
-    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "ZToLL"};
-    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "DYJets_Reweighted"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "ZJets"};
+    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ttbar", "ZJets_MG_HT"};
+    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar", "ZJets_Reweighted"};
 
     m.histname_suffix = {
 
@@ -129,11 +137,11 @@ void Draw_CR(int XXX=0){
   }
 
   //==== DY CR, linear scale
-  if(XXX==1){
+  if(WhichRegion==1){
 
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
-    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZToLL",  "ttbar"};
-    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DYJets_Reweighted", "ttbar"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets", "ttbar"};
+    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT",  "ttbar"};
+    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_Reweighted", "ttbar"};
 
     m.histname_suffix = {
 
@@ -147,9 +155,10 @@ void Draw_CR(int XXX=0){
   }
 
   //==== EMu CR
-  if(XXX==2){
+  if(WhichRegion==2){
 
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets", "ttbar"};
+    if(UseBinnedDY) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT", "ttbar"};
 
     m.histname_suffix = {
 
@@ -165,7 +174,7 @@ void Draw_CR(int XXX=0){
   //============================
 
   m.histname = {
-    "NEvent", "nPileUp", "nPV",
+    "NEvent", "nPileUp", "nPV", "N_VTX",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
     "dPhi_ll",
@@ -182,7 +191,7 @@ void Draw_CR(int XXX=0){
   };
 
   m.x_title = {
-    "# of events", "# of PU", "# of PV",
+    "# of events", "# of PU", "# of PV", "# of vtx",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton TrkRelIso",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton TrkRelIso",
     "#DeltaR(l_{1},l_{2})",
@@ -199,7 +208,7 @@ void Draw_CR(int XXX=0){
   };
 
   m.units = {
-    "int", "int", "int",
+    "int", "int", "int", "int",
     "GeV", "", "",
     "GeV", "", "",
     "",
@@ -215,7 +224,7 @@ void Draw_CR(int XXX=0){
     "",
   };
 
-
+/*
   m.histname = {
     "Lepton_0_Pt", "Lepton_1_Pt",
   };
@@ -225,7 +234,7 @@ void Draw_CR(int XXX=0){
   m.units = {
     "GeV", "GeV",
   };
-
+*/
 /*
   m.histname = {
     "WRCand_Mass"
@@ -239,10 +248,10 @@ void Draw_CR(int XXX=0){
 */
 /*
   m.histname = {
-    "ZCand_Pt"
+    "HT"
   };
   m.x_title = {
-    "p_{T} of dilepton (GeV)",
+    "H_{T} (GeV)",
   };
   m.units = {
     "GeV",
@@ -337,10 +346,10 @@ void Draw_CR(int XXX=0){
     }
 
     //==== Log plot boolean
-    if(XXX==0) m.UseLogy.push_back(1);
-    if(XXX==1) m.UseLogy.push_back(-1);
-    if(XXX==2) m.UseLogy.push_back(1);
-    if(XXX==3) m.UseLogy.push_back(1);
+    if(WhichRegion==0) m.UseLogy.push_back(1);
+    if(WhichRegion==1) m.UseLogy.push_back(-1);
+    if(WhichRegion==2) m.UseLogy.push_back(1);
+    if(WhichRegion==3) m.UseLogy.push_back(1);
 
     if(ScaleMC) m.ApplyMCNormSF.push_back(true);
     else m.ApplyMCNormSF.push_back(false);
@@ -465,6 +474,7 @@ void Draw_CR(int XXX=0){
   //===============================
 
   m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/"+TString::Itoa(Year,10)+"/";;
+
   if(UseBinnedDY) m.plotpath += "/BinnedDY/";
   if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
   if(UsePromptMC) m.plotpath += "/UsePromptMC/";

@@ -9,7 +9,6 @@ void Get_DYPtReweight(int xxx=0){
   if(xxx==1) Year = "2017";
   if(xxx==2) Year = "2018";
   
-
   int nrebin = 50;
 
   gStyle->SetOptStat(0);
@@ -22,7 +21,7 @@ void Get_DYPtReweight(int xxx=0){
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/DYPtReweight/"+Year+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/DYPtReweight/"+Year+"/TestSignalToplogy/";
 
 
   if( !gSystem->mkdir(base_plotpath, kTRUE) ){
@@ -83,6 +82,7 @@ void Get_DYPtReweight(int xxx=0){
     }
 
     TString dirname = "HNWR_Single"+leptonFlavour+"_OnZ";
+    dirname = "HNWR_Single"+leptonFlavour+"_Resolved_DYCR";
     TString histname = "ZCand_Pt_"+dirname;
 
     TFile *file_DATA = new TFile(base_filepath+"/HNWRAnalyzer_data_Single"+leptonFlavour+".root");
@@ -110,17 +110,22 @@ void Get_DYPtReweight(int xxx=0){
     TCanvas *c_shape = new TCanvas("c_shape", "", 600, 600);
     canvas_margin(c_shape);
     c_shape->cd();
+
     hist_DATA->SetLineColor(kBlack);
     hist_DY50->SetLineColor(kRed);
     hist_DATA->SetLineWidth(3);
     hist_DY50->SetLineWidth(3);
+
     hist_axis(hist_DATA);
+
     hist_DATA->Draw("histsame");
     hist_DY50->Draw("histsame");
+
     TLegend *lg_shape = new TLegend(0.6, 0.8, 0.9, 0.9);
     lg_shape->AddEntry(hist_DATA, "Data");
     lg_shape->AddEntry(hist_DY50, "MC");
     lg_shape->Draw();
+
     hist_DATA->GetXaxis()->SetRangeUser(0., 1000.);
     hist_DATA->GetYaxis()->SetTitle("Shape");
     hist_DATA->GetXaxis()->SetTitle("p_{T} of dilepton (GeV)");
@@ -130,6 +135,7 @@ void Get_DYPtReweight(int xxx=0){
 
     //==== ratio
 
+    c_reweight->cd();
     TH1D *hist_ratio = (TH1D *)hist_DATA->Clone();
     for(int z=1; z<=hist_DATA->GetXaxis()->GetNbins(); z++){
       double y_DATA = hist_DATA->GetBinContent(z);
@@ -149,13 +155,13 @@ void Get_DYPtReweight(int xxx=0){
       hist_ratio->SetBinError(z, err_ratio);
     }
 
-    hist_ratio->GetYaxis()->SetRangeUser(0., 3.0);
-    hist_ratio->GetXaxis()->SetRangeUser(0., 1000.);
 
     if(it_fl==0){
       hist_axis(hist_ratio);
       hist_ratio->SetLineColor(kRed);
       hist_ratio->GetYaxis()->SetTitle("Reweight");
+      hist_ratio->GetYaxis()->SetRangeUser(0.7, 1.3);
+      hist_ratio->GetXaxis()->SetRangeUser(0., 1000.);
     }
     else{
       hist_ratio->SetLineColor(kBlue);

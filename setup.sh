@@ -23,7 +23,7 @@ export CATANVERSION="Run2Legacy_v1__Default"
 alias lqout='cd '$PLOT_PATH
 alias webout='cd '$WWW_PLOT_PATH
 alias pl='rsync -auv --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
-alias makehtml='python ~/make_html_master.py --To=HNWR_13TeV'
-alias makehtml2='python ~/make_html_master.py --To=HNWR_13TeV --From=*/'
+alias makehtml='make_html_master --To=HNWR_13TeV'
+alias makehtml2='make_html_master --To=HNWR_13TeV --From=*/'
 
 mkdir -p $FILE_PATH/$CATANVERSION

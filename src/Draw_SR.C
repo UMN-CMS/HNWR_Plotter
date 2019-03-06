@@ -1,15 +1,14 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_SR(int XXX=0){
+void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 
-  bool ScaleMC = true;
-  bool UseEMuMethod = true;
+  bool UseEMuMethod = false;
 
   bool UseBinnedDY = false;
   bool UsePromptMC = false;
 
-  int Year = 2017;
+  int Year = 2016;
 
   //==============
   //==== get env
@@ -50,7 +49,7 @@ void Draw_SR(int XXX=0){
     m.map_sample_string_to_list["DY"] = {"DYJets10to50", "DYJets"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TT_powheg"};
 
     m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
@@ -66,13 +65,13 @@ void Draw_SR(int XXX=0){
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
     m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
     m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
     m.map_sample_string_to_list["fake"] = {"fake"};
-	  m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+	  m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLL_powheg", "TTLJ_powheg"};
 
     m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
     m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
@@ -117,7 +116,7 @@ void Draw_SR(int XXX=0){
   //============================
   
   m.histname = {
-    "NEvent", "nPileUp", "nPV",
+    "NEvent", "nPileUp", "nPV", "N_VTX",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
     "dPhi_ll",
@@ -134,7 +133,7 @@ void Draw_SR(int XXX=0){
   };
 
   m.x_title = {
-    "# of events", "# of PU", "# of PV",
+    "# of events", "# of PU", "# of PV", "# of vtx",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton TrkRelIso",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton TrkRelIso",
     "#DeltaR(l_{1},l_{2})",
@@ -151,7 +150,7 @@ void Draw_SR(int XXX=0){
   };
 
   m.units = {
-    "int", "int", "int",
+    "int", "int", "int", "int",
     "GeV", "", "",
     "GeV", "", "",
     "",
@@ -432,6 +431,7 @@ void Draw_SR(int XXX=0){
 
   m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_xaxis.txt");
 
+return;
   //===============
   //==== k-factor
   //===============
@@ -450,6 +450,12 @@ void Draw_SR(int XXX=0){
 
   if(UseEMuMethod) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/EMuMethod/";
   else            m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
+
+/*
+  if(UseEMuMethod) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR_NoSDMass/"+TString::Itoa(Year,10)+"/EMuMethod/";
+  else            m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR_NoSDMass/"+TString::Itoa(Year,10)+"/";
+*/
+
 
   m.make_plot_directory();
   

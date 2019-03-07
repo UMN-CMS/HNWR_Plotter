@@ -3,7 +3,7 @@
 
 void Get_EMuRatio(int xxx=0){
 
-  //gErrorIgnoreLevel = kFatal;
+  bool DrawCompPlot = false;
 
   setTDRStyle();
 
@@ -97,7 +97,7 @@ void Get_EMuRatio(int xxx=0){
   vector<int> rebins = {
     1,
     100,
-    100,
+    -1,
   };
 
   vector<TString> vars_to_draw = {
@@ -169,6 +169,15 @@ void Get_EMuRatio(int xxx=0){
         else{
 
           if(var=="WRCand_Mass"){
+            vector<double> vec_bins;
+            if(it_SR==0) vec_bins = {0, 200, 400, 600, 800, 1000, 1500, 2000, 8000};
+            else vec_bins = {0, 200, 400, 600, 800, 1000, 8000};
+            const int n_bin = vec_bins.size()-1;
+            double ptArray[n_bin+1];
+            for(int zzz=0;zzz<vec_bins.size();zzz++) ptArray[zzz] = vec_bins.at(zzz);
+            hist_EE = (TH1D *)hist_EE->Rebin(n_bin, hist_EE->GetName(), ptArray);
+            hist_MM = (TH1D *)hist_MM->Rebin(n_bin, hist_MM->GetName(), ptArray);
+            hist_EM = (TH1D *)hist_EM->Rebin(n_bin, hist_EM->GetName(), ptArray);
 
           }
 
@@ -328,7 +337,10 @@ void Get_EMuRatio(int xxx=0){
           hist_Pred_MM->Write();
           outfile->cd();
 
+
           //==== Make comparison plot
+
+          if(!DrawCompPlot) continue;
 
           //==== 1) EE
 
@@ -464,7 +476,7 @@ void Get_EMuRatio(int xxx=0){
             c_comp_EE->Close();
           }
 
-          //==== 1) MM
+          //==== 2) MM
 
           //==== observed (clonMMd from TTLL)
           TH1D *hist_Obs_MM = (TH1D *)file_TTLL->Get(region_MM+"/"+var+"_"+region_MM);
@@ -606,6 +618,10 @@ void Get_EMuRatio(int xxx=0){
           outfile->cd(region_EE);
           hist_Pred_EE->Write();
           outfile->cd();
+
+          //==== Make comparison plot
+
+          if(!DrawCompPlot) continue;
 
           //==== 1) EE
 
@@ -751,6 +767,10 @@ void Get_EMuRatio(int xxx=0){
           hist_Pred_MM->Write();
           outfile->cd();
 
+          //==== Make comparison plot
+
+          if(!DrawCompPlot) continue;
+
           //==== 1) MM
 
           //==== observed (clonMMd from TTLL)
@@ -884,7 +904,7 @@ void Get_EMuRatio(int xxx=0){
             c_comp_MM->Close();
           }
 
-        }
+        } // END if SR2
 
       } // END vars_to_draw
 

@@ -40,6 +40,9 @@ void Get_EMuRatio(int xxx=0){
       "TTLL_powheg",
       "TTLJ_powheg",
       "TTLX_powheg",
+      "TTLL_powheg_NoTrigger",
+      "TTLJ_powheg_NoTrigger",
+      "TTLX_powheg_NoTrigger",
     };
 
     asym_samples = {
@@ -65,7 +68,6 @@ void Get_EMuRatio(int xxx=0){
 "DYJets",
 "DYJets10to50_MG",
 "TTG",
-"TTLJ_powheg", "TTJJ_powheg",
 "WJets_MG",
 "WWW",
 "WWZ",

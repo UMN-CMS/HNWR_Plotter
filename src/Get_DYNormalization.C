@@ -41,14 +41,14 @@ void Get_DYNormalization(int xxx=0){
     bkgds = {
       "WJets_MG",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
-      "TT_powheg",
+      "TTLL_powheg", "TTLJ_powheg",
     };
 
   }
   if(Year=="2017"){
 
     bkgds = {
-      "TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg",
+      "TTLL_powheg", "TTLJ_powheg",
       "WJets_MG",
       "ttW", "ttZ", "TTG",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",

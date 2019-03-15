@@ -6,8 +6,15 @@ void Get_DYPtReweight(int xxx=0){
   setTDRStyle();
 
   TString Year = "2016";
-  if(xxx==1) Year = "2017";
-  if(xxx==2) Year = "2018";
+  TString TotalLumi = "35.9 fb^{-1} (13 TeV)";
+  if(xxx==1){
+    Year = "2017";
+    TotalLumi = "41.5 fb^{-1} (13 TeV)";
+  }
+  if(xxx==2){
+    Year = "2018";
+    TotalLumi = "60. fb^{-1} (13 TeV)";
+  }
   
   int nrebin = 50;
 
@@ -21,7 +28,7 @@ void Get_DYPtReweight(int xxx=0){
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/DYPtReweight/"+Year+"/TestSignalToplogy/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/DYPtReweight/"+Year+"/";
 
 
   if( !gSystem->mkdir(base_plotpath, kTRUE) ){
@@ -42,14 +49,14 @@ void Get_DYPtReweight(int xxx=0){
     bkgds = {
       "WJets_MG",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
-      "TT_powheg",
+      "TTLL_powheg", "TTLJ_powheg",
     };
 
   }
   if(Year=="2017"){
 
     bkgds = {
-      "TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg",
+      "TTLL_powheg", "TTLJ_powheg",
       "WJets_MG",
       "ttW", "ttZ", "TTG",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
@@ -82,7 +89,6 @@ void Get_DYPtReweight(int xxx=0){
     }
 
     TString dirname = "HNWR_Single"+leptonFlavour+"_OnZ";
-    dirname = "HNWR_Single"+leptonFlavour+"_Resolved_DYCR";
     TString histname = "ZCand_Pt_"+dirname;
 
     TFile *file_DATA = new TFile(base_filepath+"/HNWRAnalyzer_data_Single"+leptonFlavour+".root");
@@ -183,6 +189,17 @@ void Get_DYPtReweight(int xxx=0){
 
   c_reweight->cd();
   lg_ratio->Draw();
+
+  TLatex latex_CMSPriliminary, latex_Lumi;
+  latex_CMSPriliminary.SetNDC();
+  latex_Lumi.SetNDC();
+  latex_CMSPriliminary.SetTextSize(0.035);
+  latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+
+  latex_Lumi.SetTextSize(0.035);
+  latex_Lumi.SetTextFont(42);
+  latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
+
   c_reweight->SaveAs(base_plotpath+"/Reweight.pdf");
   c_reweight->SaveAs(base_plotpath+"/Reweight.png");
   c_reweight->Close();

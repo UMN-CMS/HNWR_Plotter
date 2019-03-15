@@ -5,9 +5,9 @@ void Draw_CR(int WhichRegion=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 
   //bool ScaleMC = false;
   //bool UseDYPtReweight = false;
-  int Year = 2017;
+  int Year = 2016;
 
-  bool UseBinnedDY = true;
+  bool UseBinnedDY = false;
   bool UsePromptMC = false;
 
   //==============
@@ -248,10 +248,10 @@ void Draw_CR(int WhichRegion=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 */
 /*
   m.histname = {
-    "HT"
+    "ZCand_Pt",
   };
   m.x_title = {
-    "H_{T} (GeV)",
+    "p_{T} of dilepton (GeV)",
   };
   m.units = {
     "GeV",

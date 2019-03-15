@@ -1,9 +1,9 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
+void Draw_SR(int XXX=0){
 
-  bool UseEMuMethod = false;
+  bool ScaleMC = true;
 
   bool UseBinnedDY = false;
   bool UsePromptMC = false;
@@ -46,45 +46,58 @@ void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["DY"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TT_powheg"};
 
-    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("Z+Jets", kRed-2);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jetse", 870);
+    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", 870);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
     m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
   }
   else if(Year==2017){
 
-    m.map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TT_powheg"};
     m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
     m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
     m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
     m.map_sample_string_to_list["fake"] = {"fake"};
-	  m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLL_powheg", "TTLJ_powheg"};
 
-    m.map_sample_string_to_legendinfo["DY"] = make_pair("DY", kYellow);
-    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("DY", kYellow);
-    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W", kCyan);
+    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("Z+Jets", kRed-2);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
+    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
     m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
 
   }
 
@@ -96,8 +109,7 @@ void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 
   //==== One Lepton
   if(XXX==0){
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "ttbar"};
-    if(UseEMuMethod) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "DY", "EMuMethod"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_Reweighted", "EMuMethod"};
 
     m.histname_suffix = {
 
@@ -129,7 +141,7 @@ void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
     "Jet_Size", "NBJets",
     "NCand_Mass", "WRCand_Mass",
     "NCand_Pt", "WRCand_Pt",
-    "LSFFatJet_Size",
+    "LSFFatJet_Size", "Lepton_Size", "OFLepton_Size",
   };
 
   m.x_title = {
@@ -146,7 +158,7 @@ void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
     "# of jets", "# of b-tagged jets",
     "m_{N} (GeV)", "m_{W_{R}} (GeV)",
     "p_{T} of N (GeV)", "p_{T} of W (GeV)",
-    "# of merged jets",
+    "# of merged jets", "# of leptons", "# of OF leptons",
   };
 
   m.units = {
@@ -163,7 +175,7 @@ void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
     "int", "int",
     "GeV", "GeV",
     "GeV", "GeV",
-    "",
+    "", "int", "int",
   };
 
 /*
@@ -431,7 +443,6 @@ void Draw_SR(int XXX=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 
   m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_xaxis.txt");
 
-return;
   //===============
   //==== k-factor
   //===============
@@ -448,14 +459,7 @@ return;
   //==== prepare plot directories
   //===============================
 
-  if(UseEMuMethod) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/EMuMethod/";
-  else            m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
-
-/*
-  if(UseEMuMethod) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR_NoSDMass/"+TString::Itoa(Year,10)+"/EMuMethod/";
-  else            m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR_NoSDMass/"+TString::Itoa(Year,10)+"/";
-*/
-
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
 
   m.make_plot_directory();
   

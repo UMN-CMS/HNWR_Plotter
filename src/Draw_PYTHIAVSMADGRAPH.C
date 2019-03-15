@@ -53,17 +53,24 @@ void Draw_PYTHIAVSMADGRAPH(){
     "M_gen_N",
     "M_gen_priLepAndN",
     "M_gen_WRStar",
+
     "dR_gen_WRStar",
     "dR_gen_WRStar_gen_secLep",
+
     "Pt_gen_priLep",
     "Pt_gen_secLep",
     "Pt_gen_N",
     "Pt_gen_WRStar",
+    "Pt_gen_LeadJet",
+    "Pt_gen_SubleadJet",
     "Pt_gen_priLepAndN",
+
     "Eta_gen_priLep",
     "Eta_gen_secLep",
     "Eta_gen_N",
     "Eta_gen_WRStar",
+    "Eta_gen_LeadJet",
+    "Eta_gen_SubleadJet",
     "Eta_gen_priLepAndN",
   };
   vector<TString> aliases = {
@@ -71,17 +78,24 @@ void Draw_PYTHIAVSMADGRAPH(){
     "m(N) (GeV)",
     "m(W_{R}) (GeV)",
     "m(dijet) (GeV)",
+
     "#DeltaR of the two jets",
     "#DeltaR(dijet,l_{sec})",
+
     "p_{T} of l_{pri} (GeV)",
     "p_{T} of l_{sec} (GeV)", 
     "p_{T} of N (GeV)",
     "p_{T} of dijet (GeV)",
+    "p_{T} of j_{Lead} (GeV)",
+    "p_{T} of j_{Sublead} (GeV)",
     "p_{T} of W_{R} (GeV)",
+
     "#eta of l_{pri}",
     "#eta of l_{sec}",
     "#eta of N",
     "#eta of dijet",
+    "#eta of j_{Lead} (GeV)",
+    "#eta of j_{Sublead} (GeV)",
     "#eta of W_{R}",
   };
   vector<int> rebins = {
@@ -89,13 +103,20 @@ void Draw_PYTHIAVSMADGRAPH(){
     1,
     10,
     10,
+
     1,
     1,
+
     50,
     50,
     50,
     50,
+    20,
+    20,
     50,
+
+    5,
+    5,
     5,
     5,
     5,
@@ -107,6 +128,10 @@ void Draw_PYTHIAVSMADGRAPH(){
     0.,
     0.,
     0.,
+
+    0.,
+    0.,
+
     0.,
     0.,
     0.,
@@ -114,6 +139,9 @@ void Draw_PYTHIAVSMADGRAPH(){
     0.,
     0.,
     0.,
+
+    -6.,
+    -6.,
     -6.,
     -6.,
     -6.,
@@ -125,13 +153,20 @@ void Draw_PYTHIAVSMADGRAPH(){
     4000,
     4000,
     4000,
+
     6.,
     6.,
+
     2500.,
     1500.,
     3000.,
     2500.,
+    500.,
+    500.,
     1000.,
+
+    6.,
+    6.,
     6.,
     6.,
     6.,

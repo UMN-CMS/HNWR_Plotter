@@ -174,7 +174,7 @@ void Draw_FastVSFull(){
       c1->Draw();
       TH1D *hist_dummy = NULL;
 
-      TLegend *lg = new TLegend(0.45, 0.70, 0.9, 0.93);
+      TLegend *lg = new TLegend(0.45, 0.55, 0.9, 0.93);
       lg->SetBorderSize(0);
       lg->SetFillStyle(0);
 
@@ -220,13 +220,13 @@ void Draw_FastVSFull(){
 
         }
 
-        hist_Fast->SetLineStyle(1);
-        hist_Full->SetLineStyle(3);
+        hist_Fast->SetLineStyle(3);
+        hist_Full->SetLineStyle(1);
         hist_FullMG->SetLineStyle(5);
 
         hist_Fast->Draw("histsame");
         hist_Full->Draw("histsame");
-        hist_FullMG->Draw("histsame");
+        //hist_FullMG->Draw("histsame");
 
         if(var=="fatjet_matched_gen_N__LSF"){
           int int_Start = hist_Fast->FindBin(0.7);

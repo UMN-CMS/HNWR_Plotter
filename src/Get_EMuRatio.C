@@ -1,14 +1,23 @@
 #include "canvas_margin.h"
 #include "mylib.h"
+#include "ObsPredComp.h"
 
 void Get_EMuRatio(int xxx=0){
 
-  bool DrawCompPlot = false;
+  bool DrawCompPlot = true;
 
   setTDRStyle();
 
   TString Year = "2016";
-  if(xxx==1) Year = "2017";
+  TString TotalLumi = "35.9 fb^{-1} (13 TeV)";
+  if(xxx==1){
+    Year = "2017";
+    TotalLumi = "41.5 fb^{-1} (13 TeV)";
+  }
+  if(xxx==2){
+    Year = "2018";
+    TotalLumi = "60. fb^{-1} (13 TeV)";
+  }
 
   gStyle->SetOptStat(0);
 
@@ -40,9 +49,6 @@ void Get_EMuRatio(int xxx=0){
       "TTLL_powheg",
       "TTLJ_powheg",
       "TTLX_powheg",
-      "TTLL_powheg_NoTrigger",
-      "TTLJ_powheg_NoTrigger",
-      "TTLX_powheg_NoTrigger",
     };
 
     asym_samples = {
@@ -103,6 +109,7 @@ void Get_EMuRatio(int xxx=0){
   };
 
   vector<TString> vars_to_draw = {
+
     "NEvent", "nPileUp", "nPV",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
@@ -117,6 +124,8 @@ void Get_EMuRatio(int xxx=0){
     "NCand_Mass", "WRCand_Mass",
     "NCand_Pt", "WRCand_Pt",
     "LSFFatJet_Size",
+
+//"WRCand_Mass"
   };
 
   TFile *file_TTLL = new TFile(base_filepath+"/HNWRAnalyzer_TTLL_powheg.root");
@@ -319,32 +328,25 @@ void Get_EMuRatio(int xxx=0){
             file_asym->Close();
             continue;
           }
+
           hist_EMu->Add(hist_asym,-1.);
           file_asym->Close();
         }
 
-        if(it_SR==0){
-          TH1D *hist_Pred_EE = (TH1D *)hist_EMu->Clone();
-          TH1D *hist_Pred_MM = (TH1D *)hist_EMu->Clone();
-
-          hist_Pred_EE->Scale(ratios.at(0));
-          hist_Pred_EE->SetName(var+"_"+region_EE);
-          outfile->cd(region_EE);
-          hist_Pred_EE->Write();
-          outfile->cd();
-
-          hist_Pred_MM->Scale(ratios.at(1));
-          hist_Pred_MM->SetName(var+"_"+region_MM);
-          outfile->cd(region_MM);
-          hist_Pred_MM->Write();
-          outfile->cd();
-
+        if(it_SR==0 || it_SR==1){
 
           //==== Make comparison plot
 
           if(!DrawCompPlot) continue;
 
           //==== 1) EE
+
+          TH1D *hist_Pred_EE = (TH1D *)hist_EMu->Clone();
+          hist_Pred_EE->Scale(ratios.at(0));
+          hist_Pred_EE->SetName(var+"_"+region_EE);
+          outfile->cd(region_EE);
+          hist_Pred_EE->Write();
+          outfile->cd();
 
           //==== observed (cloneed from TTLL)
           TH1D *hist_Obs_EE = (TH1D *)file_TTLL->Get(region_EE+"/"+var+"_"+region_EE);
@@ -359,423 +361,33 @@ void Get_EMuRatio(int xxx=0){
             hist_Pred_EE->Rebin(n_rebin);
             hist_Obs_EE->Rebin(n_rebin);
 
-            //==== canvas
-            TCanvas *c_comp_EE = new TCanvas("c_comp_EE", "", 800, 800);
-            TPad *c1_up_EE;
-            TPad *c1_down_EE;
-            c1_up_EE = new TPad("c1_EE", "", 0, 0.25, 1, 1);
-            c1_down_EE = new TPad("c1_down_EE", "", 0, 0, 1, 0.25);
-            canvas_margin(c_comp_EE, c1_up_EE, c1_down_EE);
+            //==== Draw
 
-            c1_up_EE->Draw();
-            c1_down_EE->Draw();
+            ObsPredComp m_EE;
+            m_EE.hist_Obs = hist_Obs_EE;
+            m_EE.hist_Pred = hist_Pred_EE;
+            m_EE.alias_Obs = "MC";
+            m_EE.alias_Pred = "e#mu-sideband";
+            m_EE.x_title = var;
+            m_EE.Logy = true;
+            m_EE.TotalLumi = TotalLumi;
+            m_EE.outputpath = base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_EE+"_"+sym_sample;
+            m_EE.Run();
 
-            //==== up
-
-            c1_up_EE->cd();
-            c1_up_EE->SetLogy();
-
-            //==== Pred
-            hist_Pred_EE->SetFillColor(kOrange);
-            hist_Pred_EE->SetLineColor(kOrange);
-            hist_Pred_EE->Draw("hist");
-
-            TH1D *hist_Pred_err_EE = (TH1D *)hist_Pred_EE->Clone();
-            hist_Pred_err_EE->SetMarkerColor(0);
-            hist_Pred_err_EE->SetMarkerSize(0);
-            hist_Pred_err_EE->SetFillStyle(3013);
-            hist_Pred_err_EE->SetFillColor(kBlack);
-            hist_Pred_err_EE->SetLineColor(0);
-            hist_Pred_err_EE->Draw("sameE2");
-
-            hist_Pred_EE->GetYaxis()->SetRangeUser(1., 10.*max( GetMaximum(hist_Pred_EE), GetMaximum(hist_Obs_EE) ) );
-
-            //==== Obs
-            hist_Obs_EE->SetMarkerStyle(20);
-            hist_Obs_EE->SetMarkerSize(1.2);
-
-            TGraphAsymmErrors *gr_Obs_EE = new TGraphAsymmErrors(hist_Obs_EE);
-            for(int i=0; i<gr_Obs_EE->GetN(); ++i){
-              gr_Obs_EE->SetPointEXlow(i, 0);
-              gr_Obs_EE->SetPointEXhigh(i, 0);
-            }
-            gr_Obs_EE->SetLineWidth(2.0);
-            gr_Obs_EE->SetMarkerSize(0.);
-            gr_Obs_EE->SetMarkerColor(kBlack);
-            gr_Obs_EE->SetLineColor(kBlack);
-            hist_Obs_EE->Draw("phistsame");
-            gr_Obs_EE->Draw("p0same");
-
-
-            //==== down
-
-            c1_down_EE->cd();
-
-            TH1D *tmp_ratio_point_EE = (TH1D *)hist_Obs_EE->Clone();
-            tmp_ratio_point_EE->Divide(hist_Pred_EE);
-            TGraphAsymmErrors *gr_ratio_point_EE = new TGraphAsymmErrors(tmp_ratio_point_EE);
-            gr_ratio_point_EE->SetLineWidth(2.0);
-            gr_ratio_point_EE->SetMarkerSize(0.);
-            gr_ratio_point_EE->SetLineColor(kBlack);
-
-            TH1D *hist_empty_bottom_EE = (TH1D *)hist_Obs_EE->Clone();
-            hist_empty_bottom_EE->GetYaxis()->SetRangeUser(0.,2.0);
-            hist_empty_bottom_EE->SetNdivisions(504,"Y");
-            hist_empty_bottom_EE->GetYaxis()->SetRangeUser(0.5,1.5);
-            hist_empty_bottom_EE->GetXaxis()->SetTitle(var);
-            hist_empty_bottom_EE->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
-            hist_empty_bottom_EE->SetFillColor(0);
-            hist_empty_bottom_EE->SetFillStyle(0);
-            hist_empty_bottom_EE->SetMarkerSize(0);
-            hist_empty_bottom_EE->SetMarkerStyle(0);
-            hist_empty_bottom_EE->SetLineColor(kWhite);
-            hist_empty_bottom_EE->Draw("axis");
-            hist_axis(hist_Pred_EE, hist_empty_bottom_EE);
-
-            TH1D *hist_ratio_EE = (TH1D *)hist_Obs_EE->Clone();
-            TH1D *hist_ratio_err_EE = (TH1D *)hist_Obs_EE->Clone();
-            for(int i=1; i<=hist_ratio_EE->GetXaxis()->GetNbins(); i++){
-              //==== FIXME for zero? how?
-              if(hist_Pred_EE->GetBinContent(i)!=0){
-
-                //==== ratio point
-                //==== BinContent = Data/Bkgd
-                //==== BinError = DataError/Bkgd
-                hist_ratio_EE->SetBinContent( i, hist_ratio_EE->GetBinContent(i) / hist_Pred_EE->GetBinContent(i) );
-                hist_ratio_EE->SetBinError ( i, hist_ratio_EE->GetBinError(i) / hist_Pred_EE->GetBinContent(i) );
-                gr_ratio_point_EE->SetPointEXlow(i-1, 0);
-                gr_ratio_point_EE->SetPointEXhigh(i-1, 0);
-
-                hist_ratio_err_EE->SetBinContent( i, 1.);
-                hist_ratio_err_EE->SetBinError( i, hist_Pred_EE->GetBinError(i) / hist_Pred_EE->GetBinContent(i) );
-
-
-              }
-              else{
-                hist_ratio_EE->SetBinContent( i, 0 );
-                hist_ratio_EE->SetBinError ( i, 0 );
-                gr_ratio_point_EE->SetPoint(i-1, 0, 0);
-                gr_ratio_point_EE->SetPointEYlow(i-1, 0);
-                gr_ratio_point_EE->SetPointEXlow(i-1, 0);
-                gr_ratio_point_EE->SetPointEYhigh(i-1, 0);
-                gr_ratio_point_EE->SetPointEXhigh(i-1, 0);
-                hist_ratio_err_EE->SetBinContent( i, 1.);
-                hist_ratio_err_EE->SetBinError( i, 0.);
-              }
-            }
-
-            hist_ratio_err_EE->SetFillColor(kGray);
-            hist_ratio_err_EE->SetMarkerSize(0);
-            hist_ratio_err_EE->SetMarkerStyle(0);
-            hist_ratio_err_EE->SetLineColor(kWhite);
-            hist_ratio_err_EE->Draw("E2same");
-
-            hist_ratio_EE->Draw("p9histsame");
-            gr_ratio_point_EE->Draw("p0same");
-
-            c_comp_EE->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_EE+"_"+sym_sample+".pdf");
-            c_comp_EE->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_EE+"_"+sym_sample+".png");
-            c_comp_EE->Close();
           }
+        }
 
+        if(it_SR==0 || it_SR==2){
           //==== 2) MM
 
-          //==== observed (clonMMd from TTLL)
-          TH1D *hist_Obs_MM = (TH1D *)file_TTLL->Get(region_MM+"/"+var+"_"+region_MM);
-          //==== trkiso etc.. sometimes there is no histogram
-          if(hist_Obs_MM){
-
-            //==== Add TTLJ
-            TH1D *hist_TTLJ_MM = (TH1D *)file_TTLJ->Get(region_MM+"/"+var+"_"+region_MM);
-            if(hist_TTLJ_MM) hist_Obs_MM->Add(hist_TTLJ_MM);
-
-            //==== rebin
-            hist_Pred_MM->Rebin(n_rebin);
-            hist_Obs_MM->Rebin(n_rebin);
-
-            //==== canvas
-            TCanvas *c_comp_MM = new TCanvas("c_comp_MM", "", 800, 800);
-            TPad *c1_up_MM;
-            TPad *c1_down_MM;
-            c1_up_MM = new TPad("c1_MM", "", 0, 0.25, 1, 1);
-            c1_down_MM = new TPad("c1_down_MM", "", 0, 0, 1, 0.25);
-            canvas_margin(c_comp_MM, c1_up_MM, c1_down_MM);
-
-            c1_up_MM->Draw();
-            c1_down_MM->Draw();
-
-            //==== up
-
-            c1_up_MM->cd();
-            c1_up_MM->SetLogy();
-
-            //==== Pred
-            hist_Pred_MM->SetFillColor(kOrange);
-            hist_Pred_MM->SetLineColor(kOrange);
-            hist_Pred_MM->Draw("hist");
-
-            TH1D *hist_Pred_err_MM = (TH1D *)hist_Pred_MM->Clone();
-            hist_Pred_err_MM->SetMarkerColor(0);
-            hist_Pred_err_MM->SetMarkerSize(0);
-            hist_Pred_err_MM->SetFillStyle(3013);
-            hist_Pred_err_MM->SetFillColor(kBlack);
-            hist_Pred_err_MM->SetLineColor(0);
-            hist_Pred_err_MM->Draw("sameE2");
-
-            hist_Pred_MM->GetYaxis()->SetRangeUser(1., 10.*max( GetMaximum(hist_Pred_MM), GetMaximum(hist_Obs_MM) ) );
-
-            //==== Obs
-            hist_Obs_MM->SetMarkerStyle(20);
-            hist_Obs_MM->SetMarkerSize(1.2);
-
-            TGraphAsymmErrors *gr_Obs_MM = new TGraphAsymmErrors(hist_Obs_MM);
-            for(int i=0; i<gr_Obs_MM->GetN(); ++i){
-              gr_Obs_MM->SetPointEXlow(i, 0);
-              gr_Obs_MM->SetPointEXhigh(i, 0);
-            }
-            gr_Obs_MM->SetLineWidth(2.0);
-            gr_Obs_MM->SetMarkerSize(0.);
-            gr_Obs_MM->SetMarkerColor(kBlack);
-            gr_Obs_MM->SetLineColor(kBlack);
-            hist_Obs_MM->Draw("phistsame");
-            gr_Obs_MM->Draw("p0same");
-
-
-            //==== down
-
-            c1_down_MM->cd();
-
-            TH1D *tmp_ratio_point_MM = (TH1D *)hist_Obs_MM->Clone();
-            tmp_ratio_point_MM->Divide(hist_Pred_MM);
-            TGraphAsymmErrors *gr_ratio_point_MM = new TGraphAsymmErrors(tmp_ratio_point_MM);
-            gr_ratio_point_MM->SetLineWidth(2.0);
-            gr_ratio_point_MM->SetMarkerSize(0.);
-            gr_ratio_point_MM->SetLineColor(kBlack);
-
-            TH1D *hist_empty_bottom_MM = (TH1D *)hist_Obs_MM->Clone();
-            hist_empty_bottom_MM->GetYaxis()->SetRangeUser(0.,2.0);
-            hist_empty_bottom_MM->SetNdivisions(504,"Y");
-            hist_empty_bottom_MM->GetXaxis()->SetTitle(var);
-            hist_empty_bottom_MM->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
-            hist_empty_bottom_MM->SetFillColor(0);
-            hist_empty_bottom_MM->SetFillStyle(0);
-            hist_empty_bottom_MM->SetMarkerSize(0);
-            hist_empty_bottom_MM->SetMarkerStyle(0);
-            hist_empty_bottom_MM->SetLineColor(kWhite);
-            hist_empty_bottom_MM->Draw("axis");
-            hist_axis(hist_Pred_MM, hist_empty_bottom_MM);
-
-            TH1D *hist_ratio_MM = (TH1D *)hist_Obs_MM->Clone();
-            TH1D *hist_ratio_err_MM = (TH1D *)hist_Obs_MM->Clone();
-            for(int i=1; i<=hist_ratio_MM->GetXaxis()->GetNbins(); i++){
-              //==== FIXME for zero? how?
-              if(hist_Pred_MM->GetBinContent(i)!=0){
-
-                //==== ratio point
-                //==== BinContent = Data/Bkgd
-                //==== BinError = DataError/Bkgd
-                hist_ratio_MM->SetBinContent( i, hist_ratio_MM->GetBinContent(i) / hist_Pred_MM->GetBinContent(i) );
-                hist_ratio_MM->SetBinError ( i, hist_ratio_MM->GetBinError(i) / hist_Pred_MM->GetBinContent(i) );
-                gr_ratio_point_MM->SetPointEXlow(i-1, 0);
-                gr_ratio_point_MM->SetPointEXhigh(i-1, 0);
-
-                hist_ratio_err_MM->SetBinContent( i, 1.);
-                hist_ratio_err_MM->SetBinError( i, hist_Pred_MM->GetBinError(i) / hist_Pred_MM->GetBinContent(i) );
-
-
-              }
-              else{
-                hist_ratio_MM->SetBinContent( i, 0 );
-                hist_ratio_MM->SetBinError ( i, 0 );
-                gr_ratio_point_MM->SetPoint(i-1, 0, 0);
-                gr_ratio_point_MM->SetPointEYlow(i-1, 0);
-                gr_ratio_point_MM->SetPointEXlow(i-1, 0);
-                gr_ratio_point_MM->SetPointEYhigh(i-1, 0);
-                gr_ratio_point_MM->SetPointEXhigh(i-1, 0);
-                hist_ratio_err_MM->SetBinContent( i, 1.);
-                hist_ratio_err_MM->SetBinError( i, 0.);
-              }
-            }
-
-            hist_ratio_err_MM->SetFillColor(kGray);
-            hist_ratio_err_MM->SetMarkerSize(0);
-            hist_ratio_err_MM->SetMarkerStyle(0);
-            hist_ratio_err_MM->SetLineColor(kWhite);
-            hist_ratio_err_MM->Draw("E2same");
-
-            hist_ratio_MM->Draw("p9histsame");
-            gr_ratio_point_MM->Draw("p0same");
-
-            c_comp_MM->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_MM+"_"+sym_sample+".pdf");
-            c_comp_MM->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_MM+"_"+sym_sample+".png");
-            c_comp_MM->Close();
-          }
-
-        }
-        if(it_SR==1){
-          TH1D *hist_Pred_EE = (TH1D *)hist_EMu->Clone();
-
-          hist_Pred_EE->Scale(ratios.at(0));
-          hist_Pred_EE->SetName(var+"_"+region_EE);
-          outfile->cd(region_EE);
-          hist_Pred_EE->Write();
-          outfile->cd();
-
-          //==== Make comparison plot
-
-          if(!DrawCompPlot) continue;
-
-          //==== 1) EE
-
-          //==== observed (cloneed from TTLL)
-          TH1D *hist_Obs_EE = (TH1D *)file_TTLL->Get(region_EE+"/"+var+"_"+region_EE);
-          //==== trkiso etc.. sometimes there is no histogram
-          if(hist_Obs_EE){
-
-            //==== Add TTLJ
-            TH1D *hist_TTLJ_EE = (TH1D *)file_TTLJ->Get(region_EE+"/"+var+"_"+region_EE);
-            if(hist_TTLJ_EE) hist_Obs_EE->Add(hist_TTLJ_EE);
-
-            //==== rebin
-            hist_Pred_EE->Rebin(n_rebin);
-            hist_Obs_EE->Rebin(n_rebin);
-
-            //==== canvas
-            TCanvas *c_comp_EE = new TCanvas("c_comp_EE", "", 800, 800);
-            TPad *c1_up_EE;
-            TPad *c1_down_EE;
-            c1_up_EE = new TPad("c1_EE", "", 0, 0.25, 1, 1);
-            c1_down_EE = new TPad("c1_down_EE", "", 0, 0, 1, 0.25);
-            canvas_margin(c_comp_EE, c1_up_EE, c1_down_EE);
-
-            c1_up_EE->Draw();
-            c1_down_EE->Draw();
-
-            //==== up
-
-            c1_up_EE->cd();
-            c1_up_EE->SetLogy();
-
-            //==== Pred
-            hist_Pred_EE->SetFillColor(kOrange);
-            hist_Pred_EE->SetLineColor(kOrange);
-            hist_Pred_EE->Draw("hist");
-
-            TH1D *hist_Pred_err_EE = (TH1D *)hist_Pred_EE->Clone();
-            hist_Pred_err_EE->SetMarkerColor(0);
-            hist_Pred_err_EE->SetMarkerSize(0);
-            hist_Pred_err_EE->SetFillStyle(3013);
-            hist_Pred_err_EE->SetFillColor(kBlack);
-            hist_Pred_err_EE->SetLineColor(0);
-            hist_Pred_err_EE->Draw("sameE2");
-
-            hist_Pred_EE->GetYaxis()->SetRangeUser(1., 10.*max( GetMaximum(hist_Pred_EE), GetMaximum(hist_Obs_EE) ) );
-
-            //==== Obs
-            hist_Obs_EE->SetMarkerStyle(20);
-            hist_Obs_EE->SetMarkerSize(1.2);
-
-            TGraphAsymmErrors *gr_Obs_EE = new TGraphAsymmErrors(hist_Obs_EE);
-            for(int i=0; i<gr_Obs_EE->GetN(); ++i){
-              gr_Obs_EE->SetPointEXlow(i, 0);
-              gr_Obs_EE->SetPointEXhigh(i, 0);
-            }
-            gr_Obs_EE->SetLineWidth(2.0);
-            gr_Obs_EE->SetMarkerSize(0.);
-            gr_Obs_EE->SetMarkerColor(kBlack);
-            gr_Obs_EE->SetLineColor(kBlack);
-            hist_Obs_EE->Draw("phistsame");
-            gr_Obs_EE->Draw("p0same");
-
-
-            //==== down
-
-            c1_down_EE->cd();
-
-            TH1D *tmp_ratio_point_EE = (TH1D *)hist_Obs_EE->Clone();
-            tmp_ratio_point_EE->Divide(hist_Pred_EE);
-            TGraphAsymmErrors *gr_ratio_point_EE = new TGraphAsymmErrors(tmp_ratio_point_EE);
-            gr_ratio_point_EE->SetLineWidth(2.0);
-            gr_ratio_point_EE->SetMarkerSize(0.);
-            gr_ratio_point_EE->SetLineColor(kBlack);
-
-            TH1D *hist_empty_bottom_EE = (TH1D *)hist_Obs_EE->Clone();
-            hist_empty_bottom_EE->GetYaxis()->SetRangeUser(0.,2.0);
-            hist_empty_bottom_EE->SetNdivisions(504,"Y");
-            hist_empty_bottom_EE->GetYaxis()->SetRangeUser(0.5,1.5);
-            hist_empty_bottom_EE->GetXaxis()->SetTitle(var);
-            hist_empty_bottom_EE->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
-            hist_empty_bottom_EE->SetFillColor(0);
-            hist_empty_bottom_EE->SetFillStyle(0);
-            hist_empty_bottom_EE->SetMarkerSize(0);
-            hist_empty_bottom_EE->SetMarkerStyle(0);
-            hist_empty_bottom_EE->SetLineColor(kWhite);
-            hist_empty_bottom_EE->Draw("axis");
-            hist_axis(hist_Pred_EE, hist_empty_bottom_EE);
-
-            TH1D *hist_ratio_EE = (TH1D *)hist_Obs_EE->Clone();
-            TH1D *hist_ratio_err_EE = (TH1D *)hist_Obs_EE->Clone();
-            for(int i=1; i<=hist_ratio_EE->GetXaxis()->GetNbins(); i++){
-              //==== FIXME for zero? how?
-              if(hist_Pred_EE->GetBinContent(i)!=0){
-
-                //==== ratio point
-                //==== BinContent = Data/Bkgd
-                //==== BinError = DataError/Bkgd
-                hist_ratio_EE->SetBinContent( i, hist_ratio_EE->GetBinContent(i) / hist_Pred_EE->GetBinContent(i) );
-                hist_ratio_EE->SetBinError ( i, hist_ratio_EE->GetBinError(i) / hist_Pred_EE->GetBinContent(i) );
-                gr_ratio_point_EE->SetPointEXlow(i-1, 0);
-                gr_ratio_point_EE->SetPointEXhigh(i-1, 0);
-
-                hist_ratio_err_EE->SetBinContent( i, 1.);
-                hist_ratio_err_EE->SetBinError( i, hist_Pred_EE->GetBinError(i) / hist_Pred_EE->GetBinContent(i) );
-
-
-              }
-              else{
-                hist_ratio_EE->SetBinContent( i, 0 );
-                hist_ratio_EE->SetBinError ( i, 0 );
-                gr_ratio_point_EE->SetPoint(i-1, 0, 0);
-                gr_ratio_point_EE->SetPointEYlow(i-1, 0);
-                gr_ratio_point_EE->SetPointEXlow(i-1, 0);
-                gr_ratio_point_EE->SetPointEYhigh(i-1, 0);
-                gr_ratio_point_EE->SetPointEXhigh(i-1, 0);
-                hist_ratio_err_EE->SetBinContent( i, 1.);
-                hist_ratio_err_EE->SetBinError( i, 0.);
-              }
-            }
-
-            hist_ratio_err_EE->SetFillColor(kGray);
-            hist_ratio_err_EE->SetMarkerSize(0);
-            hist_ratio_err_EE->SetMarkerStyle(0);
-            hist_ratio_err_EE->SetLineColor(kWhite);
-            hist_ratio_err_EE->Draw("E2same");
-
-            hist_ratio_EE->Draw("p9histsame");
-            gr_ratio_point_EE->Draw("p0same");
-
-            c_comp_EE->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_EE+"_"+sym_sample+".pdf");
-            c_comp_EE->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_EE+"_"+sym_sample+".png");
-            c_comp_EE->Close();
-          }
-
-        }
-        if(it_SR==2){
           TH1D *hist_Pred_MM = (TH1D *)hist_EMu->Clone();
-
           hist_Pred_MM->Scale(ratios.at(1));
           hist_Pred_MM->SetName(var+"_"+region_MM);
           outfile->cd(region_MM);
           hist_Pred_MM->Write();
           outfile->cd();
 
-          //==== Make comparison plot
-
-          if(!DrawCompPlot) continue;
-
-          //==== 1) MM
-
-          //==== observed (clonMMd from TTLL)
+          //==== observed (cloned from TTLL)
           TH1D *hist_Obs_MM = (TH1D *)file_TTLL->Get(region_MM+"/"+var+"_"+region_MM);
           //==== trkiso etc.. sometimes there is no histogram
           if(hist_Obs_MM){
@@ -788,125 +400,22 @@ void Get_EMuRatio(int xxx=0){
             hist_Pred_MM->Rebin(n_rebin);
             hist_Obs_MM->Rebin(n_rebin);
 
-            //==== canvas
-            TCanvas *c_comp_MM = new TCanvas("c_comp_MM", "", 800, 800);
-            TPad *c1_up_MM;
-            TPad *c1_down_MM;
-            c1_up_MM = new TPad("c1_MM", "", 0, 0.25, 1, 1);
-            c1_down_MM = new TPad("c1_down_MM", "", 0, 0, 1, 0.25);
-            canvas_margin(c_comp_MM, c1_up_MM, c1_down_MM);
+            //==== Draw
 
-            c1_up_MM->Draw();
-            c1_down_MM->Draw();
+            ObsPredComp m_MM;
+            m_MM.hist_Obs = hist_Obs_MM;
+            m_MM.hist_Pred = hist_Pred_MM;
+            m_MM.alias_Obs = "MC";
+            m_MM.alias_Pred = "e#mu-sideband";
+            m_MM.x_title = var;
+            m_MM.Logy = true;
+            m_MM.TotalLumi = TotalLumi;
+            m_MM.outputpath = base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_MM+"_"+sym_sample;
+            m_MM.Run();
 
-            //==== up
-
-            c1_up_MM->cd();
-            c1_up_MM->SetLogy();
-
-            //==== Pred
-            hist_Pred_MM->SetFillColor(kOrange);
-            hist_Pred_MM->SetLineColor(kOrange);
-            hist_Pred_MM->Draw("hist");
-
-            TH1D *hist_Pred_err_MM = (TH1D *)hist_Pred_MM->Clone();
-            hist_Pred_err_MM->SetMarkerColor(0);
-            hist_Pred_err_MM->SetMarkerSize(0);
-            hist_Pred_err_MM->SetFillStyle(3013);
-            hist_Pred_err_MM->SetFillColor(kBlack);
-            hist_Pred_err_MM->SetLineColor(0);
-            hist_Pred_err_MM->Draw("sameE2");
-
-            hist_Pred_MM->GetYaxis()->SetRangeUser(1., 10.*max( GetMaximum(hist_Pred_MM), GetMaximum(hist_Obs_MM) ) );
-
-            //==== Obs
-            hist_Obs_MM->SetMarkerStyle(20);
-            hist_Obs_MM->SetMarkerSize(1.2);
-
-            TGraphAsymmErrors *gr_Obs_MM = new TGraphAsymmErrors(hist_Obs_MM);
-            for(int i=0; i<gr_Obs_MM->GetN(); ++i){
-              gr_Obs_MM->SetPointEXlow(i, 0);
-              gr_Obs_MM->SetPointEXhigh(i, 0);
-            }
-            gr_Obs_MM->SetLineWidth(2.0);
-            gr_Obs_MM->SetMarkerSize(0.);
-            gr_Obs_MM->SetMarkerColor(kBlack);
-            gr_Obs_MM->SetLineColor(kBlack);
-            hist_Obs_MM->Draw("phistsame");
-            gr_Obs_MM->Draw("p0same");
-
-
-            //==== down
-
-            c1_down_MM->cd();
-
-            TH1D *tmp_ratio_point_MM = (TH1D *)hist_Obs_MM->Clone();
-            tmp_ratio_point_MM->Divide(hist_Pred_MM);
-            TGraphAsymmErrors *gr_ratio_point_MM = new TGraphAsymmErrors(tmp_ratio_point_MM);
-            gr_ratio_point_MM->SetLineWidth(2.0);
-            gr_ratio_point_MM->SetMarkerSize(0.);
-            gr_ratio_point_MM->SetLineColor(kBlack);
-
-            TH1D *hist_empty_bottom_MM = (TH1D *)hist_Obs_MM->Clone();
-            hist_empty_bottom_MM->GetYaxis()->SetRangeUser(0.,2.0);
-            hist_empty_bottom_MM->SetNdivisions(504,"Y");
-            hist_empty_bottom_MM->GetXaxis()->SetTitle(var);
-            hist_empty_bottom_MM->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
-            hist_empty_bottom_MM->SetFillColor(0);
-            hist_empty_bottom_MM->SetFillStyle(0);
-            hist_empty_bottom_MM->SetMarkerSize(0);
-            hist_empty_bottom_MM->SetMarkerStyle(0);
-            hist_empty_bottom_MM->SetLineColor(kWhite);
-            hist_empty_bottom_MM->Draw("axis");
-            hist_axis(hist_Pred_MM, hist_empty_bottom_MM);
-
-            TH1D *hist_ratio_MM = (TH1D *)hist_Obs_MM->Clone();
-            TH1D *hist_ratio_err_MM = (TH1D *)hist_Obs_MM->Clone();
-            for(int i=1; i<=hist_ratio_MM->GetXaxis()->GetNbins(); i++){
-              //==== FIXME for zero? how?
-              if(hist_Pred_MM->GetBinContent(i)!=0){
-
-                //==== ratio point
-                //==== BinContent = Data/Bkgd
-                //==== BinError = DataError/Bkgd
-                hist_ratio_MM->SetBinContent( i, hist_ratio_MM->GetBinContent(i) / hist_Pred_MM->GetBinContent(i) );
-                hist_ratio_MM->SetBinError ( i, hist_ratio_MM->GetBinError(i) / hist_Pred_MM->GetBinContent(i) );
-                gr_ratio_point_MM->SetPointEXlow(i-1, 0);
-                gr_ratio_point_MM->SetPointEXhigh(i-1, 0);
-
-                hist_ratio_err_MM->SetBinContent( i, 1.);
-                hist_ratio_err_MM->SetBinError( i, hist_Pred_MM->GetBinError(i) / hist_Pred_MM->GetBinContent(i) );
-
-
-              }
-              else{
-                hist_ratio_MM->SetBinContent( i, 0 );
-                hist_ratio_MM->SetBinError ( i, 0 );
-                gr_ratio_point_MM->SetPoint(i-1, 0, 0);
-                gr_ratio_point_MM->SetPointEYlow(i-1, 0);
-                gr_ratio_point_MM->SetPointEXlow(i-1, 0);
-                gr_ratio_point_MM->SetPointEYhigh(i-1, 0);
-                gr_ratio_point_MM->SetPointEXhigh(i-1, 0);
-                hist_ratio_err_MM->SetBinContent( i, 1.);
-                hist_ratio_err_MM->SetBinError( i, 0.);
-              }
-            }
-
-            hist_ratio_err_MM->SetFillColor(kGray);
-            hist_ratio_err_MM->SetMarkerSize(0);
-            hist_ratio_err_MM->SetMarkerStyle(0);
-            hist_ratio_err_MM->SetLineColor(kWhite);
-            hist_ratio_err_MM->Draw("E2same");
-
-            hist_ratio_MM->Draw("p9histsame");
-            gr_ratio_point_MM->Draw("p0same");
-
-            c_comp_MM->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_MM+"_"+sym_sample+".pdf");
-            c_comp_MM->SaveAs(base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_MM+"_"+sym_sample+".png");
-            c_comp_MM->Close();
           }
 
-        } // END if SR2
+        }
 
       } // END vars_to_draw
 

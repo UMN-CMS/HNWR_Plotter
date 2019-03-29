@@ -38,7 +38,11 @@ void Draw_SignalEfficiency(){
   lrsminfo.GetMassMaps();
 
   vector<TString> Configs = {
-    "HNWR",
+    //"HNWR",
+   "HNWRdR0p5",
+   "HNWRdR0p6",
+   "HNWRdR0p7",
+   
   };
 
   vector<TString> regions = {

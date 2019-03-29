@@ -268,34 +268,15 @@ void Plotter::draw_hist(){
 
           //==== MC Norm Scaling
           if(ApplyMCNormSF.at(i_cut)){
-            hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
+            //hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
 
             //==== FIXME for DY
             if(current_sample.Contains("DYJets")){
-              double DYNorm = 1.;
-              if(DataYear==2016){
-                if(PrimaryDataset[i_cut]=="SingleElectron") DYNorm = 0.92341;
-                else if(PrimaryDataset[i_cut]=="SingleMuon") DYNorm = 0.942421;
-                else{
-                  cout << "Wrong DY Norm" << endl;
-                  return;
-                }
-              }
-              else if(DataYear==2017){
-                if(PrimaryDataset[i_cut]=="SingleElectron") DYNorm = 0.907973;
-                else if(PrimaryDataset[i_cut]=="SingleMuon") DYNorm = 0.980094;
-                else{
-                  cout << "Wrong DY Norm" << endl;
-                  return;
-                }
-              }
-              else if(DataYear==2018){
-                cout << "DY NORN NOT YET SUPPORTED" << endl;
-                return;
-              }
-
+              double DYNorm = GetDYNormSF(DataYear, PrimaryDataset[i_cut]);
               hist_final->Scale(DYNorm);
-
+            }
+            else{
+              hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
             }
 
           }
@@ -1497,7 +1478,7 @@ TString Plotter::TotalLumi(){
 
   if(DataYear==2016) return "35.9";
   else if(DataYear==2017) return "41.5";
-  else if(DataYear==2018) return "60.0";
+  else if(DataYear==2018) return "59.74";
   else{
     //cout << "[Plotter::TotalLumi] Wrong DataYear" << DataYear << endl;
     return "35.9";

@@ -223,7 +223,7 @@ void Get_EMuRatio(int xxx=0){
           hist_EE->Draw("histe1");
           hist_axis(hist_EE);
 
-          hist_EE->GetYaxis()->SetRangeUser(0., 1.5);
+          hist_EE->GetYaxis()->SetRangeUser(0., 2.0);
           hist_EE->GetXaxis()->SetTitle(xtitle);
           hist_EE->GetYaxis()->SetTitle("Ratio");
           TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
@@ -234,7 +234,7 @@ void Get_EMuRatio(int xxx=0){
           hist_MM->Draw("histe1");
           hist_axis(hist_MM);
         
-          hist_MM->GetYaxis()->SetRangeUser(0., 1.5);
+          hist_MM->GetYaxis()->SetRangeUser(0., 2.0);
           hist_MM->GetXaxis()->SetTitle(xtitle);
           hist_MM->GetYaxis()->SetTitle("Ratio");
           TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);

@@ -385,6 +385,41 @@ TH1D *GetScaleUpDown(TH1D *hist, double sys){
 
 }
 
+double GetDYNormSF(int DataYear, TString channel){
 
+  double DYNorm = 1.;
+
+  int int_channel(-1); // 0 : ee, 1 : mm
+  if(channel.Contains("Electron")) int_channel = 0;
+  else if(channel.Contains("Muon")) int_channel = 1;
+  else{
+    cout << "(mylib.h) [GetDYNormSF()] : Wrong channel name; " << channel << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  if(DataYear==2016){
+    if(int_channel==0) DYNorm = 0.975387;
+    else if(int_channel==1) DYNorm = 0.942031;
+    else{
+      cout << "Wrong DY Norm" << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+  else if(DataYear==2017){
+    if(int_channel==0) DYNorm = 0.969696;
+    else if(int_channel==1) DYNorm = 0.980224;
+    else{
+      cout << "Wrong DY Norm" << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+  else if(DataYear==2018){
+    cout << "DY NORN NOT YET SUPPORTED" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  return DYNorm;
+
+}
 
 #endif

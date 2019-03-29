@@ -3,10 +3,10 @@
 
 void Draw_Validation(int XXX=0){
 
-  bool ScaleMC = true;
-  bool UseBinnedDY = true;
+  bool ScaleMC = false;
+  bool UseBinnedDY = false;
 
-  int Year = 2017;
+  int Year = 2018;
 
   //==============
   //==== get env
@@ -79,8 +79,12 @@ void Draw_Validation(int XXX=0){
   else if(Year==2018){
 
     m.map_sample_string_to_list["ZJets"] = {"DYJets_MG"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
 
     m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
 

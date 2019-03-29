@@ -1,11 +1,11 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_CR(int WhichRegion=0, bool ScaleMC=false, bool UseDYPtReweight=false){
+void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtReweight=false){
 
   //bool ScaleMC = false;
   //bool UseDYPtReweight = false;
-  int Year = 2016;
+  //int Year = 2017;
 
   bool UseBinnedDY = false;
   bool UsePromptMC = false;

@@ -27,7 +27,7 @@ void Get_DYPtReweight(int xxx=0){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/OnZ/"+Year+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/DYPtReweight/"+Year+"/";
 
 
@@ -72,8 +72,8 @@ void Get_DYPtReweight(int xxx=0){
     samplename_DY50 = "DYJets";
   }
 
-  TFile *file_DY10to50 = new TFile(base_filepath+"/HNWRAnalyzer_"+samplename_DY10to50+".root");
-  TFile *file_DY50 = new TFile(base_filepath+"/HNWRAnalyzer_"+samplename_DY50+".root");
+  TFile *file_DY10to50 = new TFile(base_filepath+"/HNWROnZ_"+samplename_DY10to50+".root");
+  TFile *file_DY50 = new TFile(base_filepath+"/HNWROnZ_"+samplename_DY50+".root");
 
   TCanvas *c_reweight = new TCanvas("c_reweight", "", 600, 600);
   canvas_margin(c_reweight);
@@ -91,12 +91,12 @@ void Get_DYPtReweight(int xxx=0){
     TString dirname = "HNWR_Single"+leptonFlavour+"_OnZ";
     TString histname = "ZCand_Pt_"+dirname;
 
-    TFile *file_DATA = new TFile(base_filepath+"/HNWRAnalyzer_data_Single"+leptonFlavour+".root");
+    TFile *file_DATA = new TFile(base_filepath+"/HNWROnZ_data_Single"+leptonFlavour+".root");
     TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+histname);
 
 
     for(unsigned int it_bkgd=0; it_bkgd<bkgds.size(); it_bkgd++){
-      TFile *file_bkgd = new TFile(base_filepath+"/HNWRAnalyzer_"+bkgds.at(it_bkgd)+".root");
+      TFile *file_bkgd = new TFile(base_filepath+"/HNWROnZ_"+bkgds.at(it_bkgd)+".root");
       TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+histname);
       if(!hist_bkgd) continue;
       hist_DATA->Add(hist_bkgd, -1.);

@@ -13,7 +13,25 @@ void Get_DYNormalization(int xxx=0){
   setTDRStyle();
 
   TString Year = "2016";
-  if(xxx==1) Year = "2017";
+  double LumiError = 0.025;
+  if(xxx==1){
+    Year = "2017";
+    LumiError = 0.023;
+  }
+  else if(xxx==2){
+    Year = "2018";
+    LumiError = 0.025;
+  }
+
+
+  vector<TString> Systs = {
+    "JetRes",
+    "JetEn",
+    "MuonEn",
+    "ElectronRes",
+    "ElectronEn",
+  };
+  Systs.clear(); // FIXME no syst for now
 
   gStyle->SetOptStat(0);
 
@@ -81,25 +99,96 @@ void Get_DYNormalization(int xxx=0){
     }
 
     TString dirname = "HNWR_Single"+leptonFlavour+"_OnZ";
-    TString histname = "ZCand_Mass_"+dirname;
+    TString var = "NEvent";
 
     TFile *file_DATA = new TFile(base_filepath+"/"+filename_prefix+"data_Single"+leptonFlavour+".root");
-    TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+histname);
+    TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+var+"_"+dirname);
 
     for(unsigned int it_bkgd=0; it_bkgd<bkgds.size(); it_bkgd++){
       TFile *file_bkgd = new TFile(base_filepath+"/"+filename_prefix+bkgds.at(it_bkgd)+".root");
-      TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+histname);
+      TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+var+"_"+dirname);
       if(!hist_bkgd) continue;
       hist_DATA->Add(hist_bkgd, -1.);
     }
 
-    TH1D *hist_DY10to50 = (TH1D *)file_DY10to50->Get(dirname+"/"+histname);
-    TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+histname);
-
+    TH1D *hist_DY10to50 = (TH1D *)file_DY10to50->Get(dirname+"/"+var+"_"+dirname);
+    TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
     if(hist_DY10to50) hist_DY50->Add(hist_DY10to50);
 
-    cout << leptonFlavour << "\t" << hist_DATA->Integral() / hist_DY50->Integral() << endl;
+    //==== Central
 
+    double y_DATA = hist_DATA->GetBinContent(1);
+    double y_MC = hist_DY50->GetBinContent(1);
+
+    //==== Stat error
+
+    double RelStatError_DATA = hist_DATA->GetBinError(1) / hist_DATA->GetBinContent(1);
+    double RelStatError_MC = hist_DY50->GetBinError(1) / hist_DY50->GetBinContent(1);
+
+    //==== Syst error
+
+    double RelSystError_MC = 0.;
+
+    //==== norm
+    //==== 1) Xsec
+    double xsec_central = 2075.14;
+    double err_int = 0.33 / xsec_central;
+    double err_pdf = 10.80 / xsec_central;
+    double err_scale = 0.02;
+    //==== sum
+    double NormSyst_Xsec = sqrt( err_int*err_int + err_pdf*err_pdf + err_scale*err_scale);
+    //==== Add
+    RelSystError_MC = sqrt( RelSystError_MC*RelSystError_MC + NormSyst_Xsec*NormSyst_Xsec );
+
+    //==== shape
+    for(unsigned it_Syst=0; it_Syst<Systs.size(); it_Syst++){
+
+      TString Syst = Systs.at(it_Syst);
+
+      TDirectory *dir_Up = (TDirectory *)file_DY50->Get("Syst_"+Syst+"Up_"+dirname);
+      TH1D *hist_Up = NULL;
+      if(dir_Up){
+        hist_Up = (TH1D *)dir_Up->Get( var+"_Syst_"+Syst+"Up_"+dirname );
+      }
+      else{
+        hist_Up = (TH1D *)hist_DY50->Clone();
+      }
+
+      TDirectory *dir_Down = (TDirectory *)file_DY50->Get("Syst_"+Syst+"Down_"+dirname);
+      TH1D *hist_Down = NULL;
+      if(dir_Down){
+        hist_Down = (TH1D *)dir_Down->Get( var+"_Syst_"+Syst+"Down_"+dirname );
+      }
+      else{
+        hist_Down = (TH1D *)hist_DY50->Clone();
+      }
+
+      double y_Up = hist_Up->Integral();
+      double y_Down = hist_Down->Integral();
+
+      double reldiff_Up = fabs(y_Up - y_MC)/y_MC;
+      double reldiff_Down = fabs(y_Down - y_MC)/y_MC;
+
+      double rel_Syst = sqrt( (reldiff_Up*reldiff_Up + reldiff_Down*reldiff_Down) / 2. );
+
+      //cout << "Syst source = " << Syst << " : " << rel_Syst << endl;
+
+      RelSystError_MC = sqrt( RelSystError_MC*RelSystError_MC + rel_Syst*rel_Syst );
+    }
+
+    double SF = y_DATA/y_MC;
+    double SF_StarErr = sqrt(RelStatError_DATA*RelStatError_DATA+RelStatError_MC*RelStatError_MC);
+    double SF_Syst = RelSystError_MC;
+
+    cout << "["<<leptonFlavour<<"]"<< endl;
+/*
+    cout << "SF and relerrors : " << SF << "\t" << SF_StarErr << "\t" << SF_Syst << endl;
+    cout << SF << " " << sqrt(SF_StarErr*SF_StarErr+SF_Syst*SF_Syst) * SF << endl;
+*/
+
+    //cout << std::setprecision (3) << "$" << SF << " \\pm " << SF*SF_StarErr << "\\stat \\pm " << SF*SF_Syst << "\\syst$" << endl;
+
+    printf("%1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", SF, SF*SF_StarErr, SF*SF_Syst);
 
   }
 

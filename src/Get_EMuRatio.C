@@ -4,19 +4,25 @@
 
 void Get_EMuRatio(int xxx=0){
 
+  TString filename_prefix = "HNWRAnalyzer_";
+  //==== FIXME temp 2018
+  if(xxx!=2) filename_prefix += "SkimTree_LRSMHighPt_";
+
+  gErrorIgnoreLevel = kFatal;
+
   bool DrawCompPlot = true;
 
   setTDRStyle();
 
   TString Year = "2016";
-  TString TotalLumi = "35.9 fb^{-1} (13 TeV)";
+  TString TotalLumi = "35.92 fb^{-1} (13 TeV)";
   if(xxx==1){
     Year = "2017";
-    TotalLumi = "41.5 fb^{-1} (13 TeV)";
+    TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   if(xxx==2){
     Year = "2018";
-    TotalLumi = "60. fb^{-1} (13 TeV)";
+    TotalLumi = "59.74 fb^{-1} (13 TeV)";
   }
 
   gStyle->SetOptStat(0);
@@ -62,7 +68,7 @@ void Get_EMuRatio(int xxx=0){
 
   }
 
-  if(Year=="2017"){
+  else if(Year=="2017"){
 
     sym_samples = {
       "TTLL_powheg",
@@ -73,7 +79,6 @@ void Get_EMuRatio(int xxx=0){
     asym_samples = {
 "DYJets",
 "DYJets10to50_MG",
-"TTG",
 "WJets_MG",
 "WWW",
 "WWZ",
@@ -84,6 +89,25 @@ void Get_EMuRatio(int xxx=0){
 "ZZ_pythia",
 "ttW",
 "ttZ",
+    };
+
+  }
+
+  else if(Year=="2018"){
+
+    sym_samples = {
+      "TTLL_powheg",
+      "TTLJ_powheg",
+      "TTLX_powheg",
+    };
+
+    asym_samples = {
+"DYJets_MG",
+"DYJets10to50_MG",
+//"WJets_MG",
+"WW_pythia",
+"WZ_pythia",
+"ZZ_pythia",
     };
 
   }
@@ -128,16 +152,18 @@ void Get_EMuRatio(int xxx=0){
 //"WRCand_Mass"
   };
 
-  TFile *file_TTLL = new TFile(base_filepath+"/HNWRAnalyzer_TTLL_powheg.root");
-  TFile *file_TTLJ = new TFile(base_filepath+"/HNWRAnalyzer_TTLJ_powheg.root");
+  TFile *file_TTLL = new TFile(base_filepath+"/"+filename_prefix+"TTLL_powheg.root");
+  TFile *file_TTLJ = new TFile(base_filepath+"/"+filename_prefix+"TTLJ_powheg.root");
 
   //==== First, obtain the ee,mm / em ratio from MC
+
+  TFile *file_Ratios = new TFile(base_plotpath+"/Ratios.root", "RECREATE");
 
   for(unsigned int it_sym_sample=0; it_sym_sample<sym_samples.size(); it_sym_sample++){
 
     TString sym_sample = sym_samples.at(it_sym_sample);
 
-    TFile *file = new TFile(base_filepath+"/HNWRAnalyzer_"+sym_sample+".root");
+    TFile *file = new TFile(base_filepath+"/"+filename_prefix+sym_sample+".root");
 
     vector< vector<double> > ratios_for_each_SR;
 
@@ -245,11 +271,37 @@ void Get_EMuRatio(int xxx=0){
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
 
+        file_Ratios->cd();
+        hist_EE->SetName("EE_Ratios_"+SR+"_"+var+"_"+sym_sample);
+        hist_MM->SetName("MM_Ratios_"+SR+"_"+var+"_"+sym_sample);
+        hist_EE->Write();
+        hist_MM->Write();
+
+/*
         if(var=="NEvent"){
           cout << sym_sample << "\t" << SR << "\t" << hist_EE->GetBinContent(1) << "\t" << hist_MM->GetBinContent(1) << endl;
 
           vector<double> ratios = { hist_EE->GetBinContent(1), hist_MM->GetBinContent(1) };
           ratios_for_each_SR.push_back( ratios );
+
+        }
+*/
+
+        if(var=="WRCand_Mass"){
+
+          //==== EE
+          hist_EE->Fit("pol0");
+          double fitted_ratio_EE = hist_EE->GetFunction("pol0")->GetParameter(0);
+          //==== MM
+          hist_MM->Fit("pol0");
+          double fitted_ratio_MM = hist_MM->GetFunction("pol0")->GetParameter(0);
+
+          vector<double> ratios = { fitted_ratio_EE, fitted_ratio_MM };
+          cout << sym_sample << "\t" << SR << "\t" << fitted_ratio_EE << "\t" << fitted_ratio_MM << endl;
+          ratios_for_each_SR.push_back( ratios );
+
+          //==== TODO For syst
+
 
         }
 
@@ -263,7 +315,7 @@ void Get_EMuRatio(int xxx=0){
     //==== Ratio obtained with this sym_sample
     //==== Now make shape
 
-    TFile *outfile = new TFile(base_filepath+"/HNWRAnalyzer_EMuMethod_"+sym_sample+".root","RECREATE");
+    TFile *outfile = new TFile(base_filepath+"/"+filename_prefix+"EMuMethod_"+sym_sample+".root","RECREATE");
 
     for(int it_SR=0; it_SR<3; it_SR++){
 
@@ -275,19 +327,19 @@ void Get_EMuRatio(int xxx=0){
 
       cout << "@@@@ Making " << SR << " plots.." << endl;
 
-      TString filename_DataEMu = "HNWRAnalyzer_data_SingleMuon.root";
+      TString filename_DataEMu = filename_prefix+"data_SingleMuon.root";
       TString region_EE = "HNWR_SingleElectron_Resolved_SR";
       TString region_MM = "HNWR_SingleMuon_Resolved_SR";
       TString region_EM = "HNWR_EMu_Resolved_SR";
 
       if(it_SR==1){
-        filename_DataEMu = "HNWRAnalyzer_data_SingleMuon.root";
+        filename_DataEMu = filename_prefix+"data_SingleMuon.root";
         region_EE = "HNWR_SingleElectron_Boosted_SR"; // isolated el + elJet
         region_MM = "HNWR_SingleElectron_Boosted_SR"; // dummy
         region_EM = "HNWR_SingleMuon_EMu_Boosted_CR"; // isolated mu + elJet
       }
       if(it_SR==2){
-        filename_DataEMu = "HNWRAnalyzer_data_SingleElectron.root";
+        filename_DataEMu = filename_prefix+"data_SingleElectron.root";
         region_EE = "HNWR_SingleMuon_Boosted_SR"; // dummy
         region_MM = "HNWR_SingleMuon_Boosted_SR"; // isolated mu + muJet
         region_EM = "HNWR_SingleElectron_EMu_Boosted_CR"; // isolated el + elJet
@@ -322,7 +374,7 @@ void Get_EMuRatio(int xxx=0){
 
         //==== Subtract non-TT
         for(unsigned int it_asym=0; it_asym<asym_samples.size(); it_asym++){
-          TFile *file_asym = new TFile(base_filepath+"/HNWRAnalyzer_"+asym_samples.at(it_asym)+".root");
+          TFile *file_asym = new TFile(base_filepath+"/"+filename_prefix+asym_samples.at(it_asym)+".root");
           TH1D *hist_asym = (TH1D *)file_asym->Get(region_EM+"/"+var+"_"+region_EM);
           if(!hist_asym){
             file_asym->Close();
@@ -344,6 +396,7 @@ void Get_EMuRatio(int xxx=0){
           TH1D *hist_Pred_EE = (TH1D *)hist_EMu->Clone();
           hist_Pred_EE->Scale(ratios.at(0));
           hist_Pred_EE->SetName(var+"_"+region_EE);
+          outfile->cd();
           outfile->cd(region_EE);
           hist_Pred_EE->Write();
           outfile->cd();
@@ -424,6 +477,8 @@ void Get_EMuRatio(int xxx=0){
     outfile->Close();
 
   } // END sys_sample loop
+
+  file_Ratios->Close();
 
 
 

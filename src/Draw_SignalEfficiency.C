@@ -38,10 +38,10 @@ void Draw_SignalEfficiency(){
   lrsminfo.GetMassMaps();
 
   vector<TString> Configs = {
-    //"HNWR",
-   "HNWRdR0p5",
-   "HNWRdR0p6",
-   "HNWRdR0p7",
+   "HNWR",
+   //"HNWRdR0p5",
+   //"HNWRdR0p6",
+   //"HNWRdR0p7",
    
   };
 
@@ -120,7 +120,7 @@ void Draw_SignalEfficiency(){
         TString this_plotdir = base_plotpath+"/"+Config+"/"+Suffix;
         gSystem->mkdir(this_plotdir, kTRUE);
 
-        TCanvas *c_eff = new TCanvas("c_eff", "", 600, 600);
+        TCanvas *c_eff = new TCanvas("c_eff", "", 800, 800);
         canvas_margin(c_eff);
         c_eff->cd();
 

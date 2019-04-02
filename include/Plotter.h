@@ -44,8 +44,6 @@ public:
   void MakeYAxis();
   void MakeXAxis();
   AnalysisInputs analysisInputs;
-  //void SetMCSF(TString filepath);
-  //void SetCalculatedSysts(TString filepath);
 
   //==== functions for drawing
   void draw_hist();
@@ -53,7 +51,7 @@ public:
   void clear_legend_info();
   void fill_legend(TLegend *lg, TH1D *hist);
   void draw_legend(TLegend *lg, bool DrawData);
-  void draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData);
+  void draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErrors *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData);
 
   int n_rebin();
   double y_max();
@@ -114,6 +112,10 @@ public:
 
   bool ZeroDataCheckCut(double xlow, double xhigh);
   vector<double> GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_staterror, TH1D *mc_allerror, TH1D *hist_data, vector<TH1D *> &hist_signal);
+
+  //==== Syst
+  double LumiError();
+  vector<TString> Systs;
 
 };
 #endif

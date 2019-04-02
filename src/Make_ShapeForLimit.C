@@ -2,22 +2,35 @@
 #include "LRSMSignalInfo.h"
 #include "mylib.h"
 
-void Make_ShapeForLimit(){
-
-  int Year = 2017;
+void Make_ShapeForLimit(int Year=2017){
 
   TString ShaprVarName = "WRCand_Mass";
-  int n_rebin = 50;
+  int n_rebin = 20;
 
   double signal_scale = 10.*0.001; // r value in fb
+
+  //==== FIXME temp 2018
+  TString filename_prefix = "HNWRAnalyzer_";
+  //==== FIXME temp 2018
+  if(Year!=2018) filename_prefix += "SkimTree_LRSMHighPt_";
+
+  //==== FIXME now only have 2017 signals
+  if(Year==2016){
+    signal_scale *= 35.92/41.53;
+  }
+  else if(Year==2018){
+    signal_scale *= 59.74/41.53;
+  }
 
   vector<TString> systs = {
     "Central",
     "JetResUp", "JetResDown",
     "JetEnUp", "JetEnDown",
     "MuonEnUp", "MuonEnDown",
+    "MuonIDSFUp", "MuonIDSFDown",
     "ElectronResUp", "ElectronResDown",
     "ElectronEnUp", "ElectronEnDown",
+    "ElectronIDSFUp", "ElectronIDSFDown",
   };
 
   gStyle->SetOptStat(0);
@@ -40,40 +53,29 @@ void Make_ShapeForLimit(){
   //==== bkgds
 
   map< TString, vector<TString> > map_sample_string_to_list;
-  map_sample_string_to_list["DY"] = {"DYJets10to50_MG", "DYJets"};
-  map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
+
+  map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
+  if(Year==2016){
+    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
+  }
+  else if(Year==2017){
+    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
+  }
+  else if(Year==2018){
+    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_Reweighted"};
+  }
   map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
   map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-  map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-  map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg", "TTJJ_powheg"};
+  map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
   map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-  map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
-  map_sample_string_to_list["ttX"] = {"ttW", "ttZ", "TTG"};
-  map_sample_string_to_list["chargeflip"] = {"chargeflip"};
-  map_sample_string_to_list["fake"] = {"fake"};
-
-
+  map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
 
   vector<TString> regions = {
-    "OneLepton_AwayFatJetWithSFLepton100GeV",
-    "TwoLepton_TwoJet_mllgt150",
-    "TwoLepton_TwoJet_mllgt150_OS",
-    "TwoLepton_TwoJet_mllgt150_SS",
+      "Resolved_SR",
+      "Boosted_SR",
   };
-  vector<TString> bkgds_OneLepton = {
-"DY", "VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ttbar"
-  };
-  vector<TString> bkgds_OS = {
-"SingleTop", "VVV", "WJets_MG", "VV_incl", "ttbar", "DY"
-  };
-  vector<TString> bkgds_SS = {
-"VVV", "VV_incl", "fake", "chargeflip"
-  };
-  vector< vector<TString> > bkgdss = {
-    bkgds_OneLepton,
-    bkgds_OS,
-    bkgds_OS,
-    bkgds_SS,
+  vector<TString> bkgds = {
+"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_Reweighted", "EMuMethod",
   };
 
   vector<TString> channels = {
@@ -85,49 +87,11 @@ void Make_ShapeForLimit(){
     "HNWR_SingleMuon",
   };
 
+  bool SamplePrinted = false;
+
   for(unsigned int it_region=0; it_region<regions.size(); it_region++){
 
     TString region = regions.at(it_region);
-    vector<TString> bkgds = bkgdss.at(it_region);
-
-    //==== prepare rebin
-    vector<double> vec_NewRebin;
-    for(int i=0;i<=10;i++){
-      vec_NewRebin.push_back( 200.*i );
-      //==== 0~2000
-    }
-
-    if(region=="OneLepton_AwayFatJetWithSFLepton100GeV"){
-
-      for(int i=1;i<=2;i++){
-        vec_NewRebin.push_back( 2000. + 500.*i );
-        //==== 2500, 3000
-      }
-      vec_NewRebin.push_back(8000.);
-    }
-    else if(region=="TwoLepton_TwoJet_mllgt150_OS"){
-      for(int i=1;i<=4;i++){
-        vec_NewRebin.push_back( 2000. + 500.*i );
-        //==== 2500, 3000, 3500, 4000.
-      }
-      vec_NewRebin.push_back(8000.);
-    }
-    else if(region=="TwoLepton_TwoJet_mllgt150_SS"){
-      for(int i=1;i<=3;i++){
-        vec_NewRebin.push_back( 2000. + 500.*i );
-        //==== 2500, 3000, 3500,
-      }
-      vec_NewRebin.push_back(8000.);
-    }  
-
-    int n_NewBin = vec_NewRebin.size()-1;
-    double NewRebin[n_NewBin+1];
-    cout << "#### Check rebinning ####" << endl;
-    cout << "region = " << region << endl;
-    for(unsigned int i=0; i<n_NewBin+1; i++){
-      NewRebin[i] = vec_NewRebin.at(i);
-      cout << i << "\t" << NewRebin[i] << endl;
-    }
 
     for(unsigned int it_channel=0; it_channel<channels.size(); it_channel++){
 
@@ -144,13 +108,12 @@ void Make_ShapeForLimit(){
 
       //==== DATA
 
-      TFile *file_DATA = new TFile(base_filepath+"/HNWRAnalyzer_SkimTree_LRSMHighPt_data_"+PD+".root");
+      TFile *file_DATA = new TFile(base_filepath+"/"+filename_prefix+"data_"+PD+".root");
       TDirectory *dir_DATA = (TDirectory *)file_DATA->Get(dirname);
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
       hist_DATA->Rebin(n_rebin);
-      //hist_DATA = (TH1D *)hist_DATA->Rebin(n_NewBin, hist_DATA->GetName(), NewRebin);
 
       out->cd();
       hist_DATA->Write();
@@ -173,10 +136,6 @@ void Make_ShapeForLimit(){
           shapehistname_suffix = "_"+syst;
         }
 
-        TH1D *hist_bkgd_MC = NULL;
-        TH1D *hist_bkgd_fake = NULL;
-        TH1D *hist_bkgd_chargeflip = NULL;
-
         vector<TString> samplelist;
         for(unsigned int i=0; i<bkgds.size(); i++){
           samplelist.insert(samplelist.end(),
@@ -185,13 +144,16 @@ void Make_ShapeForLimit(){
                             );
         }
 
+        if(!SamplePrinted){
+          for(unsigned int i=0; i<samplelist.size(); i++){
+            cout << samplelist.at(i) << endl;
+          }
+          SamplePrinted = true;
+        }
+
         for(unsigned int it_sample=0; it_sample<samplelist.size(); it_sample++){
           TString sample = samplelist.at(it_sample);
-          TString filename = "HNWRAnalyzer_SkimTree_LRSMHighPt_"+sample+".root";
-          if(sample=="fake"||sample=="chargeflip"){
-            if(syst!="Central") continue;
-            filename = "HNWRAnalyzer_SkimTree_LRSMHighPt_"+sample+"_"+PD+".root";
-          }
+          TString filename = filename_prefix+sample+".root";
 
           TFile *file_sample = new TFile(base_filepath+"/"+filename);
           TDirectory *dir_sample = (TDirectory *)file_sample->Get(dirname);
@@ -200,89 +162,65 @@ void Make_ShapeForLimit(){
           if(dir_sample){
             TH1D *hist_bkgd = (TH1D *)dir_sample->Get(histname);
 
+            //==== DY Norm
+            if(sample.Contains("DYJets_")){
+              hist_bkgd->Scale( GetDYNormSF(Year, PD) );
+            }
+
             if(hist_bkgd){
 
               hist_bkgd->Rebin(n_rebin);
-              //hist_bkgd = (TH1D *)hist_bkgd->Rebin(n_NewBin, hist_bkgd->GetName(), NewRebin);
 
               //==== If MC
-              if(sample=="fake"){
-                hist_bkgd_fake = (TH1D *)hist_bkgd->Clone();
-              }
-              else if(sample=="chargeflip"){
-                hist_bkgd_chargeflip = (TH1D *)hist_bkgd->Clone();
+              if(sample=="EMuMethod_TTLX_powheg" && syst=="Central"){
+
+                hist_bkgd->SetName("EMu"+shapehistname_suffix);
+
+                TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+0.20);
+                hist_bkgdUp->SetName("EMu_SystUp");
+                TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-0.20);
+                hist_bkgdDown->SetName("EMu_SystDown");
+
+                TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);
+                hist_bkgd_StatUp->SetName("EMu_StatUp");
+                TH1D *hist_bkgd_StatDown = GetStatUpDown(hist_bkgd,-1);
+                hist_bkgd_StatDown->SetName("EMu_StatDown");
+
+                out->cd();
+
+                hist_bkgd->Write();
+                hist_bkgdUp->Write();
+                hist_bkgdDown->Write();
+                hist_bkgd_StatUp->Write();
+                hist_bkgd_StatDown->Write();
+
               }
               else{
-                if(!hist_bkgd_MC){
-                  hist_bkgd_MC = (TH1D *)hist_bkgd->Clone();
+
+                if(syst=="Central"){
+
+                  TH1D *hist_bkgdstatup = GetStatUpDown(hist_bkgd,+1);
+                  hist_bkgdstatup->SetName(sample+"_StatUp");
+                  TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd,-1);
+                  hist_bkgdstatdown->SetName(sample+"_StatDown");
+
+                  out->cd();
+                  hist_bkgdstatup->Write();
+                  hist_bkgdstatdown->Write();
+
                 }
-                else{
-                 hist_bkgd_MC->Add(hist_bkgd);
-                }
+
+                hist_bkgd->SetName(sample+shapehistname_suffix);
+
+                out->cd();
+                hist_bkgd->Write();
+
               }
 
             }
 
           }
           file_sample->Close();
-
-        }
-        hist_bkgd_MC->SetName("bkgd_MC"+shapehistname_suffix);
-
-        out->cd();
-        hist_bkgd_MC->Write();
-
-
-        //==== Make Stat up/down
-        if(syst=="Central"){
-          TH1D *hist_bkgdstatup = GetStatUpDown(hist_bkgd_MC,+1);
-          hist_bkgdstatup->SetName("bkgd_MC_StatUp");
-          TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd_MC,-1);
-          hist_bkgdstatdown->SetName("bkgd_MC_StatDown");
-          hist_bkgdstatup->Write();
-          hist_bkgdstatdown->Write();
-
-          if(hist_bkgd_fake){
-            hist_bkgd_fake->SetName("bkgd_fake"+shapehistname_suffix);
-
-            TH1D *hist_bkgd_fakeUp = GetScaleUpDown(hist_bkgd_fake,+0.30);
-            hist_bkgd_fakeUp->SetName("bkgd_fake_FakeSystUp");
-            TH1D *hist_bkgd_fakeDown = GetScaleUpDown(hist_bkgd_fake,+0.30);
-            hist_bkgd_fakeDown->SetName("bkgd_fake_FakeSystDown");
-
-            TH1D *hist_bkgd_fake_StatUp = GetStatUpDown(hist_bkgd_fake,+1);
-            hist_bkgd_fake_StatUp->SetName("bkgd_fake_StatUp");
-            TH1D *hist_bkgd_fake_StatDown = GetStatUpDown(hist_bkgd_fake,-1);
-            hist_bkgd_fake_StatDown->SetName("bkgd_fake_StatDown");
-
-            hist_bkgd_fake->Write();
-            hist_bkgd_fakeUp->Write();
-            hist_bkgd_fakeDown->Write();
-            hist_bkgd_fake_StatUp->Write();
-            hist_bkgd_fake_StatDown->Write();
-
-          }
-          if(hist_bkgd_chargeflip){
-
-            hist_bkgd_chargeflip->SetName("bkgd_chargeflip"+shapehistname_suffix);
-
-            TH1D *hist_bkgd_chargeflipUp = GetScaleUpDown(hist_bkgd_chargeflip,+0.30);
-            hist_bkgd_chargeflipUp->SetName("bkgd_chargeflip_chargeflipSystUp");
-            TH1D *hist_bkgd_chargeflipDown = GetScaleUpDown(hist_bkgd_chargeflip,+0.30);
-            hist_bkgd_chargeflipDown->SetName("bkgd_chargeflip_chargeflipSystDown");
-
-            TH1D *hist_bkgd_chargeflip_StatUp = GetStatUpDown(hist_bkgd_chargeflip,+1);
-            hist_bkgd_chargeflip_StatUp->SetName("bkgd_chargeflip_StatUp");
-            TH1D *hist_bkgd_chargeflip_StatDown = GetStatUpDown(hist_bkgd_chargeflip,-1);
-            hist_bkgd_chargeflip_StatDown->SetName("bkgd_chargeflip_StatDown");
-
-            hist_bkgd_chargeflip->Write();
-            hist_bkgd_chargeflipUp->Write();
-            hist_bkgd_chargeflipDown->Write();
-            hist_bkgd_chargeflip_StatUp->Write();
-            hist_bkgd_chargeflip_StatDown->Write();
-
-          }
 
         }
 
@@ -299,7 +237,10 @@ void Make_ShapeForLimit(){
             double m_N = this_m_Ns.at(it_N);
 
             TString this_filename = "HNWRAnalyzer_WR_"+channel+"JJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
-            TFile *file_sig = new TFile(base_filepath+"/Signal/"+this_filename);
+
+            //==== FIXME now only have 2017 signals
+            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/2017/";
+            TFile *file_sig = new TFile(temp_base_filepath+"/Signal/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
             if(dir_sig){
@@ -308,7 +249,6 @@ void Make_ShapeForLimit(){
 
               if(hist_sig){
                 hist_sig->Rebin(n_rebin);
-                //hist_sig = (TH1D *)hist_sig->Rebin(n_NewBin, hist_sig->GetName(), NewRebin);
                 hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
 
                 for(int ix=1;ix<hist_sig->GetXaxis()->GetNbins();ix++){
@@ -339,7 +279,7 @@ void Make_ShapeForLimit(){
 
           }
 
-        }
+        } // End Loop signal
 
       }
 

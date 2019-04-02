@@ -6,16 +6,19 @@ void Get_DYPtReweight(int xxx=0){
   setTDRStyle();
 
   TString Year = "2016";
-  TString TotalLumi = "35.9 fb^{-1} (13 TeV)";
+  TString filename_prefix = "HNWROnZ_SkimTree_LRSMHighPt_";
+  TString TotalLumi = "35.92 fb^{-1} (13 TeV)";
   if(xxx==1){
     Year = "2017";
-    TotalLumi = "41.5 fb^{-1} (13 TeV)";
+    TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   if(xxx==2){
     Year = "2018";
-    TotalLumi = "60. fb^{-1} (13 TeV)";
+    TotalLumi = "59.74 fb^{-1} (13 TeV)";
+    //==== FIXME temp 2018
+    filename_prefix = "HNWROnZ_";
   }
-  
+
   int nrebin = 50;
 
   gStyle->SetOptStat(0);
@@ -40,10 +43,11 @@ void Get_DYPtReweight(int xxx=0){
   }
 
 
-  //==== MCFR Samples
+  //==== MCs
 
   vector<TString> bkgds;
-
+  TString samplename_DY10to50 = "DYJets10to50";
+  TString samplename_DY50 = "DYJets";
   if(Year=="2016"){
 
     bkgds = {
@@ -52,28 +56,38 @@ void Get_DYPtReweight(int xxx=0){
       "TTLL_powheg", "TTLJ_powheg",
     };
 
+    samplename_DY10to50 = "DYJets10to50";
+    samplename_DY50 = "DYJets";
+
   }
-  if(Year=="2017"){
+  else if(Year=="2017"){
 
     bkgds = {
       "TTLL_powheg", "TTLJ_powheg",
       "WJets_MG",
-      "ttW", "ttZ", "TTG",
+      "ttW", "ttZ",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "WWW", "WWZ", "WZZ", "ZZZ",
     };
 
-  }
-
-  TString samplename_DY10to50 = "DYJets10to50";
-  TString samplename_DY50 = "DYJets";
-  if(Year=="2017"){
     samplename_DY10to50 = "DYJets10to50_MG";
     samplename_DY50 = "DYJets";
+
+  }
+  else if(Year=="2018"){
+
+    bkgds = {
+      "TTLL_powheg", "TTLJ_powheg",
+      "WZ_pythia", "ZZ_pythia", "WW_pythia",
+    };
+
+    samplename_DY10to50 = "DYJets10to50_MG";
+    samplename_DY50 = "DYJets_MG";
+
   }
 
-  TFile *file_DY10to50 = new TFile(base_filepath+"/HNWROnZ_"+samplename_DY10to50+".root");
-  TFile *file_DY50 = new TFile(base_filepath+"/HNWROnZ_"+samplename_DY50+".root");
+  TFile *file_DY10to50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY10to50+".root");
+  TFile *file_DY50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY50+".root");
 
   TCanvas *c_reweight = new TCanvas("c_reweight", "", 600, 600);
   canvas_margin(c_reweight);
@@ -91,21 +105,30 @@ void Get_DYPtReweight(int xxx=0){
     TString dirname = "HNWR_Single"+leptonFlavour+"_OnZ";
     TString histname = "ZCand_Pt_"+dirname;
 
-    TFile *file_DATA = new TFile(base_filepath+"/HNWROnZ_data_Single"+leptonFlavour+".root");
+    TFile *file_DATA = new TFile(base_filepath+"/"+filename_prefix+"data_Single"+leptonFlavour+".root");
     TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+histname);
 
 
     for(unsigned int it_bkgd=0; it_bkgd<bkgds.size(); it_bkgd++){
-      TFile *file_bkgd = new TFile(base_filepath+"/HNWROnZ_"+bkgds.at(it_bkgd)+".root");
+      TFile *file_bkgd = new TFile(base_filepath+"/"+filename_prefix+bkgds.at(it_bkgd)+".root");
       TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+histname);
       if(!hist_bkgd) continue;
+
+      //==== FIXME TEMP 2018
+      if(xxx==2){
+        hist_bkgd->Scale(Get2018DataSurvFrac(leptonFlavour));
+      }
+
       hist_DATA->Add(hist_bkgd, -1.);
     }
 
     TH1D *hist_DY10to50 = (TH1D *)file_DY10to50->Get(dirname+"/"+histname);
     TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+histname);
-
     if(hist_DY10to50) hist_DY50->Add(hist_DY10to50);
+    //==== FIXME TEMP 2018
+    if(xxx==2){
+      hist_DY50->Scale(Get2018DataSurvFrac(leptonFlavour));
+    }
 
     hist_DATA->Rebin(nrebin);
     hist_DY50->Rebin(nrebin);

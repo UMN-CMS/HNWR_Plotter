@@ -385,9 +385,10 @@ TH1D *GetScaleUpDown(TH1D *hist, double sys){
 
 }
 
-double GetDYNormSF(int DataYear, TString channel){
+double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
 
   double DYNorm = 1.;
+  double DYNorm_err = 0.;
 
   int int_channel(-1); // 0 : ee, 1 : mm
   if(channel.Contains("Electron")) int_channel = 0;
@@ -398,27 +399,179 @@ double GetDYNormSF(int DataYear, TString channel){
   }
 
   if(DataYear==2016){
-    if(int_channel==0) DYNorm = 0.975387;
-    else if(int_channel==1) DYNorm = 0.942031;
+    if(int_channel==0){
+      DYNorm = 0.975387;
+      DYNorm_err = 0.0213523;
+    }
+    else if(int_channel==1){
+      DYNorm = 0.942031;
+      DYNorm_err = 0.0203093;
+    }
     else{
       cout << "Wrong DY Norm" << endl;
       exit(EXIT_FAILURE);
     }
   }
   else if(DataYear==2017){
-    if(int_channel==0) DYNorm = 0.969696;
-    else if(int_channel==1) DYNorm = 0.980224;
+    if(int_channel==0){
+      DYNorm = 0.969739;
+      DYNorm_err = 0.0207846;
+    }
+    else if(int_channel==1){
+      DYNorm = 0.980255;
+      DYNorm_err = 0.0208141;
+    }
     else{
       cout << "Wrong DY Norm" << endl;
       exit(EXIT_FAILURE);
     }
   }
   else if(DataYear==2018){
-    cout << "DY NORN NOT YET SUPPORTED" << endl;
+    if(int_channel==0){
+      DYNorm = 1.04037;
+      DYNorm_err = 0.0219748;
+    }
+    else if(int_channel==1){
+      DYNorm = 1.05012;
+      DYNorm_err = 0.0220453;
+    }
+    else{
+      cout << "Wrong DY Norm" << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+
+  if(geterror) return DYNorm_err;
+  else return DYNorm;
+
+}
+
+void SetErrorZero(TH1D *hist){
+
+  for(int i=0; i<=hist->GetXaxis()->GetNbins()+1; i++){
+    hist->SetBinError(i,0);
+  }
+
+}
+
+void EmptyHistogram(TH1D *hist){
+
+  for(int i=0; i<=hist->GetXaxis()->GetNbins()+1; i++){
+    hist->SetBinContent(i,0);
+    hist->SetBinError(i,0);
+  }
+
+}
+
+vector<TH1D *> ConvertSystematic(TH1D *hist_Central, TH1D *hist_Up, TH1D *hist_Down){
+
+  TH1D *hist_UpMax = (TH1D *)hist_Central->Clone();
+  TH1D *hist_DownMax = (TH1D *)hist_Central->Clone();
+
+  for(int i=0; i<=hist_Central->GetXaxis()->GetNbins()+1; i++){
+
+    double y_Central = hist_Central->GetBinContent(i);
+    double y_Up = hist_Up->GetBinContent(i);
+    double y_Down = hist_Down->GetBinContent(i);
+
+    double y_Max = max( y_Central, max(y_Up, y_Down) );
+    double y_Min = min( y_Central, min(y_Up, y_Down) );
+
+/*
+    cout << "##############################################" << endl;
+    cout << "[ConvertSystematic] y_Central = " << y_Central << endl;
+    cout << "[ConvertSystematic] y_Up = " << y_Up << endl;
+    cout << "[ConvertSystematic] y_Down = " << y_Down << endl;
+    cout << "[ConvertSystematic] y_Max = " << y_Max << endl;
+    cout << "[ConvertSystematic] y_Min = " << y_Min << endl;
+*/
+
+    double err_UpMax   = fabs( y_Central - y_Max );
+    double err_DownMax = fabs( y_Central - y_Min );
+
+    hist_UpMax->SetBinError(i, err_UpMax);
+    hist_DownMax->SetBinError(i, err_DownMax);
+
+  }
+
+  vector<TH1D *> out = {hist_UpMax, hist_DownMax};
+  return out;
+
+}
+
+void AddSystematic(TH1D *hist_Central, TH1D *hist_Syst){
+
+  for(int i=0; i<=hist_Central->GetXaxis()->GetNbins()+1; i++){
+
+    double y_Central = hist_Central->GetBinContent(i);
+    double y_Syst = hist_Syst->GetBinContent(i);
+
+    double err_Central = hist_Central->GetBinError(i);
+    double err_Syst = hist_Syst->GetBinError(i);
+
+    if(y_Central!=y_Syst){
+      cout << "[AddSystematic] Adding syst, but central is different WTF" << endl;
+      cout << "y_Central= " << y_Central << ", err_Central = " << err_Central << endl;
+      cout << "y_Syst = " << y_Syst << ", err_Syst = " << err_Syst << endl;
+      exit(EXIT_FAILURE);
+    }
+
+    double sumerr = sqrt( err_Central*err_Central + err_Syst*err_Syst );
+
+    hist_Central->SetBinError(i, sumerr);
+
+  }
+
+}
+
+TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_allerr_Down){
+
+  int NBin = MC_stacked_allerr_Up->GetXaxis()->GetNbins();
+  double x[NBin], x_lerr[NBin], x_rerr[NBin];
+  double y[NBin], y_lerr[NBin], y_rerr[NBin];
+
+  for(int i=0; i<NBin; i++){
+
+    x[i] = MC_stacked_allerr_Up->GetXaxis()->GetBinCenter(i+1);
+    x_lerr[i] = x[i] - MC_stacked_allerr_Up->GetXaxis()->GetBinLowEdge(i+1);
+    x_rerr[i] = MC_stacked_allerr_Up->GetXaxis()->GetBinUpEdge(i+1) - x[i];
+
+    y[i] = MC_stacked_allerr_Up->GetBinContent(i+1);
+    y_lerr[i] = MC_stacked_allerr_Down->GetBinError(i+1);
+    y_rerr[i] = MC_stacked_allerr_Up->GetBinError(i+1);
+
+  }
+
+  TGraphAsymmErrors *out = new TGraphAsymmErrors(NBin+1, x, y, x_lerr, x_rerr, y_lerr, y_rerr);
+  return out;
+
+}
+
+//==== FIXME TEMP FUNCTION
+
+double Get2018DataSurvFrac(TString channel){
+
+  int int_channel(-1); // 0 : ee, 1 : mm
+  if(channel.Contains("Electron")) int_channel = 0;
+  else if(channel.Contains("Muon")) int_channel = 1;
+  else{
+    cout << "(mylib.h) [Get2018DataSurvFrac()] : Wrong channel name; " << channel << endl;
     exit(EXIT_FAILURE);
   }
 
-  return DYNorm;
+	double dataSurv = 1.;
+	if(int_channel==0){
+		dataSurv = 1.-0.0211;
+	}
+	else if(int_channel==1){
+		dataSurv = 1.-0.0331;
+	}
+  else{
+    cout << "(mylib.h) [Get2018DataSurvFrac()] : Wrong channel ; " << channel << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  return dataSurv;
 
 }
 

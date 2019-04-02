@@ -3,10 +3,9 @@
 
 void Get_DYNormalization(int xxx=0){
 
-  //==== TEST
-  bool UseSkim = true;
   TString filename_prefix = "HNWROnZ_";
-  if(UseSkim) filename_prefix += "SkimTree_LRSMHighPt_";
+  //==== FIXME temp 2018
+  if(xxx!=2) filename_prefix += "SkimTree_LRSMHighPt_";
 
   //gErrorIgnoreLevel = kFatal;
 
@@ -23,15 +22,17 @@ void Get_DYNormalization(int xxx=0){
     LumiError = 0.025;
   }
 
-
   vector<TString> Systs = {
     "JetRes",
     "JetEn",
     "MuonEn",
+    "MuonIDSF",
     "ElectronRes",
     "ElectronEn",
+    "ElectronIDSF",
   };
-  Systs.clear(); // FIXME no syst for now
+  //==== XXX No syst here
+  Systs.clear();
 
   gStyle->SetOptStat(0);
 
@@ -55,10 +56,11 @@ void Get_DYNormalization(int xxx=0){
   }
 */
 
-  //==== MCFR Samples
+  //==== MCs
 
   vector<TString> bkgds;
-
+  TString samplename_DY10to50 = "DYJets10to50";
+  TString samplename_DY50 = "DYJets";
   if(Year=="2016"){
 
     bkgds = {
@@ -67,25 +69,34 @@ void Get_DYNormalization(int xxx=0){
       "TTLL_powheg", "TTLJ_powheg",
     };
 
+    samplename_DY10to50 = "DYJets10to50";
+    samplename_DY50 = "DYJets";
+
   }
-  if(Year=="2017"){
+  else if(Year=="2017"){
 
     bkgds = {
       "TTLL_powheg", "TTLJ_powheg",
       "WJets_MG",
-      "ttW", "ttZ", "TTG",
+      "ttW", "ttZ",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "WWW", "WWZ", "WZZ", "ZZZ",
     };
 
-  }
-
-
-  TString samplename_DY10to50 = "DYJets10to50";
-  TString samplename_DY50 = "DYJets";
-  if(Year=="2017"){
     samplename_DY10to50 = "DYJets10to50_MG";
     samplename_DY50 = "DYJets";
+
+  }
+  else if(Year=="2018"){
+
+    bkgds = {
+      "TTLL_powheg", "TTLJ_powheg",
+      "WZ_pythia", "ZZ_pythia", "WW_pythia",
+    };
+
+    samplename_DY10to50 = "DYJets10to50_MG";
+    samplename_DY50 = "DYJets_MG";
+
   }
 
   TFile *file_DY10to50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY10to50+".root");
@@ -108,12 +119,22 @@ void Get_DYNormalization(int xxx=0){
       TFile *file_bkgd = new TFile(base_filepath+"/"+filename_prefix+bkgds.at(it_bkgd)+".root");
       TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+var+"_"+dirname);
       if(!hist_bkgd) continue;
+
+      //==== FIXME TEMP 2018
+      if(xxx==2){
+        hist_bkgd->Scale(Get2018DataSurvFrac(leptonFlavour));
+      }
+
       hist_DATA->Add(hist_bkgd, -1.);
     }
 
     TH1D *hist_DY10to50 = (TH1D *)file_DY10to50->Get(dirname+"/"+var+"_"+dirname);
     TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
     if(hist_DY10to50) hist_DY50->Add(hist_DY10to50);
+    //==== FIXME TEMP 2018
+    if(xxx==2){
+      hist_DY50->Scale(Get2018DataSurvFrac(leptonFlavour));
+    }
 
     //==== Central
 
@@ -163,6 +184,12 @@ void Get_DYNormalization(int xxx=0){
         hist_Down = (TH1D *)hist_DY50->Clone();
       }
 
+      //==== FIXME TEMP 2018      
+      if(xxx==2){
+        hist_Up->Scale(Get2018DataSurvFrac(leptonFlavour));
+        hist_Down->Scale(Get2018DataSurvFrac(leptonFlavour));
+      }
+
       double y_Up = hist_Up->Integral();
       double y_Down = hist_Down->Integral();
 
@@ -177,18 +204,17 @@ void Get_DYNormalization(int xxx=0){
     }
 
     double SF = y_DATA/y_MC;
-    double SF_StarErr = sqrt(RelStatError_DATA*RelStatError_DATA+RelStatError_MC*RelStatError_MC);
-    double SF_Syst = RelSystError_MC;
+    double SF_StarErr = sqrt(RelStatError_DATA*RelStatError_DATA+RelStatError_MC*RelStatError_MC) * SF;
+    double SF_Syst = RelSystError_MC * SF;
 
     cout << "["<<leptonFlavour<<"]"<< endl;
-/*
-    cout << "SF and relerrors : " << SF << "\t" << SF_StarErr << "\t" << SF_Syst << endl;
-    cout << SF << " " << sqrt(SF_StarErr*SF_StarErr+SF_Syst*SF_Syst) * SF << endl;
-*/
 
-    //cout << std::setprecision (3) << "$" << SF << " \\pm " << SF*SF_StarErr << "\\stat \\pm " << SF*SF_Syst << "\\syst$" << endl;
+    //==== For latex
+    //printf("%1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", SF, SF_StarErr, SF_Syst);
 
-    printf("%1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", SF, SF*SF_StarErr, SF*SF_Syst);
+    //==== for values
+    cout << SF << "\t" << sqrt(  SF_StarErr*SF_StarErr + SF_Syst*SF_Syst ) << endl;
+
 
   }
 

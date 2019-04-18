@@ -33,27 +33,36 @@ void Draw_FastVSFull(){
 
   vector<TString> samples = {
 "WRtoNLtoLLJJ_WR1000_N100",
-"WRtoNLtoLLJJ_WR1000_N500",
+//"WRtoNLtoLLJJ_WR1000_N500",
 "WRtoNLtoLLJJ_WR4000_N100",
-"WRtoNLtoLLJJ_WR4000_N500",
+//"WRtoNLtoLLJJ_WR4000_N500",
 "WRtoNLtoLLJJ_WR4000_N1000",
   };
   vector<Color_t> colors = {
     kRed,
-    kBlue,
+    //kBlue,
     kGreen,
-    kGray,
+    //kGray,
     kBlack,
   };
   vector<TString> samplealiases = {
     "WR=1000, N=100",
-    "WR=1000, N=500",
+    //"WR=1000, N=500",
     "WR=4000, N=100",
-    "WR=4000, N=500",
+    //"WR=4000, N=500",
     "WR=4000, N=1000",
   };
 
   vector<TString> vars = {
+    "lep_mathced_gen_priLep__Pt",
+    "lep_mathced_gen_secLep__Pt",
+    "jet_mathced_gen_Jet__Pt",
+
+    "lep_mathced_gen_priLep__Eta",
+    "lep_mathced_gen_secLep__Eta",
+    "jet_mathced_gen_Jet__Eta",
+    "fatjet_matched_gen_N__Eta",
+
     "fatjet_matched_gen_N__LSF",
     "fatjet_matched_gen_N__Pt",
     "PassUMNTag__lep_mathced_gen_priLep__Pt",
@@ -74,10 +83,19 @@ void Draw_FastVSFull(){
 
   };
   vector<TString> aliases = {
-    "LSF of matched fatjet",
-    "p_{T} of matched fatjet",
     "p_{T} of matched primary lepton",
     "p_{T} of matched secondary lepton",
+    "p_{T} of matched jets",
+
+    "#eta of matched primary lepton",
+    "#eta of matched secondary lepton",
+    "#eta of matched jets",
+    "#eta of matched fatjet",
+
+    "LSF of matched fatjet",
+    "p_{T} of matched fatjet",
+    "p_{T} of matched primary lepton (Pass UMNGTag)",
+    "p_{T} of matched secondary lepton (Pass UMNGTag)",
     "#DeltaR(fatjet, secLep)",
 
     "#DeltaR(matched AK4, matched secLep)",
@@ -93,6 +111,15 @@ void Draw_FastVSFull(){
     "# of Away merged jet", "# of Away merged jet", "# of Away merged jet",
   };
   vector<int> rebins = {
+    50,
+    50,
+    50,
+
+    1,
+    1,
+    1,
+    1,
+
     5,
     50,
     50,
@@ -115,6 +142,15 @@ void Draw_FastVSFull(){
     0.,
     0.,
     0.,
+
+    -3.,
+    -3.,
+    -3.,
+    -3.,
+
+    0.,
+    0.,
+    0.,
     0.,
     0.,
 
@@ -131,6 +167,15 @@ void Draw_FastVSFull(){
     0.,0.,0.,
   };
   vector<double> x_maxs = {
+    3500.,
+    2500.,
+    2500.,
+
+    3.,
+    3.,
+    3.,
+    3.,
+
     1.,
     3500.,
     2500.,
@@ -187,7 +232,8 @@ void Draw_FastVSFull(){
 
         //cout << "    sample = " << sample << endl;
 
-        TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_FastSIM_"+sample+"_13TeV_TuneCUETP8M1.root");
+        //TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_FastSIM_"+sample+"_13TeV_TuneCUETP8M1.root");
+        TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_FastSIM_"+sample+"_MG.root");
         TH1D *hist_NoCut_Fast = (TH1D *)file_Fast->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Fast = (TH1D *)file_Fast->Get(channel+"/GenStudy__"+var+"_"+channel);
         hist_Fast->Rebin(rebin);
@@ -195,21 +241,14 @@ void Draw_FastVSFull(){
         hist_Fast->SetLineColor(color);
         hist_Fast->SetLineWidth(3);
 
-        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSIM_"+sample+"_13TeV_TuneCUETP8M1.root");
+        //TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSIM_"+sample+"_13TeV_TuneCUETP8M1.root");
+        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSIM_"+sample+"_MG.root");
         TH1D *hist_NoCut_Full = (TH1D *)file_Full->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Full = (TH1D *)file_Full->Get(channel+"/GenStudy__"+var+"_"+channel);
         hist_Full->Rebin(rebin);
         hist_Full->Scale(1./hist_NoCut_Full->GetEntries());
         hist_Full->SetLineColor(color);
         hist_Full->SetLineWidth(2);
-
-        TFile *file_FullMG = new TFile(base_filepath+"/HNWRSignalStudy_FullSIM_"+sample+"_MG.root");
-        TH1D *hist_NoCut_FullMG = (TH1D *)file_FullMG->Get(channel+"/NoCut_"+channel);
-        TH1D *hist_FullMG = (TH1D *)file_FullMG->Get(channel+"/GenStudy__"+var+"_"+channel);
-        hist_FullMG->Rebin(rebin);
-        hist_FullMG->Scale(1./hist_NoCut_FullMG->GetEntries());
-        hist_FullMG->SetLineColor(color);
-        hist_FullMG->SetLineWidth(2);
 
         if(!hist_dummy){
           hist_dummy = (TH1D *)hist_Fast->Clone();
@@ -222,16 +261,14 @@ void Draw_FastVSFull(){
 
         hist_Fast->SetLineStyle(3);
         hist_Full->SetLineStyle(1);
-        hist_FullMG->SetLineStyle(5);
 
         hist_Fast->Draw("histsame");
         hist_Full->Draw("histsame");
-        //hist_FullMG->Draw("histsame");
 
         if(var=="fatjet_matched_gen_N__LSF"){
           int int_Start = hist_Fast->FindBin(0.7);
-          //cout << "    --> LSF Eff = " << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999) << "\t" << hist_FullMG->Integral(int_Start,999) << endl;
-          cout << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999) << "\t" << hist_FullMG->Integral(int_Start,999) << endl;
+          //cout << "    --> LSF Eff = " << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999)  << endl;
+          cout << samplealias << "--> LSF Eff = " << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999) << endl;
         }
 
         lg->AddEntry(hist_Fast, "(Fast) "+samplealias, "l");
@@ -243,7 +280,6 @@ void Draw_FastVSFull(){
 
         y_max = max( y_max, GetMaximum(hist_Fast,0) );
         y_max = max( y_max, GetMaximum(hist_Full,0) );
-        //y_max = max( y_max, GetMaximum(hist_FullMG,0) );
 
       } // END sample loop
 

@@ -3,7 +3,7 @@
 
 void Draw_SignalEfficiency(){
 
-  TString Year = "2017";
+  TString Year = "2016";
 
   bool IsCR = false;
 
@@ -39,6 +39,7 @@ void Draw_SignalEfficiency(){
 
   vector<TString> Configs = {
    "HNWR",
+   //"HNWRWith0p5HoverE",
    //"HNWRdR0p5",
    //"HNWRdR0p6",
    //"HNWRdR0p7",
@@ -48,12 +49,6 @@ void Draw_SignalEfficiency(){
   vector<TString> regions = {
     "Boosted_SR",
     "Resolved_SR",
-
-/*
-    "NoTwoLepVetoAK4Jets_Boosted",
-    "TwoLepVetoAK4Jets",
-*/
-
   };
   vector<Color_t> colors = {
     kBlue,
@@ -85,7 +80,7 @@ void Draw_SignalEfficiency(){
 
   vector< TString > Suffixs = {
 
-    //"SingleElectron",
+    "SingleElectron",
     "SingleMuon",
 
   };
@@ -114,8 +109,8 @@ void Draw_SignalEfficiency(){
 
         cout << "  Suffix = " << Suffix << endl;
 
-        TString channel = "EEJJ";
-        if(Suffix.Contains("SingleMuon")) channel = "MuMuJJ";
+        TString channel = "ee";
+        if(Suffix.Contains("SingleMuon")) channel = "#mu#mu";
 
         TString this_plotdir = base_plotpath+"/"+Config+"/"+Suffix;
         gSystem->mkdir(this_plotdir, kTRUE);
@@ -166,7 +161,7 @@ void Draw_SignalEfficiency(){
 
             //cout << m_N <<", ";
 
-            TString this_filename = "HNWRAnalyzer_WR_"+channel+"_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
+            TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
             TFile *file = new TFile(base_filepath+"/"+this_filename);
 
             TString dirname = Config+"_"+Suffix+"_"+region;
@@ -177,13 +172,17 @@ void Draw_SignalEfficiency(){
             double this_eff = 0;
             if(hist){
               double this_Den = hist_Den->GetEntries();
+
+              //==== FIXME temp 0.5
+              this_Den *= 0.5;
+
               this_yield = hist->GetBinContent(1);
               this_eff = hist->GetEntries()/this_Den;
             }
             x[it_N] = m_N;
             y[it_N] = this_eff;
 
-            cout << "      m_WR = " << m_N << " : " << this_eff << endl;
+            cout << "      m_N = " << m_N << " : " << this_eff << endl;
 
             x_total[it_N] = m_N;
             y_total[it_N] += this_eff;
@@ -218,6 +217,11 @@ void Draw_SignalEfficiency(){
 
         lg->Draw();
 
+
+        TLatex channelname;
+        channelname.SetNDC();
+        channelname.SetTextSize(0.037);
+        channelname.DrawLatex(0.2, 0.88, channel);
 
         c_eff->SaveAs(this_plotdir+"/WR"+TString::Itoa(m_WR,10)+".pdf");
         c_eff->SaveAs(this_plotdir+"/WR"+TString::Itoa(m_WR,10)+".png");

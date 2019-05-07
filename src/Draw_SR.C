@@ -39,10 +39,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0){
   
   m.filename_prefix = "HNWRAnalyzer";
   m.filename_suffix = ".root";
-  //==== FIXME temp 2018
-  if(Year!=2018){
-    m.filename_skim = "_SkimTree_LRSMHighPt";
-  }
+  m.filename_skim = "_SkimTree_LRSMHighPt";
   
   //=========================
   //==== set sample mapping

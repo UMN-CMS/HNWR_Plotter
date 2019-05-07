@@ -15,8 +15,6 @@ void Get_DYPtReweight(int xxx=0){
   if(xxx==2){
     Year = "2018";
     TotalLumi = "59.74 fb^{-1} (13 TeV)";
-    //==== FIXME temp 2018
-    filename_prefix = "HNWROnZ_";
   }
 
   int nrebin = 50;
@@ -114,21 +112,12 @@ void Get_DYPtReweight(int xxx=0){
       TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+histname);
       if(!hist_bkgd) continue;
 
-      //==== FIXME TEMP 2018
-      if(xxx==2){
-        hist_bkgd->Scale(Get2018DataSurvFrac(leptonFlavour));
-      }
-
       hist_DATA->Add(hist_bkgd, -1.);
     }
 
     TH1D *hist_DY10to50 = (TH1D *)file_DY10to50->Get(dirname+"/"+histname);
     TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+histname);
     if(hist_DY10to50) hist_DY50->Add(hist_DY10to50);
-    //==== FIXME TEMP 2018
-    if(xxx==2){
-      hist_DY50->Scale(Get2018DataSurvFrac(leptonFlavour));
-    }
 
     hist_DATA->Rebin(nrebin);
     hist_DY50->Rebin(nrebin);

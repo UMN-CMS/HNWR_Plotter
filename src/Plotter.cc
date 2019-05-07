@@ -222,11 +222,6 @@ void Plotter::draw_hist(){
           hist_final->SetFillColor(map_sample_string_to_legendinfo[current_MCsector].second);
           hist_final->SetLineColor(map_sample_string_to_legendinfo[current_MCsector].second);
 
-          //==== FIXME TEMP 2018
-          if(DataYear==2018 && !current_sample.Contains("EMuMethod")){
-            hist_final->Scale(Get2018DataSurvFrac(PrimaryDataset[i_cut]));
-          }
-
           //==== MC Norm Scaling
           if(ApplyMCNormSF.at(i_cut)){
             //hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
@@ -346,13 +341,6 @@ void Plotter::draw_hist(){
                   hist_Down_final->SetBinError(ccc, 0.);
                 }
               }
-
-              //==== FIXME TEMP 2018
-              if(DataYear==2018){
-                hist_Up_final->Scale(Get2018DataSurvFrac(PrimaryDataset[i_cut]));
-                hist_Down_final->Scale(Get2018DataSurvFrac(PrimaryDataset[i_cut]));
-              }
-
 
               //==== Apply the same MC Norm Scaling
               if(ApplyMCNormSF.at(i_cut)){

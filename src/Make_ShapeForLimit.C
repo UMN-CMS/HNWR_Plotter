@@ -9,10 +9,7 @@ void Make_ShapeForLimit(int Year=2017){
 
   double signal_scale = 10.*0.001; // r value in fb
 
-  //==== FIXME temp 2018
-  TString filename_prefix = "HNWRAnalyzer_";
-  //==== FIXME temp 2018
-  if(Year!=2018) filename_prefix += "SkimTree_LRSMHighPt_";
+  TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
   //==== FIXME now only have 2017 signals
   if(Year==2016){

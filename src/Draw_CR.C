@@ -39,10 +39,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
   
   m.filename_prefix = "HNWRAnalyzer";
   m.filename_suffix = ".root";
-  //==== FIXME temp 2018
-  if(Year!=2018){
-    m.filename_skim = "_SkimTree_LRSMHighPt";
-  }
+  m.filename_skim = "_SkimTree_LRSMHighPt";
 
   //=========================
   //==== set sample mapping
@@ -55,6 +52,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["ttX"] = {"ttWToLNu", "ttWToQQ", "ttZ"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
 
     m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
@@ -64,6 +62,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jetse", 870);
     m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
   }
   else if(Year==2017){
@@ -78,7 +77,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
     m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl"};
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
     m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
     m.map_sample_string_to_list["fake"] = {"fake"};
@@ -100,17 +99,25 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
 
   }
   else if(Year==2018){
+
     m.map_sample_string_to_list["ZJets"] = {"DYJets10to50_MG", "DYJets_MG"};
     m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
+    m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
 
     m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jetse", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+
   }
 
   //===============================
@@ -132,8 +139,6 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
       "HNWR_SingleMuon_Resolved_DYCR",
       "HNWR_SingleElectron_OnZ",
       "HNWR_SingleMuon_OnZ",
-
-
 
 /*
       "HNWR_SingleElectron_Boosted_DYCR",
@@ -239,7 +244,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
     "",
   };
 
-
+/*
   m.histname = {
     "NEvent",
   };
@@ -249,7 +254,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool ScaleMC=false, bool UseDYPtR
   m.units = {
     "int",
   };
-
+*/
 /*
   m.histname = {
     "Lepton_0_Pt", "Lepton_1_Pt",

@@ -5,9 +5,7 @@ void Draw_CompareDYPtReweight(int xxx=0){
 
   int n_rebin = 20;
 
-  TString filename_prefix = "HNWRAnalyzer_";
-  //==== FIXME temp 2018
-  if(xxx!=2) filename_prefix += "SkimTree_LRSMHighPt_";
+  TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
   //gErrorIgnoreLevel = kFatal;
 

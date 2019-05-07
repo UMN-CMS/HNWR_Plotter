@@ -4,9 +4,7 @@
 
 void Get_EMuRatio(int xxx=0){
 
-  TString filename_prefix = "HNWRAnalyzer_";
-  //==== FIXME temp 2018
-  if(xxx!=2) filename_prefix += "SkimTree_LRSMHighPt_";
+  TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
   gErrorIgnoreLevel = kFatal;
 
@@ -60,10 +58,11 @@ void Get_EMuRatio(int xxx=0){
     asym_samples = {
 "DYJets",
 "DYJets10to50",
-"WJets_MG",
-"WW_pythia",
-"WZ_pythia",
-"ZZ_pythia",
+      "WJets_MG",
+      "WZ_pythia", "ZZ_pythia", "WW_pythia",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
+      "WWW", "WWZ", "WZZ", "ZZZ",
+      "ttWToLNu", "ttWToQQ", "ttZ",
     };
 
   }
@@ -79,16 +78,11 @@ void Get_EMuRatio(int xxx=0){
     asym_samples = {
 "DYJets",
 "DYJets10to50_MG",
-"WJets_MG",
-"WWW",
-"WWZ",
-"WW_pythia",
-"WZZ",
-"WZ_pythia",
-"ZZZ",
-"ZZ_pythia",
-"ttW",
-"ttZ",
+      "WJets_MG",
+      "ttW", "ttZ",
+      "WZ_pythia", "ZZ_pythia", "WW_pythia",
+      "WWW", "WWZ", "WZZ", "ZZZ",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl",
     };
 
   }
@@ -104,10 +98,11 @@ void Get_EMuRatio(int xxx=0){
     asym_samples = {
 "DYJets_MG",
 "DYJets10to50_MG",
-//"WJets_MG",
-"WW_pythia",
-"WZ_pythia",
-"ZZ_pythia",
+      "WZ_pythia", "ZZ_pythia", "WW_pythia",
+      "WJets_MG",
+      "WWW", "WWZ", "WZZ", "ZZZ",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
+      "ttW", "ttZ",
     };
 
   }

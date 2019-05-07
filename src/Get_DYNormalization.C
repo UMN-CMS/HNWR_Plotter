@@ -3,9 +3,7 @@
 
 void Get_DYNormalization(int xxx=0){
 
-  TString filename_prefix = "HNWROnZ_";
-  //==== FIXME temp 2018
-  if(xxx!=2) filename_prefix += "SkimTree_LRSMHighPt_";
+  TString filename_prefix = "HNWROnZ_SkimTree_LRSMHighPt_";
 
   //gErrorIgnoreLevel = kFatal;
 
@@ -66,7 +64,10 @@ void Get_DYNormalization(int xxx=0){
     bkgds = {
       "WJets_MG",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
+      "WWW", "WWZ", "WZZ", "ZZZ",
       "TTLL_powheg", "TTLJ_powheg",
+      "ttWToLNu", "ttWToQQ", "ttZ",
     };
 
     samplename_DY10to50 = "DYJets10to50";
@@ -81,6 +82,7 @@ void Get_DYNormalization(int xxx=0){
       "ttW", "ttZ",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "WWW", "WWZ", "WZZ", "ZZZ",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl",
     };
 
     samplename_DY10to50 = "DYJets10to50_MG";
@@ -92,6 +94,10 @@ void Get_DYNormalization(int xxx=0){
     bkgds = {
       "TTLL_powheg", "TTLJ_powheg",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
+      "WJets_MG",
+      "WWW", "WWZ", "WZZ", "ZZZ",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
+      "ttW", "ttZ",
     };
 
     samplename_DY10to50 = "DYJets10to50_MG";
@@ -120,21 +126,12 @@ void Get_DYNormalization(int xxx=0){
       TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+var+"_"+dirname);
       if(!hist_bkgd) continue;
 
-      //==== FIXME TEMP 2018
-      if(xxx==2){
-        hist_bkgd->Scale(Get2018DataSurvFrac(leptonFlavour));
-      }
-
       hist_DATA->Add(hist_bkgd, -1.);
     }
 
     TH1D *hist_DY10to50 = (TH1D *)file_DY10to50->Get(dirname+"/"+var+"_"+dirname);
     TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
     if(hist_DY10to50) hist_DY50->Add(hist_DY10to50);
-    //==== FIXME TEMP 2018
-    if(xxx==2){
-      hist_DY50->Scale(Get2018DataSurvFrac(leptonFlavour));
-    }
 
     //==== Central
 
@@ -182,12 +179,6 @@ void Get_DYNormalization(int xxx=0){
       }
       else{
         hist_Down = (TH1D *)hist_DY50->Clone();
-      }
-
-      //==== FIXME TEMP 2018      
-      if(xxx==2){
-        hist_Up->Scale(Get2018DataSurvFrac(leptonFlavour));
-        hist_Down->Scale(Get2018DataSurvFrac(leptonFlavour));
       }
 
       double y_Up = hist_Up->Integral();

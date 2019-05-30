@@ -71,7 +71,7 @@ void Draw_CompareEGammaTnP(){
   TH1D *hist_dummpy_down = new TH1D("hist_dummpy_down", "", N_etabin, etabins);
   hist_axis(hist_dummpy_up, hist_dummpy_down);
   hist_dummpy_down->GetXaxis()->SetTitle("SuperCluster #eta");
-  hist_dummpy_down->GetYaxis()->SetTitle("POG/Mine");
+  hist_dummpy_down->GetYaxis()->SetTitle("POG/Reprod.");
   hist_dummpy_down->GetYaxis()->SetRangeUser(0.7, 1.3);
   hist_dummpy_down->Draw("axis");
 

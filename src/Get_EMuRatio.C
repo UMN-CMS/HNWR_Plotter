@@ -2,9 +2,17 @@
 #include "mylib.h"
 #include "ObsPredComp.h"
 
-void Get_EMuRatio(int xxx=0){
+void Get_EMuRatio(int xxx=2016){
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
+
+  TString WhichRegion = "SR";
+  TString WhichRegionHelper = "CR";
+  if(xxx<0){
+    WhichRegion = "LowWRCR";
+    WhichRegionHelper = "LowWRCR";
+  }
+
 
   gErrorIgnoreLevel = kFatal;
 
@@ -14,11 +22,11 @@ void Get_EMuRatio(int xxx=0){
 
   TString Year = "2016";
   TString TotalLumi = "35.92 fb^{-1} (13 TeV)";
-  if(xxx==1){
+  if(abs(xxx)==2017){
     Year = "2017";
     TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
-  if(xxx==2){
+  if(abs(xxx)==2018){
     Year = "2018";
     TotalLumi = "59.74 fb^{-1} (13 TeV)";
   }
@@ -34,6 +42,7 @@ void Get_EMuRatio(int xxx=0){
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/EMuRatio/"+Year+"/";
+  if(xxx<0) base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/EMuRatio_LowWRCR/"+Year+"/";
 
   if( !gSystem->mkdir(base_plotpath+"/Comparison/", kTRUE) ){
     cout
@@ -174,19 +183,19 @@ void Get_EMuRatio(int xxx=0){
         TString xtitle = xtitles.at(it_var);
         int rebin = rebins.at(it_var);
 
-        TString region_EE = "HNWR_SingleElectron_Resolved_SR";
-        TString region_MM = "HNWR_SingleMuon_Resolved_SR";
-        TString region_EM = "HNWR_EMu_Resolved_SR";
+        TString region_EE = "HNWR_SingleElectron_Resolved_"+WhichRegion;
+        TString region_MM = "HNWR_SingleMuon_Resolved_"+WhichRegion;
+        TString region_EM = "HNWR_EMu_Resolved_"+WhichRegion;
 
         if(it_SR==1){
-          region_EE = "HNWR_SingleElectron_Boosted_SR"; // isolated el + elJet
-          region_MM = "HNWR_SingleElectron_Boosted_SR"; // dummy
-          region_EM = "HNWR_SingleMuon_EMu_Boosted_CR"; // isolated mu + elJet
+          region_EE = "HNWR_SingleElectron_Boosted_"+WhichRegion; // isolated el + elJet
+          region_MM = "HNWR_SingleElectron_Boosted_"+WhichRegion; // dummy
+          region_EM = "HNWR_SingleMuon_EMu_Boosted_"+WhichRegionHelper; // isolated mu + elJet
         }
         if(it_SR==2){
-          region_EE = "HNWR_SingleMuon_Boosted_SR"; // dummy
-          region_MM = "HNWR_SingleMuon_Boosted_SR"; // isolated mu + muJet
-          region_EM = "HNWR_SingleElectron_EMu_Boosted_CR"; // isolated el + elJet
+          region_EE = "HNWR_SingleMuon_Boosted_"+WhichRegion; // dummy
+          region_MM = "HNWR_SingleMuon_Boosted_"+WhichRegion; // isolated mu + muJet
+          region_EM = "HNWR_SingleElectron_EMu_Boosted_"+WhichRegionHelper; // isolated el + elJet
         }
 
         TH1D *hist_EE = (TH1D *)file->Get(region_EE+"/"+var+"_"+region_EE);
@@ -202,8 +211,17 @@ void Get_EMuRatio(int xxx=0){
 
           if(var=="WRCand_Mass"){
             vector<double> vec_bins;
-            if(it_SR==0) vec_bins = {0, 200, 400, 600, 800, 1000, 1500, 2000, 8000};
-            else vec_bins = {0, 200, 400, 600, 800, 1000, 8000};
+
+            if(xxx>0){
+              if(it_SR==0) vec_bins = {0, 200, 400, 600, 800, 1000, 1500, 2000, 8000};
+              else vec_bins = {0, 200, 400, 600, 800, 1000, 1500, 8000};
+            }
+            else{
+              if(it_SR==0) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 2000, 8000};
+              else vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
+            }
+
+
             const int n_bin = vec_bins.size()-1;
             double ptArray[n_bin+1];
             for(int zzz=0;zzz<vec_bins.size();zzz++) ptArray[zzz] = vec_bins.at(zzz);
@@ -262,6 +280,9 @@ void Get_EMuRatio(int xxx=0){
           lg->AddEntry(hist_MM, "#mu#mu/e#mu", "l");
           lg->Draw();
         }
+        if(xxx<0){
+          hist_MM->GetXaxis()->SetRangeUser(0., 1000.);
+        }
 
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
@@ -310,7 +331,9 @@ void Get_EMuRatio(int xxx=0){
     //==== Ratio obtained with this sym_sample
     //==== Now make shape
 
-    TFile *outfile = new TFile(base_filepath+"/"+filename_prefix+"EMuMethod_"+sym_sample+".root","RECREATE");
+    TString emurootfilepath = base_filepath+"/"+filename_prefix+"EMuMethod_"+sym_sample+".root";
+    if(xxx<0) emurootfilepath = base_filepath+"/"+filename_prefix+"EMuMethod_LowWRCR_"+sym_sample+".root";
+    TFile *outfile = new TFile(emurootfilepath,"RECREATE");
 
     for(int it_SR=0; it_SR<3; it_SR++){
 
@@ -323,21 +346,21 @@ void Get_EMuRatio(int xxx=0){
       cout << "@@@@ Making " << SR << " plots.." << endl;
 
       TString filename_DataEMu = filename_prefix+"data_SingleMuon.root";
-      TString region_EE = "HNWR_SingleElectron_Resolved_SR";
-      TString region_MM = "HNWR_SingleMuon_Resolved_SR";
-      TString region_EM = "HNWR_EMu_Resolved_SR";
+      TString region_EE = "HNWR_SingleElectron_Resolved_"+WhichRegion;
+      TString region_MM = "HNWR_SingleMuon_Resolved_"+WhichRegion;
+      TString region_EM = "HNWR_EMu_Resolved_"+WhichRegion;
 
       if(it_SR==1){
         filename_DataEMu = filename_prefix+"data_SingleMuon.root";
-        region_EE = "HNWR_SingleElectron_Boosted_SR"; // isolated el + elJet
-        region_MM = "HNWR_SingleElectron_Boosted_SR"; // dummy
-        region_EM = "HNWR_SingleMuon_EMu_Boosted_CR"; // isolated mu + elJet
+        region_EE = "HNWR_SingleElectron_Boosted_"+WhichRegion; // isolated el + elJet
+        region_MM = "HNWR_SingleElectron_Boosted_"+WhichRegion; // dummy
+        region_EM = "HNWR_SingleMuon_EMu_Boosted_"+WhichRegionHelper; // isolated mu + elJet
       }
       if(it_SR==2){
         filename_DataEMu = filename_prefix+"data_SingleElectron.root";
-        region_EE = "HNWR_SingleMuon_Boosted_SR"; // dummy
-        region_MM = "HNWR_SingleMuon_Boosted_SR"; // isolated mu + muJet
-        region_EM = "HNWR_SingleElectron_EMu_Boosted_CR"; // isolated el + elJet
+        region_EE = "HNWR_SingleMuon_Boosted_"+WhichRegion; // dummy
+        region_MM = "HNWR_SingleMuon_Boosted_"+WhichRegion; // isolated mu + muJet
+        region_EM = "HNWR_SingleElectron_EMu_Boosted_"+WhichRegionHelper; // isolated el + elJet
       }
 
       TFile *file_EMu = new TFile(base_filepath+"/"+filename_DataEMu);

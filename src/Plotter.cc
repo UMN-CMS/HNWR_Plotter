@@ -228,7 +228,7 @@ void Plotter::draw_hist(){
 
             //==== FIXME for DY
             if(current_sample.Contains("DYJets")){
-              double DYNorm = GetDYNormSF(DataYear, PrimaryDataset[i_cut]);
+              double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
               hist_final->Scale(DYNorm);
             }
             else{
@@ -269,15 +269,17 @@ void Plotter::draw_hist(){
             double Norm_RelSyst_Lumi = LumiError();
             //==== 2) Xsec //TODO add more samples
             double Norm_RelSyst_Xsec = 0;
-            if(current_sample.Contains("DYJets")){
+            if(ApplyMCNormSF.at(i_cut)){
+              if(current_sample.Contains("DYJets")){
 
-              double Scaled_value = GetDYNormSF(DataYear, PrimaryDataset[i_cut]);
-              double SFErr = GetDYNormSF(DataYear, PrimaryDataset[i_cut], true);
+                double Scaled_value = GetDYNormSF(DataYear, histname_suffix[i_cut]);
+                double SFErr = GetDYNormSF(DataYear, histname_suffix[i_cut], true);
 
-              Norm_RelSyst_Xsec = SFErr/Scaled_value;
+                Norm_RelSyst_Xsec = SFErr/Scaled_value;
 
-            }
-            else{
+              }
+              else{
+              }
             }
 
             //==== sum
@@ -348,7 +350,7 @@ void Plotter::draw_hist(){
 
                 //==== FIXME for DY
                 if(current_sample.Contains("DYJets")){
-                  double DYNorm = GetDYNormSF(DataYear, PrimaryDataset[i_cut]);
+                  double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
                   hist_Up_final->Scale(DYNorm);
                   hist_Down_final->Scale(DYNorm);
                 }
@@ -966,9 +968,19 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
   //==== Ratio
 
+  TString this_xtitle = x_title[i_var];
+  if(histname[i_var]=="WRCand_Mass"){
+    if(histname_suffix[i_cut].Contains("Resolved")){
+      this_xtitle = "m_{lljj} (GeV)";
+    }
+    else if(histname_suffix[i_cut].Contains("Boosted")){
+      this_xtitle = "m_{lJ} (GeV)";
+    }
+  }
+
   if(!drawratio.at(i_cut)){
     hist_axis(hist_empty);
-    hist_empty->GetXaxis()->SetTitle(x_title[i_var]);
+    hist_empty->GetXaxis()->SetTitle(this_xtitle);
   }
   else{
     //==== MC-DATA
@@ -982,7 +994,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     hist_empty_bottom->SetNdivisions(504,"Y");
     //hist_empty_bottom->GetYaxis()->SetRangeUser(0,YmaxScale*GetMaximum(ratio_point,0.));
     //hist_empty_bottom->GetYaxis()->SetRangeUser(0,1.9);
-    hist_empty_bottom->GetXaxis()->SetTitle(x_title[i_var]);
+    hist_empty_bottom->GetXaxis()->SetTitle(this_xtitle);
     hist_empty_bottom->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
     hist_empty_bottom->SetFillColor(0);
     hist_empty_bottom->SetMarkerSize(0);
@@ -1367,9 +1379,9 @@ TString Plotter::DoubleToString(double dx){
   if(units[i_var]=="int"){
     return "Events";
   }
-  else if(histname[i_var].Contains("WRCand_Mass")){ //FIXME need rebin?
-    return "Events / bin";
-  }
+  //else if(histname[i_var].Contains("WRCand_Mass")){ //FIXME need rebin?
+  //  return "Events / bin";
+  //}
   else{
 
     int dx_int = int(dx);
@@ -1590,24 +1602,32 @@ TString Plotter::GetStringChannelRegion(int A, int B){
 
   //==== B%10 = 1 : Resolved
   //==== Last digit of B = 0 : SR
-  //====                 = 1 : CR for DY
-  //====                 = 2 : CR with emu
+  //====                 = 1 : DYCR
+  //====                 = 2 : EMu
+  //====                 = 3 : LowWR CR
 
   //==== B%10 = 2 : Boosted
   //==== Last digit of B = 0 : SR
-  //====                 = 1 : CR with el-jet
-  //====                 = 2 : CR with mu-jet
-  //====                 = 3 : CR for DY
+  //===                  = 1 : DYCR
+  //====                 = 2 : EMu with el-jet
+  //====                 = 3 : EMu with mu-jet 
+  //====                 = 4 : LowWR
+  //====                 = 5 : EMu LowWR with el-jet
+  //====                 = 6 : EMu LowWR with mu-jet
 
   if(abs(B)==10) region = "Resolved SR";
   else if(abs(B)==11) region = "Resolved DY CR";
   else if(abs(B)==12) region = "Resolved e#mu CR";
+  else if(abs(B)==13) region = "Resolved Low m(lljj)";
 
   else if(abs(B)==20) region = "Boosted SR";
-  else if(abs(B)==21) region = "Boosted CR w/ e-Jet";
-  else if(abs(B)==22) region = "Boosted CR w/ #mu-Jet";
-  else if(abs(B)==23) region = "Boosted DY CR";
-  else if(abs(B)==24) region = "Boosted OnZ CR";
+  else if(abs(B)==21) region = "Boosted DY CR";
+  else if(abs(B)==22) region = "Boosted e#mu w/ e-Jet";
+  else if(abs(B)==23) region = "Boosted e#mu w/ #mu-Jet";
+  else if(abs(B)==24) region = "Boosted Low m(lJ)";
+  else if(abs(B)==25) region = "Boosted e#mu Low m(lJ) w/ e-Jet";
+  else if(abs(B)==26) region = "Boosted e#mu Low m(lJ) w/ #mu-Jet";
+
 
   else if(abs(B)==30) region = "OnZ";
 

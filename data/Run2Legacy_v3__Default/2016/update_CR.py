@@ -31,6 +31,8 @@ for f in files:
           tmpf.write(line.replace('-999','1'))
         else:
           tmpf.write(line.replace('-999','50'))
+      elif "ZCand_Pt" in var:
+        tmpf.write(line.replace('-999','100'))
 
       elif "MET" in var or "HT" in var or "MT" in var:
         tmpf.write(line.replace('-999','10'))
@@ -45,7 +47,10 @@ for f in files:
         tmpf.write(line.replace('-999','5'))
 
       elif "WRCand_Mass" in var:
-        tmpf.write(line.replace('-999','20'))
+        if "LowWRCR" in region:
+          tmpf.write(line.replace('-999','2'))
+        else:
+          tmpf.write(line.replace('-999','20'))
 
       elif "NCand_Pt" in var:
         tmpf.write(line.replace('-999','5'))
@@ -85,7 +90,10 @@ for f in files:
         tmpf.write(line.replace('-999\t-999','0\t2500'))
 
       elif "WRCand_Mass" in var:
-        tmpf.write(line.replace('-999\t-999','0\t5500'))
+        if "LowWRCR" in region:
+          tmpf.write(line.replace('-999\t-999','0\t1500'))
+        else:
+          tmpf.write(line.replace('-999\t-999','0\t5500'))
 
       elif ("nPileUp" in var) or ("nPV" in var) or ("N_VTX" in var):
         tmpf.write(line.replace('-999\t-999','0\t100'))

@@ -6,10 +6,17 @@ public:
 
   TH1D *hist_Obs;
   TH1D *hist_Pred;
+  THStack *stack_Pred;
 
   TString alias_Obs;
   TString alias_Pred;
 
+  void SetXRange(double min, double max){
+    UseCustomXRange = true;
+    x_min = min;
+    x_max = max;
+  }
+  bool UseCustomXRange;
   double x_min, x_max;
   TString x_title;
   bool Logy;
@@ -20,7 +27,9 @@ public:
   ObsPredComp(){
     hist_Obs = NULL;
     hist_Pred = NULL;
+    stack_Pred = NULL;
 
+    UseCustomXRange = false;
     x_min = -9999;
     x_max = -9999;
     Logy = false;
@@ -46,10 +55,30 @@ public:
     c1_up->cd();
     if(Logy) c1_up->SetLogy();
 
+    //==== empty
+    TH1D *hist_empty_up = NULL;
+    bool UseStack = false;
+    if(hist_Pred){
+      hist_empty_up = (TH1D *)hist_Pred->Clone();
+    }
+    else if(stack_Pred){
+      UseStack = true;
+      hist_empty_up = (TH1D *)stack_Pred->GetStack()->Last()->Clone();
+      hist_Pred = (TH1D *)stack_Pred->GetStack()->Last()->Clone();
+    }
+    hist_empty_up->Draw("axis");
+
     //==== Pred
-    hist_Pred->SetFillColor(kOrange);
-    hist_Pred->SetLineColor(kOrange);
-    hist_Pred->Draw("hist");
+    if(UseStack){
+      stack_Pred->Draw("histsame");
+      hist_Pred->SetFillColor(kOrange);
+      hist_Pred->SetLineColor(kOrange);
+    }
+    else{
+      hist_Pred->SetFillColor(kOrange);
+      hist_Pred->SetLineColor(kOrange);
+      hist_Pred->Draw("histsame");
+    }
 
     TH1D *hist_Pred_err = (TH1D *)hist_Pred->Clone();
     hist_Pred_err->SetMarkerColor(0);
@@ -60,10 +89,14 @@ public:
     hist_Pred_err->Draw("sameE2");
 
     if(Logy){
-      hist_Pred->GetYaxis()->SetRangeUser(1., 10.*max( GetMaximum(hist_Pred), GetMaximum(hist_Obs) ) );
+      hist_empty_up->GetYaxis()->SetRangeUser(1., 10.*max( GetMaximum(hist_Pred), GetMaximum(hist_Obs) ) );
     }
     else{
-      hist_Pred->GetYaxis()->SetRangeUser(0., 1.2*max( GetMaximum(hist_Pred), GetMaximum(hist_Obs) ) );
+      hist_empty_up->GetYaxis()->SetRangeUser(0., 1.2*max( GetMaximum(hist_Pred), GetMaximum(hist_Obs) ) );
+    }
+
+    if(UseCustomXRange){
+      hist_empty_up->GetXaxis()->SetRangeUser(x_min,x_max);
     }
 
     //==== Obs
@@ -111,7 +144,7 @@ public:
     hist_empty_bottom->SetMarkerStyle(0);
     hist_empty_bottom->SetLineColor(kWhite);
     hist_empty_bottom->Draw("axis");
-    hist_axis(hist_Pred, hist_empty_bottom);
+    hist_axis(hist_empty_up, hist_empty_bottom);
 
     TH1D *hist_ratio = (TH1D *)hist_Obs->Clone();
     TH1D *hist_ratio_err = (TH1D *)hist_Obs->Clone();

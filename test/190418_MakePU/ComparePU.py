@@ -2,7 +2,19 @@ import os,ROOT
 import tdrstyle
 from PUProbData import *
 
-Year = 2018
+def TotalLumi(Year):
+
+  if Year==2016:
+    return "35.92"
+  elif Year==2017:
+    return "41.53"
+  elif Year==2018:
+    return "59.74"
+  else:
+    print "WTF"
+    return "35.9";
+
+Year = 2017
 
 exec('pu1 = prob_DATA_'+str(Year))
 exec('pu2 = prob_MC_'+str(Year))
@@ -58,6 +70,12 @@ lg.AddEntry(hist_1, 'DATA', 'l')
 lg.AddEntry(hist_2, 'MC', 'l')
 lg.Draw()
 
+latex_Lumi = ROOT.TLatex()
+latex_Lumi.SetNDC()
+latex_Lumi.SetTextSize(0.035)
+latex_Lumi.SetTextFont(42)
+latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi(Year)+" fb^{-1} (13 TeV)")
+
 c1.SaveAs(outdir+'/DATAvsMC_'+outname+'.pdf')
 c1.SaveAs(outdir+'/DATAvsMC_'+outname+'.png')
 c1.Close()
@@ -68,6 +86,7 @@ hist_SF.Draw('histsame')
 hist_SF.GetXaxis().SetTitle("NVtx")
 hist_SF.GetYaxis().SetTitle("PU Reweight")
 hist_SF.GetYaxis().SetRangeUser(0.,4.0)
+latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi(Year)+" fb^{-1} (13 TeV)")
 c2.SaveAs(outdir+'/PUReweight_'+outname+'.pdf')
 c2.SaveAs(outdir+'/PUReweight_'+outname+'.png')
 

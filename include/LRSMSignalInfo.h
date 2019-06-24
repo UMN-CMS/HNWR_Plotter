@@ -48,7 +48,16 @@ LRSMSignalInfo::LRSMSignalInfo(){
 
 void LRSMSignalInfo::SetNames(){
 
-  if(generator=="aMCNLO"){
+  if(generator=="MGFastSim"){
+    if(prod_channel=="SchWR"){
+
+      filename = "WRtoNLtoLLJJ_WR"+TString::Itoa(mass_WR,10)+"_N"+TString::Itoa(mass_N,10);
+      legendalias = "m_{WR} = "+TString::Itoa(mass_WR,10)+" GeV, m_{N} = "+TString::Itoa(mass_N,10);
+      texname = "SignalSchWR"+lep_channel+"WR"+TString::Itoa(mass_WR,10)+"N"+TString::Itoa(mass_N,10);
+    }
+
+  }
+  else if(generator=="aMCNLO"){
     if(prod_channel=="pair"){
       filename = "HNPairToJJJJ_"+lep_channel+"_ZP"+TString::Itoa(mass_Z,10)+"_N"+TString::Itoa(mass_N,10)+"_WR"+TString::Itoa(mass_WR,10);
       legendalias = "m_{Z'} = "+TString::Itoa(mass_Z,10)+" GeV, m_{N} = "+TString::Itoa(mass_N,10);

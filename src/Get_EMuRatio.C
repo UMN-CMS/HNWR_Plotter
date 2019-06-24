@@ -16,7 +16,7 @@ void Get_EMuRatio(int xxx=2016){
 
   gErrorIgnoreLevel = kFatal;
 
-  bool DrawCompPlot = true;
+  bool DrawCompPlot = false;
 
   setTDRStyle();
 
@@ -65,8 +65,8 @@ void Get_EMuRatio(int xxx=2016){
     };
 
     asym_samples = {
-"DYJets",
-"DYJets10to50",
+"DYJets10to50_MG_Reweighted",
+"DYJets_MG_HT_Reweighted",
       "WJets_MG",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
@@ -85,8 +85,8 @@ void Get_EMuRatio(int xxx=2016){
     };
 
     asym_samples = {
-"DYJets",
-"DYJets10to50_MG",
+"DYJets10to50_MG_Reweighted",
+"DYJets_MG_JetBinned_Reweighted",
       "WJets_MG",
       "ttW", "ttZ",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
@@ -105,8 +105,8 @@ void Get_EMuRatio(int xxx=2016){
     };
 
     asym_samples = {
-"DYJets_MG",
-"DYJets10to50_MG",
+"DYJets10to50_MG_Reweighted",
+"DYJets_MG_HT_Reweighted",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "WJets_MG",
       "WWW", "WWZ", "WZZ", "ZZZ",
@@ -266,7 +266,7 @@ void Get_EMuRatio(int xxx=2016){
           hist_EE->GetXaxis()->SetTitle(xtitle);
           hist_EE->GetYaxis()->SetTitle("Ratio");
           TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
-          lg->AddEntry(hist_EE, "ee/e#mu", "l");
+          lg->AddEntry(hist_EE, "ee/#mue", "l");
           lg->Draw();
         }
         else if(it_SR==2){
@@ -281,11 +281,9 @@ void Get_EMuRatio(int xxx=2016){
           lg->Draw();
         }
         if(xxx<0){
+          hist_EE->GetXaxis()->SetRangeUser(0., 1000.);
           hist_MM->GetXaxis()->SetRangeUser(0., 1000.);
         }
-
-        c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
-        c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
 
         file_Ratios->cd();
         hist_EE->SetName("EE_Ratios_"+SR+"_"+var+"_"+sym_sample);
@@ -321,6 +319,8 @@ void Get_EMuRatio(int xxx=2016){
 
         }
 
+        c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
+        c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
         c1->Close();
 
       } // END variable loop
@@ -442,8 +442,12 @@ void Get_EMuRatio(int xxx=2016){
             m_EE.x_title = var;
             m_EE.Logy = true;
             m_EE.TotalLumi = TotalLumi;
-            m_EE.outputpath = base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_EE+"_"+sym_sample;
-            m_EE.Run();
+
+            TString this_outputdir = base_plotpath+"/Comparison/";
+            gSystem->mkdir(this_outputdir,kTRUE);
+
+            m_EE.Draw();
+            m_EE.Save(this_outputdir+SR+"_"+var+"_"+region_EE+"_"+sym_sample);
 
           }
         }
@@ -481,8 +485,12 @@ void Get_EMuRatio(int xxx=2016){
             m_MM.x_title = var;
             m_MM.Logy = true;
             m_MM.TotalLumi = TotalLumi;
-            m_MM.outputpath = base_plotpath+"/Comparison/"+SR+"_"+var+"_"+region_MM+"_"+sym_sample;
-            m_MM.Run();
+
+            TString this_outputdir = base_plotpath+"/Comparison/";
+            gSystem->mkdir(this_outputdir,kTRUE);
+
+            m_MM.Draw();
+            m_MM.Save(this_outputdir+SR+"_"+var+"_"+region_MM+"_"+sym_sample);
 
           }
 

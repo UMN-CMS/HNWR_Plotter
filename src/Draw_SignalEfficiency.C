@@ -165,7 +165,7 @@ void Draw_SignalEfficiency(){
             TFile *file = new TFile(base_filepath+"/"+this_filename);
 
             TString dirname = Config+"_"+Suffix+"_"+region;
-            TH1D *hist_Den = (TH1D *)file->Get("NoCut_"+Config);
+            TH1D *hist_Den = (TH1D *)file->Get("CutFlow/NoCut_"+Config);
             TH1D *hist = (TH1D *)file->Get(dirname+"/NEvent_"+dirname);
 
             double this_yield = 0;

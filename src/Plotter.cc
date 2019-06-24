@@ -305,7 +305,13 @@ void Plotter::draw_hist(){
               TH1D *hist_Up = NULL;
               if(dir_Up){
                 hist_Up = (TH1D *)dir_Up->Get( histname[i_var]+"_Syst_"+Syst+"Up_"+DirName );
-                hist_Up->Rebin( n_rebin() );
+                if(hist_Up){
+                  hist_Up->Rebin( n_rebin() );
+                }
+                else{
+                  hist_Up = (TH1D *)hist_final->Clone();
+                  EmptyHistogram(hist_Up);
+                }
               }
               else{
                 hist_Up = (TH1D *)hist_final->Clone();
@@ -316,7 +322,13 @@ void Plotter::draw_hist(){
               TH1D *hist_Down = NULL;
               if(dir_Down){
                 hist_Down = (TH1D *)dir_Down->Get( histname[i_var]+"_Syst_"+Syst+"Down_"+DirName );
-                hist_Down->Rebin( n_rebin() );
+                if(hist_Down){
+                  hist_Down->Rebin( n_rebin() );
+                }
+                else{
+                  hist_Down = (TH1D *)hist_final->Clone();
+                  EmptyHistogram(hist_Down);
+                }
               }
               else{
                 hist_Down = (TH1D *)hist_final->Clone();

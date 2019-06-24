@@ -4,10 +4,10 @@
 
 void Draw_SignalDistribution(int xxx=0){
 
-  TString bkgdsample_prompt = "DYJets";
-  TString bkgdsample_fake = "TTLJ_powheg";
+  TString bkgdsample_prompt = "DYJets_MG_HT_Reweighted";
+  TString bkgdsample_fake = "TTLX_powheg";
 
-  TString Year = "2017";
+  TString Year = "2016";
 
   gStyle->SetOptStat(0);
 
@@ -45,15 +45,15 @@ void Draw_SignalDistribution(int xxx=0){
 
   vector<TString> channels = {
     "MuMu",
-    //"EE",
+    "EE",
   };
 
   vector<Color_t> colors = {
     kRed, kRed+2, kOrange, kOrange+2, kGreen, kGreen+2, kBlue, kBlue+2, kViolet, kViolet+2, kBlack, kCyan, kGray,
   };
 
-  TFile *file_bkg_prompt = new TFile(base_filepath+"/HNWRAnalyzer_"+bkgdsample_prompt+".root");
-  TFile *file_bkg_fake = new TFile(base_filepath+"/HNWRAnalyzer_"+bkgdsample_fake+".root");
+  TFile *file_bkg_prompt = new TFile(base_filepath+"/HNWRAnalyzer_SkimTree_LRSMHighPt_"+bkgdsample_prompt+".root");
+  TFile *file_bkg_fake = new TFile(base_filepath+"/HNWRAnalyzer_SkimTree_LRSMHighPt_"+bkgdsample_fake+".root");
 
   TString this_plotpath = base_plotpath+"/";
   gSystem->mkdir(this_plotpath, kTRUE);
@@ -343,7 +343,7 @@ void Draw_SignalDistribution(int xxx=0){
           LRSMSignalInfo this_lrsminfo;
           this_lrsminfo.mass_WR = m_WR;
           this_lrsminfo.mass_N = m_N;
-          this_lrsminfo.generator = "aMCNLO";
+          this_lrsminfo.generator = "MGFastSim";
           this_lrsminfo.prod_channel = "SchWR";
           this_lrsminfo.lep_channel = channel;
           this_lrsminfo.SetNames();

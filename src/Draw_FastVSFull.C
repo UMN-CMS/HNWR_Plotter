@@ -232,8 +232,7 @@ void Draw_FastVSFull(){
 
         //cout << "    sample = " << sample << endl;
 
-        //TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_FastSIM_"+sample+"_13TeV_TuneCUETP8M1.root");
-        TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_FastSIM_"+sample+"_MG.root");
+        TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_"+sample+".root");
         TH1D *hist_NoCut_Fast = (TH1D *)file_Fast->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Fast = (TH1D *)file_Fast->Get(channel+"/GenStudy__"+var+"_"+channel);
         hist_Fast->Rebin(rebin);
@@ -241,8 +240,7 @@ void Draw_FastVSFull(){
         hist_Fast->SetLineColor(color);
         hist_Fast->SetLineWidth(3);
 
-        //TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSIM_"+sample+"_13TeV_TuneCUETP8M1.root");
-        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSIM_"+sample+"_MG.root");
+        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSim_Private_"+sample+"_MG.root");
         TH1D *hist_NoCut_Full = (TH1D *)file_Full->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Full = (TH1D *)file_Full->Get(channel+"/GenStudy__"+var+"_"+channel);
         hist_Full->Rebin(rebin);

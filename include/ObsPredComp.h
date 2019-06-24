@@ -4,6 +4,10 @@
 class ObsPredComp{
 public:
 
+  TCanvas *c_comp;
+  TPad *c1_up;
+  TPad *c1_down;
+
   TH1D *hist_Obs;
   TH1D *hist_Pred;
   THStack *stack_Pred;
@@ -21,10 +25,16 @@ public:
   TString x_title;
   bool Logy;
 
-  TString outputpath;
+  TString RatioTitle;
+
   TString TotalLumi;
 
   ObsPredComp(){
+
+    c_comp = NULL;
+    c1_up = NULL;
+    c1_down = NULL;
+
     hist_Obs = NULL;
     hist_Pred = NULL;
     stack_Pred = NULL;
@@ -34,15 +44,23 @@ public:
     x_max = -9999;
     Logy = false;
 
-    outputpath = "./";
+    RatioTitle = "#frac{Obs.}{Pred.}";
+
+  }
+  ~ObsPredComp(){
+    c_comp->Close();
   }
 
-  void Run(){
+  void Save(TString outputpath){
+    c_comp->SaveAs(outputpath+".pdf");
+    c_comp->SaveAs(outputpath+".png");
+    c_comp->Close();
+  }
+
+  void Draw(){
 
     //==== canvas
-    TCanvas *c_comp = new TCanvas("c_comp", "", 800, 800);
-    TPad *c1_up;
-    TPad *c1_down;
+    c_comp = new TCanvas("c_comp", "", 800, 800);
     c1_up = new TPad("c1", "", 0, 0.25, 1, 1);
     c1_down = new TPad("c1_down", "", 0, 0, 1, 0.25);
     canvas_margin(c_comp, c1_up, c1_down);
@@ -137,7 +155,7 @@ public:
     hist_empty_bottom->SetNdivisions(504,"Y");
     hist_empty_bottom->GetYaxis()->SetRangeUser(0.5,1.5);
     hist_empty_bottom->GetXaxis()->SetTitle(x_title);
-    hist_empty_bottom->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
+    hist_empty_bottom->GetYaxis()->SetTitle(RatioTitle);
     hist_empty_bottom->SetFillColor(0);
     hist_empty_bottom->SetFillStyle(0);
     hist_empty_bottom->SetMarkerSize(0);
@@ -197,10 +215,6 @@ public:
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);
     latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
-
-    c_comp->SaveAs(outputpath+".pdf");
-    c_comp->SaveAs(outputpath+".png");
-    c_comp->Close();
 
   }
 

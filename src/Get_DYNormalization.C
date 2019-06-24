@@ -57,8 +57,8 @@ void Get_DYNormalization(int xxx=0){
   //==== MCs
 
   vector<TString> bkgds;
-  TString samplename_DY10to50 = "DYJets10to50";
-  TString samplename_DY50 = "DYJets";
+  TString samplename_DY10to50 = "";
+  TString samplename_DY50 = "";
   if(Year=="2016"){
 
     bkgds = {
@@ -70,8 +70,8 @@ void Get_DYNormalization(int xxx=0){
       "ttWToLNu", "ttWToQQ", "ttZ",
     };
 
-    samplename_DY10to50 = "DYJets10to50";
-    samplename_DY50 = "DYJets";
+    samplename_DY10to50 = "DYJets10to50_MG_Reweighted";
+    samplename_DY50 = "DYJets_MG_HT_Reweighted";
 
   }
   else if(Year=="2017"){
@@ -85,8 +85,8 @@ void Get_DYNormalization(int xxx=0){
       "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl",
     };
 
-    samplename_DY10to50 = "DYJets10to50_MG";
-    samplename_DY50 = "DYJets";
+    samplename_DY10to50 = "DYJets10to50_MG_Reweighted";
+    samplename_DY50 = "DYJets_MG_JetBinned_Reweighted";
 
   }
   else if(Year=="2018"){
@@ -100,13 +100,13 @@ void Get_DYNormalization(int xxx=0){
       "ttW", "ttZ",
     };
 
-    samplename_DY10to50 = "DYJets10to50_MG";
-    samplename_DY50 = "DYJets_MG";
+    samplename_DY10to50 = "DYJets10to50_MG_Reweighted";
+    samplename_DY50 = "DYJets_MG_HT_Reweighted";
 
   }
 
-  TFile *file_DY10to50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY10to50+"_Reweighted.root");
-  TFile *file_DY50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY50+"_Reweighted.root");
+  TFile *file_DY10to50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY10to50+".root");
+  TFile *file_DY50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY50+".root");
 
   for(int it_fl=0; it_fl<2; it_fl++){
 
@@ -204,10 +204,8 @@ void Get_DYNormalization(int xxx=0){
       double SF_StarErr = sqrt(RelStatError_DATA*RelStatError_DATA+RelStatError_MC*RelStatError_MC) * SF;
       double SF_Syst = RelSystError_MC * SF;
 
-      //==== For latex
-      //printf("%1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", SF, SF_StarErr, SF_Syst);
-
       cout << leptonFlavour << "\t" << region << "\t" << SF << "\t" << sqrt(  SF_StarErr*SF_StarErr + SF_Syst*SF_Syst ) << endl;
+      //printf("%s %s %1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", leptonFlavour.Data(), region.Data(), SF, SF_StarErr, SF_Syst);
 
     }
 

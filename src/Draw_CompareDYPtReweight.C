@@ -50,17 +50,17 @@ void Draw_CompareDYPtReweight(int xxx=0){
     << endl;
   }
 
-  TString samplename_DY10to50 = "DYJets10to50";
-  TString samplename_DY50 = "DYJets";
+  TString samplename_DY10to50 = "DYJets10to50_MG";
+  TString samplename_DY50 = "DYJets_MG_HT";
   if(Year=="2016"){
-    samplename_DY50 = "DYJets";
   }
   else if(Year=="2017"){
-    samplename_DY50 = "DYJets";
-
+    samplename_DY10to50 = "DYJets10to50_MG";
+    samplename_DY50 = "DYJets_MG_JetBinned";
   }
   else if(Year=="2018"){
-    samplename_DY50 = "DYJets_MG";
+    samplename_DY10to50 = "DYJets10to50_MG";
+    samplename_DY50 = "DYJets_MG_HT";
   }
 
   TFile *file_Before = new TFile(base_filepath+"/"+filename_prefix+samplename_DY50+".root");

@@ -3,10 +3,6 @@
 
 void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool ScaleMC=false){
 
-  //bool ScaleMC = false;
-  //bool UseDYPtReweight = false;
-  //int Year = 2017;
-
   bool UsePromptMC = false;
 
   //==============

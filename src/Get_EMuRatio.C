@@ -2,7 +2,21 @@
 #include "mylib.h"
 #include "ObsPredComp.h"
 
-void Get_EMuRatio(int xxx=2016){
+TString FitResultToString(TH1D *hist){
+
+  double FitP0 = hist->GetFunction("pol0")->GetParameter(0);
+  double FitP0Err = hist->GetFunction("pol0")->GetParError(0);
+  double FitChi2 = hist->GetFunction("pol0")->GetChisquare();
+
+  std::stringstream out;
+  out.precision(3);
+  out << "p0 = " << FitP0 << " #pm " << FitP0Err << " (#chi^{2} = " << FitChi2 << ")";
+
+  return out.str().c_str();
+
+}
+
+void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
@@ -16,7 +30,8 @@ void Get_EMuRatio(int xxx=2016){
 
   gErrorIgnoreLevel = kFatal;
 
-  bool DrawCompPlot = false;
+  bool DrawCompPlot = true;
+  if(PrintLatexOnly) DrawCompPlot = false;
 
   setTDRStyle();
 
@@ -32,6 +47,7 @@ void Get_EMuRatio(int xxx=2016){
   }
 
   gStyle->SetOptStat(0);
+  gStyle->SetOptFit(0);
 
   TH1::SetDefaultSumw2(true);
   TH1::AddDirectory(kFALSE);
@@ -156,6 +172,13 @@ void Get_EMuRatio(int xxx=2016){
 //"WRCand_Mass"
   };
 
+  if(PrintLatexOnly){
+    vars_to_draw.clear();
+    vars_to_draw = {"WRCand_Mass"};
+    sym_samples.clear();
+    sym_samples = {"TTLX_powheg"};
+  }
+
   TFile *file_TTLL = new TFile(base_filepath+"/"+filename_prefix+"TTLL_powheg.root");
   TFile *file_TTLJ = new TFile(base_filepath+"/"+filename_prefix+"TTLJ_powheg.root");
 
@@ -169,7 +192,7 @@ void Get_EMuRatio(int xxx=2016){
 
     TFile *file = new TFile(base_filepath+"/"+filename_prefix+sym_sample+".root");
 
-    vector< vector<double> > ratios_for_each_SR;
+    vector< vector<double> > ratios_for_each_SR, ratioerrs_for_each_SR;
 
     for(int it_SR=0; it_SR<3; it_SR++){
 
@@ -245,6 +268,8 @@ void Get_EMuRatio(int xxx=2016){
         hist_EE->SetLineWidth(3);
         hist_MM->SetLineWidth(3);
 
+        TLegend *lg = new TLegend(0.5, 0.7, 0.9, 0.9);
+
         if(it_SR==0){
           hist_EE->Draw("histe1");
           hist_axis(hist_EE);
@@ -253,10 +278,8 @@ void Get_EMuRatio(int xxx=2016){
           hist_EE->GetYaxis()->SetRangeUser(0., 1.5);
           hist_EE->GetXaxis()->SetTitle(xtitle);
           hist_EE->GetYaxis()->SetTitle("Ratio");
-          TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
           lg->AddEntry(hist_EE, "ee/e#mu", "l");
           lg->AddEntry(hist_MM, "#mu#mu/e#mu", "l");
-          lg->Draw();
         }
         else if(it_SR==1){
           hist_EE->Draw("histe1");
@@ -265,9 +288,7 @@ void Get_EMuRatio(int xxx=2016){
           hist_EE->GetYaxis()->SetRangeUser(0., 2.0);
           hist_EE->GetXaxis()->SetTitle(xtitle);
           hist_EE->GetYaxis()->SetTitle("Ratio");
-          TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
           lg->AddEntry(hist_EE, "ee/#mue", "l");
-          lg->Draw();
         }
         else if(it_SR==2){
           hist_MM->Draw("histe1");
@@ -276,9 +297,7 @@ void Get_EMuRatio(int xxx=2016){
           hist_MM->GetYaxis()->SetRangeUser(0., 2.0);
           hist_MM->GetXaxis()->SetTitle(xtitle);
           hist_MM->GetYaxis()->SetTitle("Ratio");
-          TLegend *lg = new TLegend(0.6, 0.8, 0.9, 0.9);
           lg->AddEntry(hist_MM, "#mu#mu/e#mu", "l");
-          lg->Draw();
         }
         if(xxx<0){
           hist_EE->GetXaxis()->SetRangeUser(0., 1000.);
@@ -301,23 +320,62 @@ void Get_EMuRatio(int xxx=2016){
         }
 */
 
+        TString String_FitResult_EE(""), String_FitResult_MM("");
+
         if(var=="WRCand_Mass"){
 
+          double fitted_ratio_EE(-1), fitted_ratio_MM(-1);
+          double fitted_ratioerr_EE(-1), fitted_ratioerr_MM(-1);
+          double fitrange_xmin(-1), fitrange_xmax(-1);
+          if(xxx>0){
+            fitrange_xmin = 800.;
+            fitrange_xmax = 8000.;
+          }
+          else{
+            fitrange_xmin = 0.;
+            fitrange_xmax = 800.;
+          }
+
           //==== EE
-          hist_EE->Fit("pol0");
-          double fitted_ratio_EE = hist_EE->GetFunction("pol0")->GetParameter(0);
+          if(it_SR==0 || it_SR==1){
+            hist_EE->Fit("pol0","Q","",fitrange_xmin,fitrange_xmax);
+            fitted_ratio_EE = hist_EE->GetFunction("pol0")->GetParameter(0);
+            fitted_ratioerr_EE = hist_EE->GetFunction("pol0")->GetParError(0);
+            TF1 *fit_EE = hist_EE->GetFunction("pol0");
+            fit_EE->SetLineColor(kRed);
+            fit_EE->SetLineWidth(3);
+            fit_EE->SetLineStyle(3);
+            fit_EE->Draw("same");
+            String_FitResult_EE = FitResultToString(hist_EE);
+            lg->AddEntry(fit_EE, String_FitResult_EE, "l");
+          }
           //==== MM
-          hist_MM->Fit("pol0");
-          double fitted_ratio_MM = hist_MM->GetFunction("pol0")->GetParameter(0);
+          if(it_SR==0 || it_SR==2){
+            hist_MM->Fit("pol0","Q","",fitrange_xmin,fitrange_xmax);
+            fitted_ratio_MM = hist_MM->GetFunction("pol0")->GetParameter(0);
+            fitted_ratioerr_MM = hist_MM->GetFunction("pol0")->GetParError(0);
+            TF1 *fit_MM = hist_MM->GetFunction("pol0");
+            fit_MM->SetLineColor(kBlue);
+            fit_MM->SetLineWidth(3);
+            fit_MM->SetLineStyle(3);
+            fit_MM->Draw("same");
+            String_FitResult_MM = FitResultToString(hist_MM);
+            lg->AddEntry(fit_MM, String_FitResult_MM, "l");
+          }
 
           vector<double> ratios = { fitted_ratio_EE, fitted_ratio_MM };
-          cout << sym_sample << "\t" << SR << "\t" << fitted_ratio_EE << "\t" << fitted_ratio_MM << endl;
+          vector<double> ratioerrs = { fitted_ratioerr_EE, fitted_ratioerr_MM };
+          if(!PrintLatexOnly){
+            cout << sym_sample << "\t" << SR << "\t" << fitted_ratio_EE << "\t" << fitted_ratio_MM << endl;
+          }
           ratios_for_each_SR.push_back( ratios );
+          ratioerrs_for_each_SR.push_back( ratioerrs );
 
           //==== TODO For syst
 
+        } // END IF fit variable
 
-        }
+        lg->Draw();
 
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
@@ -325,6 +383,26 @@ void Get_EMuRatio(int xxx=2016){
 
       } // END variable loop
 
+
+    }
+
+    if(PrintLatexOnly){
+
+      // ratios_for_each_SR,ratioerrs_for_each_SR
+
+      std::stringstream toprint;
+      toprint << std::fixed << std::setprecision(3);
+      if(xxx>0){
+        toprint << "\\multirow{2}{*}{" << xxx << "} & $m(\\PWR)>800~\\GeV$ & ";
+      }
+      else{
+        toprint << "                      & $m(\\PWR)<800~\\GeV$ & ";
+      }
+      toprint << "$" << ratios_for_each_SR.at(0).at(0) << "\\pm" << ratioerrs_for_each_SR.at(0).at(0) << "$ & $" << ratios_for_each_SR.at(0).at(1) << "\\pm" << ratioerrs_for_each_SR.at(0).at(1) << "$ & ";
+      toprint << "$" << ratios_for_each_SR.at(1).at(0) << "\\pm" << ratioerrs_for_each_SR.at(1).at(0) << "$ & ";
+      toprint << "$" << ratios_for_each_SR.at(2).at(1) << "\\pm" << ratioerrs_for_each_SR.at(2).at(1) << "$ \\\\" << endl;
+
+      cout << toprint.str();
 
     }
 
@@ -343,7 +421,9 @@ void Get_EMuRatio(int xxx=2016){
 
       vector<double> ratios = ratios_for_each_SR.at(it_SR);
 
-      cout << "@@@@ Making " << SR << " plots.." << endl;
+      if(!PrintLatexOnly){
+        cout << "@@@@ Making " << SR << " plots.." << endl;
+      }
 
       TString filename_DataEMu = filename_prefix+"data_SingleMuon.root";
       TString region_EE = "HNWR_SingleElectron_Resolved_"+WhichRegion;

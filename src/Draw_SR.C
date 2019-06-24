@@ -1,14 +1,9 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_SR(int Year=2016, int WhichRegion=0){
+void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool ScaleMC=false){
 
-  bool ScaleMC = true;
-
-  bool UseBinnedDY = false;
   bool UsePromptMC = false;
-
-  //int Year = 2017;
 
   //==============
   //==== get env
@@ -46,76 +41,88 @@ void Draw_SR(int Year=2016, int WhichRegion=0){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
-    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
-    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
-    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
-    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
 
-    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("Z+Jets", kRed-2);
-    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
-    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
-    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-  }
-  else if(Year==2017){
-
-    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50_MG", "DYJets"};
-    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
-    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
-    m.map_sample_string_to_list["ZToLL"] = {"DYJets10to50_MG", "ZToLL"};
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
+    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    m.map_sample_string_to_list["VV_excl"] = {"ZZTo2L2Q", "ZZTo4L_powheg", "WZTo2L2Q", "WZTo3LNu", "WWTo2L2Nu_powheg"};
-    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
     m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch", "SingleTop_tW_antitop", "SingleTop_tW_top", "SingleTop_tch_antitop", "SingleTop_tch_top"};
-    m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
-    m.map_sample_string_to_list["chargeflip"] = {"chargeflip"};
-    m.map_sample_string_to_list["fake"] = {"fake"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
+    m.map_sample_string_to_list["ttX"] = {"ttWToLNu", "ttWToQQ", "ttZ"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
 
-    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZToLL"] = make_pair("Z+Jets", kRed-2);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
-    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["VV_excl"] = make_pair("diboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-    m.map_sample_string_to_legendinfo["chargeflip"] = make_pair("Mismeas. sign bkgd.", kYellow);
-    m.map_sample_string_to_legendinfo["fake"] = make_pair("Misid. lepton background", 870);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
+
+/*
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
+    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
+    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_MG_Reweighted"};
+    m.map_sample_string_to_list["ZJets_Pt"] = {"DYJets_Pt-100To250", "DYJets_Pt-250To400", "DYJets_Pt-400To650", "DYJets_Pt-50To100", "DYJets_Pt-650ToInf"};
+    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
+    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_Pt"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
+*/
 
   }
-  else if(Year==2018){
-    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50_MG", "DYJets_MG"};
-    m.map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_Reweighted"};
+  else if(Year==2017){
+
+    //==== TODO Now using JetBinned for 2017 Must be fixed
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_JetBinned"};
+    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_JetBinned_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl"};
+    m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
 
-    m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jetse", 870);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
     m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-  }
 
+  }
+  else if(Year==2018){
+
+    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
+    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    m.map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
+    m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    m.map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
+
+  }
 
   //===============================
   //==== set and make sample list
@@ -123,9 +130,9 @@ void Draw_SR(int Year=2016, int WhichRegion=0){
 
   //==== _Di<Lepton>_<JetSel>_<ifOffZ>_<charge>
 
-  //==== One Lepton
   if(WhichRegion==0){
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_Reweighted", "EMuMethod"};
+    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_MG_HT", "EMuMethod"};
+    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_MG_HT_Reweighted", "EMuMethod"};
 
     m.histname_suffix = {
 
@@ -134,6 +141,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0){
 
       "HNWR_SingleMuon_Resolved_SR",
       "HNWR_SingleMuon_Boosted_SR",
+
     };
 
   }
@@ -245,44 +253,22 @@ void Draw_SR(int Year=2016, int WhichRegion=0){
       return;
     }
 
-    //==== RegionType : + when SS, - when OS
-    bool IsSS = this_region.Contains("_SS");
-    int int_IsSS = +1;
-    if(!IsSS) int_IsSS = -1;
-
-    if(this_region.Contains("Resolved")){
-      if(this_region.Contains("SingleElectron")){
-        m.LeptonChannels.push_back(int_IsSS*21);
-        m.RegionType.push_back(10);
-      }
-      else if(this_region.Contains("SingleMuon")){
-        m.LeptonChannels.push_back(int_IsSS*22);
-        m.RegionType.push_back(10);
-      }
+    if(this_region=="HNWR_SingleElectron_Resolved_SR"){
+      m.LeptonChannels.push_back(21);
+      m.RegionType.push_back(10);
     }
-
-    else if(this_region.Contains("Boosted")){
-      if(this_region.Contains("SingleElectron")){
-        m.LeptonChannels.push_back(int_IsSS*21);
-        m.RegionType.push_back(20);
-      }
-      else if(this_region.Contains("SingleMuon")){
-        m.LeptonChannels.push_back(int_IsSS*22);
-        m.RegionType.push_back(20);
-      }
+    else if(this_region=="HNWR_SingleElectron_Boosted_SR"){
+      m.LeptonChannels.push_back(22);
+      m.RegionType.push_back(20);
     }
-
-    else{
-      m.RegionType.push_back(0);
+    else if(this_region=="HNWR_SingleMuon_Resolved_SR"){
+      m.LeptonChannels.push_back(21);
+      m.RegionType.push_back(10);
     }
-
-    //==== Log plot boolean
-
-/*
-    if(this_region.Contains("Resolved")) m.UseLogy.push_back(1);
-    else if(this_region.Contains("Boosted")) m.UseLogy.push_back(-1);
-    else m.UseLogy.push_back(-1);
-*/
+    else if(this_region=="HNWR_SingleMuon_Boosted_SR"){
+      m.LeptonChannels.push_back(22);
+      m.RegionType.push_back(20);
+    }
 
     m.UseLogy.push_back(1);
 
@@ -486,6 +472,8 @@ void Draw_SR(int Year=2016, int WhichRegion=0){
   //===============================
 
   m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
+
+  if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
 
   m.make_plot_directory();
   

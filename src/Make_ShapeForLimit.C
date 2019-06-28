@@ -2,7 +2,7 @@
 #include "LRSMSignalInfo.h"
 #include "mylib.h"
 
-void Make_ShapeForLimit(int Year=2017){
+void Make_ShapeForLimit(int Year=2016){
 
   TString ShaprVarName = "WRCand_Mass";
   int n_rebin = 20;
@@ -13,10 +13,13 @@ void Make_ShapeForLimit(int Year=2017){
 
   //==== FIXME now only have 2017 signals
   if(Year==2016){
-    signal_scale *= 35.92/41.53;
+    signal_scale *= 1.;
+  }
+  else if(Year==2017){
+    signal_scale *=  41.53/35.92;
   }
   else if(Year==2018){
-    signal_scale *= 59.74/41.53;
+    signal_scale *= 59.74/35.92;
   }
 
   vector<TString> systs = {
@@ -51,36 +54,74 @@ void Make_ShapeForLimit(int Year=2017){
 
   map< TString, vector<TString> > map_sample_string_to_list;
 
-  map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
   if(Year==2016){
+
+    map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
+    map_sample_string_to_list["ttX"] = {"ttWToLNu", "ttWToQQ", "ttZ"};
+    map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+
+/*
+    map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
     map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
+    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_MG_Reweighted"};
+    map_sample_string_to_list["ZJets_Pt"] = {"DYJets_Pt-100To250", "DYJets_Pt-250To400", "DYJets_Pt-400To650", "DYJets_Pt-50To100", "DYJets_Pt-650ToInf"};
+    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
+    map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
+    map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
+    map_sample_string_to_legendinfo["ZJets_Pt"] = make_pair("Z+Jets", kYellow);
+    map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
+*/
+
   }
   else if(Year==2017){
-    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_Reweighted"};
+
+    //==== TODO Now using JetBinned for 2017 Must be fixed
+    map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_JetBinned"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_JetBinned_Reweighted"};
+    map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl"};
+    map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
+    map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+
   }
   else if(Year==2018){
-    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_Reweighted"};
+
+    map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
+    map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
+    map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
+    map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
+    map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
+    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+
   }
-  map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-  map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-  map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
-  map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-  map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
 
   vector<TString> regions = {
       "Resolved_SR",
       "Boosted_SR",
   };
   vector<TString> bkgds = {
-"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_Reweighted", "EMuMethod",
+"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_MG_HT_Reweighted", "EMuMethod"
   };
 
   vector<TString> channels = {
-    //"EE",
+    "EE",
     "MuMu",
   };
   vector< TString > Suffixs = {
-    //"HNWR_SingleElectron",
+    "HNWR_SingleElectron",
     "HNWR_SingleMuon",
   };
 
@@ -161,14 +202,14 @@ void Make_ShapeForLimit(int Year=2017){
 
             //==== DY Norm
             if(sample.Contains("DYJets_")){
-              hist_bkgd->Scale( GetDYNormSF(Year, PD) );
+              hist_bkgd->Scale( GetDYNormSF(Year, PD+"_"+region) );
             }
 
             if(hist_bkgd){
 
               hist_bkgd->Rebin(n_rebin);
 
-              //==== If MC
+              //==== If EMu-method
               if(sample=="EMuMethod_TTLX_powheg" && syst=="Central"){
 
                 hist_bkgd->SetName("EMu"+shapehistname_suffix);
@@ -233,10 +274,10 @@ void Make_ShapeForLimit(int Year=2017){
 
             double m_N = this_m_Ns.at(it_N);
 
-            TString this_filename = "HNWRAnalyzer_WR_"+channel+"JJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
+            TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
 
-            //==== FIXME now only have 2017 signals
-            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/2017/";
+            //==== FIXME now only have 2016 signals
+            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/2016/";
             TFile *file_sig = new TFile(temp_base_filepath+"/Signal/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 

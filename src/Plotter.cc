@@ -301,6 +301,9 @@ void Plotter::draw_hist(){
 
               TString Syst = Systs.at(it_Syst);
 
+              //==== For this systematic source,
+
+              //==== Get Up histogram
               TDirectory *dir_Up = (TDirectory *)file->Get("Syst_"+Syst+"Up_"+DirName);
               TH1D *hist_Up = NULL;
               if(dir_Up){
@@ -318,6 +321,7 @@ void Plotter::draw_hist(){
                 EmptyHistogram(hist_Up);
               }
 
+              //==== Get Down histogram
               TDirectory *dir_Down = (TDirectory *)file->Get("Syst_"+Syst+"Down_"+DirName);
               TH1D *hist_Down = NULL;
               if(dir_Down){

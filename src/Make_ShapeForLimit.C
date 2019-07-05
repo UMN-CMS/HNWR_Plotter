@@ -1,10 +1,11 @@
 #include "canvas_margin.h"
 #include "LRSMSignalInfo.h"
+#include "SignalSystematics.h"
 #include "mylib.h"
 
 void Make_ShapeForLimit(int Year=2016){
 
-  TString ShaprVarName = "WRCand_Mass";
+  TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 20;
 
   double signal_scale = 10.*0.001; // r value in fb
@@ -137,12 +138,13 @@ void Make_ShapeForLimit(int Year=2016){
       TString Suffix = Suffixs.at(it_channel);
 
       TString dirname = Suffix+"_"+region;
-      TString histname = ShaprVarName+"_"+dirname;
+      TString histname = ShapeVarName+"_"+dirname;
 
       TString PD = "SingleElectron";
       if(channel=="MuMu") PD = "SingleMuon";
 
-      TFile *out = new TFile(base_plotpath+"/"+channel+"_"+region+".root","RECREATE");
+      TFile *out_bkgd = new TFile(base_plotpath+"/"+channel+"_"+region+"_Bkgd.root","RECREATE");
+      TFile *out_sig = new TFile(base_plotpath+"/"+channel+"_"+region+"_Signal.root","RECREATE");
 
       //==== DATA
 
@@ -153,7 +155,7 @@ void Make_ShapeForLimit(int Year=2016){
 
       hist_DATA->Rebin(n_rebin);
 
-      out->cd();
+      out_bkgd->cd();
       hist_DATA->Write();
 
       //==== sample
@@ -165,12 +167,12 @@ void Make_ShapeForLimit(int Year=2016){
 
         if(syst=="Central"){
           dirname = Suffix+"_"+region;
-          histname = ShaprVarName+"_"+dirname;
+          histname = ShapeVarName+"_"+dirname;
           shapehistname_suffix = "";
         }
         else{
           dirname = "Syst_"+syst+"_"+Suffix+"_"+region;
-          histname = ShaprVarName+"_"+dirname;
+          histname = ShapeVarName+"_"+dirname;
           shapehistname_suffix = "_"+syst;
         }
 
@@ -224,7 +226,7 @@ void Make_ShapeForLimit(int Year=2016){
                 TH1D *hist_bkgd_StatDown = GetStatUpDown(hist_bkgd,-1);
                 hist_bkgd_StatDown->SetName("EMu_StatDown");
 
-                out->cd();
+                out_bkgd->cd();
 
                 hist_bkgd->Write();
                 hist_bkgdUp->Write();
@@ -242,7 +244,7 @@ void Make_ShapeForLimit(int Year=2016){
                   TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd,-1);
                   hist_bkgdstatdown->SetName(sample+"_StatDown");
 
-                  out->cd();
+                  out_bkgd->cd();
                   hist_bkgdstatup->Write();
                   hist_bkgdstatdown->Write();
 
@@ -250,7 +252,7 @@ void Make_ShapeForLimit(int Year=2016){
 
                 hist_bkgd->SetName(sample+shapehistname_suffix);
 
-                out->cd();
+                out_bkgd->cd();
                 hist_bkgd->Write();
 
               }
@@ -258,9 +260,11 @@ void Make_ShapeForLimit(int Year=2016){
             }
 
           }
-          file_sample->Close();
 
-        }
+          file_sample->Close();
+          delete file_sample;
+
+        } // END Loop over bkgd samples
 
 
         //==== Signals
@@ -296,37 +300,77 @@ void Make_ShapeForLimit(int Year=2016){
                   hist_sig->SetBinError(ix,e*signal_scale);
                 }
 
-                out->cd();
+                out_sig->cd();
                 hist_sig->Write();
 
-
                 if(syst=="Central"){
+
+                  //==== Stat
+
+
                   TH1D *hist_sigstatup = GetStatUpDown(hist_sig,+1);
                   hist_sigstatup->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_StatUp");
-                  TH1D *hist_sigstatdown = GetStatUpDown(hist_sig,+1);
+                  TH1D *hist_sigstatdown = GetStatUpDown(hist_sig,-1);
                   hist_sigstatdown->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_StatDown");
+
+                  out_sig->cd();
                   hist_sigstatup->Write();
                   hist_sigstatdown->Write();
-                }
+
+
+                  //==== xsec
+
+                  SignalSystematics m;
+                  m.file = file_sig;
+                  //m.filepath = temp_base_filepath+"/Signal/"+this_filename;
+                  m.region = dirname;
+                  m.n_rebin = n_rebin;
+                  m.hist_Central = hist_sig;
+                  m.Run();
+
+                  m.hist_ScaleUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");
+                  m.hist_ScaleDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleDown");
+                  m.hist_PDFErrorUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
+                  m.hist_PDFErrorDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorDown");
+                  m.hist_AlphaSUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSUp");
+                  m.hist_AlphaSDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSDown");
+
+                  out_sig->cd();
+
+                  m.hist_ScaleUp->Write();
+                  m.hist_ScaleDn->Write();
+
+                  m.hist_PDFErrorUp->Write();
+                  m.hist_PDFErrorDn->Write();
+
+                  m.hist_AlphaSUp->Write();
+                  m.hist_AlphaSDn->Write();
+
+
+                } // END if central
 
 
               }
-              file_sig->Close();
 
             }
 
-          }
+            file_sig->Close();
+            delete file_sig;
 
-        } // End Loop signal
+          } // END Loop over N
 
-      }
+        } // END Loop WR
 
-      out->Close();
+      } // END Loop Systematic source
+
+      out_bkgd->Close();
+      out_sig->Close();
 
       file_DATA->Close();
+      delete file_DATA;
 
 
-    }
+    } // END Loop channel
 
   }
 

@@ -8,7 +8,7 @@ void Make_ShapeForLimit(int Year=2016){
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 20;
 
-  double signal_scale = 10.*0.001; // r value in fb
+  double signal_scale = 0.001; // r value in fb
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
@@ -60,6 +60,7 @@ void Make_ShapeForLimit(int Year=2016){
     map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
     map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
@@ -67,26 +68,15 @@ void Make_ShapeForLimit(int Year=2016){
     map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
 
-/*
-    map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
-    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_Reweighted"};
-    map_sample_string_to_list["ZJets_Reweighted"] = {"DYJets10to50_Reweighted", "DYJets_MG_Reweighted"};
-    map_sample_string_to_list["ZJets_Pt"] = {"DYJets_Pt-100To250", "DYJets_Pt-250To400", "DYJets_Pt-400To650", "DYJets_Pt-50To100", "DYJets_Pt-650ToInf"};
-    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
-    map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
-    map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
-    map_sample_string_to_legendinfo["ZJets_Reweighted"] = make_pair("Z+Jets", kYellow);
-    map_sample_string_to_legendinfo["ZJets_Pt"] = make_pair("Z+Jets", kYellow);
-    map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
-*/
-
   }
   else if(Year==2017){
 
-    //==== TODO Now using JetBinned for 2017 Must be fixed
+    //==== TODO Now using JetBinned for 2017. Must be fixed
     map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_JetBinned"};
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_JetBinned_Reweighted"};
+    //==== TODO Now using inclusive for 2018. Must be fixed
     map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG"};
     map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl"};
@@ -100,6 +90,7 @@ void Make_ShapeForLimit(int Year=2016){
     map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
     map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
@@ -114,7 +105,7 @@ void Make_ShapeForLimit(int Year=2016){
       "Boosted_SR",
   };
   vector<TString> bkgds = {
-"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG", "ZJets_MG_HT_Reweighted", "EMuMethod"
+"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
   };
 
   vector<TString> channels = {
@@ -132,10 +123,14 @@ void Make_ShapeForLimit(int Year=2016){
 
     TString region = regions.at(it_region);
 
+    cout << "@@@@ region = " << region << endl;
+
     for(unsigned int it_channel=0; it_channel<channels.size(); it_channel++){
 
       TString channel = channels.at(it_channel);
       TString Suffix = Suffixs.at(it_channel);
+
+      cout << "@@@@   channel = " << channel << endl;
 
       TString dirname = Suffix+"_"+region;
       TString histname = ShapeVarName+"_"+dirname;
@@ -164,6 +159,8 @@ void Make_ShapeForLimit(int Year=2016){
 
         TString syst = systs.at(it_syst);
         TString shapehistname_suffix = "";
+
+        cout << "@@@@     syst = " << syst << endl;
 
         if(syst=="Central"){
           dirname = Suffix+"_"+region;
@@ -195,6 +192,8 @@ void Make_ShapeForLimit(int Year=2016){
           TString sample = samplelist.at(it_sample);
           TString filename = filename_prefix+sample+".root";
 
+          cout << "@@@@     sample = " << sample << endl;
+
           TFile *file_sample = new TFile(base_filepath+"/"+filename);
           TDirectory *dir_sample = (TDirectory *)file_sample->Get(dirname);
           //cout << "file = " << base_filepath+"/"+filename << endl;
@@ -211,9 +210,17 @@ void Make_ShapeForLimit(int Year=2016){
 
               hist_bkgd->Rebin(n_rebin);
 
+              //==== remove negative bins
+              for(int ibin=1; ibin<=hist_bkgd->GetXaxis()->GetNbins(); ibin++){
+                if(hist_bkgd->GetBinContent(ibin) < 0.){
+                  hist_bkgd->SetBinContent(ibin, 0.);
+                }
+              }
+
               //==== If EMu-method
               if(sample=="EMuMethod_TTLX_powheg" && syst=="Central"){
 
+                cout << "@@@@ EMu : " << region << "\t" << channel << endl;
                 hist_bkgd->SetName("EMu"+shapehistname_suffix);
 
                 TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+0.20);
@@ -292,6 +299,14 @@ void Make_ShapeForLimit(int Year=2016){
               if(hist_sig){
                 hist_sig->Rebin(n_rebin);
                 hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
+
+								//==== remove negative bins
+								for(int ibin=1; ibin<=hist_sig->GetXaxis()->GetNbins(); ibin++){
+									if(hist_sig->GetBinContent(ibin) < 0.){
+										hist_sig->SetBinContent(ibin, 0.);
+									}
+								}
+
 
                 for(int ix=1;ix<hist_sig->GetXaxis()->GetNbins();ix++){
                   double y=hist_sig->GetBinContent(ix);

@@ -415,7 +415,7 @@ void Plotter::draw_hist(){
           //hist_final->SetName(temp_hist_name+"_signal_"+TString::Itoa(signal_LRSMinfo[signal_index], 10));
           //hist_final->SetName(temp_hist_name+"_signal_"+TString::Itoa(signal_LRSMinfo[signal_index], 10));
 
-          //hist_final->Scale( 1 );
+          hist_final->Scale( signa_xsec[signal_index] );
 
           hist_signal.push_back( (TH1D*)hist_final->Clone() );
           signal_survive.push_back( signal_LRSMinfo.at(signal_index) );
@@ -1113,7 +1113,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     }
     double this_ratio_min = min(0.8,1.1*GetMinimum(ratio_point,0.));
     double this_ratio_max = max(1.2,1.1*GetMaximum(ratio_point,0.));
-    hist_empty_bottom->GetYaxis()->SetRangeUser(0.8,1.2);
+    hist_empty_bottom->GetYaxis()->SetRangeUser(0.5,1.5);
     //hist_empty_bottom->GetYaxis()->SetRangeUser(this_ratio_min,this_ratio_max);
 
     ratio_allerr->SetFillColor(kGray);

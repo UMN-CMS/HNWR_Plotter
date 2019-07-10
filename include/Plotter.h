@@ -93,7 +93,8 @@ public:
   vector<int> MCsector_first_index;
   vector<LRSMSignalInfo> signal_LRSMinfo;
   map< signal_class, vector<LRSMSignalInfo> > map_class_to_LRSMSignalInfo;
-  vector<bool > signal_draw;
+  vector<double> signa_xsec;
+  vector<bool> signal_draw;
   vector<Color_t> signal_color;
   vector<Style_t> signal_style;
   map<TString, bool> MCsector_survive;

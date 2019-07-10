@@ -12,7 +12,7 @@ void Draw_SignalCrossSection(){
 
   TString plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalCrossSection/";
 
-  TString xsectxtfilepath = WORKING_DIR+"/data/"+dataset+"/xsec_181004_Private_MuMu_NLO.txt";
+  TString xsectxtfilepath =  WORKING_DIR+"/data/"+dataset+"/xsec_190705_GenXsecAN_eeANDmm.txt";
 
   string line_xsec;
   ifstream in_xsec(xsectxtfilepath);
@@ -28,6 +28,9 @@ void Draw_SignalCrossSection(){
 
     //==== pb -> fb
     xsec = 1000.*xsec;
+
+    //==== ee+mm -> ee
+    xsec = xsec/2.;
 
     vec_mWR.push_back( mwr );
     vec_mN.push_back( mn );
@@ -61,21 +64,35 @@ void Draw_SignalCrossSection(){
 
   }
 
+  //==== x = mN
+
   TCanvas *c1_mN = new TCanvas("c1_mN", "", 600, 600);
   canvas_margin(c1_mN);
-  TH1D *dummy_mN = new TH1D("dummy_mN", "", 10000, 0., 10000.);
+  TH1D *dummy_mN = new TH1D("dummy_mN", "", 20000, 0., 20000.);
   hist_axis(dummy_mN);
   dummy_mN->Draw("hist");
-  dummy_mN->GetXaxis()->SetRangeUser(90., 7000.);
-  dummy_mN->GetYaxis()->SetRangeUser(1e-4, 20000.);
+  dummy_mN->GetXaxis()->SetRangeUser(90., 20000.);
+  dummy_mN->GetYaxis()->SetRangeUser(1e-5, 300000.);
   dummy_mN->GetXaxis()->SetTitle("m_{N} (GeV)");
-  dummy_mN->GetYaxis()->SetTitle("#sigma(pp#rightarrow#muN#rightarrow#mu#mujj) (fb)");
+  dummy_mN->GetYaxis()->SetTitle("#sigma(pp#rightarroweN#rightarroweejj) (fb)");
   c1_mN->SetLogx();
   c1_mN->SetLogy();
 
-  TLegend *lg = new TLegend(0.7, 0.55, 0.94, 0.93);
+  TLegend *lg = new TLegend(0.75, 0.40, 0.95, 0.94);
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
+
+  //==== x = MN/MWR
+
+  TCanvas *c1_frac = new TCanvas("c1_frac", "", 600, 600);
+  canvas_margin(c1_frac);
+  TH1D *dummy_frac = new TH1D("dummy_frac", "", 10000, 0., 1.);
+  hist_axis(dummy_frac);
+  dummy_frac->Draw("hist");
+  dummy_frac->GetYaxis()->SetRangeUser(1e-5, 300000.);
+  dummy_frac->GetXaxis()->SetTitle("m_{N} (GeV)");
+  dummy_frac->GetYaxis()->SetTitle("#sigma(pp#rightarrow#muN#rightarrow#mu#mujj) (fb)");
+  c1_frac->SetLogy();
 
   int counter = 0;
   for(map< double, vector< pair<double, double>  > >::iterator it=map__mWR__mN_Xsec.begin(); it!=map__mWR__mN_Xsec.end(); it++){
@@ -88,6 +105,7 @@ void Draw_SignalCrossSection(){
     cout << "This mWR = " << mWR << endl;
     const int n_this_mN = mN_Xsec.size();
     double x_mN[n_this_mN], y_Xsec[n_this_mN];
+    double x_frac[n_this_mN];
 
     double this_norm_xsec = 1.;
 
@@ -97,6 +115,7 @@ void Draw_SignalCrossSection(){
       cout << mN << "\t" << Xsec << endl;
       x_mN[i] = mN;
       y_Xsec[i] = Xsec;
+      x_frac[i] = mN/mWR;
     }
 
     c1_mN->cd();
@@ -104,9 +123,18 @@ void Draw_SignalCrossSection(){
     gr_mN->SetLineWidth(2);
     gr_mN->SetMarkerStyle(20);
     gr_mN->SetMarkerSize(1);
-    gr_mN->SetMarkerColor(colors.at(counter));
-    gr_mN->SetLineColor(colors.at(counter));
+    gr_mN->SetMarkerColor(counter+1);
+    gr_mN->SetLineColor(counter+1);
     gr_mN->Draw("lpsame");
+
+    c1_frac->cd();
+    TGraph *gr_frac = new TGraph(n_this_mN, x_frac,y_Xsec);
+    gr_frac->SetLineWidth(2);
+    gr_frac->SetMarkerStyle(20);
+    gr_frac->SetMarkerSize(1);
+    gr_frac->SetMarkerColor(counter+1);
+    gr_frac->SetLineColor(counter+1);
+    gr_frac->Draw("lpsame");
 
     TString alias = "m_{W_{R}} = "+TString::Itoa(mWR,10)+" GeV";
 
@@ -120,5 +148,10 @@ void Draw_SignalCrossSection(){
   lg->Draw();
   c1_mN->SaveAs(plotpath+"/Xsec.pdf");
   c1_mN->Close();
+
+  c1_frac->cd();
+  lg->Draw();
+  c1_frac->SaveAs(plotpath+"/XsecFrac.pdf");
+  c1_frac->Close();
 
 }

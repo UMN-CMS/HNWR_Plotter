@@ -62,7 +62,7 @@ void Get_DYNormalization(int xxx=0){
   if(Year=="2016"){
 
     bkgds = {
-      "WJets_MG",
+      "WJets_MG_HT",
       "TTLL_powheg", "TTLJ_powheg",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
@@ -77,6 +77,7 @@ void Get_DYNormalization(int xxx=0){
   else if(Year=="2017"){
 
     bkgds = {
+      //==== TODO change WJets to HTBinned
       "WJets_MG",
       "TTLL_powheg", "TTLJ_powheg",
       "ttW", "ttZ",
@@ -94,7 +95,7 @@ void Get_DYNormalization(int xxx=0){
     bkgds = {
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "TTLL_powheg", "TTLJ_powheg",
-      "WJets_MG",
+      "WJets_MG_HT",
       "WWW", "WWZ", "WZZ", "ZZZ",
       "SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
       "ttW", "ttZ",

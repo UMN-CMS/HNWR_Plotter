@@ -6,7 +6,7 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_04_02_093659__RunAll_sorted";
+    inputfile = "2019_07_08_180739__NoNegative";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -44,16 +44,17 @@ void Draw_Limit(int Year){
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
   TString filepath_result = WORKING_DIR+"/rootfiles/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile+".txt";
+  cout << filepath_result << endl;
   TString plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile;
 
   gSystem->mkdir(plotpath, kTRUE);
 
-  TString filename_thoery = WORKING_DIR+"/data/"+dataset+"/xsec_181004_Private_MuMu_NLO.txt";
+  TString filename_thoery = WORKING_DIR+"/data/"+dataset+"/xsec_190705_GenXsecAN_eeANDmm.txt";
 
   vector<TString> regions = {
     "Combined",
-    "Resolved_SR",
-    "Boosted_SR",
+    "Resolved",
+    "Boosted",
   };
   vector<TString> aliases = {
     "Combined",
@@ -67,7 +68,7 @@ void Draw_Limit(int Year){
   };
 
   vector<TString> channels = {
-    //"EE",
+    "EE",
     "MuMu",
   };
 
@@ -91,27 +92,25 @@ void Draw_Limit(int Year){
 
     TString channel = channels.at(it_channel);
 
+    cout << "@@@@ channel = " << channel << endl;
+
     TLegend *lg = new TLegend(0.15, 0.62, 0.6, 0.94);
     lg->SetBorderSize(0);
     lg->SetFillStyle(0);
 
-    //==== ATLAS
+    //==== ATLAS (1809.11105) : https://www.hepdata.net/record/ins1696330
     string atlas_line;
     vector<double> atlas_mZp, atlas_mN;
-    ifstream atlas_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAT13TeV_"+channel+"_obs.txt");
+    ifstream atlas_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAS13TeV_"+channel+"_obs.txt");
     while(getline(atlas_in,atlas_line)){
       std::istringstream is( atlas_line );
 
-      TString mark;
       double a,b;
-      is >> mark;
       is >> a;
       is >> b;
 
-      if(mark.Contains("TRUE")){
-        atlas_mZp.push_back(a);
-        atlas_mN.push_back(b);
-      }
+      atlas_mZp.push_back(a*1000.);
+      atlas_mN.push_back(b*1000.);
     }
 
     const int N_atlas = atlas_mZp.size();
@@ -130,6 +129,38 @@ void Draw_Limit(int Year){
     gr_atlas-> SetLineStyle(8);
     gr_atlas->SetLineWidth(3);
     gr_atlas->SetLineColor(kGray);
+
+    //==== ATLAS (1904.12679) : https://www.hepdata.net/record/ins1731814
+    string atlas_boosted_line;
+    vector<double> atlas_boosted_mZp, atlas_boosted_mN;
+    ifstream atlas_boosted_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAS13TeVBoosted_"+channel+"_obs.txt");
+    while(getline(atlas_boosted_in,atlas_boosted_line)){
+      std::istringstream is( atlas_boosted_line );
+
+      double a,b;
+      is >> a;
+      is >> b;
+
+      atlas_boosted_mZp.push_back(a);
+      atlas_boosted_mN.push_back(b);
+    }
+
+    const int N_atlas_boosted = atlas_boosted_mZp.size();
+    double mZp_atlas_boosted[N_atlas_boosted+2], mN_atlas_boosted[N_atlas_boosted+2];
+    for(int i_atlas_boosted = 0; i_atlas_boosted < N_atlas_boosted; i_atlas_boosted++){
+      mZp_atlas_boosted[i_atlas_boosted] = atlas_boosted_mZp.at(i_atlas_boosted);
+      mN_atlas_boosted[i_atlas_boosted] = atlas_boosted_mN.at(i_atlas_boosted);
+    }
+
+    mZp_atlas_boosted[N_atlas_boosted] = 600.;
+    mN_atlas_boosted[N_atlas_boosted] = 50.;
+    mZp_atlas_boosted[N_atlas_boosted+1] = atlas_boosted_mZp.at(0);
+    mN_atlas_boosted[N_atlas_boosted+1] = atlas_boosted_mN.at(0);
+
+    TGraph *gr_atlas_boosted = new TGraph(N_atlas_boosted + 2, mZp_atlas_boosted, mN_atlas_boosted);
+    gr_atlas_boosted->SetLineStyle(3);
+    gr_atlas_boosted->SetLineWidth(3);
+    gr_atlas_boosted->SetLineColor(kGray);
 
     //==== EXO17011
 
@@ -198,8 +229,11 @@ void Draw_Limit(int Year){
           //==== pb -> fb
           xsec = 1000.*xsec;
 
+          //==== ee+mm -> ee
+          xsec = xsec/2.;
+
           if(int(m_WR)==int(mwr) && int(m_N)==int(mn)){
-            theory_xsec_found - true;
+            theory_xsec_found = true;
             lrsminfo.xsec = xsec;
           }
 
@@ -263,14 +297,14 @@ void Draw_Limit(int Year){
 
     //==== 2D binning
     //==== 1) WR
-    int target_WR_max = 7200;
+    int target_WR_max = 6000;
     int target_WR_min = 0;
-    int target_WR_d_bin = 300;
+    int target_WR_d_bin = 200;
     double bin_WR_max = target_WR_max+target_WR_d_bin/2;
     double bin_WR_min = target_WR_min-target_WR_d_bin/2;
     int bin_WR_n = (bin_WR_max-bin_WR_min)/target_WR_d_bin;
     //==== 2) N
-    int target_N_max = 7200;
+    int target_N_max = 6000;
     int target_N_min = 0;
     int target_N_d_bin = 200;
     double bin_N_max = target_N_max+target_N_d_bin/2;
@@ -296,8 +330,8 @@ void Draw_Limit(int Year){
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(400., 7200.);
-    hist_dummy->GetYaxis()->SetRangeUser(100., 5000.);
+    hist_dummy->GetXaxis()->SetRangeUser(400., 5200.);
+    hist_dummy->GetYaxis()->SetRangeUser(100., 5200.);
     hist_dummy->GetZaxis()->SetRangeUser(1E-2, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 
@@ -446,10 +480,12 @@ void Draw_Limit(int Year){
     } // END Loop region
 
     gr_atlas->Draw("lsame");
+    gr_atlas_boosted->Draw("lsame");
     gr_EXO17011->Draw("lsame");
 
-    lg->AddEntry( gr_atlas, "ATLAS 13 TeV", "l");
-    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (2016)", "l");
+    lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
+    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");
 

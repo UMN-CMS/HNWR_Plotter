@@ -413,12 +413,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   if(DataYear==2016){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.943695;
-        DYNorm_err = 0.020254;
+        DYNorm = 0.944082;
+        DYNorm_err = 0.0202439;
       }
       else if(int_region==1){
-        DYNorm = 0.916615;
-        DYNorm_err = 0.0296952;
+        DYNorm = 0.895203;
+        DYNorm_err = 0.0249385;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -427,12 +427,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.936071;
-        DYNorm_err = 0.0197806;
+        DYNorm = 0.936511;
+        DYNorm_err = 0.0197817;
       }
       else if(int_region==1){
-        DYNorm = 0.841222;
-        DYNorm_err = 0.0263032;
+        DYNorm = 0.838973;
+        DYNorm_err = 0.0239638;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -481,12 +481,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2018){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.927158;
-        DYNorm_err = 0.0195917;
+        DYNorm = 0.927228;
+        DYNorm_err = 0.0195803;
       }
       else if(int_region==1){
-        DYNorm = 0.881672;
-        DYNorm_err = 0.032454;
+        DYNorm = 0.891274;
+        DYNorm_err = 0.0239017;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -495,12 +495,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.939137;
-        DYNorm_err = 0.0196988;
+        DYNorm = 0.939052;
+        DYNorm_err = 0.0196971;
       }
       else if(int_region==1){
-        DYNorm = 0.880379;
-        DYNorm_err = 0.0254525;
+        DYNorm = 0.86751;
+        DYNorm_err = 0.0234068;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -621,34 +621,6 @@ TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_al
 
   TGraphAsymmErrors *out = new TGraphAsymmErrors(NBin+1, x, y, x_lerr, x_rerr, y_lerr, y_rerr);
   return out;
-
-}
-
-//==== FIXME TEMP FUNCTION
-
-double Get2018DataSurvFrac(TString channel){
-
-  int int_channel(-1); // 0 : ee, 1 : mm
-  if(channel.Contains("Electron")) int_channel = 0;
-  else if(channel.Contains("Muon")) int_channel = 1;
-  else{
-    cout << "(mylib.h) [Get2018DataSurvFrac()] : Wrong channel name; " << channel << endl;
-    exit(EXIT_FAILURE);
-  }
-
-  double dataSurv = 1.;
-  if(int_channel==0){
-    dataSurv = 1.-0.0211;
-  }
-  else if(int_channel==1){
-    dataSurv = 1.-0.0331;
-  }
-  else{
-    cout << "(mylib.h) [Get2018DataSurvFrac()] : Wrong channel ; " << channel << endl;
-    exit(EXIT_FAILURE);
-  }
-
-  return dataSurv;
 
 }
 

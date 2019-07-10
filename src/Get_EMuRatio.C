@@ -83,7 +83,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
     asym_samples = {
 "DYJets10to50_MG_Reweighted",
 "DYJets_MG_HT_Reweighted",
-      "WJets_MG",
+      "WJets_MG_HT",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
       "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
       "WWW", "WWZ", "WZZ", "ZZZ",
@@ -124,7 +124,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 "DYJets10to50_MG_Reweighted",
 "DYJets_MG_HT_Reweighted",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
-      "WJets_MG",
+      "WJets_MG_HT",
       "WWW", "WWZ", "WZZ", "ZZZ",
       "SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
       "ttW", "ttZ",
@@ -153,7 +153,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
   };
 
   vector<TString> vars_to_draw = {
-
     "NEvent", "nPileUp", "nPV",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
@@ -168,7 +167,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
     "NCand_Mass", "WRCand_Mass",
     "NCand_Pt", "WRCand_Pt",
     "LSFFatJet_Size",
-
 //"WRCand_Mass"
   };
 
@@ -236,12 +234,12 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             vector<double> vec_bins;
 
             if(xxx>0){
-              if(it_SR==0) vec_bins = {0, 200, 400, 600, 800, 1000, 1500, 2000, 8000};
-              else vec_bins = {0, 200, 400, 600, 800, 1000, 1500, 8000};
+              if(it_SR==0) vec_bins = {0, 200., 800, 850, 900, 950, 1000, 1500, 2000, 8000};
+              else         vec_bins = {0, 200., 800, 850, 900, 950, 1000, 1500, 8000};
             }
             else{
               if(it_SR==0) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 2000, 8000};
-              else vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
+              else         vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
             }
 
 
@@ -396,7 +394,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
         toprint << "\\multirow{2}{*}{" << xxx << "} & $m(\\PWR)>800~\\GeV$ & ";
       }
       else{
-        toprint << "                      & $m(\\PWR)<800~\\GeV$ & ";
+        toprint << "                      & $m(\\PWR)\\leq800~\\GeV$ & ";
       }
       toprint << "$" << ratios_for_each_SR.at(0).at(0) << "\\pm" << ratioerrs_for_each_SR.at(0).at(0) << "$ & $" << ratios_for_each_SR.at(0).at(1) << "\\pm" << ratioerrs_for_each_SR.at(0).at(1) << "$ & ";
       toprint << "$" << ratios_for_each_SR.at(1).at(0) << "\\pm" << ratioerrs_for_each_SR.at(1).at(0) << "$ & ";

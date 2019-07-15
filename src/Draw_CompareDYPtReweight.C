@@ -130,7 +130,9 @@ void Draw_CompareDYPtReweight(int xxx=0){
       c1_down->cd();
       TH1D *hist_Ratio = (TH1D *)hist_After->Clone();
       hist_Ratio->SetLineColor(kBlue);
-      hist_Ratio->GetXaxis()->SetTitle("m_{WR} (GeV)");
+      TString xtitle = "m_{lljj} (GeV)";
+      if(region.Contains("Boosted")) xtitle = "m_{lJ} (GeV)";
+      hist_Ratio->GetXaxis()->SetTitle(xtitle);
       hist_Ratio->GetYaxis()->SetTitle("Ratio");
       hist_Ratio->Divide(hist_Before);
       hist_Ratio->GetYaxis()->SetRangeUser(0.85, 1.15);

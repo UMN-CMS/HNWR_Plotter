@@ -9,18 +9,19 @@ void Make_ShapeForLimit(int Year=2016){
   int n_rebin = 20;
 
   double signal_scale = 0.001; // r value in fb
+  double ScaleLumi = 1.;
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
   //==== FIXME now only have 2017 signals
   if(Year==2016){
-    signal_scale *= 1.;
+    ScaleLumi *= 1.;
   }
   else if(Year==2017){
-    signal_scale *=  41.53/35.92;
+    ScaleLumi *=  41.53/35.92;
   }
   else if(Year==2018){
-    signal_scale *= 59.74/35.92;
+    ScaleLumi *= 59.74/35.92;
   }
 
   vector<TString> systs = {
@@ -45,6 +46,10 @@ void Make_ShapeForLimit(int Year=2016){
 
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+TString::Itoa(Year,10)+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/"+TString::Itoa(Year,10)+"/";
+
+  //==== FIXME test, scaling to 137.19
+  ScaleLumi *= 137.19/35.92;
+  base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/ScaledToFullRun2/";
 
   gSystem->mkdir(base_plotpath,kTRUE);
 
@@ -150,6 +155,12 @@ void Make_ShapeForLimit(int Year=2016){
 
       hist_DATA->Rebin(n_rebin);
 
+      //==== temporary lumi scaling; scale content, sqrt() sqruare stat
+      for(int ibin=1;ibin<=hist_DATA->GetXaxis()->GetNbins();ibin++){
+        hist_DATA->SetBinContent(ibin, hist_DATA->GetBinContent(ibin)*ScaleLumi);
+        hist_DATA->SetBinError(ibin, hist_DATA->GetBinError(ibin)*sqrt(ScaleLumi));
+      } 
+
       out_bkgd->cd();
       hist_DATA->Write();
 
@@ -215,6 +226,10 @@ void Make_ShapeForLimit(int Year=2016){
                 if(hist_bkgd->GetBinContent(ibin) < 0.){
                   hist_bkgd->SetBinContent(ibin, 0.);
                 }
+
+                hist_bkgd->SetBinContent(ibin, hist_bkgd->GetBinContent(ibin)*ScaleLumi);
+                hist_bkgd->SetBinError(ibin, hist_bkgd->GetBinError(ibin)*sqrt(ScaleLumi));
+
               }
 
               //==== If EMu-method
@@ -300,19 +315,14 @@ void Make_ShapeForLimit(int Year=2016){
                 hist_sig->Rebin(n_rebin);
                 hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
 
-								//==== remove negative bins
-								for(int ibin=1; ibin<=hist_sig->GetXaxis()->GetNbins(); ibin++){
-									if(hist_sig->GetBinContent(ibin) < 0.){
-										hist_sig->SetBinContent(ibin, 0.);
-									}
-								}
-
-
-                for(int ix=1;ix<hist_sig->GetXaxis()->GetNbins();ix++){
-                  double y=hist_sig->GetBinContent(ix);
-                  double e=hist_sig->GetBinError(ix);
-                  hist_sig->SetBinContent(ix,y*signal_scale);
-                  hist_sig->SetBinError(ix,e*signal_scale);
+                //==== remove negative bins
+                for(int ibin=1; ibin<=hist_sig->GetXaxis()->GetNbins(); ibin++){
+                  if(hist_sig->GetBinContent(ibin) < 0.){
+                    hist_sig->SetBinContent(ibin, 0.);
+                  }
+                  hist_sig->SetBinContent(ibin, hist_sig->GetBinContent(ibin)*ScaleLumi);
+                  hist_sig->SetBinError(ibin, hist_sig->GetBinError(ibin)*sqrt(ScaleLumi));
+       
                 }
 
                 out_sig->cd();

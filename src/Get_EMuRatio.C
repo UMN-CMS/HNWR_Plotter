@@ -202,6 +202,10 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
         TString var = vars.at(it_var);
         TString xtitle = xtitles.at(it_var);
+        if(var=="WRCand_Mass"){
+          if(it_SR==0) xtitle = "m_{lljj} (GeV)";
+          else xtitle = "m_{lJ} (GeV)";
+        }
         int rebin = rebins.at(it_var);
 
         TString region_EE = "HNWR_SingleElectron_Resolved_"+WhichRegion;

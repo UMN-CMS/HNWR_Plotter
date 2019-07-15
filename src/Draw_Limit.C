@@ -6,7 +6,8 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_07_08_180739__NoNegative";
+    inputfile = "2019_07_11_152140__FullCLs";
+    //inputfile = "2019_07_10_161251__Run2";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -27,7 +28,7 @@ void Draw_Limit(int Year){
   latex_Lumi.SetTextSize(0.035);
   latex_Lumi.SetTextFont(42);
 
-  bool UseAsymptotic = true;
+  bool UseAsymptotic = false;
 
   TString Method = "FullCLs";
   if(UseAsymptotic) Method = "Asymptotic";
@@ -263,10 +264,9 @@ void Draw_Limit(int Year){
             is >> m.limit_exp_2sdUp;
             is >> m.limit_exp_2sdDn;
 
-            //cout << m.limit_exp << "\t" << m.limit_exp_1sdUp << "\t" << m.limit_exp_1sdDn << "\t" << m.limit_exp_2sdUp << "\t" << m.limit_exp_2sdDn << endl;
-
             lrsminfo.LimitResults.push_back( m );
 
+            //==== debuggin lines
             //LimitResult n=lrsminfo.LimitResults.at(lrsminfo.LimitResults.size()-1);
             //cout << n.limit_exp << "\t" << n.limit_exp_1sdUp << "\t" << n.limit_exp_1sdDn << "\t" << n.limit_exp_2sdUp << "\t" << n.limit_exp_2sdDn << endl;
             //lrsminfo.Print();
@@ -283,12 +283,6 @@ void Draw_Limit(int Year){
 
     TCanvas *c_2D = new TCanvas("c_2D", "", 800, 600);
     canvas_margin(c_2D);
-/*
-    c1->SetTopMargin( 0.05 );
-    c1->SetBottomMargin( 0.13 );
-    c1->SetRightMargin( 0.05 );
-    c1->SetLeftMargin( 0.16 );
-*/
     c_2D->SetBottomMargin( 0.10 );
     c_2D->SetRightMargin( 0.13 );
     c_2D->SetLeftMargin( 0.11 );
@@ -313,13 +307,6 @@ void Draw_Limit(int Year){
 
     TH2D *hist_dummy = new TH2D("hist_dummy", "", 71, -100, 7000, 71, -100, 7000);
     hist_axis(hist_dummy);
-/*
-    hist_dummy->GetYaxis()->SetLabelSize(0.04);
-    hist_dummy->GetYaxis()->SetTitleSize(0.06);
-    hist_dummy->GetYaxis()->SetTitleOffset(1.10);
-    hist_dummy->GetXaxis()->SetLabelSize(0.03);
-    hist_dummy->GetXaxis()->SetTitleSize(0.05);
-*/
 
     hist_dummy->GetYaxis()->SetLabelSize(0.035);
     hist_dummy->GetXaxis()->SetLabelSize(0.035);
@@ -405,27 +392,7 @@ void Draw_Limit(int Year){
       TGraph2D *gr2d_limit_exp_2sdUp_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_2sdUp_ratio);
       TGraph2D *gr2d_limit_exp_2sdDn_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_2sdDn_ratio);
 
-/*
-      //==== Method 1) Use GetHistogram()
-      TH2D *test = gr2d_limit_exp_ratio->GetHistogram();
-
-      //==== Method 2) Use Interpolate
-      TH2D *test = new TH2D("test", "", 700, 0., 7000.,  700, 0., 7000.);;
-      for(int it_x=1; it_x<=test->GetXaxis()->GetNbins(); it_x++){
-        double x_center = test->GetXaxis()->GetBinCenter(it_x);
-        for(int it_y=1; it_y<=test->GetYaxis()->GetNbins(); it_y++){
-          double y_center = test->GetYaxis()->GetBinCenter(it_y);
-          if(y_center>=x_center) continue;
-          //cout << x_center << "\t" << y_center << endl;
-          double this_xsec = gr2d_xsec->Interpolate(x_center, y_center);
-          double this_exp = gr2d_limit_exp->Interpolate(x_center, y_center);
-          if(this_xsec==0||this_exp==0) continue;
-          double this_ratio = this_xsec/this_exp;
-          //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
-          test->SetBinContent(it_x, it_y, this_ratio);
-        }
-      }
-*/
+      //==== Now fill 2D histogram based on TGraph2D's using Interpolate function
 
       TH2D *hist2d_limit_exp_ratio = new TH2D("hist2d_limit_exp_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
       TH2D *hist2d_limit_exp = new TH2D("hist2d_limit_exp", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
@@ -440,6 +407,7 @@ void Draw_Limit(int Year){
           //if(y_center<100) continue;
 
           if(y_center>=x_center) continue;
+
           //cout << x_center << "\t" << y_center << endl;
           double this_xsec = gr2d_xsec->Interpolate(x_center, y_center);
           double this_exp = gr2d_limit_exp->Interpolate(x_center, y_center);
@@ -456,6 +424,7 @@ void Draw_Limit(int Year){
         }
       }
 
+      //==== Draw "colz" for "Combined (Resolved+Boosted)" results
       if(region=="Combined"){
 
         hist2d_limit_exp->GetZaxis()->SetRangeUser(1E-2, 20);
@@ -466,6 +435,7 @@ void Draw_Limit(int Year){
 
       }
 
+      //==== Draw exclusion curves
       double conts[] = {1.};  
       hist2d_limit_exp_ratio->SetContour(1,conts);
       hist2d_limit_exp_ratio->SetLineWidth(2);
@@ -474,8 +444,6 @@ void Draw_Limit(int Year){
       hist2d_limit_exp_ratio->Draw("cont2same");
 
       lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region), "l");
-
-      //test->Draw("colzsametext");
 
     } // END Loop region
 
@@ -497,11 +465,20 @@ void Draw_Limit(int Year){
     latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
     latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
 
+    TLatex latex_ch;
+    latex_ch.SetNDC();
+    latex_ch.SetTextSize(0.040);
+    if(channel=="EE")        latex_ch.DrawLatex(0.05, 0.07, "ee");
+    else if(channel=="MuMu") latex_ch.DrawLatex(0.05, 0.07, "#mu#mu");
+
     c_2D->SaveAs(plotpath+"/2D_"+channel+".pdf");
     c_2D->SaveAs(plotpath+"/2D_"+channel+".png");
     c_2D->Close();
 
-    //FIXME
+    //==== TODO
+    //==== Below is to draw 1D limit plots, but under development..
+    //==== Not running them for now
+
     continue;
 
     //==== 1D : Limit vs N, for each WR

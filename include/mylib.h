@@ -417,8 +417,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0202439;
       }
       else if(int_region==1){
-        DYNorm = 0.895203;
-        DYNorm_err = 0.0249385;
+        DYNorm = 0.876645;
+        DYNorm_err = 0.0244436;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -431,8 +431,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0197817;
       }
       else if(int_region==1){
-        DYNorm = 0.838973;
-        DYNorm_err = 0.0239638;
+        DYNorm = 0.831486;
+        DYNorm_err = 0.0237605;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -451,8 +451,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0248062;
       }
       else if(int_region==1){
-        DYNorm = 1.08745;
-        DYNorm_err = 0.0478118;
+        DYNorm = 1.05843;
+        DYNorm_err = 0.0466216;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -465,8 +465,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0247372;
       }
       else if(int_region==1){
-        DYNorm = 1.0169;
-        DYNorm_err = 0.0363087;
+        DYNorm = 1.00902;
+        DYNorm_err = 0.0360461;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -485,8 +485,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0195803;
       }
       else if(int_region==1){
-        DYNorm = 0.891274;
-        DYNorm_err = 0.0239017;
+        DYNorm = 0.875242;
+        DYNorm_err = 0.0234896;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -499,8 +499,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0196971;
       }
       else if(int_region==1){
-        DYNorm = 0.86751;
-        DYNorm_err = 0.0234068;
+        DYNorm = 0.860002;
+        DYNorm_err = 0.0232146;
       }
       else{
         cout << "Wrong DY Norm" << endl;

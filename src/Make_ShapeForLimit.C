@@ -13,7 +13,7 @@ void Make_ShapeForLimit(int Year=2016){
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
-  //==== FIXME now only have 2017 signals
+  //==== FIXME now only have 2016 signals
   if(Year==2016){
     ScaleLumi *= 1.;
   }
@@ -48,8 +48,8 @@ void Make_ShapeForLimit(int Year=2016){
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/"+TString::Itoa(Year,10)+"/";
 
   //==== FIXME test, scaling to 137.19
-  ScaleLumi *= 137.19/35.92;
-  base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/ScaledToFullRun2/";
+  //ScaleLumi *= 137.19/35.92;
+  //base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/ScaledToFullRun2/";
 
   gSystem->mkdir(base_plotpath,kTRUE);
 
@@ -238,9 +238,12 @@ void Make_ShapeForLimit(int Year=2016){
                 cout << "@@@@ EMu : " << region << "\t" << channel << endl;
                 hist_bkgd->SetName("EMu"+shapehistname_suffix);
 
-                TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+0.20);
+                double EMuSyst = 0.20;
+                if( region.Contains("Boosted") ) EMuSyst = 0.30;
+
+                TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+1.*EMuSyst);
                 hist_bkgdUp->SetName("EMu_SystUp");
-                TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-0.20);
+                TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-1.*EMuSyst);
                 hist_bkgdDown->SetName("EMu_SystDown");
 
                 TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);

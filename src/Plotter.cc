@@ -250,6 +250,8 @@ void Plotter::draw_hist(){
             //==== TODO Add EMu syst
 
             double EMuSyst = 0.20;
+            if( histname_suffix[i_cut].Contains("Boosted") ) EMuSyst = 0.30;
+
             for(int i=0; i<=hist_final->GetXaxis()->GetNbins()+1; i++){
               double y = hist_final->GetBinContent(i);
               double err_Stat = hist_final->GetBinError(i);

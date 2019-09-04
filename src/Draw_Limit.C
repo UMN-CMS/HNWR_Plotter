@@ -3,11 +3,16 @@
 
 void Draw_Limit(int Year){
 
+  double signal_scale = 0.1;
+
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_07_11_152140__FullCLs";
-    //inputfile = "2019_07_10_161251__Run2";
+    inputfile = "2019_09_04_151504__Asymp";
+
+    //inputfile = "2019_09_04_204539__BeforeMll500";
+    //signal_scale = 1.;
+
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -28,7 +33,7 @@ void Draw_Limit(int Year){
   latex_Lumi.SetTextSize(0.035);
   latex_Lumi.SetTextFont(42);
 
-  bool UseAsymptotic = false;
+  bool UseAsymptotic = true;
 
   TString Method = "FullCLs";
   if(UseAsymptotic) Method = "Asymptotic";
@@ -229,9 +234,7 @@ void Draw_Limit(int Year){
 
           //==== pb -> fb
           xsec = 1000.*xsec;
-
-          //==== ee+mm -> ee
-          xsec = xsec/2.;
+          //==== upper limit is xsec(ee+mm)
 
           if(int(m_WR)==int(mwr) && int(m_N)==int(mn)){
             theory_xsec_found = true;
@@ -258,11 +261,18 @@ void Draw_Limit(int Year){
             LimitResult m;
 
             m.region = region_;
+
             is >> m.limit_exp;
             is >> m.limit_exp_1sdUp;
             is >> m.limit_exp_1sdDn;
             is >> m.limit_exp_2sdUp;
             is >> m.limit_exp_2sdDn;
+
+            m.limit_exp *= signal_scale;
+            m.limit_exp_1sdUp *= signal_scale;
+            m.limit_exp_1sdDn *= signal_scale;
+            m.limit_exp_2sdUp *= signal_scale;
+            m.limit_exp_2sdDn *= signal_scale;
 
             lrsminfo.LimitResults.push_back( m );
 

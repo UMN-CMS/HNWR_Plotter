@@ -188,6 +188,8 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
     TString sym_sample = sym_samples.at(it_sym_sample);
 
+    cout << "@@@@ sym_sample = " << sym_sample << endl;
+
     TFile *file = new TFile(base_filepath+"/"+filename_prefix+sym_sample+".root");
 
     vector< vector<double> > ratios_for_each_SR, ratioerrs_for_each_SR;
@@ -197,6 +199,8 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
       TString SR = "Resolved";
       if(it_SR==1) SR = "Boosted_elFatJet";
       if(it_SR==2) SR = "Boosted_muFatJet";
+
+      cout << "@@@@ SR = " << SR << endl;
 
       for(unsigned int it_var=0; it_var<vars.size(); it_var++){
 
@@ -225,6 +229,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
         TH1D *hist_EE = (TH1D *)file->Get(region_EE+"/"+var+"_"+region_EE);
         TH1D *hist_MM = (TH1D *)file->Get(region_MM+"/"+var+"_"+region_MM);
+        cout << region_MM+"/"+var+"_"+region_MM << endl;
         TH1D *hist_EM = (TH1D *)file->Get(region_EM+"/"+var+"_"+region_EM);
 
         if(rebin>0){

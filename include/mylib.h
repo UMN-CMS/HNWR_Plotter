@@ -413,12 +413,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   if(DataYear==2016){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.944082;
-        DYNorm_err = 0.0202439;
+        DYNorm = 0.94332;
+        DYNorm_err = 0.0202275;
       }
       else if(int_region==1){
-        DYNorm = 0.876645;
-        DYNorm_err = 0.0244436;
+        DYNorm = 0.874663;
+        DYNorm_err = 0.0243903;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -427,12 +427,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.936511;
-        DYNorm_err = 0.0197817;
+        DYNorm = 0.956523;
+        DYNorm_err = 0.020203;
       }
       else if(int_region==1){
-        DYNorm = 0.831486;
-        DYNorm_err = 0.0237605;
+        DYNorm = 0.844299;
+        DYNorm_err = 0.0240842;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -447,12 +447,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2017){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 1.13392;
-        DYNorm_err = 0.0248062;
+        DYNorm = 1.1325;
+        DYNorm_err = 0.0247749;
       }
       else if(int_region==1){
-        DYNorm = 1.05843;
-        DYNorm_err = 0.0466216;
+        DYNorm = 1.05366;
+        DYNorm_err = 0.0465542;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -461,12 +461,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.14889;
-        DYNorm_err = 0.0247372;
+        DYNorm = 1.16589;
+        DYNorm_err = 0.0251022;
       }
       else if(int_region==1){
-        DYNorm = 1.00902;
-        DYNorm_err = 0.0360461;
+        DYNorm = 1.01588;
+        DYNorm_err = 0.036239;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -481,12 +481,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2018){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.927228;
-        DYNorm_err = 0.0195803;
+        DYNorm = 0.92627;
+        DYNorm_err = 0.01956;
       }
       else if(int_region==1){
-        DYNorm = 0.875242;
-        DYNorm_err = 0.0234896;
+        DYNorm = 0.871837;
+        DYNorm_err = 0.0234077;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -495,12 +495,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.939052;
-        DYNorm_err = 0.0196971;
+        DYNorm = 0.954483;
+        DYNorm_err = 0.0200202;
       }
       else if(int_region==1){
-        DYNorm = 0.860002;
-        DYNorm_err = 0.0232146;
+        DYNorm = 0.869478;
+        DYNorm_err = 0.0234382;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -621,6 +621,26 @@ TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_al
 
   TGraphAsymmErrors *out = new TGraphAsymmErrors(NBin+1, x, y, x_lerr, x_rerr, y_lerr, y_rerr);
   return out;
+
+}
+
+TH1D *RebinWRMass(TH1D *hist, TString region){
+
+  int lastbin = hist->GetXaxis()->GetNbins();
+
+  vector<double> vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
+  if(region.Contains("Boosted")){
+     vec_bins = {0, 800, 1000, 1200, 1600, 2000, 8000};
+  };
+
+  const int n_bin = vec_bins.size()-1;
+  double ptArray[n_bin+1];
+  for(int zzz=0;zzz<vec_bins.size();zzz++){
+    ptArray[zzz] = vec_bins.at(zzz);
+  }
+  hist = (TH1D *)hist->Rebin(n_bin, hist->GetName(), ptArray);
+
+  return hist;
 
 }
 

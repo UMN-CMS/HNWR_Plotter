@@ -467,9 +467,11 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "JetEn",
     "MuonEn",
     "MuonIDSF",
+    "MuonTriggerSF",
     "ElectronRes",
     "ElectronEn",
     "ElectronIDSF",
+    "ElectronTriggerSF",
   };
 
   //=============

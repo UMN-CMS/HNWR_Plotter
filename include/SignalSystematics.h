@@ -11,6 +11,7 @@ public:
   TFile *file;
 
   int n_rebin;
+  bool UseCustomRebin;
   bool DoDebug;
   TString region;
 
@@ -47,6 +48,7 @@ public:
     file = NULL;
 
     n_rebin = 20;
+    UseCustomRebin = true;
     DoDebug = false;
     region = "";
 
@@ -186,7 +188,8 @@ public:
 
     //==== central
     hist_Central_Num = (TH1D *)dir_Num->Get("PDFWeights_Scale_0_XsecSyst_Num_"+region);
-    hist_Central_Num->Rebin(n_rebin);
+    if(UseCustomRebin) hist_Central_Num = RebinWRMass(hist_Central_Num, region);
+    else               hist_Central_Num->Rebin(n_rebin);
     hist_Central_Num->SetLineWidth(2);
     hist_Central_Num->Scale(1./DenValues_Scale[0]);
     //==== FIXME ee : mm = 1 : 1
@@ -210,7 +213,8 @@ public:
 
       TString histname = "PDFWeights_Scale_"+TString::Itoa(i,10)+"_XsecSyst_Num_"+region;
       TH1D *hist = (TH1D *)dir_Num->Get(histname);
-      hist->Rebin(n_rebin);
+      if(UseCustomRebin) hist = RebinWRMass(hist, region);
+      else               hist->Rebin(n_rebin);
       hist->SetLineWidth(2);
       hist->Scale(1./DenValues_Scale[i]);
 
@@ -293,7 +297,8 @@ public:
 
       TString histname = "PDFWeights_Error_"+TString::Itoa(i,10)+"_XsecSyst_Num_"+region;
       TH1D *hist = (TH1D *)dir_Num->Get(histname);
-      hist->Rebin(n_rebin);
+      if(UseCustomRebin) hist = RebinWRMass(hist, region);
+      else               hist->Rebin(n_rebin);
       hist->SetLineWidth(2);
       hist->Scale(1./DenValues_PDFError[i]);
 
@@ -365,7 +370,8 @@ public:
 
       TString histname = "PDFWeights_AlphaS_"+TString::Itoa(i,10)+"_XsecSyst_Num_"+region;
       TH1D *hist = (TH1D *)dir_Num->Get(histname);
-      hist->Rebin(n_rebin);
+      if(UseCustomRebin) hist = RebinWRMass(hist, region);
+      else               hist->Rebin(n_rebin);
       hist->SetLineWidth(2);
       hist->Scale(1./DenValues_AlphaS[i]);
 

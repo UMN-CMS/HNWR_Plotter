@@ -9,19 +9,28 @@ void Make_ShapeForLimit(int Year=2016){
   int n_rebin = 20;
 
   double signal_scale = 0.001; // r value in fb
+  signal_scale *= 0.1; // r value will be multiplied by 1/0.1 = 10
+
   double ScaleLumi = 1.;
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
   //==== FIXME now only have 2016 signals
+  TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
     ScaleLumi *= 1.;
   }
   else if(Year==2017){
-    ScaleLumi *=  41.53/35.92;
+    ScaleLumi *=  1.;
   }
   else if(Year==2018){
-    ScaleLumi *= 59.74/35.92;
+    ScaleLumi *= 59735.969/35918.219;
+    str_Year = "2016";
+  }
+  else if(Year==20162017){
+    Year=2016;
+    ScaleLumi *= (35918.219+41527.540)/35918.219;
+    str_Year = "2016";
   }
 
   vector<TString> systs = {
@@ -30,9 +39,11 @@ void Make_ShapeForLimit(int Year=2016){
     "JetEnUp", "JetEnDown",
     "MuonEnUp", "MuonEnDown",
     "MuonIDSFUp", "MuonIDSFDown",
+    "MuonTriggerSFUp", "MuonTriggerSFDown",
     "ElectronResUp", "ElectronResDown",
     "ElectronEnUp", "ElectronEnDown",
     "ElectronIDSFUp", "ElectronIDSFDown",
+    "ElectronTriggerSFUp", "ElectronTriggerSFDown",
   };
 
   gStyle->SetOptStat(0);
@@ -79,7 +90,7 @@ void Make_ShapeForLimit(int Year=2016){
     //==== TODO Now using JetBinned for 2017. Must be fixed
     map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_JetBinned"};
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_JetBinned_Reweighted"};
-    //==== TODO Now using inclusive for 2018. Must be fixed
+    //==== TODO Now using inclusive for 2017. Must be fixed
     map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG"};
     map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
@@ -153,6 +164,7 @@ void Make_ShapeForLimit(int Year=2016){
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
+      //hist_DATA = RebinWRMass(hist_DATA, region);
       hist_DATA->Rebin(n_rebin);
 
       //==== temporary lumi scaling; scale content, sqrt() sqruare stat
@@ -219,6 +231,7 @@ void Make_ShapeForLimit(int Year=2016){
 
             if(hist_bkgd){
 
+              //hist_bkgd = RebinWRMass(hist_bkgd, region);
               hist_bkgd->Rebin(n_rebin);
 
               //==== remove negative bins
@@ -306,7 +319,7 @@ void Make_ShapeForLimit(int Year=2016){
             TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
 
             //==== FIXME now only have 2016 signals
-            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/2016/";
+            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/";
             TFile *file_sig = new TFile(temp_base_filepath+"/Signal/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
@@ -315,6 +328,7 @@ void Make_ShapeForLimit(int Year=2016){
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
 
               if(hist_sig){
+                //hist_sig = RebinWRMass(hist_sig, region);
                 hist_sig->Rebin(n_rebin);
                 hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
 
@@ -323,9 +337,14 @@ void Make_ShapeForLimit(int Year=2016){
                   if(hist_sig->GetBinContent(ibin) < 0.){
                     hist_sig->SetBinContent(ibin, 0.);
                   }
+                  //==== Scale lumi
                   hist_sig->SetBinContent(ibin, hist_sig->GetBinContent(ibin)*ScaleLumi);
                   hist_sig->SetBinError(ibin, hist_sig->GetBinError(ibin)*sqrt(ScaleLumi));
-       
+
+                  //==== Scale signal
+                  hist_sig->SetBinContent(ibin, hist_sig->GetBinContent(ibin)*signal_scale);
+                  hist_sig->SetBinError(ibin, hist_sig->GetBinError(ibin)*signal_scale);
+
                 }
 
                 out_sig->cd();
@@ -352,6 +371,7 @@ void Make_ShapeForLimit(int Year=2016){
                   m.file = file_sig;
                   //m.filepath = temp_base_filepath+"/Signal/"+this_filename;
                   m.region = dirname;
+                  m.UseCustomRebin = false;
                   m.n_rebin = n_rebin;
                   m.hist_Central = hist_sig;
                   m.Run();
@@ -403,3 +423,4 @@ void Make_ShapeForLimit(int Year=2016){
   }
 
 }
+

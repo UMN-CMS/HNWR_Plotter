@@ -182,7 +182,8 @@ void Plotter::draw_hist(){
         hist_temp->SetName(fullhistname+"_"+current_sample);
 
         //==== rebin
-        hist_temp->Rebin( n_rebin() );
+        hist_temp = Rebin(hist_temp);
+        //hist_temp->Rebin( n_rebin() );
       
         //==== set X-axis range
         SetXaxisRange(hist_temp);
@@ -311,7 +312,8 @@ void Plotter::draw_hist(){
               if(dir_Up){
                 hist_Up = (TH1D *)dir_Up->Get( histname[i_var]+"_Syst_"+Syst+"Up_"+DirName );
                 if(hist_Up){
-                  hist_Up->Rebin( n_rebin() );
+                  hist_Up = Rebin(hist_Up);
+                  //hist_Up->Rebin( n_rebin() );
                 }
                 else{
                   hist_Up = (TH1D *)hist_final->Clone();
@@ -329,7 +331,8 @@ void Plotter::draw_hist(){
               if(dir_Down){
                 hist_Down = (TH1D *)dir_Down->Get( histname[i_var]+"_Syst_"+Syst+"Down_"+DirName );
                 if(hist_Down){
-                  hist_Down->Rebin( n_rebin() );
+                  hist_Down = Rebin(hist_Down);
+                  //hist_Down->Rebin( n_rebin() );
                 }
                 else{
                   hist_Down = (TH1D *)hist_final->Clone();
@@ -1397,9 +1400,9 @@ TString Plotter::DoubleToString(double dx){
   if(units[i_var]=="int"){
     return "Events";
   }
-  //else if(histname[i_var].Contains("WRCand_Mass")){ //FIXME need rebin?
-  //  return "Events / bin";
-  //}
+  else if(histname[i_var].Contains("WRCand_Mass")){ //FIXME need rebin?
+    return "Events / bin";
+  }
   else{
 
     int dx_int = int(dx);
@@ -1720,5 +1723,36 @@ vector<double> Plotter::GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_state
 
 
   return new_binval;
+
+}
+
+TH1D *Plotter::Rebin(TH1D *hist){
+
+  if(histname[i_var]=="WRCand_Mass" && !( histname_suffix[i_cut].Contains("LowWRCR") ) ){
+
+    hist = RebinWRMass(hist, histname_suffix[i_cut]);
+
+/*
+    int lastbin = hist->GetXaxis()->GetNbins();
+
+    vector<double> vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
+    if(histname_suffix[i_cut].Contains("Boosted")){
+       vec_bins = {0, 800, 1000, 1200, 1600, 2000, 8000};
+    };
+
+    const int n_bin = vec_bins.size()-1;
+    double ptArray[n_bin+1];
+    for(int zzz=0;zzz<vec_bins.size();zzz++){
+      ptArray[zzz] = vec_bins.at(zzz);
+    }
+    hist = (TH1D *)hist->Rebin(n_bin, hist->GetName(), ptArray);
+*/
+
+  }
+  else{
+    hist->Rebin( n_rebin() );
+  }
+
+  return hist;
 
 }

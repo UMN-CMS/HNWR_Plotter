@@ -252,11 +252,11 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
       m.RegionType.push_back(10);
     }
     else if(this_region=="HNWR_SingleElectron_Boosted_SR"){
-      m.LeptonChannels.push_back(22);
+      m.LeptonChannels.push_back(21);
       m.RegionType.push_back(20);
     }
     else if(this_region=="HNWR_SingleMuon_Resolved_SR"){
-      m.LeptonChannels.push_back(21);
+      m.LeptonChannels.push_back(22);
       m.RegionType.push_back(10);
     }
     else if(this_region=="HNWR_SingleMuon_Boosted_SR"){
@@ -319,9 +319,11 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "JetEn",
     "MuonEn",
     "MuonIDSF",
+    "MuonTriggerSF",
     "ElectronRes",
     "ElectronEn",
     "ElectronIDSF",
+    "ElectronTriggerSF",
   };
 
   //=============================

@@ -7,6 +7,7 @@ void Draw_SignalEfficiency(){
 
   bool IsCR = false;
 
+  setTDRStyle();
   gStyle->SetOptStat(0);
 
   TH1::SetDefaultSumw2(true);
@@ -132,7 +133,7 @@ void Draw_SignalEfficiency(){
         str_m_WR.SetTextSize(0.035);
         str_m_WR.DrawLatex(0.2, 0.85, "m_{WR} = "+TString::Itoa(m_WR,10)+" (GeV)");
 
-        TLegend *lg = new TLegend(0.6, 0.3, 0.93, 0.53);
+        TLegend *lg = new TLegend(0.6, 0.7, 0.93, 0.93);
         lg->SetBorderSize(0);
         lg->SetFillStyle(0);
 
@@ -217,6 +218,7 @@ void Draw_SignalEfficiency(){
 
         lg->Draw();
 
+        hist_dummy->Draw("axissame");
 
         TLatex channelname;
         channelname.SetNDC();

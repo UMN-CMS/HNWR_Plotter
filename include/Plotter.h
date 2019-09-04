@@ -118,5 +118,7 @@ public:
   double LumiError();
   vector<TString> Systs;
 
+  TH1D *Rebin(TH1D *hist);
+
 };
 #endif

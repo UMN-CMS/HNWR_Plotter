@@ -135,7 +135,7 @@ void Draw_CompareDYPtReweight(int xxx=0){
       hist_Ratio->GetXaxis()->SetTitle(xtitle);
       hist_Ratio->GetYaxis()->SetTitle("Ratio");
       hist_Ratio->Divide(hist_Before);
-      hist_Ratio->GetYaxis()->SetRangeUser(0.85, 1.15);
+      hist_Ratio->GetYaxis()->SetRangeUser(0.90, 2.0);
       hist_Ratio->Draw("l");
 
       hist_axis(hist_Before, hist_Ratio);

@@ -8,7 +8,7 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_09_04_151504__Asymp";
+    inputfile = "2019_09_05_123627__Mll200_WideBin_Asymp";
 
     //inputfile = "2019_09_04_204539__BeforeMll500";
     //signal_scale = 1.;
@@ -327,8 +327,8 @@ void Draw_Limit(int Year){
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(400., 5200.);
-    hist_dummy->GetYaxis()->SetRangeUser(100., 5200.);
+    hist_dummy->GetXaxis()->SetRangeUser(400., 5400.);
+    hist_dummy->GetYaxis()->SetRangeUser(100., 5400.);
     hist_dummy->GetZaxis()->SetRangeUser(1E-2, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 
@@ -405,6 +405,8 @@ void Draw_Limit(int Year){
       //==== Now fill 2D histogram based on TGraph2D's using Interpolate function
 
       TH2D *hist2d_limit_exp_ratio = new TH2D("hist2d_limit_exp_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
+      TH2D *hist2d_limit_exp_1sdUp_ratio = new TH2D("hist2d_limit_exp_1sdUp_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
+      TH2D *hist2d_limit_exp_1sdDn_ratio = new TH2D("hist2d_limit_exp_1sdDn_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
       TH2D *hist2d_limit_exp = new TH2D("hist2d_limit_exp", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
       for(int it_x=1; it_x<=hist2d_limit_exp_ratio->GetXaxis()->GetNbins(); it_x++){
         double x_center = hist2d_limit_exp_ratio->GetXaxis()->GetBinCenter(it_x);
@@ -421,15 +423,21 @@ void Draw_Limit(int Year){
           //cout << x_center << "\t" << y_center << endl;
           double this_xsec = gr2d_xsec->Interpolate(x_center, y_center);
           double this_exp = gr2d_limit_exp->Interpolate(x_center, y_center);
+          double this_exp_1sdUp = gr2d_limit_exp_1sdUp->Interpolate(x_center, y_center);
+          double this_exp_1sdDn = gr2d_limit_exp_1sdDn->Interpolate(x_center, y_center);
           if(this_xsec<=0||this_exp<=0) continue;
-          double this_ratio = this_xsec/this_exp;
-          //cout << region << "\t" << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
+          double this_exp_ratio = this_xsec/this_exp;
+          double this_exp_1sdUp_ratio = this_xsec/this_exp_1sdUp;
+          double this_exp_1sdDn_ratio = this_xsec/this_exp_1sdDn;
+          //cout << region << "\t" << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
 
           if(region=="Combined"){
-            //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_ratio << endl;
+            //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
           }
 
-          hist2d_limit_exp_ratio->SetBinContent(it_x, it_y, this_ratio);
+          hist2d_limit_exp_ratio->SetBinContent(it_x, it_y, this_exp_ratio);
+          hist2d_limit_exp_1sdUp_ratio->SetBinContent(it_x, it_y, this_exp_1sdUp_ratio);
+          hist2d_limit_exp_1sdDn_ratio->SetBinContent(it_x, it_y, this_exp_1sdDn_ratio);
           hist2d_limit_exp->SetBinContent(it_x, it_y, this_exp);
         }
       }
@@ -450,8 +458,19 @@ void Draw_Limit(int Year){
       hist2d_limit_exp_ratio->SetContour(1,conts);
       hist2d_limit_exp_ratio->SetLineWidth(2);
       hist2d_limit_exp_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_ratio->SetFillColor(colors.at(it_region));
       hist2d_limit_exp_ratio->Draw("cont2same");
+
+      hist2d_limit_exp_1sdUp_ratio->SetContour(1,conts);
+      hist2d_limit_exp_1sdUp_ratio->SetLineWidth(2);
+      hist2d_limit_exp_1sdUp_ratio->SetLineStyle(3);
+      hist2d_limit_exp_1sdUp_ratio->SetLineColor(colors.at(it_region));
+      hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
+
+      hist2d_limit_exp_1sdDn_ratio->SetContour(1,conts);
+      hist2d_limit_exp_1sdDn_ratio->SetLineWidth(2);
+      hist2d_limit_exp_1sdDn_ratio->SetLineStyle(3);
+      hist2d_limit_exp_1sdDn_ratio->SetLineColor(colors.at(it_region));
+      hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
 
       lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region), "l");
 

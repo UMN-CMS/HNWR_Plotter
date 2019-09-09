@@ -974,6 +974,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   //==== ymax
   double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
   hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
+  if(histname[i_var]=="WRCand_Mass" && histname_suffix[i_cut].Contains("_SR") && !(histname_suffix[i_cut].Contains("EMu")) ){
+    hist_empty->GetYaxis()->SetRangeUser( 1E-2, YmaxScale*AutoYmax );
+  }
 
   //==== legend
   legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");

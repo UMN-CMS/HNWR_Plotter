@@ -619,7 +619,7 @@ TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_al
 
   }
 
-  TGraphAsymmErrors *out = new TGraphAsymmErrors(NBin+1, x, y, x_lerr, x_rerr, y_lerr, y_rerr);
+  TGraphAsymmErrors *out = new TGraphAsymmErrors(NBin, x, y, x_lerr, x_rerr, y_lerr, y_rerr);
   return out;
 
 }

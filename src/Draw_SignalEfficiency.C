@@ -165,17 +165,22 @@ void Draw_SignalEfficiency(){
             TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
             TFile *file = new TFile(base_filepath+"/"+this_filename);
 
+            //==== Get Gen flavour
+            TH1D *hist_SignalFlavour = (TH1D *)file->Get("SignalFlavour");
+            int N_gen_EE = hist_SignalFlavour->GetBinContent(2);
+            int N_gen_MM = hist_SignalFlavour->GetBinContent(3);
+
             TString dirname = Config+"_"+Suffix+"_"+region;
-            TH1D *hist_Den = (TH1D *)file->Get("CutFlow/NoCut_"+Config);
             TH1D *hist = (TH1D *)file->Get(dirname+"/NEvent_"+dirname);
+
+            TH1D *hist_TrigEff = (TH1D *)file->Get(dirname+"/TriggerEff_"+dirname);
 
             double this_yield = 0;
             double this_eff = 0;
             if(hist){
-              double this_Den = hist_Den->GetEntries();
-
-              //==== FIXME temp 0.5
-              this_Den *= 0.5;
+              double this_Den = 1.;
+              if( Suffix.Contains("SingleElectron") ) this_Den = N_gen_EE;
+              else this_Den = N_gen_MM;
 
               this_yield = hist->GetBinContent(1);
               this_eff = hist->GetEntries()/this_Den;

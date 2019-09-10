@@ -8,11 +8,7 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_09_05_123627__Mll200_WideBin_Asymp";
-
-    //inputfile = "2019_09_04_204539__BeforeMll500";
-    //signal_scale = 1.;
-
+    inputfile = "2019_09_07_014034__Mll500_WideBin_Asymp";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -50,7 +46,6 @@ void Draw_Limit(int Year){
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
   TString filepath_result = WORKING_DIR+"/rootfiles/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile+".txt";
-  cout << filepath_result << endl;
   TString plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile;
 
   gSystem->mkdir(plotpath, kTRUE);
@@ -107,7 +102,7 @@ void Draw_Limit(int Year){
     //==== ATLAS (1809.11105) : https://www.hepdata.net/record/ins1696330
     string atlas_line;
     vector<double> atlas_mZp, atlas_mN;
-    ifstream atlas_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAS13TeV_"+channel+"_obs.txt");
+    ifstream atlas_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAS13TeV_"+channel+"_exp.txt");
     while(getline(atlas_in,atlas_line)){
       std::istringstream is( atlas_line );
 
@@ -139,7 +134,7 @@ void Draw_Limit(int Year){
     //==== ATLAS (1904.12679) : https://www.hepdata.net/record/ins1731814
     string atlas_boosted_line;
     vector<double> atlas_boosted_mZp, atlas_boosted_mN;
-    ifstream atlas_boosted_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAS13TeVBoosted_"+channel+"_obs.txt");
+    ifstream atlas_boosted_in(WORKING_DIR+"/data/"+dataset+"/Limit_ATLAS13TeVBoosted_"+channel+"_exp.txt");
     while(getline(atlas_boosted_in,atlas_boosted_line)){
       std::istringstream is( atlas_boosted_line );
 
@@ -426,13 +421,15 @@ void Draw_Limit(int Year){
           double this_exp_1sdUp = gr2d_limit_exp_1sdUp->Interpolate(x_center, y_center);
           double this_exp_1sdDn = gr2d_limit_exp_1sdDn->Interpolate(x_center, y_center);
           if(this_xsec<=0||this_exp<=0) continue;
+
           double this_exp_ratio = this_xsec/this_exp;
           double this_exp_1sdUp_ratio = this_xsec/this_exp_1sdUp;
           double this_exp_1sdDn_ratio = this_xsec/this_exp_1sdDn;
+
           //cout << region << "\t" << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
 
           if(region=="Combined"){
-            //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
+            cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
           }
 
           hist2d_limit_exp_ratio->SetBinContent(it_x, it_y, this_exp_ratio);
@@ -445,11 +442,24 @@ void Draw_Limit(int Year){
       //==== Draw "colz" for "Combined (Resolved+Boosted)" results
       if(region=="Combined"){
 
-        hist2d_limit_exp->GetZaxis()->SetRangeUser(1E-2, 20);
-        //hist2d_limit_exp->GetZaxis()->SetTitleSize(0.01);
-        hist2d_limit_exp->GetZaxis()->SetLabelSize(0.03);
+        TH2D *hist2d_limit_exp_ratio_clone = (TH2D *)hist2d_limit_exp_ratio->Clone();
+        for(int x=1; x<=hist2d_limit_exp_ratio_clone->GetXaxis()->GetNbins(); x++){
+          for(int y=1; y<hist2d_limit_exp_ratio_clone->GetYaxis()->GetNbins(); y++){
+            double v = hist2d_limit_exp_ratio_clone->GetBinContent(x,y);
+            if(v>0){
+              v = 1./v;
+              if(v>20) v = 20;
+              if(v<1E-4) v=1E-4;
+              hist2d_limit_exp_ratio_clone->SetBinContent(x,y,v);
+            }
+          }
+        }
 
-        hist2d_limit_exp->Draw("colzsame");
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetRangeUser(1E-4, 20);
+        //hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.01);
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetLabelSize(0.03);
+
+        hist2d_limit_exp_ratio_clone->Draw("colzsame");
 
       }
 
@@ -464,13 +474,13 @@ void Draw_Limit(int Year){
       hist2d_limit_exp_1sdUp_ratio->SetLineWidth(2);
       hist2d_limit_exp_1sdUp_ratio->SetLineStyle(3);
       hist2d_limit_exp_1sdUp_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
+      //hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
 
       hist2d_limit_exp_1sdDn_ratio->SetContour(1,conts);
       hist2d_limit_exp_1sdDn_ratio->SetLineWidth(2);
       hist2d_limit_exp_1sdDn_ratio->SetLineStyle(3);
       hist2d_limit_exp_1sdDn_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
+      //hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
 
       lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region), "l");
 
@@ -480,9 +490,9 @@ void Draw_Limit(int Year){
     gr_atlas_boosted->Draw("lsame");
     gr_EXO17011->Draw("lsame");
 
-    lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
-    lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
-    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_atlas, "Exp. ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_atlas_boosted, "Exp. ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
+    lg->AddEntry( gr_EXO17011, "Obs. CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");
 

@@ -5,6 +5,8 @@
 
 void Make_ShapeForLimit(int Year=2016){
 
+  bool UseCustomRebin = true;
+
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 20;
 
@@ -164,8 +166,8 @@ void Make_ShapeForLimit(int Year=2016){
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
-      //hist_DATA = RebinWRMass(hist_DATA, region);
-      hist_DATA->Rebin(n_rebin);
+      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, region);
+      else               hist_DATA->Rebin(n_rebin);
 
       //==== temporary lumi scaling; scale content, sqrt() sqruare stat
       for(int ibin=1;ibin<=hist_DATA->GetXaxis()->GetNbins();ibin++){
@@ -231,8 +233,8 @@ void Make_ShapeForLimit(int Year=2016){
 
             if(hist_bkgd){
 
-              //hist_bkgd = RebinWRMass(hist_bkgd, region);
-              hist_bkgd->Rebin(n_rebin);
+              if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, region);
+              else               hist_bkgd->Rebin(n_rebin);
 
               //==== remove negative bins
               for(int ibin=1; ibin<=hist_bkgd->GetXaxis()->GetNbins(); ibin++){
@@ -328,8 +330,8 @@ void Make_ShapeForLimit(int Year=2016){
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
 
               if(hist_sig){
-                //hist_sig = RebinWRMass(hist_sig, region);
-                hist_sig->Rebin(n_rebin);
+                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, region);
+                else               hist_sig->Rebin(n_rebin);
                 hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
 
                 //==== remove negative bins
@@ -371,7 +373,7 @@ void Make_ShapeForLimit(int Year=2016){
                   m.file = file_sig;
                   //m.filepath = temp_base_filepath+"/Signal/"+this_filename;
                   m.region = dirname;
-                  m.UseCustomRebin = false;
+                  m.UseCustomRebin = UseCustomRebin;
                   m.n_rebin = n_rebin;
                   m.hist_Central = hist_sig;
                   m.Run();

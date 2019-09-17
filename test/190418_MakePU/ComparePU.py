@@ -14,22 +14,28 @@ def TotalLumi(Year):
     print "WTF"
     return "35.9";
 
-Year = 2017
+Year = 2016
+IsFast = True
 
 exec('pu1 = prob_DATA_'+str(Year))
-exec('pu2 = prob_MC_'+str(Year))
+if IsFast:
+  exec('pu2 = prob_MC_Fast_'+str(Year))
+else:
+  exec('pu2 = prob_MC_'+str(Year))
 
 #### Change to yours
-outdir = '/eos/user/j/jskim/www/Public/HNWR_13TeV/Run2LegacyPileUpInfo/'
-outname = str(Year)
-
-## check number
-if len(pu1) != len(pu2):
-  print '# of values of pu1 = '+str(len(pu1))
-  print '# of values of pu2 = '+str(len(pu2))
-  exit()
+outdir = '/home/jskim/cernbox/www/Public/HNWR_13TeV/Run2LegacyPileUpInfo/' ## my laptop
+#outdir = '/eos/user/j/jskim/www/Public/HNWR_13TeV/Run2LegacyPileUpInfo/' ## lxplus
+outname = "Fast_"+str(Year)
 
 NBin = len(pu1)
+## check number
+if len(pu1) != len(pu2):
+  print '@@@@ # of values of pu1 = '+str(len(pu1))
+  print '@@@@ # of values of pu2 = '+str(len(pu2))
+  NBin = min( len(pu1), len(pu2) )
+  print '@@@@ NBin = min(pu1,pu2) = '+str(NBin)
+  #exit()
 
 ## normalizaion
 Sum1 = 0
@@ -41,13 +47,17 @@ SFs = []
 for i in range(0,NBin):
   pu1[i] /= Sum1
   pu2[i] /= Sum2
-  SFs.append( pu1[i]/pu2[i] )
+
+  if pu2[i]==0:
+    SFs.append( 0. )
+  else:
+    SFs.append( pu1[i]/pu2[i] )
 
 tdrstyle.setTDRStyle()
 
 hist_1 = ROOT.TH1D('PUProb_DATA', '', NBin, 0., float(NBin))
 hist_2 = ROOT.TH1D('PUProb_MC', '', NBin, 0., float(NBin))
-hist_SF = ROOT.TH1D('PUReweight_'+outname, '', NBin, 0., float(NBin))
+hist_SF = ROOT.TH1D('PUReweight_'+str(Year), '', NBin, 0., float(NBin))
 
 for i in range(0,NBin):
   hist_1.SetBinContent(i+1,pu1[i])

@@ -211,7 +211,7 @@ public:
     map< int, vector<double> > ScalesToBinValues;
     for(int i=1; i<7; i++){
 
-      TString histname = "PDFWeights_Scale_"+TString::Itoa(i,10)+"_XsecSyst_Num_"+region;
+      TString histname = "PDFWeights_Scale_"+TString::Itoa(ScaleIDs[i],10)+"_XsecSyst_Num_"+region;
       TH1D *hist = (TH1D *)dir_Num->Get(histname);
       if(UseCustomRebin) hist = RebinWRMass(hist, region);
       else               hist->Rebin(n_rebin);
@@ -265,11 +265,11 @@ public:
     hist_dummy->Draw("histsameaxis");
 
     hist_ScaleUp->SetLineWidth(2);
-    hist_ScaleUp->SetLineStyle(5);
+    hist_ScaleUp->SetLineStyle(1);
     hist_ScaleUp->SetLineColor(kGray);
 
     hist_ScaleDn->SetLineWidth(2);
-    hist_ScaleDn->SetLineStyle(5);
+    hist_ScaleDn->SetLineStyle(1);
     hist_ScaleDn->SetLineColor(kGray);
 
     hist_ScaleUp->Draw("histsame");

@@ -71,7 +71,7 @@ for Year in Years:
     'NTightLeptonIsTwo_'+Suffix+'_dRSeparation',
     'NTightLeptonIsTwo_'+Suffix+'_mllGT200',
     'NTightLeptonIsTwo_'+Suffix+'_mWRGT800',
-    'NTightLeptonIsTwo_'+Suffix+'_mWRGT800_mll500',
+    'NTightLeptonIsTwo_'+Suffix+'_mWRGT800_mll400',
       ],
 
 
@@ -108,7 +108,7 @@ for Year in Years:
     '$\\Delta\\mathrm{R} > 0.4$',
     '$m(\\ell\\ell)>200~\\GeV$',
     '$m(\\ell\\ell\\jet\\jet)>800~\\GeV$',
-    '$m(\\ell\\ell)>500~\\GeV$',
+    '$m(\\ell\\ell)>400~\\GeV$',
       ],
 
       [
@@ -117,7 +117,7 @@ for Year in Years:
     'Not resolved',
     'Leading lepton is electron (muon)',
     'Trigger fired',
-    'No $60 < m(\\ell_{\\mathrm{Tight}},\\ell_{\\mathrm{Loose}}) < 150~\\GeV$',
+    'No $60 < m(\\ell_{\\mathrm{Tight}}\\ell_{\\mathrm{Loose}}) < 150~\\GeV$',
     'Merged AK8 jet with $\\Delta\\phi>2.0$',
     'No extra tight lepton',
     'Loose SF lepton inside the merged jet',

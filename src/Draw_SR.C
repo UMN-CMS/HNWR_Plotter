@@ -324,6 +324,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "ElectronEn",
     "ElectronIDSF",
     "ElectronTriggerSF",
+    "LSFSF",
   };
 
   //=============================

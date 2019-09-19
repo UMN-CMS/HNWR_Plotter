@@ -46,6 +46,7 @@ void Make_ShapeForLimit(int Year=2016){
     "ElectronEnUp", "ElectronEnDown",
     "ElectronIDSFUp", "ElectronIDSFDown",
     "ElectronTriggerSFUp", "ElectronTriggerSFDown",
+    "LSFSFUp", "LSFSFDown",
   };
 
   gStyle->SetOptStat(0);

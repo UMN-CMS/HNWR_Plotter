@@ -8,7 +8,7 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_09_07_014034__Mll500_WideBin_Asymp";
+    inputfile = "2019_09_17_145205__Mll400_WideBin_CorrectPUReweightForFastSim_Asymp";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -167,20 +167,16 @@ void Draw_Limit(int Year){
 
     string EXO17011_line;
     vector<double> EXO17011_mZp, EXO17011_mN;
-    ifstream EXO17011_in(WORKING_DIR+"/data/"+dataset+"/Limit_EXO17011_"+channel+"_obs.txt");
+    ifstream EXO17011_in(WORKING_DIR+"/data/"+dataset+"/Limit_EXO17011_"+channel+"_exp.txt");
     while(getline(EXO17011_in,EXO17011_line)){
       std::istringstream is( EXO17011_line );
 
-      TString mark;
       double a,b;
-      is >> mark;
       is >> a;
       is >> b;
 
-      if(mark.Contains("TRUE")){
-        EXO17011_mZp.push_back(a);
-        EXO17011_mN.push_back(b);
-      }
+      EXO17011_mZp.push_back(a);
+      EXO17011_mN.push_back(b);
     }
 
     const int N_EXO17011 = EXO17011_mZp.size();
@@ -492,7 +488,7 @@ void Draw_Limit(int Year){
 
     lg->AddEntry( gr_atlas, "Exp. ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
     lg->AddEntry( gr_atlas_boosted, "Exp. ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
-    lg->AddEntry( gr_EXO17011, "Obs. CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_EXO17011, "Exp. CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");
 
@@ -517,8 +513,6 @@ void Draw_Limit(int Year){
     //==== TODO
     //==== Below is to draw 1D limit plots, but under development..
     //==== Not running them for now
-
-    continue;
 
     //==== 1D : Limit vs N, for each WR
 
@@ -614,9 +608,10 @@ void Draw_Limit(int Year){
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
+        hist_dummy->GetXaxis()->SetRangeUser(0., 7000.);
         hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
         hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrowlljj) (fb)");
-        hist_dummy->GetYaxis()->SetRangeUser(1E-4, 100); 
+        hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");
         gr_exp_1sd->Draw("3same");
@@ -642,127 +637,129 @@ void Draw_Limit(int Year){
 
     } // END Loop over WR
 
-    //==== 1D : Limit vs WR, for each N
+    //==== 1D : Limit vs WR, for each N = WR/2
 
+    //==== Check how many mN=mWR/2 point exist
+    vector<LRSMSignalInfo> lrsminfo_Half;
     for(map< double, vector<double> >::iterator it=tmp_lrsminfo.maps_N_to_WR.begin(); it!=tmp_lrsminfo.maps_N_to_WR.end(); it++){
 
       double m_N = it->first;
       vector<double> this_m_WRs = it->second;
 
-      for(unsigned int it_region=0; it_region<regions.size(); it_region++){
+      for(int it_N=0; it_N<this_m_WRs.size(); it_N++){
 
-        TString region = regions.at(it_region);
+        double m_WR = this_m_WRs.at(it_N);
 
-        const int n_WR = this_m_WRs.size();
-        double x_WR[n_WR], y_obs[n_WR], y_exp[n_WR], y_exp_1sdUp[n_WR], y_exp_1sdDn[n_WR], y_exp_2sdUp[n_WR], y_exp_2sdDn[n_WR];
-        double y_xsec[n_WR], y_xsec_err_Up[n_WR], y_xsec_err_Dn[n_WR];;
-
-        for(int it_N=0; it_N<this_m_WRs.size(); it_N++){
-
-          double m_WR = this_m_WRs.at(it_N);
-
-          LRSMSignalInfo this_lrsm;
-          bool found = false;
+        if(2*m_N==m_WR){
           for(unsigned it_result=0; it_result<results.size(); it_result++){
             if(results.at(it_result).mass_WR == m_WR && results.at(it_result).mass_N == m_N){
-              this_lrsm = results.at(it_result);
-              found = true;
+              lrsminfo_Half.push_back( results.at(it_result) );
               break;
             }
           }
-          if(!found){
-            cout << "[1D : Limit vs WR, for each N] no result[s] for N = " << m_N << ", WR = " << m_WR << endl;
+
+        }
+
+      }
+
+    }
+
+
+    for(unsigned int it_region=0; it_region<regions.size(); it_region++){
+
+      TString region = regions.at(it_region);
+      const int n_WR = lrsminfo_Half.size();
+
+      double x_WR[n_WR], y_obs[n_WR], y_exp[n_WR], y_exp_1sdUp[n_WR], y_exp_1sdDn[n_WR], y_exp_2sdUp[n_WR], y_exp_2sdDn[n_WR];
+      double y_xsec[n_WR], y_xsec_err_Up[n_WR], y_xsec_err_Dn[n_WR];
+
+      for(unsigned int it_N=0; it_N<lrsminfo_Half.size(); it_N++){
+
+        LRSMSignalInfo this_lrsm = lrsminfo_Half.at(it_N);
+
+        LimitResult this_result;
+        vector<LimitResult> this_results = this_lrsm.LimitResults;
+        for(unsigned int z=0; z<this_results.size(); z++){
+          if(this_results.at(z).region == region){
+            this_result = this_results.at(z);
           }
+        }
 
-          LimitResult this_result;
-          found = false;
-          vector<LimitResult> this_results = this_lrsm.LimitResults;
-          for(unsigned int z=0; z<this_results.size(); z++){
-            if(this_results.at(z).region == region){
-              this_result = this_results.at(z);
-              found = true;
-            }
-          }
-          if(!found){
-            cout << "[1D : Limit vs WR, for each N] no result for N = " << m_N << ", WR = " << m_WR << endl;
-          }
 
-          x_WR[it_N] = m_WR;
-          y_exp[it_N] = this_result.limit_exp;
+        x_WR[it_N] = this_lrsm.mass_WR;
+        y_exp[it_N] = this_result.limit_exp;
 
-          y_exp_1sdUp[it_N] = this_result.limit_exp_1sdUp - this_result.limit_exp;
-          y_exp_1sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_1sdDn;
-          y_exp_2sdUp[it_N] = this_result.limit_exp_2sdUp - this_result.limit_exp;
-          y_exp_2sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_2sdDn;
+        y_exp_1sdUp[it_N] = this_result.limit_exp_1sdUp - this_result.limit_exp;
+        y_exp_1sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_1sdDn;
+        y_exp_2sdUp[it_N] = this_result.limit_exp_2sdUp - this_result.limit_exp;
+        y_exp_2sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_2sdDn;
 
-          y_xsec[it_N] = this_lrsm.xsec;
-          y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec;
-          y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec;
+        y_xsec[it_N] = this_lrsm.xsec;
+        y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec;
+        y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec;
 
-        } // END Loop over WR
+      }
 
-        TGraphAsymmErrors *gr_exp = new TGraphAsymmErrors(n_WR,x_WR,y_exp,0,0,0,0);
-        gr_exp->SetLineColor(kBlack);
-        gr_exp->SetLineWidth(3);
-        gr_exp->SetLineStyle(2);
+      TGraphAsymmErrors *gr_exp = new TGraphAsymmErrors(n_WR,x_WR,y_exp,0,0,0,0);
+      gr_exp->SetLineColor(kBlack);
+      gr_exp->SetLineWidth(3);
+      gr_exp->SetLineStyle(2);
 
-        TGraphAsymmErrors *gr_exp_1sd = new TGraphAsymmErrors(n_WR, x_WR, y_exp, 0, 0, y_exp_1sdDn, y_exp_1sdUp);
-        gr_exp_1sd->SetFillColor(kGreen+1);
-        gr_exp_1sd->SetLineColor(kGreen+1);
-        gr_exp_1sd->SetMarkerColor(kGreen+1);
+      TGraphAsymmErrors *gr_exp_1sd = new TGraphAsymmErrors(n_WR, x_WR, y_exp, 0, 0, y_exp_1sdDn, y_exp_1sdUp);
+      gr_exp_1sd->SetFillColor(kGreen+1);
+      gr_exp_1sd->SetLineColor(kGreen+1);
+      gr_exp_1sd->SetMarkerColor(kGreen+1);
 
-        TGraphAsymmErrors *gr_exp_2sd = new TGraphAsymmErrors(n_WR, x_WR, y_exp, 0, 0, y_exp_2sdDn, y_exp_2sdUp);
-        gr_exp_2sd->SetFillColor(kOrange);
-        gr_exp_2sd->SetLineColor(kOrange);
-        gr_exp_2sd->SetMarkerColor(kOrange);
+      TGraphAsymmErrors *gr_exp_2sd = new TGraphAsymmErrors(n_WR, x_WR, y_exp, 0, 0, y_exp_2sdDn, y_exp_2sdUp);
+      gr_exp_2sd->SetFillColor(kOrange);
+      gr_exp_2sd->SetLineColor(kOrange);
+      gr_exp_2sd->SetMarkerColor(kOrange);
 
-        TGraphAsymmErrors *gr_xsec = new TGraphAsymmErrors(n_WR, x_WR, y_xsec, 0, 0, y_xsec_err_Dn, y_xsec_err_Up);
-        gr_xsec->SetLineColor(kRed);
+      TGraphAsymmErrors *gr_xsec = new TGraphAsymmErrors(n_WR, x_WR, y_xsec, 0, 0, y_xsec_err_Dn, y_xsec_err_Up);
+      gr_xsec->SetLineColor(kRed);
 
-        TLegend *lg = new TLegend(0.2, 0.2, 0.7, 0.35);
-        lg->SetBorderSize(0);
-        lg->SetFillStyle(0);
-        lg->AddEntry( gr_exp, "Expected limit", "l");
-        lg->AddEntry( gr_exp_1sd, "68% expected", "f");
-        lg->AddEntry( gr_exp_2sd, "95% expected", "f");
-        lg->AddEntry( gr_xsec, "Theory", "l");
+      TLegend *lg = new TLegend(0.2, 0.2, 0.7, 0.35);
+      lg->SetBorderSize(0);
+      lg->SetFillStyle(0);
+      lg->AddEntry( gr_exp, "Expected limit", "l");
+      lg->AddEntry( gr_exp_1sd, "68% expected", "f");
+      lg->AddEntry( gr_exp_2sd, "95% expected", "f");
+      lg->AddEntry( gr_xsec, "Theory", "l");
 
-        TCanvas *c_1D_vsN = new TCanvas("c1", "", 800, 800);
-        canvas_margin(c_1D_vsN);
-        c_1D_vsN->cd();
-        c_1D_vsN->SetLogy();
+      TCanvas *c_1D_vsN = new TCanvas("c1", "", 800, 800);
+      canvas_margin(c_1D_vsN);
+      c_1D_vsN->cd();
+      c_1D_vsN->SetLogy();
 
-        TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7000.);
-        hist_dummy->Draw("hist");
-        hist_axis(hist_dummy);
-        hist_dummy->GetXaxis()->SetRangeUser(this_m_WRs.at(0), this_m_WRs.at(this_m_WRs.size()-1));
-        hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrowlljj) (fb)");
-        hist_dummy->GetYaxis()->SetRangeUser(1E-4, 100); 
+      TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7000.);
+      hist_dummy->Draw("hist");
+      hist_axis(hist_dummy);
+      hist_dummy->GetXaxis()->SetRangeUser(800,7000);
+      hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
+      hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrowlljj) (fb)");
+      hist_dummy->GetYaxis()->SetRangeUser(1E-1, 300); 
 
-        gr_exp_2sd->Draw("3same");
-        gr_exp_1sd->Draw("3same");
-        gr_exp->Draw("lsame");
+      gr_exp_2sd->Draw("3same");
+      gr_exp_1sd->Draw("3same");
+      gr_exp->Draw("lsame");
 
-        gr_xsec->Draw("lsame");
+      gr_xsec->Draw("lsame");
 
-        TLatex str_m_WR;
-        str_m_WR.SetNDC();
-        str_m_WR.SetTextSize(0.035);
-        str_m_WR.DrawLatex(0.65, 0.85, "m_{N} = "+TString::Itoa(m_N,10)+" (GeV)");
+      TLatex str_m_WR;
+      str_m_WR.SetNDC();
+      str_m_WR.SetTextSize(0.035);
+      str_m_WR.DrawLatex(0.65, 0.85, "m_{N} = m_{WR}/2");
 
-        lg->Draw();
+      lg->Draw();
 
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-        latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
+      latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+      latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
 
-        c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_N"+TString::Itoa(m_N,10)+"_Limit_vs_WR.pdf");
-        c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_N"+TString::Itoa(m_N,10)+"_Limit_vs_WR.png");
-        c_1D_vsN->Close();
+      c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_HalfN_Limit_vs_WR.pdf");
+      c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_HalfN_Limit_vs_WR.png");
+      c_1D_vsN->Close();
 
-      } // END Loop over regions
-
-    } // END Loop over WR
+    } // END Loop over regions
 
   } // END Loop channels
 

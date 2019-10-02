@@ -8,7 +8,7 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_09_17_145205__Mll400_WideBin_CorrectPUReweightForFastSim_Asymp";
+    inputfile = "2019_10_02_184755__20162017_UseNegativeBin";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -560,16 +560,16 @@ void Draw_Limit(int Year){
           }
 
           x_N[it_N] = m_N;
-          y_exp[it_N] = this_result.limit_exp;
+          y_exp[it_N] = this_result.limit_exp/2.;
 
-          y_exp_1sdUp[it_N] = this_result.limit_exp_1sdUp - this_result.limit_exp;
-          y_exp_1sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_1sdDn;
-          y_exp_2sdUp[it_N] = this_result.limit_exp_2sdUp - this_result.limit_exp;
-          y_exp_2sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_2sdDn;
+          y_exp_1sdUp[it_N] = (this_result.limit_exp_1sdUp - this_result.limit_exp)/2.;
+          y_exp_1sdDn[it_N] = (this_result.limit_exp - this_result.limit_exp_1sdDn)/2.;
+          y_exp_2sdUp[it_N] = (this_result.limit_exp_2sdUp - this_result.limit_exp)/2.;
+          y_exp_2sdDn[it_N] = (this_result.limit_exp - this_result.limit_exp_2sdDn)/2.;
 
-          y_xsec[it_N] = this_lrsm.xsec;
-          y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec;
-          y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec;
+          y_xsec[it_N] = this_lrsm.xsec/2.;
+          y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec/2.;
+          y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec/2.;
 
         } // END Loop over N
 
@@ -687,16 +687,16 @@ void Draw_Limit(int Year){
 
 
         x_WR[it_N] = this_lrsm.mass_WR;
-        y_exp[it_N] = this_result.limit_exp;
+        y_exp[it_N] = this_result.limit_exp/2.;
 
-        y_exp_1sdUp[it_N] = this_result.limit_exp_1sdUp - this_result.limit_exp;
-        y_exp_1sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_1sdDn;
-        y_exp_2sdUp[it_N] = this_result.limit_exp_2sdUp - this_result.limit_exp;
-        y_exp_2sdDn[it_N] = this_result.limit_exp - this_result.limit_exp_2sdDn;
+        y_exp_1sdUp[it_N] = (this_result.limit_exp_1sdUp - this_result.limit_exp)/2.;
+        y_exp_1sdDn[it_N] = (this_result.limit_exp - this_result.limit_exp_1sdDn)/2.;
+        y_exp_2sdUp[it_N] = (this_result.limit_exp_2sdUp - this_result.limit_exp)/2.;
+        y_exp_2sdDn[it_N] = (this_result.limit_exp - this_result.limit_exp_2sdDn)/2.;
 
-        y_xsec[it_N] = this_lrsm.xsec;
-        y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec;
-        y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec;
+        y_xsec[it_N] = this_lrsm.xsec/2.;
+        y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec/2.;
+        y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec/2.;
 
       }
 
@@ -735,7 +735,7 @@ void Draw_Limit(int Year){
       hist_dummy->Draw("hist");
       hist_axis(hist_dummy);
       hist_dummy->GetXaxis()->SetRangeUser(800,7000);
-      hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
+      hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
       hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrowlljj) (fb)");
       hist_dummy->GetYaxis()->SetRangeUser(1E-1, 300); 
 
@@ -744,6 +744,8 @@ void Draw_Limit(int Year){
       gr_exp->Draw("lsame");
 
       gr_xsec->Draw("lsame");
+
+      hist_dummy->Draw("axissame");
 
       TLatex str_m_WR;
       str_m_WR.SetNDC();

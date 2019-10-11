@@ -30,6 +30,7 @@ public:
   TH1D *hist_Central_Num;
   TH1D *hist_ScaleUp;
   TH1D *hist_ScaleDn;
+  TH1D *hist_ScaleIntegral;
 
   TH1D *hist_PDFError;
   TH1D *hist_PDFErrorUp;
@@ -61,6 +62,7 @@ public:
     hist_Central_Num = NULL;
     hist_ScaleUp = NULL;
     hist_ScaleDn = NULL;
+    hist_ScaleIntegral = NULL;
 
     hist_PDFError = NULL;
     hist_PDFErrorUp = NULL;
@@ -209,6 +211,10 @@ public:
 
     double y_max = GetMaximum(hist_Central_Num);
     map< int, vector<double> > ScalesToBinValues;
+
+    double integral_Central = hist_Central_Num->Integral();
+    double integral_Scale_Max(-1), integral_Scale_Min(99999999);
+
     for(int i=1; i<7; i++){
 
       TString histname = "PDFWeights_Scale_"+TString::Itoa(ScaleIDs[i],10)+"_XsecSyst_Num_"+region;
@@ -235,7 +241,20 @@ public:
       }
       ScalesToBinValues[i] = values;
 
+      integral_Scale_Max = max( integral_Scale_Max, hist->Integral() );
+      integral_Scale_Min = min( integral_Scale_Min, hist->Integral() );
+
     }
+    double integral_Scale_Up = fabs(integral_Central-integral_Scale_Max)/integral_Central;
+    double integral_Scale_Dn = fabs(integral_Central-integral_Scale_Min)/integral_Central;
+    if(DoDebug){
+      cout << "@@@@ Scale Integral : " << integral_Central << "\t" << integral_Scale_Max << "\t" << integral_Scale_Min << endl;
+      cout << "@@@@ Scale Up = " << integral_Scale_Up << endl;
+      cout << "@@@@ Scale Dn = " << integral_Scale_Dn << endl;
+      cout << "@@@@ Scale integral syst = " << max(integral_Scale_Up,integral_Scale_Dn) << endl;
+    }
+    hist_ScaleIntegral = new TH1D("hist_ScaleIntegral", "", 1, 0., 1.);
+    hist_ScaleIntegral->SetBinContent(1, max(integral_Scale_Up,integral_Scale_Dn));
     for(int x=1; x<=hist_Central_Num->GetXaxis()->GetNbins(); x++){
 
       //==== x : bincontent

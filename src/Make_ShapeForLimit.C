@@ -47,6 +47,7 @@ void Make_ShapeForLimit(int Year=2016){
     "ElectronIDSFUp", "ElectronIDSFDown",
     "ElectronTriggerSFUp", "ElectronTriggerSFDown",
     "LSFSFUp", "LSFSFDown",
+    "PUUp", "PUDown",
   };
 
   gStyle->SetOptStat(0);
@@ -240,7 +241,7 @@ void Make_ShapeForLimit(int Year=2016){
               //==== remove negative bins
               for(int ibin=1; ibin<=hist_bkgd->GetXaxis()->GetNbins(); ibin++){
                 if(hist_bkgd->GetBinContent(ibin) < 0.){
-                  hist_bkgd->SetBinContent(ibin, 0.);
+                  //hist_bkgd->SetBinContent(ibin, 0.);
                 }
 
                 hist_bkgd->SetBinContent(ibin, hist_bkgd->GetBinContent(ibin)*ScaleLumi);
@@ -258,9 +259,9 @@ void Make_ShapeForLimit(int Year=2016){
                 if( region.Contains("Boosted") ) EMuSyst = 0.30;
 
                 TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+1.*EMuSyst);
-                hist_bkgdUp->SetName("EMu_SystUp");
+                hist_bkgdUp->SetName("EMu_EMuSystUp");
                 TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-1.*EMuSyst);
-                hist_bkgdDown->SetName("EMu_SystDown");
+                hist_bkgdDown->SetName("EMu_EMuSystDown");
 
                 TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);
                 hist_bkgd_StatUp->SetName("EMu_StatUp");
@@ -338,7 +339,7 @@ void Make_ShapeForLimit(int Year=2016){
                 //==== remove negative bins
                 for(int ibin=1; ibin<=hist_sig->GetXaxis()->GetNbins(); ibin++){
                   if(hist_sig->GetBinContent(ibin) < 0.){
-                    hist_sig->SetBinContent(ibin, 0.);
+                    //hist_sig->SetBinContent(ibin, 0.);
                   }
                   //==== Scale lumi
                   hist_sig->SetBinContent(ibin, hist_sig->GetBinContent(ibin)*ScaleLumi);
@@ -381,6 +382,7 @@ void Make_ShapeForLimit(int Year=2016){
 
                   m.hist_ScaleUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");
                   m.hist_ScaleDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleDown");
+                  m.hist_ScaleIntegral->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleIntegralSyst");
                   m.hist_PDFErrorUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
                   m.hist_PDFErrorDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorDown");
                   m.hist_AlphaSUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSUp");
@@ -390,6 +392,7 @@ void Make_ShapeForLimit(int Year=2016){
 
                   m.hist_ScaleUp->Write();
                   m.hist_ScaleDn->Write();
+                  m.hist_ScaleIntegral->Write();
 
                   m.hist_PDFErrorUp->Write();
                   m.hist_PDFErrorDn->Write();

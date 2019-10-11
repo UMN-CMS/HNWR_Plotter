@@ -8,7 +8,7 @@ void Draw_Limit(int Year){
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_10_02_184755__20162017_UseNegativeBin";
+    inputfile = "2019_10_11_142809__20162017_LumiFixed";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -226,6 +226,11 @@ void Draw_Limit(int Year){
           //==== pb -> fb
           xsec = 1000.*xsec;
           //==== upper limit is xsec(ee+mm)
+
+          //==== TODO temp. k-factor
+          if(mwr<4000) xsec *= 1.29;
+          else if(mwr<5000) xsec *= 1.38;
+          else xsec *= 1.41;
 
           if(int(m_WR)==int(mwr) && int(m_N)==int(mn)){
             theory_xsec_found = true;

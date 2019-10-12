@@ -630,7 +630,7 @@ TH1D *RebinWRMass(TH1D *hist, TString region){
 
   vector<double> vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
   if(region.Contains("Boosted")){
-     vec_bins = {0, 800, 1000, 1200, 1600, 2000, 8000};
+     vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
   };
 
   const int n_bin = vec_bins.size()-1;

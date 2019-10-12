@@ -243,8 +243,8 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             vector<double> vec_bins;
 
             if(xxx>0){
-              if(it_SR==0) vec_bins = {0, 200., 800, 850, 900, 950, 1000, 1500, 2000, 8000};
-              else         vec_bins = {0, 200., 800, 850, 900, 950, 1000, 1500, 8000};
+              if(it_SR==0) vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
+              else         vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
             }
             else{
               if(it_SR==0) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 2000, 8000};

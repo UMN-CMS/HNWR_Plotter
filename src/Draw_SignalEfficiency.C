@@ -7,6 +7,18 @@ void Draw_SignalEfficiency(){
 
   bool IsCR = false;
 
+  double TotalLumi = 1.;
+  if(Year=="2016"){
+    TotalLumi = 35918.219;
+  }
+  else if(Year=="2017"){
+    TotalLumi = 41527.540;
+  }
+  else if(Year=="2018"){
+    TotalLumi = 59735.969;
+  }
+
+
   setTDRStyle();
   gStyle->SetOptStat(0);
 
@@ -169,6 +181,9 @@ void Draw_SignalEfficiency(){
             TH1D *hist_SignalFlavour = (TH1D *)file->Get("SignalFlavour");
             int N_gen_EE = hist_SignalFlavour->GetBinContent(2);
             int N_gen_MM = hist_SignalFlavour->GetBinContent(3);
+            double this_FlavorFrac = 0.5;
+            if( Suffix.Contains("SingleElectron") ) this_FlavorFrac = N_gen_EE/hist_SignalFlavour->GetEntries();
+            else this_FlavorFrac = N_gen_MM/hist_SignalFlavour->GetEntries();
 
             TString dirname = Config+"_"+Suffix+"_"+region;
             TH1D *hist = (TH1D *)file->Get(dirname+"/NEvent_"+dirname);
@@ -178,12 +193,21 @@ void Draw_SignalEfficiency(){
             double this_yield = 0;
             double this_eff = 0;
             if(hist){
+
+              //==== Use Entry
+/*
               double this_Den = 1.;
               if( Suffix.Contains("SingleElectron") ) this_Den = N_gen_EE;
               else this_Den = N_gen_MM;
 
               this_yield = hist->GetBinContent(1);
               this_eff = hist->GetEntries()/this_Den;
+*/
+
+              this_yield = hist->GetBinContent(1);
+              double this_den = TotalLumi * 1. * this_FlavorFrac;
+              this_eff = this_yield/this_den;
+
             }
             x[it_N] = m_N;
             y[it_N] = this_eff;

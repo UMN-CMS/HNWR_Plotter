@@ -3,12 +3,16 @@
 
 void Draw_Limit(int Year){
 
+  gErrorIgnoreLevel = kFatal;
+
+  bool Usekfactor = true;
+
   double signal_scale = 0.1;
 
   TString inputfile = "";
   TString TotalLumi = "";
   if(Year==2016){
-    inputfile = "2019_10_11_142809__20162017_LumiFixed";
+    inputfile = "2019_10_15_201634__2016_JetPt100";
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
@@ -47,6 +51,7 @@ void Draw_Limit(int Year){
 
   TString filepath_result = WORKING_DIR+"/rootfiles/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile+".txt";
   TString plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile;
+  if(!Usekfactor) plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile+"_Nokfactor";
 
   gSystem->mkdir(plotpath, kTRUE);
 
@@ -227,11 +232,12 @@ void Draw_Limit(int Year){
           xsec = 1000.*xsec;
           //==== upper limit is xsec(ee+mm)
 
-          //==== TODO temp. k-factor
-          if(mwr<4000) xsec *= 1.29;
-          else if(mwr<5000) xsec *= 1.38;
-          else xsec *= 1.41;
-
+          if(Usekfactor){
+            //==== TODO temp. k-factor
+            if(mwr<4000) xsec *= 1.29;
+            else if(mwr<5000) xsec *= 1.38;
+            else xsec *= 1.41;
+          }
           if(int(m_WR)==int(mwr) && int(m_N)==int(mn)){
             theory_xsec_found = true;
             lrsminfo.xsec = xsec;
@@ -325,7 +331,7 @@ void Draw_Limit(int Year){
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
     hist_dummy->GetXaxis()->SetRangeUser(400., 5400.);
     hist_dummy->GetYaxis()->SetRangeUser(100., 5400.);
-    hist_dummy->GetZaxis()->SetRangeUser(1E-2, 20);
+    hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 
     for(unsigned int it_region=0; it_region<regions.size(); it_region++){
@@ -430,7 +436,7 @@ void Draw_Limit(int Year){
           //cout << region << "\t" << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
 
           if(region=="Combined"){
-            cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
+            //cout << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
           }
 
           hist2d_limit_exp_ratio->SetBinContent(it_x, it_y, this_exp_ratio);
@@ -453,6 +459,11 @@ void Draw_Limit(int Year){
               if(v<1E-4) v=1E-4;
               hist2d_limit_exp_ratio_clone->SetBinContent(x,y,v);
             }
+            double x_l = hist2d_limit_exp_ratio_clone->GetXaxis()->GetBinLowEdge(x);
+            double x_r = hist2d_limit_exp_ratio_clone->GetXaxis()->GetBinUpEdge(x);
+            double y_l = hist2d_limit_exp_ratio_clone->GetYaxis()->GetBinLowEdge(y);
+            double y_r = hist2d_limit_exp_ratio_clone->GetYaxis()->GetBinUpEdge(y);
+            cout << "x : ["<<x_l<<","<<x_r<<"], y : ["<<y_l<<","<<y_r<<"] -> v = " << v << endl;
           }
         }
 

@@ -350,7 +350,7 @@ public:
       hist_PDFErrorUp->SetBinContent(x, 2.* (bin_central+sqrt(diff)) );
       hist_PDFErrorDn->SetBinContent(x, 2.* max(0., (bin_central-sqrt(diff)) ) );
 
-      //cout << "bin " << x << " : " <<hist_PDFError->GetBinContent(x) << endl;
+      if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " <<hist_PDFError->GetBinContent(x) << endl;
 
 
     }
@@ -403,6 +403,7 @@ public:
 
     } // END Loop AlphaS
 
+    if(DoDebug) cout << "[SignalSystematics] @@@@ PDF AlphaS" << endl;
     for(int x=1; x<=hist_Central_Num->GetXaxis()->GetNbins(); x++){
 
       //==== x : bincontent

@@ -628,10 +628,16 @@ TH1D *RebinWRMass(TH1D *hist, TString region){
 
   int lastbin = hist->GetXaxis()->GetNbins();
 
-  vector<double> vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
-  if(region.Contains("Boosted")){
-     vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
-  };
+  vector<double> vec_bins;
+
+  if(region.Contains("Low")){
+    vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 2000, 8000};
+    if(region.Contains("Boosted")) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
+  }
+  else{
+    vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000};
+    if(region.Contains("Boosted")) vec_bins = {0, 800, 1000, 1200, 1400, 1600, 1800, 8000};
+  }
 
   const int n_bin = vec_bins.size()-1;
   double ptArray[n_bin+1];

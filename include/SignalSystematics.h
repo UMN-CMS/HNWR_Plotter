@@ -15,6 +15,8 @@ public:
   bool DoDebug;
   TString region;
 
+  double ChannelFrac;
+
   //==== Central Histogram
 
   TH1D *hist_Central;
@@ -85,10 +87,7 @@ public:
       cout << "[SignalSystematics] Getting denominator values" << endl;
     }
 
-    //==== TFile
-
-    //TFile *file = new TFile(filepath);
-
+    //===========================================================================================
     //==== Den vars
 
     TDirectory *dir_Den = (TDirectory *)file->Get("XsecSyst_Den");
@@ -166,10 +165,6 @@ public:
 
 
     //===========================================================================================
-
-
-
-
     //==== Num
 
     if(DoDebug){
@@ -177,6 +172,15 @@ public:
     }
 
     TDirectory *dir_Num = (TDirectory *)file->Get("XsecSyst_Num_"+region);
+
+    //==== central
+
+    hist_Central_Num = (TH1D *)dir_Num->Get("PDFWeights_Scale_0_XsecSyst_Num_"+region);
+    if(UseCustomRebin) hist_Central_Num = RebinWRMass(hist_Central_Num, region);
+    else               hist_Central_Num->Rebin(n_rebin);
+    hist_Central_Num->SetLineWidth(2);
+    hist_Central_Num->Scale(1./DenValues_Scale[0]);
+    hist_Central_Num->Scale(1./ChannelFrac);
 
     //============
     //==== Scale
@@ -187,15 +191,6 @@ public:
     TCanvas *c_Scale = new TCanvas("c_Scale", "", 600, 600);
     canvas_margin(c_Scale);
     c_Scale->cd();
-
-    //==== central
-    hist_Central_Num = (TH1D *)dir_Num->Get("PDFWeights_Scale_0_XsecSyst_Num_"+region);
-    if(UseCustomRebin) hist_Central_Num = RebinWRMass(hist_Central_Num, region);
-    else               hist_Central_Num->Rebin(n_rebin);
-    hist_Central_Num->SetLineWidth(2);
-    hist_Central_Num->Scale(1./DenValues_Scale[0]);
-    //==== FIXME ee : mm = 1 : 1
-    hist_Central_Num->Scale(2.);
 
     //==== dummy
     TH1D *hist_dummy = (TH1D *)hist_Central_Num->Clone();
@@ -223,9 +218,7 @@ public:
       else               hist->Rebin(n_rebin);
       hist->SetLineWidth(2);
       hist->Scale(1./DenValues_Scale[i]);
-
-      //==== FIXME ee : mm = 1 : 1
-      hist->Scale(2.);
+      hist->Scale(1./ChannelFrac);
       if(DoDebug) cout << "[SignalSystematics] hist->Integral() = " << hist->Integral() << endl;
 
       y_max = max( y_max, GetMaximum(hist));
@@ -320,6 +313,7 @@ public:
       else               hist->Rebin(n_rebin);
       hist->SetLineWidth(2);
       hist->Scale(1./DenValues_PDFError[i]);
+      //==== we will calculate diff, so 1./ChannelFrac later
 
       vector<double> values;
       for(int x=1; x<=hist->GetXaxis()->GetNbins(); x++){
@@ -339,18 +333,20 @@ public:
       double bin_central = PDFErrorSetToBinValues[0].at(y);
       double diff = 0;
 
+      if(DoDebug) cout << "bin "<< x << " : central = " << bin_central << endl;
+
       for(int j=0; j<=100; j++){
         double this_diff = PDFErrorSetToBinValues[j].at(y)-bin_central;
+        if(DoDebug) cout << "  PDFSet " << j << " : " << PDFErrorSetToBinValues[j].at(y) << " -> diff = " << this_diff << " -> curretn sum diff2 = " << diff << endl;
         diff += this_diff*this_diff;
       }
-      //cout << bin_central << "\t" << sqrt(diff) << endl;
-      hist_PDFError->SetBinContent(x, 2.*bin_central);
-      hist_PDFError->SetBinError(x, 2.*sqrt(diff));
+      hist_PDFError->SetBinContent(x, bin_central/ChannelFrac);
+      hist_PDFError->SetBinError(x, sqrt(diff)/ChannelFrac);
 
-      hist_PDFErrorUp->SetBinContent(x, 2.* (bin_central+sqrt(diff)) );
-      hist_PDFErrorDn->SetBinContent(x, 2.* max(0., (bin_central-sqrt(diff)) ) );
+      hist_PDFErrorUp->SetBinContent(x, (bin_central+sqrt(diff))/ChannelFrac );
+      hist_PDFErrorDn->SetBinContent(x, max(0., (bin_central-sqrt(diff))/ChannelFrac ) );
 
-      if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " <<hist_PDFError->GetBinContent(x) << endl;
+      if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " <<hist_PDFError->GetBinContent(x) << ", error = " << hist_PDFError->GetBinError(x) << endl;
 
 
     }
@@ -393,6 +389,7 @@ public:
       else               hist->Rebin(n_rebin);
       hist->SetLineWidth(2);
       hist->Scale(1./DenValues_AlphaS[i]);
+      hist->Scale(1./ChannelFrac);
 
       vector<double> values;
       for(int x=1; x<=hist->GetXaxis()->GetNbins(); x++){
@@ -410,12 +407,11 @@ public:
       //==== y : vector element index
 
       int y = x-1;
-      //==== already doubled
+
       double bin_central = hist_Central_Num->GetBinContent(x);
 
-      //==== not yet doubles
-      double alphaSUp = 2.*AlphaSToBinValues[0].at(y)-bin_central;
-      double alphaSDn = 2.*AlphaSToBinValues[1].at(y)-bin_central;
+      double alphaSUp = AlphaSToBinValues[0].at(y)-bin_central;
+      double alphaSDn = AlphaSToBinValues[1].at(y)-bin_central;
 
       double this_err = fabs( (alphaSUp-alphaSDn)/2. );
 
@@ -425,7 +421,7 @@ public:
       hist_AlphaSUp->SetBinContent(x, bin_central+this_err );
       hist_AlphaSDn->SetBinContent(x, max(0., bin_central-this_err) );
 
-      if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " << bin_central << "\t" << this_err << endl;
+      if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " << AlphaSToBinValues[0].at(y) << "\t" << AlphaSToBinValues[1].at(y) << " --> " << bin_central << "\t" << this_err << endl;
 
     }
 

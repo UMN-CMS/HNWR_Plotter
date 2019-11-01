@@ -1731,26 +1731,8 @@ vector<double> Plotter::GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_state
 
 TH1D *Plotter::Rebin(TH1D *hist){
 
-  if(histname[i_var]=="WRCand_Mass" && !( histname_suffix[i_cut].Contains("LowWRCR") ) ){
-
+  if(histname[i_var]=="WRCand_Mass"){
     hist = RebinWRMass(hist, histname_suffix[i_cut]);
-
-/*
-    int lastbin = hist->GetXaxis()->GetNbins();
-
-    vector<double> vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
-    if(histname_suffix[i_cut].Contains("Boosted")){
-       vec_bins = {0, 800, 1000, 1200, 1600, 2000, 8000};
-    };
-
-    const int n_bin = vec_bins.size()-1;
-    double ptArray[n_bin+1];
-    for(int zzz=0;zzz<vec_bins.size();zzz++){
-      ptArray[zzz] = vec_bins.at(zzz);
-    }
-    hist = (TH1D *)hist->Rebin(n_bin, hist->GetName(), ptArray);
-*/
-
   }
   else{
     hist->Rebin( n_rebin() );

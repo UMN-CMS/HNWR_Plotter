@@ -168,7 +168,7 @@ public:
     TH1D *hist_ratio_err = (TH1D *)hist_Obs->Clone();
     for(int i=1; i<=hist_ratio->GetXaxis()->GetNbins(); i++){
       //==== FIXME for zero? how?
-      if(hist_Pred->GetBinContent(i)!=0){
+      if(hist_Pred->GetBinContent(i)>0){
 
         //==== ratio point
         //==== BinContent = Data/Bkgd

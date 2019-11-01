@@ -240,26 +240,20 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
         else{
 
           if(var=="WRCand_Mass"){
-            vector<double> vec_bins;
 
             if(xxx>0){
-              if(it_SR==0) vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
-              else         vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
+              hist_EE = RebinWRMass(hist_EE, SR);
+              hist_MM = RebinWRMass(hist_MM, SR);
+              hist_EM = RebinWRMass(hist_EM, SR);
             }
+
             else{
-              if(it_SR==0) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 2000, 8000};
-              else         vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
+              hist_EE = RebinWRMass(hist_EE, SR+"Low");
+              hist_MM = RebinWRMass(hist_MM, SR+"Low");
+              hist_EM = RebinWRMass(hist_EM, SR+"Low");
             }
 
-
-            const int n_bin = vec_bins.size()-1;
-            double ptArray[n_bin+1];
-            for(int zzz=0;zzz<vec_bins.size();zzz++) ptArray[zzz] = vec_bins.at(zzz);
-            hist_EE = (TH1D *)hist_EE->Rebin(n_bin, hist_EE->GetName(), ptArray);
-            hist_MM = (TH1D *)hist_MM->Rebin(n_bin, hist_MM->GetName(), ptArray);
-            hist_EM = (TH1D *)hist_EM->Rebin(n_bin, hist_EM->GetName(), ptArray);
-
-          }
+          }          
 
         }
 
@@ -473,10 +467,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
         double x_min = -9999;
         double x_max = 9999;
 
-        if(var=="WRCand_Mass"){
-          n_rebin = 100;
-        }
-
         //==== Subtract non-TT
         for(unsigned int it_asym=0; it_asym<asym_samples.size(); it_asym++){
           TFile *file_asym = new TFile(base_filepath+"/"+filename_prefix+asym_samples.at(it_asym)+".root");
@@ -516,8 +506,20 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             if(hist_TTLJ_EE) hist_Obs_EE->Add(hist_TTLJ_EE);
 
             //==== rebin
-            hist_Pred_EE->Rebin(n_rebin);
-            hist_Obs_EE->Rebin(n_rebin);
+            if(var=="WRCand_Mass"){
+              if(xxx>0){
+                hist_Pred_EE = RebinWRMass(hist_Pred_EE,SR);
+                hist_Obs_EE = RebinWRMass(hist_Obs_EE,SR);
+              }
+              else{
+                hist_Pred_EE = RebinWRMass(hist_Pred_EE,SR+"Low");
+                hist_Obs_EE = RebinWRMass(hist_Obs_EE,SR+"Low");
+              }
+            }
+            else{
+              hist_Pred_EE->Rebin(n_rebin);
+              hist_Obs_EE->Rebin(n_rebin);
+            }
 
             //==== Draw
 
@@ -534,7 +536,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             gSystem->mkdir(this_outputdir,kTRUE);
 
             m_EE.Draw();
-            m_EE.Save(this_outputdir+SR+"_"+var+"_"+region_EE+"_"+sym_sample);
+            if(var=="WRCand_Mass") m_EE.Save(this_outputdir+SR+"_"+var+"_"+region_EE+"_"+sym_sample);
 
           }
         }
@@ -559,8 +561,20 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             if(hist_TTLJ_MM) hist_Obs_MM->Add(hist_TTLJ_MM);
 
             //==== rebin
-            hist_Pred_MM->Rebin(n_rebin);
-            hist_Obs_MM->Rebin(n_rebin);
+            if(var=="WRCand_Mass"){
+              if(xxx>0){
+                hist_Pred_MM = RebinWRMass(hist_Pred_MM,SR);
+                hist_Obs_MM = RebinWRMass(hist_Obs_MM,SR);
+              } 
+              else{
+                hist_Pred_MM = RebinWRMass(hist_Pred_MM,SR+"Low");
+                hist_Obs_MM = RebinWRMass(hist_Obs_MM,SR+"Low");
+              }
+            } 
+            else{
+              hist_Pred_MM->Rebin(n_rebin);
+              hist_Obs_MM->Rebin(n_rebin);
+            }
 
             //==== Draw
 
@@ -577,7 +591,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             gSystem->mkdir(this_outputdir,kTRUE);
 
             m_MM.Draw();
-            m_MM.Save(this_outputdir+SR+"_"+var+"_"+region_MM+"_"+sym_sample);
+            if(var=="WRCand_Mass") m_MM.Save(this_outputdir+SR+"_"+var+"_"+region_MM+"_"+sym_sample);
 
           }
 

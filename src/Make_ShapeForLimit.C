@@ -219,7 +219,7 @@ void Make_ShapeForLimit(int Year=2016){
           TString sample = samplelist.at(it_sample);
           TString filename = filename_prefix+sample+".root";
 
-          cout << "@@@@     sample = " << sample << endl;
+          //cout << "@@@@     sample = " << sample << endl;
 
           TFile *file_sample = new TFile(base_filepath+"/"+filename);
           TDirectory *dir_sample = (TDirectory *)file_sample->Get(dirname);
@@ -373,7 +373,18 @@ void Make_ShapeForLimit(int Year=2016){
 
                   SignalSystematics m;
                   m.file = file_sig;
-                  //m.filepath = temp_base_filepath+"/Signal/"+this_filename;
+                  //m.DoDebug = true;
+
+                  TH1D *hist_sig_SignalFlavour = (TH1D *)file_sig->Get("SignalFlavour");
+
+                  m.ChannelFrac = 1./hist_sig_SignalFlavour->GetEntries();
+                  if(channel=="EE") m.ChannelFrac *= hist_sig_SignalFlavour->GetBinContent(2);
+                  else if(channel=="MuMu") m.ChannelFrac *= hist_sig_SignalFlavour->GetBinContent(3);
+                  else{
+                    cout << "WTF?? channel = " << channel << endl;
+                    return;
+                  }
+
                   m.region = dirname;
                   m.UseCustomRebin = UseCustomRebin;
                   m.n_rebin = n_rebin;

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export CATANVERSION="Run2Legacy_v3__Default"
+
 export PLOTTER_WORKING_DIR=`pwd`
 
 if [[ $HOSTNAME == "jskim-OptiPlex-9020" ]]; then
@@ -52,8 +54,6 @@ export PYTHONPATH=$PYTHONPATH:$PLOTTER_WORKING_DIR/include/
 
 export SCRIPT_DIR=$PLOTTER_WORKING_DIR/script/
 export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$PLOTTER_WORKING_DIR/include/:$PLOTTER_WORKING_DIR/src/
-
-export CATANVERSION="Run2Legacy_v3__Default"
 
 alias lqout='cd '$PLOT_PATH
 alias webout='cd '$WWW_PLOT_PATH

@@ -10,7 +10,6 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==============
   
   TString WORKING_DIR = getenv("PLOTTER_WORKING_DIR");
-  TString catversion = getenv("CATVERSION");
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 

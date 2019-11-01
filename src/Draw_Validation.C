@@ -13,7 +13,6 @@ void Draw_Validation(int XXX=0){
   //==============
   
   TString WORKING_DIR = getenv("PLOTTER_WORKING_DIR");
-  TString catversion = getenv("CATVERSION");
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 

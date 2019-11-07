@@ -479,6 +479,13 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
           hist_EMu->Add(hist_asym,-1.);
           file_asym->Close();
         }
+        //==== Save hist_EMu
+        if(var=="WRCand_Mass" && sym_sample=="TTLX_powheg"){
+          TFile *file_EMuDataSubtracted = new TFile(base_plotpath+"/EMuDataSubtracted_"+region_EM+".root", "RECREATE");
+          file_EMuDataSubtracted->cd();
+          hist_EMu->Write();
+          file_EMuDataSubtracted->Close();
+        }
 
         if(it_SR==0 || it_SR==1){
 

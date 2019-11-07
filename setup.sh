@@ -61,3 +61,7 @@ alias makehtml='make_html_master --To=HNWR_13TeV'
 alias makehtml2='make_html_master --To=HNWR_13TeV --From=*/'
 
 mkdir -p $FILE_PATH/$CATANVERSION
+
+CurrentGitBranch=`git branch | grep \* | cut -d ' ' -f2`
+source bin/BashColorSets.sh
+printf "@@@@ Current HNWR_Plotter branch : "${BGreen}$CurrentGitBranch${Color_Off}"\n"

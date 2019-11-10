@@ -8,7 +8,7 @@ void Make_ShapeForLimit(int Year=2016){
   bool UseCustomRebin = true;
 
   TString ShapeVarName = "WRCand_Mass";
-  int n_rebin = 20;
+  int n_rebin = 40;
 
   double signal_scale = 0.001; // r value in fb
   signal_scale *= 0.1; // r value will be multiplied by 1/0.1 = 10

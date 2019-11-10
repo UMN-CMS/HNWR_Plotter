@@ -1731,7 +1731,7 @@ vector<double> Plotter::GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_state
 
 TH1D *Plotter::Rebin(TH1D *hist){
 
-  if(histname[i_var]=="WRCand_Mass"){
+  if(histname[i_var]=="WRCand_Mass" && !histname_suffix[i_cut].Contains("LowWR")){
     hist = RebinWRMass(hist, histname_suffix[i_cut]);
   }
   else{

@@ -18,6 +18,8 @@ TString FitResultToString(TH1D *hist){
 
 void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
+  bool UseHistRatio = false;
+
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
   TString WhichRegion = "SR";
@@ -193,6 +195,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
     TFile *file = new TFile(base_filepath+"/"+filename_prefix+sym_sample+".root");
 
     vector< vector<double> > ratios_for_each_SR, ratioerrs_for_each_SR;
+    vector< vector<TH1D *> > ratiohist_for_each_SR;
 
     for(int it_SR=0; it_SR<3; it_SR++){
 
@@ -372,6 +375,9 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
           ratios_for_each_SR.push_back( ratios );
           ratioerrs_for_each_SR.push_back( ratioerrs );
 
+          vector<TH1D *> ratiohists = { hist_EE, hist_MM };
+          ratiohist_for_each_SR.push_back( ratiohists );
+
           //==== TODO For syst
 
         } // END IF fit variable
@@ -421,6 +427,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
       if(it_SR==2) SR = "Boosted_muFatJet";
 
       vector<double> ratios = ratios_for_each_SR.at(it_SR);
+      vector<TH1D *> ratiohists = ratiohist_for_each_SR.at(it_SR);
 
       if(!PrintLatexOnly){
         cout << "@@@@ Making " << SR << " plots.." << endl;
@@ -496,7 +503,18 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
           //==== 1) EE
 
           TH1D *hist_Pred_EE = (TH1D *)hist_EMu->Clone();
-          hist_Pred_EE->Scale(ratios.at(0));
+
+          if(UseHistRatio){
+            for(int i_Pred=1; i_Pred<=hist_Pred_EE->GetXaxis()->GetNbins(); i_Pred++){
+              double x = hist_Pred_EE->GetBinCenter(i_Pred);
+              int this_RatioBin = ratiohists.at(0)->FindBin(x);
+              hist_Pred_EE->SetBinContent(i_Pred, hist_Pred_EE->GetBinContent(i_Pred) * ratiohists.at(0)->GetBinContent(this_RatioBin) );
+            }
+          }
+          else{
+            hist_Pred_EE->Scale(ratios.at(0));
+          }
+
           hist_Pred_EE->SetName(var+"_"+region_EE);
           outfile->cd();
           outfile->cd(region_EE);
@@ -552,7 +570,18 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
           //==== 2) MM
 
           TH1D *hist_Pred_MM = (TH1D *)hist_EMu->Clone();
-          hist_Pred_MM->Scale(ratios.at(1));
+
+          if(UseHistRatio){
+            for(int i_Pred=1; i_Pred<=hist_Pred_MM->GetXaxis()->GetNbins(); i_Pred++){
+              double x = hist_Pred_MM->GetBinCenter(i_Pred);
+              int this_RatioBin = ratiohists.at(1)->FindBin(x);
+              hist_Pred_MM->SetBinContent(i_Pred, hist_Pred_MM->GetBinContent(i_Pred) * ratiohists.at(1)->GetBinContent(this_RatioBin) );
+            }
+          }
+          else{
+            hist_Pred_MM->Scale(ratios.at(1));
+          }
+
           hist_Pred_MM->SetName(var+"_"+region_MM);
           outfile->cd(region_MM);
           hist_Pred_MM->Write();

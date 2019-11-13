@@ -96,6 +96,58 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
 
   func_dijet_DY.fitTo(rooDataHist_DY, Range(FitRange_l_DY,FitRange_r_DY),Save());
   func_dijet_DY.plotOn(xframe_DY,LineColor(kGreen), Range(800,8000));
+  //==== create error band
+  TGraph *gr_dijet_DY_fromFit = (TGraph *)xframe_DY->getObject(2)->Clone("gr_dijet_DY_fromFit");
+  int const nBinsDY = gr_dijet_DY_fromFit->GetN();
+  double* xs_gr_dijet_DY_fromFit = gr_dijet_DY_fromFit->GetX();
+  TGraph *gr_dijet_DY_1sig = new TGraph(2*nBinsDY);
+  double temp_x0_prev_DY = 0.;
+  for(int i=0; i<nBinsDY; i++){
+    double x0,y0, x1,y1;
+    gr_dijet_DY_fromFit->GetPoint(i,x0,y0);
+    //cout << i << "\t" << x0 << "\t" << y0 << endl;
+    RooAbsReal* nlim = new RooRealVar("nlim","y0",y0,-1000,1000);
+
+    double xerr_low = gr_dijet_DY_fromFit->GetErrorXlow(i);
+    double xerr_high = gr_dijet_DY_fromFit->GetErrorXhigh(i);
+
+    double lowedge = x0 - 200/2.;
+    double upedge = x0 + 200/2.;
+    if(i==0){
+      lowedge = x0;
+      upedge = xs_gr_dijet_DY_fromFit[i+1];
+    }
+    else if(i==nBinsDY-1){
+      lowedge = xs_gr_dijet_DY_fromFit[i-1];
+      upedge = 8000;
+    }
+    else{
+      lowedge = xs_gr_dijet_DY_fromFit[i-1];
+      upedge = xs_gr_dijet_DY_fromFit[i+1];
+    }
+
+    mwr_DY.setRange("errRange",lowedge,upedge);
+    RooExtendPdf* epdf = new RooExtendPdf("epdf","extpdf",func_dijet_DY, *nlim,"errRange");
+
+    RooAbsReal* nll = epdf->createNLL(rooDataHist_DY,NumCPU(2));
+    RooMinimizer* minim = new RooMinimizer(*nll);
+    minim->setMinimizerType("Minuit2");
+    minim->setStrategy(2);
+    minim->setPrintLevel(-1);
+    minim->migrad();
+    minim->hesse();
+    RooFitResult* result = minim->lastMinuitFit();
+    double errm = nlim->getPropagatedError(*result);
+
+    //cout << "FITERRORDEBUG\t" << i << "\t" << x0 << "\t" << lowedge << "\t" << upedge << "\t" << y0 << "\t" << errm << endl;
+
+    gr_dijet_DY_1sig->SetPoint(i,x0,(y0-errm));
+    gr_dijet_DY_1sig->SetPoint(2*nBinsDY-i-1,x0,y0+errm);
+  }
+  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+  gr_dijet_DY_1sig->SetFillColor(kGreen+1);
+  gr_dijet_DY_1sig->SetLineColor(kGreen+1);
+  gr_dijet_DY_1sig->SetMarkerColor(kGreen+1);
 
   //==== create histogram with this
   TH1D *hist_DY_fitted = new TH1D("hist_DY_fitted", "", 8000/200, 0, 8000);
@@ -123,13 +175,17 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
   func_trijet_DY.fitTo(rooDataHist_DY, Range(FitRange_l_DY,FitRange_r_DY));
   func_trijet_DY.plotOn(xframe_DY,LineColor(kViolet), Range(800,8000));
 
+  c_DY->cd();
   xframe_DY->Draw();
   xframe_DY->SetMinimum(1E-6);
   xframe_DY->SetMaximum(500);
 
   hist_DY_fitted->Draw("histsame");
+  gr_dijet_DY_1sig->Draw("csame");
+  xframe_DY->Draw("same");
 
   c_DY->SetLogy();
+
   c_DY->SaveAs(base_plotpath+"/"+region+"_"+channel+"_DY.pdf");
   c_DY->SaveAs(base_plotpath+"/"+region+"_"+channel+"_DY.png");
   c_DY->Close();

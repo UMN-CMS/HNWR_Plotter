@@ -144,7 +144,6 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
     gr_dijet_DY_1sig->SetPoint(i,x0,(y0-errm));
     gr_dijet_DY_1sig->SetPoint(2*nBinsDY-i-1,x0,y0+errm);
   }
-  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
   gr_dijet_DY_1sig->SetFillColor(kGreen+1);
   gr_dijet_DY_1sig->SetLineColor(kGreen+1);
   gr_dijet_DY_1sig->SetMarkerColor(kGreen+1);
@@ -246,6 +245,58 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
 
   func_dijet_tt.fitTo(rooDataHist_tt, Range(FitRange_l_tt,FitRange_r_tt));
   func_dijet_tt.plotOn(xframe_tt,LineColor(kGreen), Range(800,8000));
+  //==== create error band
+  TGraph *gr_dijet_tt_fromFit = (TGraph *)xframe_tt->getObject(2)->Clone("gr_dijet_tt_fromFit");
+  int const nBinstt = gr_dijet_tt_fromFit->GetN();
+  double* xs_gr_dijet_tt_fromFit = gr_dijet_tt_fromFit->GetX();
+  TGraph *gr_dijet_tt_1sig = new TGraph(2*nBinstt);
+  double temp_x0_prev_tt = 0.;
+  for(int i=0; i<nBinstt; i++){
+    double x0,y0, x1,y1;
+    gr_dijet_tt_fromFit->GetPoint(i,x0,y0);
+    //cout << i << "\t" << x0 << "\t" << y0 << endl;
+    RooAbsReal* nlim = new RooRealVar("nlim","y0",y0,-1000,1000);
+
+    double xerr_low = gr_dijet_tt_fromFit->GetErrorXlow(i);
+    double xerr_high = gr_dijet_tt_fromFit->GetErrorXhigh(i);
+
+    double lowedge = x0 - 200/2.;
+    double upedge = x0 + 200/2.;
+    if(i==0){
+      lowedge = x0;
+      upedge = xs_gr_dijet_tt_fromFit[i+1];
+    }
+    else if(i==nBinstt-1){
+      lowedge = xs_gr_dijet_tt_fromFit[i-1];
+      upedge = 8000;
+    }
+    else{
+      lowedge = xs_gr_dijet_tt_fromFit[i-1];
+      upedge = xs_gr_dijet_tt_fromFit[i+1];
+    }
+
+    mwr_tt.setRange("errRange",lowedge,upedge);
+    RooExtendPdf* epdf = new RooExtendPdf("epdf","extpdf",func_dijet_tt, *nlim,"errRange");
+
+    RooAbsReal* nll = epdf->createNLL(rooDataHist_tt,NumCPU(2));
+    RooMinimizer* minim = new RooMinimizer(*nll);
+    minim->setMinimizerType("Minuit2");
+    minim->setStrategy(2);
+    minim->setPrintLevel(-1);
+    minim->migrad();
+    minim->hesse();
+    RooFitResult* result = minim->lastMinuitFit();
+    double errm = nlim->getPropagatedError(*result);
+
+    //cout << "FITERRORDEBUG\t" << i << "\t" << x0 << "\t" << lowedge << "\t" << upedge << "\t" << y0 << "\t" << errm << endl;
+
+    gr_dijet_tt_1sig->SetPoint(i,x0,(y0-errm));
+    gr_dijet_tt_1sig->SetPoint(2*nBinstt-i-1,x0,y0+errm);
+  }
+  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+  gr_dijet_tt_1sig->SetFillColor(kGreen+1);
+  gr_dijet_tt_1sig->SetLineColor(kGreen+1);
+  gr_dijet_tt_1sig->SetMarkerColor(kGreen+1);
 
   //==== create histogram with this
   TH1D *hist_tt_fitted = new TH1D("hist_tt_fitted", "", 8000/200, 0, 8000);
@@ -277,6 +328,8 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
   xframe_tt->SetMaximum(500);
 
   hist_tt_fitted->Draw("histsame");
+  gr_dijet_tt_1sig->Draw("csame");
+  xframe_tt->Draw("same");
 
   c_tt->SetLogy();
   c_tt->SaveAs(base_plotpath+"/"+region+"_"+channel+"_tt.pdf");

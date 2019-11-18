@@ -4,7 +4,7 @@ using namespace RooFit;
 #include "FitHistogram.C"
 
 //==== TODO add year here
-void FitBackgrounds(int i_region=0, int i_channel=0){
+void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
 
   setTDRStyle();
   SumW2Error(kTRUE);
@@ -25,20 +25,21 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
   if(i_channel==0) channel = "Electron";
   else if(i_channel==1) channel = "Muon";
 
-/*
   TString sample = "DYJets_MG_HT_Reweighted";
   TString samplealias = "DY";
-*/
+  if(i_sample==1){
+    sample = "EMuMethod_TTLX_powheg";
+    samplealias = "tt";
+  }
 
-  TString sample = "EMuMethod_TTLX_powheg";
-  TString samplealias = "tt";
 
   TString dirname = "HNWR_Single"+channel+"_"+region;
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/FitBackgrounds/"+Year+"/";
   gSystem->mkdir(base_plotpath, kTRUE);
 
-
+  //==== output
+  TFile *outfile = new TFile(base_plotpath+"/shapes_"+region+"_"+channel+"_"+sample+".root","RECREATE");
 
   int NRebin = 20;
   double FitRange_l = 800;
@@ -49,80 +50,340 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
   double integral = hist->Integral();
   hist->Rebin(NRebin);
 
+
+  //==== TEST remove negative
+  for(int i=1; i<=hist->GetXaxis()->GetNbins(); i++){
+    double this_y = hist->GetBinContent(i);
+    double this_e = hist->GetBinError(i);
+    if(this_y<0){
+      //hist->SetBinContent(i,0);
+      //hist->SetBinError(i,0);
+    }
+    if(this_y-this_e<0){
+      //hist->SetBinContent(i,0);
+      //hist->SetBinError(i,0);
+    }
+  }
+
+
   TCanvas *c = new TCanvas("c","",600,600);
   canvas_margin(c);
   c->cd();
 
+  //==== axis
+  TH1D *hist_dummy = new TH1D("hist_dummy", "", 8000, 0., 8000.);
+  hist_axis(hist_dummy);
+  hist_dummy->GetXaxis()->SetRangeUser(800.,8000.);
+  if(i_region==0) hist_dummy->GetXaxis()->SetTitle("m(lljj) (GeV)");
+  else hist_dummy->GetXaxis()->SetTitle("m(lJ) (GeV)");
+  hist_dummy->GetYaxis()->SetRangeUser(1E-6,500.);
+  hist_dummy->GetYaxis()->SetTitle("Events / "+TString::Itoa(10*NRebin,10)+" GeV");
+  hist_dummy->Draw("axis");
+
+  TLegend *lg = new TLegend(0.6, 0.65, 0.9, 0.9);
+
   RooPlot* xframe;
-  for(int i_fit=0; i_fit<2; i_fit++){
+  vector<TString> FitFunctions;
+  TString FitCentral = "Dijet_4Par";
+  for(int i_fit=0; i_fit<9; i_fit++){
 
     FitHistogram m;
     m.doDebug = false;
     m.SetHist(hist);
     m.SetFitVar("mwr", 800., 8000.);
+    m.ClearPArameters();
     m.InitFitVar();
 
     Color_t color;
+    Style_t style;
     if(i_fit==0){
 
-      m.Name = "DijetFunction";
-      m.functionalForm = "func_dijet_p0 * pow(1-mwr/13000.,func_dijet_p1)/ pow(mwr/13000., func_dijet_p2+func_dijet_p3*TMath::Log10(mwr/13000.))";
+      m.Name = "Dijet_4Par";
+      m.functionalForm = "func_Dijet_4Par_p0 * pow(1-mwr/13000.,func_Dijet_4Par_p1)/ pow(mwr/13000., func_Dijet_4Par_p2+func_Dijet_4Par_p3*log(mwr/13000.))";
       m.fitRangeMin = 800.;
       m.fitRangeMax = 8000.;
 
       m.InitParameters(4);
 
-      m.parNames.at(0) = "func_dijet_p0";
+      m.parNames.at(0) = "func_Dijet_4Par_p0";
       m.parRangeMins.at(0) = 1E-5;
       m.parRangeMaxs.at(0) = 20.;
 
-      m.parNames.at(1) = "func_dijet_p1";
+      m.parNames.at(1) = "func_Dijet_4Par_p1";
       m.parRangeMins.at(1) = 0.;
       m.parRangeMaxs.at(1) = 20.;
 
-      m.parNames.at(2) = "func_dijet_p2";
+      m.parNames.at(2) = "func_Dijet_4Par_p2";
       m.parRangeMins.at(2) = 0.;
       m.parRangeMaxs.at(2) = 20.;
 
-      m.parNames.at(3) = "func_dijet_p3";
+      m.parNames.at(3) = "func_Dijet_4Par_p3";
       m.parRangeMins.at(3) = 0.;
       m.parRangeMaxs.at(3) = 20.;
 
-      color = kGreen;
+      color = kBlack;
+      style = 1;
 
     }
     else if(i_fit==1){
 
-      m.Name = "TrijetFunction";
-      m.functionalForm = "func_trijet_p0 * (func_trijet_p2 * mwr/13000. - 1) / pow(mwr/13000., func_trijet_p1 + func_trijet_p3 * TMath::Log10(mwr/13000.) + func_trijet_p4 * TMath::Log10(mwr/13000.) * TMath::Log10(mwr/13000.))";
+      m.Name = "Dijet_5Par";
+      m.functionalForm = "func_Dijet_5Par_p0 * pow(1-mwr/13000.,func_Dijet_5Par_p1)/ pow(mwr/13000., func_Dijet_5Par_p2+func_Dijet_5Par_p3*log(mwr/13000.)+func_Dijet_5Par_p4*log(mwr/13000.)*log(mwr/13000.))";
       m.fitRangeMin = 800.;
       m.fitRangeMax = 8000.;
 
       m.InitParameters(5);
 
-      m.parNames.at(0) = "func_trijet_p0";
+      m.parNames.at(0) = "func_Dijet_5Par_p0";
       m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 100.;
+      m.parRangeMaxs.at(0) = 20.;
 
-      m.parNames.at(1) = "func_trijet_p1";
+      m.parNames.at(1) = "func_Dijet_5Par_p1";
       m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 50.;
+      m.parRangeMaxs.at(1) = 20.;
 
-      m.parNames.at(2) = "func_trijet_p2";
-      m.parRangeMins.at(2) = 13000./800., 100.;
-      m.parRangeMaxs.at(2) = 100.;
+      m.parNames.at(2) = "func_Dijet_5Par_p2";
+      m.parRangeMins.at(2) = 0.;
+      m.parRangeMaxs.at(2) = 20.;
 
-      m.parNames.at(3) = "func_trijet_p3";
+      m.parNames.at(3) = "func_Dijet_5Par_p3";
       m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 50.;
+      m.parRangeMaxs.at(3) = 20.;
 
-      m.parNames.at(4) = "func_trijet_p4";
+      m.parNames.at(4) = "func_Dijet_5Par_p4";
       m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 50.;
+      m.parRangeMaxs.at(4) = 20.;
 
-      color = kViolet;
+      color = kBlack;
+      style = i_fit+1;
 
     }
+    else if(i_fit==2){
+
+      m.Name = "Dijet_6Par";
+      m.functionalForm = "func_Dijet_6Par_p0 * pow(1-mwr/13000.,func_Dijet_6Par_p1)/ pow(mwr/13000., func_Dijet_6Par_p2+func_Dijet_6Par_p3*log(mwr/13000.)+func_Dijet_6Par_p4*log(mwr/13000.)*log(mwr/13000.)+func_Dijet_6Par_p5*log(mwr/13000.)*log(mwr/13000.)*log(mwr/13000.))";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(6);
+
+      m.parNames.at(0) = "func_Dijet_6Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_Dijet_6Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 20.;
+
+      m.parNames.at(2) = "func_Dijet_6Par_p2";
+      m.parRangeMins.at(2) = 0.;
+      m.parRangeMaxs.at(2) = 20.;
+
+      m.parNames.at(3) = "func_Dijet_6Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 20.;
+
+      m.parNames.at(4) = "func_Dijet_6Par_p4";
+      m.parRangeMins.at(4) = 0.;
+      m.parRangeMaxs.at(4) = 20.;
+
+      m.parNames.at(5) = "func_Dijet_6Par_p5";
+      m.parRangeMins.at(5) = 0.;
+      m.parRangeMaxs.at(5) = 20.;
+
+      color = kBlack;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==3){
+
+      m.Name = "PolyExt_5Par";
+      m.functionalForm = "func_PolyExt_5Par_p0 * pow(1-mwr/13000.,func_PolyExt_5Par_p1) * (1+func_PolyExt_5Par_p4*(mwr/13000.)) / pow(mwr/13000., func_PolyExt_5Par_p2+func_PolyExt_5Par_p3*log(mwr/13000.))";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(5);
+
+      m.parNames.at(0) = "func_PolyExt_5Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_PolyExt_5Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 20.;
+
+      m.parNames.at(2) = "func_PolyExt_5Par_p2";
+      m.parRangeMins.at(2) = 0.;
+      m.parRangeMaxs.at(2) = 20.;
+
+      m.parNames.at(3) = "func_PolyExt_5Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 20.;
+
+      m.parNames.at(4) = "func_PolyExt_5Par_p4";
+      m.parRangeMins.at(4) = 0.;
+      m.parRangeMaxs.at(4) = 20.;
+
+      color = kRed;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==4){
+
+      m.Name = "PolyExt_6Par";
+      m.functionalForm = "func_PolyExt_6Par_p0 * pow(1-mwr/13000.,func_PolyExt_6Par_p1) * (1+func_PolyExt_6Par_p4*(mwr/13000.)+func_PolyExt_6Par_p5*(mwr/13000.)*(mwr/13000.)) / pow(mwr/13000., func_PolyExt_6Par_p2+func_PolyExt_6Par_p3*log(mwr/13000.))";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(6);
+
+      m.parNames.at(0) = "func_PolyExt_6Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_PolyExt_6Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 20.;
+
+      m.parNames.at(2) = "func_PolyExt_6Par_p2";
+      m.parRangeMins.at(2) = 0.;
+      m.parRangeMaxs.at(2) = 20.;
+
+      m.parNames.at(3) = "func_PolyExt_6Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 20.;
+
+      m.parNames.at(4) = "func_PolyExt_6Par_p4";
+      m.parRangeMins.at(4) = 0.;
+      m.parRangeMaxs.at(4) = 20.;
+
+      m.parNames.at(5) = "func_PolyExt_6Par_p5";
+      m.parRangeMins.at(5) = 0.;
+      m.parRangeMaxs.at(5) = 20.;
+
+      color = kRed;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==5){
+
+      m.Name = "ATLAS_4Par";
+      m.functionalForm = "func_ATLAS_4Par_p0 * exp(-func_ATLAS_4Par_p2*(mwr/13000.)-func_ATLAS_4Par_p3*(mwr/13000.)*(mwr/13000.)) / pow((mwr/13000.),func_ATLAS_4Par_p1)";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(4);
+
+      m.parNames.at(0) = "func_ATLAS_4Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_ATLAS_4Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 20.;
+
+      m.parNames.at(2) = "func_ATLAS_4Par_p2";
+      m.parRangeMins.at(2) = 0.;
+      m.parRangeMaxs.at(2) = 20.;
+
+      m.parNames.at(3) = "func_ATLAS_4Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 20.;
+
+      color = kBlue;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==6){
+
+      m.Name = "ATLAS_5Par";
+      m.functionalForm = "func_ATLAS_5Par_p0 * exp(-func_ATLAS_5Par_p2*(mwr/13000.)-func_ATLAS_5Par_p3*(mwr/13000.)*(mwr/13000.)-func_ATLAS_5Par_p4*(mwr/13000.)*(mwr/13000.)*(mwr/13000.)) / pow((mwr/13000.),func_ATLAS_5Par_p1)";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(5);
+
+      m.parNames.at(0) = "func_ATLAS_5Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_ATLAS_5Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 20.;
+
+      m.parNames.at(2) = "func_ATLAS_5Par_p2";
+      m.parRangeMins.at(2) = 0.;
+      m.parRangeMaxs.at(2) = 20.;
+
+      m.parNames.at(3) = "func_ATLAS_5Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 20.;
+
+      m.parNames.at(4) = "func_ATLAS_5Par_p4";
+      m.parRangeMins.at(4) = 0.;
+      m.parRangeMaxs.at(4) = 20.;
+
+      color = kBlue;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==7){
+
+      m.Name = "ModExpo_3Par";
+      m.functionalForm = "func_ModExpo_3Par_p0 * exp(func_ModExpo_3Par_p1*pow(mwr/13000.,func_ModExpo_3Par_p2)";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(3);
+
+      m.parNames.at(0) = "func_ModExpo_3Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_ModExpo_3Par_p1";
+      m.parRangeMins.at(1) = -4.;
+      m.parRangeMaxs.at(1) = 40.;
+
+      m.parNames.at(2) = "func_ModExpo_3Par_p2";
+      m.parRangeMins.at(2) = -5.;
+      m.parRangeMaxs.at(2) = 4.;
+
+      color = kGreen+1;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==8){
+
+      m.Name = "ModExpo_4Par";
+      m.functionalForm = "func_ModExpo_4Par_p0 * exp(func_ModExpo_4Par_p1*pow(mwr/13000.,func_ModExpo_4Par_p2) + func_ModExpo_4Par_p1*pow(1-mwr/13000.,func_ModExpo_4Par_p3))";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(4);
+
+      m.parNames.at(0) = "func_ModExpo_4Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 20.;
+
+      m.parNames.at(1) = "func_ModExpo_4Par_p1";
+      m.parRangeMins.at(1) = -4.;
+      m.parRangeMaxs.at(1) = 40.;
+
+      m.parNames.at(2) = "func_ModExpo_4Par_p2";
+      m.parRangeMins.at(2) = -5.;
+      m.parRangeMaxs.at(2) = 4.;
+
+      m.parNames.at(3) = "func_ModExpo_4Par_p3";
+      m.parRangeMins.at(3) = -5.;
+      m.parRangeMaxs.at(3) = 4.;
+
+      color = kGreen+1;
+      style = i_fit+1;
+
+    }
+
+
+    FitFunctions.push_back( m.Name );
 
     m.Fit();
 
@@ -131,22 +392,270 @@ void FitBackgrounds(int i_region=0, int i_channel=0){
 
     if(i_fit==0){
       xframe = rrv->frame();
-      rdh->plotOn(xframe);
+      rdh->plotOn(xframe, MarkerColor(0), LineColor(0), Name("FirstDataHist") );
     }
 
-    m.getPdf()->plotOn(xframe,LineColor(color), Range(800,8000));
+    if(m.Name==FitCentral){
+      //m.getPdf()->plotOn( xframe, FillColor(kBlack+1), Range(800,8000), VisualizeError(*(m.getFitResult())), Name(m.Name+"_Linearfiterrorband") );
+      m.getPdf()->plotOn( xframe, FillColor(0), LineColor(0), Range(800,8000), VisualizeError(*(m.getFitResult()),1,kFALSE ), DrawOption("L"), Name(m.Name+"_Samplingfiterrorband") );
+    }
 
+    m.getPdf()->plotOn(xframe,LineColor(color), LineStyle(style), LineWidth(2), Range(800,8000), Name(m.Name+"_Central") );
+    //m.getPdf()->plotOn(xframe,LineColor(0), Range(800,8000), Name(m.Name+"_Central") );
+
+    lg->AddEntry(xframe->findObject(m.Name+"_Central") , m.Name, "l");
+
+    //rdh->plotOn(xframe, Name(m.Name+"_DataOverlay") );
 
   }
 
-  xframe->Draw();
-  xframe->SetMinimum(1E-6);
-  xframe->SetMaximum(500);
+  xframe->Draw("same");
 
   c->SetLogy();
+
+  cout << "@@@@ Printing items" << endl;
+  for(int i=0; i<xframe->numItems(); i++){
+    cout << xframe->getObject(i)->GetName() << "\t" << xframe->getObject(i)->GetUniqueID() << "\t" << endl;
+  }
+
+  //==== Get data
+  TGraph *gr_data = (TGraph *)xframe->findObject("FirstDataHist");
+  gr_data->SetMarkerColor(kBlack);
+  gr_data->SetLineColor(kBlack);
+
+  //==== Retrieve fit paramter error band as TGraph
+  TGraph *gr_central = (TGraph *)xframe->findObject(FitCentral+"_Central");
+  RooCurve* fiterrorband = xframe->getCurve(FitCentral+"_Samplingfiterrorband");
+  TGraph *gr_fitup = new TGraph(gr_central->GetN());
+  TGraph *gr_fitdn = new TGraph(gr_central->GetN());
+  for(int i =0; i<fiterrorband->GetN(); i++){
+    if(i<gr_central->GetN())
+      gr_fitup->SetPoint(i, fiterrorband->GetX()[i], fiterrorband->GetY()[i]);
+    else
+      gr_fitdn->SetPoint(i, fiterrorband->GetX()[i], fiterrorband->GetY()[i]);
+  }
+  //==== Now integrate them to make histograms
+  TH1D *hist_central = new TH1D("hist_central", "", (8000-800)/(10*NRebin), 800., 8000.);
+  TH1D *hist_fitup = new TH1D("hist_fitup", "", (8000-800)/(10*NRebin), 800., 8000.);
+  TH1D *hist_fitdn = new TH1D("hist_fitdn", "", (8000-800)/(10*NRebin), 800., 8000.);
+  for(int i=1; i<=hist_central->GetXaxis()->GetNbins(); i++){
+    double x_l = hist_central->GetXaxis()->GetBinLowEdge(i);
+    double x_r = hist_central->GetXaxis()->GetBinUpEdge(i);
+
+    double this_bincontent_central = IntegrateGraph(gr_central, x_l, x_r, 1000)/(10*NRebin);
+    double this_bincontent_fitup   = IntegrateGraph(gr_fitup, x_l, x_r, 1000)/(10*NRebin);
+    double this_bincontent_fitdn   = IntegrateGraph(gr_fitdn, x_l, x_r, 1000)/(10*NRebin);
+
+    hist_central->SetBinContent(i, this_bincontent_central);
+    hist_central->SetBinError(i, sqrt(this_bincontent_central));
+    hist_fitup->SetBinContent(i, this_bincontent_fitup);
+    hist_fitdn->SetBinContent(i, this_bincontent_fitdn);
+
+  }
+
+  hist_central->SetLineColor(kBlack);
+  hist_fitup->SetLineColor(kGray);
+  hist_fitdn->SetLineColor(kGray);
+
+  //==== fit variations as systematics
+  //==== Create a graph together to plot error bands
+  //==== GetN should be 4+2*GetNbins
+  const int NSystGraph = 4+2*hist_central->GetXaxis()->GetNbins();
+  TGraph *systerrorband = new TGraph(NSystGraph);
+  //==== And of couse, syst up/down histogram by integration
+  TH1D *hist_systup = (TH1D *)hist_central->Clone(); hist_systup->SetName("hist_systup");
+  TH1D *hist_systdn = (TH1D *)hist_central->Clone(); hist_systdn->SetName("hist_systdn");
+  //==== save graphs and create the band later
+  vector<TGraph *> FitVarsGraphs;
+  //==== get edge values (i.e., at 800 and 8000);
+  double systup_800(gr_central->GetY()[0]), systdn_800(gr_central->GetY()[0]);
+  double systup_8000(gr_central->GetY()[gr_central->GetN()-1]), systdn_8000(gr_central->GetY()[gr_central->GetN()-1]);
+  for(int i=0; i<FitFunctions.size(); i++){
+
+    TString fitFunc = FitFunctions.at(i);
+    if(fitFunc==FitCentral) continue;
+
+    cout << "@@@@ Fit variation with : " << fitFunc << endl;
+    TGraph *this_gr = (TGraph *)xframe->findObject(fitFunc+"_Central");
+    FitVarsGraphs.push_back( this_gr );
+
+    //==== edge values
+    systup_800  = max( systup_800 ,  this_gr->GetY()[0] );
+    systdn_800  = min( systdn_800 ,  this_gr->GetY()[0] );
+    systup_8000 = max( systup_8000 , this_gr->GetY()[this_gr->GetN()-1] );
+    systdn_8000 = min( systdn_8000 , this_gr->GetY()[this_gr->GetN()-1] );
+
+  }
+  systerrorband->SetPoint(0, 800., systup_800);
+  systerrorband->SetPoint(NSystGraph-1, 800., systdn_800);
+  systerrorband->SetPoint(hist_central->GetXaxis()->GetNbins()+1, 8000., systup_8000);
+  systerrorband->SetPoint(hist_central->GetXaxis()->GetNbins()+2, 8000., systdn_8000);
+  //=== Okay, now for each bin, loop over graphs and set values
+  for(int j=1; j<=hist_central->GetXaxis()->GetNbins(); j++){
+    double x_l = hist_central->GetXaxis()->GetBinLowEdge(j);
+    double x_r = hist_central->GetXaxis()->GetBinUpEdge(j);
+    double x_c = hist_central->GetXaxis()->GetBinCenter(j);
+
+    double this_central = hist_central->GetBinContent(j);
+    double this_max(this_central), this_min(this_central);
+    for(int ig=0; ig<FitVarsGraphs.size(); ig++){
+      double this_fitvar = IntegrateGraph(FitVarsGraphs.at(ig), x_l, x_r, 1000)/(10*NRebin);
+      this_max = max( this_max, this_fitvar );
+      this_min = min( this_min, this_fitvar );
+    }
+
+    hist_systup->SetBinContent(j, this_max);
+    hist_systdn->SetBinContent(j, this_min);
+
+    systerrorband->SetPoint(j, x_c, this_max);
+    systerrorband->SetPoint(NSystGraph-1-j, x_c, this_min);
+
+  }
+
+  hist_systup->SetLineColor(kRed);
+  hist_systdn->SetLineColor(kRed);
+
+  systerrorband->SetLineColor(0);
+  systerrorband->SetFillColorAlpha(kRed, 0.4);
+  systerrorband->Draw("fsame");
+  fiterrorband->SetFillColorAlpha(kBlue, 0.4);
+  fiterrorband->Draw("fsame");
+
+  for(int ig=0; ig<FitVarsGraphs.size(); ig++){
+    FitVarsGraphs.at(ig)->Draw("lsame");
+  }
+
+  gr_central->SetLineColor(kBlack);
+  gr_central->Draw("lsame");
+  gr_data->Draw("psame");
+
+  //==== To save are the histograms
+  outfile->cd();
+  hist_central->Write();
+  hist_fitup->Write();
+  hist_fitdn->Write();
+  hist_systup->Write();
+  hist_systdn->Write();
+  outfile->Close();
+
+  //hist_systup->Draw("histsame");
+  //hist_systdn->Draw("histsame");
+
+  lg->AddEntry(fiterrorband, "Fit parameter error", "f");
+  lg->AddEntry(systerrorband, "Fit variation", "f");
+  lg->Draw();
 
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".pdf");
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".png");
   c->Close();
 
+
 }
+
+
+//===== saving trijet functions..
+/*
+    else if(i_fit==1){
+
+      m.Name = "TrijetFunction_Alt5Par";
+      m.functionalForm = "func_Trijet_Alt5Par_p0 * (func_Trijet_Alt5Par_p2 * mwr/13000. - 1) / pow(mwr/13000., func_Trijet_Alt5Par_p1 + func_Trijet_Alt5Par_p3 * log(mwr/13000.) + func_Trijet_Alt5Par_p4 * log(mwr/13000.) * log(mwr/13000.))";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(5);
+
+      m.parNames.at(0) = "func_Trijet_Alt5Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 100.;
+
+      m.parNames.at(1) = "func_Trijet_Alt5Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 50.;
+
+      m.parNames.at(2) = "func_Trijet_Alt5Par_p2";
+      m.parRangeMins.at(2) = 13000./800., 100.;
+      m.parRangeMaxs.at(2) = 100.;
+
+      m.parNames.at(3) = "func_Trijet_Alt5Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 50.;
+
+      m.parNames.at(4) = "func_Trijet_Alt5Par_p4";
+      m.parRangeMins.at(4) = 0.;
+      m.parRangeMaxs.at(4) = 50.;
+
+      color = kBlack;
+      style = 2;
+
+    }
+    else if(i_fit==2){
+
+      m.Name = "TrijetFunction_Alt4Par";
+      m.functionalForm = "func_Trijet_Alt4Par_p0 * (func_Trijet_Alt4Par_p2 * mwr/13000. - 1) / pow(mwr/13000., func_Trijet_Alt4Par_p1 + func_Trijet_Alt4Par_p3 * log(mwr/13000.))";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(4);
+
+      m.parNames.at(0) = "func_Trijet_Alt4Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 100.;
+
+      m.parNames.at(1) = "func_Trijet_Alt4Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 50.;
+
+      m.parNames.at(2) = "func_Trijet_Alt4Par_p2";
+      m.parRangeMins.at(2) = 13000./800., 100.;
+      m.parRangeMaxs.at(2) = 100.;
+
+      m.parNames.at(3) = "func_Trijet_Alt4Par_p3";
+      m.parRangeMins.at(3) = 0.;
+      m.parRangeMaxs.at(3) = 50.;
+
+      color = kBlack;
+      style = 3;
+
+    }
+    else if(i_fit==3){
+
+      m.Name = "TrijetFunction_Alt3Par";
+      m.functionalForm = "func_Trijet_Alt3Par_p0 * (func_Trijet_Alt3Par_p2 * mwr/13000. - 1) / pow(mwr/13000., func_Trijet_Alt3Par_p1)";
+      m.fitRangeMin = 800.;
+      m.fitRangeMax = 8000.;
+
+      m.InitParameters(3);
+
+      m.parNames.at(0) = "func_Trijet_Alt3Par_p0";
+      m.parRangeMins.at(0) = 1E-5;
+      m.parRangeMaxs.at(0) = 100.;
+
+      m.parNames.at(1) = "func_Trijet_Alt3Par_p1";
+      m.parRangeMins.at(1) = 0.;
+      m.parRangeMaxs.at(1) = 50.;
+
+      m.parNames.at(2) = "func_Trijet_Alt3Par_p2";
+      m.parRangeMins.at(2) = 13000./800., 100.;
+      m.parRangeMaxs.at(2) = 100.;
+
+      color = kBlack;
+      style = 4;
+
+    }
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+

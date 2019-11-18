@@ -512,7 +512,6 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
       exit(EXIT_FAILURE);
     }
   }
-
   else{
     cout << "(mylib.h) [GetDYNormSF()] : Wrong DataYear; " << DataYear << endl;
     exit(EXIT_FAILURE);
@@ -635,8 +634,8 @@ TH1D *RebinWRMass(TH1D *hist, TString region){
     if(region.Contains("Boosted")) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
   }
   else{
-    vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000};
-    if(region.Contains("Boosted")) vec_bins = {0, 800, 1000, 1200, 1400, 1600, 1800, 8000};
+    vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
+    if(region.Contains("Boosted")) vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
   }
 
   const int n_bin = vec_bins.size()-1;
@@ -647,6 +646,26 @@ TH1D *RebinWRMass(TH1D *hist, TString region){
   hist = (TH1D *)hist->Rebin(n_bin, hist->GetName(), ptArray);
 
   return hist;
+
+}
+
+double IntegrateGraph(TGraph *gr, double xmin, double xmax, int ndx){
+
+  double out(0.);
+
+  double dx = (xmax-xmin)/ndx;
+
+  for(int i=0; i<ndx; i++){
+
+    double this_x = xmin + double(i) * dx + 0.5*dx; //==== use center
+    double this_y = gr->Eval(this_x,0,0); //==== spline method is more accurate when I tested with x^2 or sin(x) function
+
+    //cout << "[IntegrateGraph] this_x = " << this_x << " -> Eval = " << this_y << endl;
+
+    out += this_y * dx;
+
+  }
+  return out;
 
 }
 

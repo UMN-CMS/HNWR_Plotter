@@ -43,6 +43,11 @@ public:
       parRangeMaxs.push_back(1);
     }
   }
+  inline void ClearPArameters(){
+    parNames.clear();
+    parRangeMins.clear();
+    parRangeMaxs.clear();
+  }
   vector<TString> parNames;
   vector<double> parRangeMins, parRangeMaxs;
 

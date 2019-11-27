@@ -1,7 +1,7 @@
 using namespace RooFit;
 #include "mylib.h"
 #include "canvas_margin.h"
-#include "FitHistogram.C"
+#include "PDFGenerator.C"
 
 //==== TODO add year here
 void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
@@ -50,7 +50,6 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
   double integral = hist->Integral();
   hist->Rebin(NRebin);
 
-
   //==== TEST remove negative
   for(int i=1; i<=hist->GetXaxis()->GetNbins(); i++){
     double this_y = hist->GetBinContent(i);
@@ -64,7 +63,6 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
       //hist->SetBinError(i,0);
     }
   }
-
 
   TCanvas *c = new TCanvas("c","",600,600);
   canvas_margin(c);
@@ -84,7 +82,11 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
 
   RooPlot* xframe;
   vector<TString> FitFunctions;
+  vector<RooFitResult *> FitResults;
   TString FitCentral = "Dijet_4Par";
+
+  PDFGenerator pg;
+
   for(int i_fit=0; i_fit<9; i_fit++){
 
     FitHistogram m;
@@ -94,32 +96,14 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     m.ClearPArameters();
     m.InitFitVar();
 
+    m.fitRangeMin = 800.;
+    m.fitRangeMax = 8000.;
+
     Color_t color;
     Style_t style;
     if(i_fit==0){
 
-      m.Name = "Dijet_4Par";
-      m.functionalForm = "func_Dijet_4Par_p0 * pow(1-mwr/13000.,func_Dijet_4Par_p1)/ pow(mwr/13000., func_Dijet_4Par_p2+func_Dijet_4Par_p3*log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(4);
-
-      m.parNames.at(0) = "func_Dijet_4Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_Dijet_4Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_Dijet_4Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_Dijet_4Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
+      pg.Run(m, "Dijet", 4, "mwr");
 
       color = kBlack;
       style = 1;
@@ -127,32 +111,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     }
     else if(i_fit==1){
 
-      m.Name = "Dijet_5Par";
-      m.functionalForm = "func_Dijet_5Par_p0 * pow(1-mwr/13000.,func_Dijet_5Par_p1)/ pow(mwr/13000., func_Dijet_5Par_p2+func_Dijet_5Par_p3*log(mwr/13000.)+func_Dijet_5Par_p4*log(mwr/13000.)*log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(5);
-
-      m.parNames.at(0) = "func_Dijet_5Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_Dijet_5Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_Dijet_5Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_Dijet_5Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
-
-      m.parNames.at(4) = "func_Dijet_5Par_p4";
-      m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 20.;
+      pg.Run(m, "Dijet", 5, "mwr");
 
       color = kBlack;
       style = i_fit+1;
@@ -160,36 +119,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     }
     else if(i_fit==2){
 
-      m.Name = "Dijet_6Par";
-      m.functionalForm = "func_Dijet_6Par_p0 * pow(1-mwr/13000.,func_Dijet_6Par_p1)/ pow(mwr/13000., func_Dijet_6Par_p2+func_Dijet_6Par_p3*log(mwr/13000.)+func_Dijet_6Par_p4*log(mwr/13000.)*log(mwr/13000.)+func_Dijet_6Par_p5*log(mwr/13000.)*log(mwr/13000.)*log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(6);
-
-      m.parNames.at(0) = "func_Dijet_6Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_Dijet_6Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_Dijet_6Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_Dijet_6Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
-
-      m.parNames.at(4) = "func_Dijet_6Par_p4";
-      m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 20.;
-
-      m.parNames.at(5) = "func_Dijet_6Par_p5";
-      m.parRangeMins.at(5) = 0.;
-      m.parRangeMaxs.at(5) = 20.;
+      pg.Run(m, "Dijet", 6, "mwr");
 
       color = kBlack;
       style = i_fit+1;
@@ -197,32 +127,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     }
     else if(i_fit==3){
 
-      m.Name = "PolyExt_5Par";
-      m.functionalForm = "func_PolyExt_5Par_p0 * pow(1-mwr/13000.,func_PolyExt_5Par_p1) * (1+func_PolyExt_5Par_p4*(mwr/13000.)) / pow(mwr/13000., func_PolyExt_5Par_p2+func_PolyExt_5Par_p3*log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(5);
-
-      m.parNames.at(0) = "func_PolyExt_5Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_PolyExt_5Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_PolyExt_5Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_PolyExt_5Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
-
-      m.parNames.at(4) = "func_PolyExt_5Par_p4";
-      m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 20.;
+      pg.Run(m, "PolyExt", 5, "mwr");
 
       color = kRed;
       style = i_fit+1;
@@ -230,36 +135,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     }
     else if(i_fit==4){
 
-      m.Name = "PolyExt_6Par";
-      m.functionalForm = "func_PolyExt_6Par_p0 * pow(1-mwr/13000.,func_PolyExt_6Par_p1) * (1+func_PolyExt_6Par_p4*(mwr/13000.)+func_PolyExt_6Par_p5*(mwr/13000.)*(mwr/13000.)) / pow(mwr/13000., func_PolyExt_6Par_p2+func_PolyExt_6Par_p3*log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(6);
-
-      m.parNames.at(0) = "func_PolyExt_6Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_PolyExt_6Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_PolyExt_6Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_PolyExt_6Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
-
-      m.parNames.at(4) = "func_PolyExt_6Par_p4";
-      m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 20.;
-
-      m.parNames.at(5) = "func_PolyExt_6Par_p5";
-      m.parRangeMins.at(5) = 0.;
-      m.parRangeMaxs.at(5) = 20.;
+      pg.Run(m, "PolyExt", 6, "mwr");
 
       color = kRed;
       style = i_fit+1;
@@ -267,117 +143,49 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     }
     else if(i_fit==5){
 
-      m.Name = "ATLAS_4Par";
-      m.functionalForm = "func_ATLAS_4Par_p0 * exp(-func_ATLAS_4Par_p2*(mwr/13000.)-func_ATLAS_4Par_p3*(mwr/13000.)*(mwr/13000.)) / pow((mwr/13000.),func_ATLAS_4Par_p1)";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
+      pg.Run(m, "PolyExt", 7, "mwr");
 
-      m.InitParameters(4);
-
-      m.parNames.at(0) = "func_ATLAS_4Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_ATLAS_4Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_ATLAS_4Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_ATLAS_4Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
-
-      color = kBlue;
+      color = kRed;
       style = i_fit+1;
 
     }
     else if(i_fit==6){
 
-      m.Name = "ATLAS_5Par";
-      m.functionalForm = "func_ATLAS_5Par_p0 * exp(-func_ATLAS_5Par_p2*(mwr/13000.)-func_ATLAS_5Par_p3*(mwr/13000.)*(mwr/13000.)-func_ATLAS_5Par_p4*(mwr/13000.)*(mwr/13000.)*(mwr/13000.)) / pow((mwr/13000.),func_ATLAS_5Par_p1)";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
+      pg.Run(m, "PolyExt", 8, "mwr");
 
-      m.InitParameters(5);
-
-      m.parNames.at(0) = "func_ATLAS_5Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_ATLAS_5Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 20.;
-
-      m.parNames.at(2) = "func_ATLAS_5Par_p2";
-      m.parRangeMins.at(2) = 0.;
-      m.parRangeMaxs.at(2) = 20.;
-
-      m.parNames.at(3) = "func_ATLAS_5Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 20.;
-
-      m.parNames.at(4) = "func_ATLAS_5Par_p4";
-      m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 20.;
-
-      color = kBlue;
+      color = kRed;
       style = i_fit+1;
 
     }
     else if(i_fit==7){
 
-      m.Name = "ModExpo_3Par";
-      m.functionalForm = "func_ModExpo_3Par_p0 * exp(func_ModExpo_3Par_p1*pow(mwr/13000.,func_ModExpo_3Par_p2)";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
+      pg.Run(m, "ATLAS", 4, "mwr");
 
-      m.InitParameters(3);
-
-      m.parNames.at(0) = "func_ModExpo_3Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
-
-      m.parNames.at(1) = "func_ModExpo_3Par_p1";
-      m.parRangeMins.at(1) = -4.;
-      m.parRangeMaxs.at(1) = 40.;
-
-      m.parNames.at(2) = "func_ModExpo_3Par_p2";
-      m.parRangeMins.at(2) = -5.;
-      m.parRangeMaxs.at(2) = 4.;
-
-      color = kGreen+1;
+      color = kBlue;
       style = i_fit+1;
 
     }
     else if(i_fit==8){
 
-      m.Name = "ModExpo_4Par";
-      m.functionalForm = "func_ModExpo_4Par_p0 * exp(func_ModExpo_4Par_p1*pow(mwr/13000.,func_ModExpo_4Par_p2) + func_ModExpo_4Par_p1*pow(1-mwr/13000.,func_ModExpo_4Par_p3))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
+      pg.Run(m, "ATLAS", 5, "mwr");
 
-      m.InitParameters(4);
+      color = kBlue;
+      style = i_fit+1;
 
-      m.parNames.at(0) = "func_ModExpo_4Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 20.;
+    }
+    else if(i_fit==9){
 
-      m.parNames.at(1) = "func_ModExpo_4Par_p1";
-      m.parRangeMins.at(1) = -4.;
-      m.parRangeMaxs.at(1) = 40.;
+      pg.Run(m, "ATLAS", 6, "mwr");
 
-      m.parNames.at(2) = "func_ModExpo_4Par_p2";
-      m.parRangeMins.at(2) = -5.;
-      m.parRangeMaxs.at(2) = 4.;
+      color = kBlue;
+      style = i_fit+1;
 
-      m.parNames.at(3) = "func_ModExpo_4Par_p3";
-      m.parRangeMins.at(3) = -5.;
-      m.parRangeMaxs.at(3) = 4.;
+    }
+    else if(i_fit==10){
 
-      color = kGreen+1;
+      pg.Run(m, "ATLAS", 7, "mwr");
+
+      color = kBlue;
       style = i_fit+1;
 
     }
@@ -386,6 +194,8 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     FitFunctions.push_back( m.Name );
 
     m.Fit();
+
+    FitResults.push_back( m.getFitResult() );
 
     RooRealVar* rrv = m.getFitVar();
     RooDataHist* rdh = m.getDataHist();
@@ -417,6 +227,21 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
   for(int i=0; i<xframe->numItems(); i++){
     cout << xframe->getObject(i)->GetName() << "\t" << xframe->getObject(i)->GetUniqueID() << "\t" << endl;
   }
+
+  //==== Fit Summary
+  cout << "@@@@ Fit results @@@@" << endl;
+  for(int i=0; i<FitFunctions.size(); i++){
+    TString fitFunc = FitFunctions.at(i);
+    cout << "@@@@   Func = " << fitFunc << endl;
+    RooFitResult* FitResult = FitResults.at(i);
+    const RooArgList& arglist = FitResult->floatParsFinal();
+    const int NFitPar = arglist.getSize();
+    for(int j=0; j<NFitPar; j++){
+      RooAbsArg *raa = arglist.at(j);
+      raa->Print();
+    }
+  }
+
 
   //==== Get data
   TGraph *gr_data = (TGraph *)xframe->findObject("FirstDataHist");
@@ -548,6 +373,119 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".pdf");
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".png");
   c->Close();
+
+  //====================================================
+  //==== Fisher test
+  //====================================================
+
+  TFile *testfile = new TFile("testfile.root", "RECREATE");
+  testfile->cd();
+  //==== 1) hist starts from 0 GeV. Change it here
+  TH1D *hist_Data_800GeV = new TH1D("hist_Data_800GeV", "", (8000-800)/(10*NRebin), 800., 8000.);
+  int dummy_counter = 1;
+  for(int j=1; j<=hist->GetXaxis()->GetNbins(); j++){
+    double x_l = hist->GetXaxis()->GetBinLowEdge(j);
+    double x_r = hist->GetXaxis()->GetBinUpEdge(j);
+    double x_c = hist->GetXaxis()->GetBinCenter(j);
+    if(x_l>=800){
+      hist_Data_800GeV->SetBinContent( dummy_counter, hist->GetBinContent(j) );
+      dummy_counter++;
+    }
+  }
+  hist->Write();
+  hist_Data_800GeV->Write();
+  testfile->Close();
+
+  vector<TGraph *> AllFitGraphs;
+  vector<double> RSSs;
+  for(int i=0; i<FitFunctions.size(); i++){
+    TString fitFunc = FitFunctions.at(i);
+    TGraph *this_gr = (TGraph *)xframe->findObject(fitFunc+"_Central");
+    AllFitGraphs.push_back( this_gr );
+    RSSs.push_back( 0. );
+  }
+
+  int N_DATA(0);
+  for(int j=1; j<=hist_Data_800GeV->GetXaxis()->GetNbins(); j++){
+
+    double x_l = hist_Data_800GeV->GetXaxis()->GetBinLowEdge(j);
+    double x_r = hist_Data_800GeV->GetXaxis()->GetBinUpEdge(j);
+
+    double this_datapoint = hist_Data_800GeV->GetBinContent(j);
+    if(this_datapoint==0){
+      cout << "[F-Test] skipping ["<<x_l<<","<<x_r<<"] : zero bin content" << endl; 
+    }
+    N_DATA++;
+
+    for(int ig=0; ig<AllFitGraphs.size(); ig++){
+      double this_fitvar = IntegrateGraph(AllFitGraphs.at(ig), x_l, x_r, 1000)/(10*NRebin);
+      RSSs.at(ig) += (this_datapoint - this_fitvar) *  (this_datapoint - this_fitvar);
+    }
+
+  }
+
+  for(int ig=0; ig<AllFitGraphs.size(); ig++){
+    TString grname = AllFitGraphs.at(ig)->GetName();
+    cout << grname << " : " << RSSs.at(ig) << endl;
+  }
+
+  vector< pair<TString, TString> > FTestPairNames;
+  vector< pair<double, double> > FTestPairNPars;
+
+  FTestPairNames.push_back( make_pair( "Dijet_4Par_Central", "Dijet_5Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 4, 5 ) );
+
+  FTestPairNames.push_back( make_pair( "Dijet_5Par_Central", "Dijet_6Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 5, 6 ) );
+
+  FTestPairNames.push_back( make_pair( "PolyExt_5Par_Central", "PolyExt_6Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 5, 6 ) );
+
+  FTestPairNames.push_back( make_pair( "PolyExt_6Par_Central", "PolyExt_7Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 6, 7 ) );
+
+  FTestPairNames.push_back( make_pair( "PolyExt_7Par_Central", "PolyExt_8Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 7, 8 ) );
+
+  FTestPairNames.push_back( make_pair( "ATLAS_4Par_Central", "ATLAS_5Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 4, 5 ) );
+
+  FTestPairNames.push_back( make_pair( "ATLAS_5Par_Central", "ATLAS_6Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 5, 6 ) );
+
+  FTestPairNames.push_back( make_pair( "ATLAS_6Par_Central", "ATLAS_7Par_Central" ) );
+  FTestPairNPars.push_back(  make_pair( 6, 7 ) );
+
+  for(int i_pair=0; i_pair<FTestPairNames.size(); i_pair++){
+
+    TString Func_1 = FTestPairNames.at(i_pair).first;
+    TString Func_2 = FTestPairNames.at(i_pair).second;
+    int NPar_1 = FTestPairNPars.at(i_pair).first;
+    int NPar_2 = FTestPairNPars.at(i_pair).second;
+
+
+    cout << "[F-Test] testing Func_1 = " << Func_1 << ", Func_2 = " << Func_2 << endl;
+
+    double RSS_1(-1), RSS_2(-1);
+
+    for(int ig=0; ig<AllFitGraphs.size(); ig++){
+      TString grname = AllFitGraphs.at(ig)->GetName();
+      if(grname==Func_1) RSS_1 = RSSs.at(ig);
+      if(grname==Func_2) RSS_2 = RSSs.at(ig);
+    }
+
+    double F21 = ( (RSS_1-RSS_2)/(NPar_2-NPar_1) ) / ( (RSS_2)/(N_DATA-NPar_2) );
+    double CL21 = 1. - ROOT::Math::fdistribution_cdf(F21, NPar_2-NPar_1, N_DATA-NPar_2 );
+
+    cout << "[F-Test]   N_DATA = " << N_DATA << endl;
+    cout << "[F-Test]   RSS_1 = " << RSS_1 << endl;
+    cout << "[F-Test]   RSS_2 = " << RSS_2 << endl;
+    cout << "[F-Test]   NPar_1 = " << NPar_1 << endl;
+    cout << "[F-Test]   NPar_2 = " << NPar_2 << endl;
+    cout << "[F-Test]   --> F21 = " << F21 << endl;
+    cout << "[F-Test]   --> CL21 = " << CL21 << endl;
+
+  }
 
 
 }

@@ -27,6 +27,14 @@ public:
   double *DenValues_PDFError;
   double *DenValues_AlphaS;
 
+  double xsec_ScaleSyst;
+  double xsec_PDFErrorSyst;
+  double xsec_AlphaSSyst;
+
+  //==== PDF Error set
+
+  int NPDFErrorSet;
+
   //==== histograms
 
   TH1D *hist_Central_Num;
@@ -46,7 +54,7 @@ public:
   bool DrawPlot;
   TString outputdir;
 
-  SignalSystematics(){
+  SignalSystematics(int nPDFerrset=101){
 
     file = NULL;
 
@@ -57,9 +65,16 @@ public:
 
     hist_Central = NULL;
 
+    NPDFErrorSet = nPDFerrset;
+    const int cnPDFerrset = nPDFerrset;
+
     DenValues_Scale = new double[7];
-    DenValues_PDFError = new double[101];
+    DenValues_PDFError = new double[cnPDFerrset];
     DenValues_AlphaS = new double[2];
+
+    xsec_ScaleSyst = -999;
+    xsec_PDFErrorSyst = -999;
+    xsec_AlphaSSyst = -999;
 
     hist_Central_Num = NULL;
     hist_ScaleUp = NULL;
@@ -125,6 +140,8 @@ public:
 
       DenValues_Scale[i] = hist->GetBinContent(1);
 
+      xsec_ScaleSyst = max( xsec_ScaleSyst, fabs( DenValues_Scale[i] - DenValues_Scale[0] ) );
+
     }
 
     //==== PDF error
@@ -133,20 +150,22 @@ public:
     TH1D *hist_DenValue_PDFErrorNominal = (TH1D *)dir_Den->Get("PDFWeights_Error_0_XsecSyst_Den");
     double DenValue_PDFErrorNominal = hist_DenValue_PDFErrorNominal->GetBinContent(1);
     double tmp = 0.;
-    for(int i=0; i<=100; i++){
+    for(int i=0; i<NPDFErrorSet; i++){
       // PDFWeights_Error_20
 
       TString histname = "PDFWeights_Error_"+TString::Itoa(i,10);
       TH1D *hist = (TH1D *)dir_Den->Get(histname+"_XsecSyst_Den");
-      if(DoDebug) cout << "[SignalSystematics] i = " << i << " : " << hist->GetBinContent(1) << endl;
 
       double this_diff = hist->GetBinContent(1)-DenValue_PDFErrorNominal;
       tmp += this_diff*this_diff;
 
       DenValues_PDFError[i] = hist->GetBinContent(1);
 
+      if(DoDebug) cout << "[SignalSystematics] i = " << i << " : " << hist->GetBinContent(1) << "\ttmp2 = " << tmp << endl;
+
     }
     if(DoDebug) cout << "[SignalSystematics] ----> Error = " << sqrt(tmp) << endl;
+    xsec_PDFErrorSyst = sqrt(tmp);
 
     //==== AlphaS
 
@@ -305,7 +324,7 @@ public:
     hist_PDFErrorDn = (TH1D *)hist_Central_Num->Clone();
     map< int, vector<double> > PDFErrorSetToBinValues;
 
-    for(int i=0; i<=100; i++){
+    for(int i=0; i<NPDFErrorSet; i++){
 
       TString histname = "PDFWeights_Error_"+TString::Itoa(i,10)+"_XsecSyst_Num_"+region;
       TH1D *hist = (TH1D *)dir_Num->Get(histname);
@@ -335,7 +354,7 @@ public:
 
       if(DoDebug) cout << "bin "<< x << " : central = " << bin_central << endl;
 
-      for(int j=0; j<=100; j++){
+      for(int j=0; j<NPDFErrorSet; j++){
         double this_diff = PDFErrorSetToBinValues[j].at(y)-bin_central;
         if(DoDebug) cout << "  PDFSet " << j << " : " << PDFErrorSetToBinValues[j].at(y) << " -> diff = " << this_diff << " -> curretn sum diff2 = " << diff << endl;
         diff += this_diff*this_diff;

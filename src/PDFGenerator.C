@@ -17,7 +17,7 @@ void PDFGenerator::Run(FitHistogram& m, TString FuncType, int NPar, TString xnam
 
     TString prefix = "Dijet_"+TString::Itoa(NPar,10)+"Par";
 
-		m.Name = prefix;
+    m.Name = prefix;
 
     TString formula_num = ParNameHelper(prefix,0)+" * pow(1-"+XVarHelper(xname)+", "+ParNameHelper(prefix,1)+")";
     TString formula_den = "pow("+XVarHelper(xname)+","+ParNameHelper(prefix,2);
@@ -27,16 +27,24 @@ void PDFGenerator::Run(FitHistogram& m, TString FuncType, int NPar, TString xnam
     formula_den += ")";
     m.functionalForm = "( "+formula_num+" )/( "+formula_den+" )";
 
-		m.InitParameters(NPar);
+    m.InitParameters(NPar);
     for(int i=0; i<NPar; i++){
       m.parNames.at(i) = m.Name+"_p"+TString::Itoa(i,10);
       if(i==0){
-        m.parRangeMins.at(i) = 1E-5;
-        m.parRangeMaxs.at(i) = 50.;
+        m.parRangeMins.at(i) = 1;
+        m.parRangeMaxs.at(i) = 1;
+      }
+      else if(i==1){
+        m.parRangeMins.at(i) = 0;
+        m.parRangeMaxs.at(i) = 30.;
+      }
+      else if(i==2){
+        m.parRangeMins.at(i) = 0;
+        m.parRangeMaxs.at(i) = 5;
       }
       else{
-        m.parRangeMins.at(i) = -50.;
-        m.parRangeMaxs.at(i) = 50.;
+        m.parRangeMins.at(i) = 0;
+        m.parRangeMaxs.at(i) = 1E-5;
       }
     }
 
@@ -66,12 +74,12 @@ void PDFGenerator::Run(FitHistogram& m, TString FuncType, int NPar, TString xnam
     for(int i=0; i<NPar; i++){
       m.parNames.at(i) = m.Name+"_p"+TString::Itoa(i,10);
       if(i==0){
-        m.parRangeMins.at(i) = 1E-5;
-        m.parRangeMaxs.at(i) = 20.;
+        m.parRangeMins.at(i) = 1;
+        m.parRangeMaxs.at(i) = 1;
       }
       else{
         m.parRangeMins.at(i) = 0.;
-        m.parRangeMaxs.at(i) = 20.;
+        m.parRangeMaxs.at(i) = 100.;
       }
     }
 
@@ -101,20 +109,40 @@ void PDFGenerator::Run(FitHistogram& m, TString FuncType, int NPar, TString xnam
     for(int i=0; i<NPar; i++){
       m.parNames.at(i) = m.Name+"_p"+TString::Itoa(i,10);
       if(i==0){
-        m.parRangeMins.at(i) = 1E-5;
-        m.parRangeMaxs.at(i) = 20.;
+        m.parRangeMins.at(i) = 1;
+        m.parRangeMaxs.at(i) = 1;
       }
       else{
-        m.parRangeMins.at(i) = 0.;
+        m.parRangeMins.at(i) = -20;
         m.parRangeMaxs.at(i) = 20.;
       }
     }
 
   }
 
-  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
-  cout << "Formula = " << m.functionalForm << endl;
-  cout << "Pars : " << endl;
+  else if(FuncType=="ModifiedExpo"){
+
+    if(NPar<2){
+      NPar=2;
+    }
+
+    TString prefix = "ModifiedExpo_"+TString::Itoa(NPar,10)+"Par";
+
+    m.Name = prefix;
+
+    TString insideExpo = ParNameHelper(prefix,1)+" * pow("+XVarHelper(xname)+","+ParNameHelper(prefix,2)+")";
+
+    for(int i=3; i<NPar; i++){
+      insideExpo += "+"+ParNameHelper(prefix,i)+" * pow(log("+XVarHelper(xname)+"), "+TString::Itoa(i-2,10)+")";
+    }
+    
+
+
+  }
+
+  //cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+  //cout << "Formula = " << m.functionalForm << endl;
+  //cout << "Pars : " << endl;
   for(int i=0; i<NPar; i++){
     cout << m.parNames.at(i) << endl;
   }

@@ -41,15 +41,26 @@ public:
       parNames.push_back("");
       parRangeMins.push_back(0);
       parRangeMaxs.push_back(1);
+      parInit.push_back(0.5);
+      parInitSet.push_back(false);
     }
   }
-  inline void ClearPArameters(){
+  inline void ClearParameters(){
     parNames.clear();
     parRangeMins.clear();
     parRangeMaxs.clear();
+    parInit.clear();
+    parInitSet.clear();
+  }
+  void SetParameter(int i, double val, double min, double max){
+    parInitSet.at(i) = true;
+    parInit.at(i) = val;
+    parRangeMins.at(i) = min;
+    parRangeMaxs.at(i) = max;
   }
   vector<TString> parNames;
-  vector<double> parRangeMins, parRangeMaxs;
+  vector<double> parRangeMins, parRangeMaxs, parInit;
+  vector<bool> parInitSet;
 
   void Fit();
 

@@ -29,7 +29,14 @@ void FitHistogram::Fit(){
       cout << "[FitHistogram::Fit()] i = " << i << endl;
       cout << "[FitHistogram::Fit()]   parNames.at(i) = " << parNames.at(i) << endl;
     }
-    rrvs[i] = new RooRealVar(parNames.at(i), parNames.at(i), parRangeMins.at(i), parRangeMaxs.at(i));;
+
+    double this_min = parRangeMins.at(i);
+    double this_max = parRangeMaxs.at(i);
+    double this_init = parInitSet.at(i) ? parInit.at(i) : (this_min+this_max)/2.;
+
+    rrvs[i] = new RooRealVar(parNames.at(i), parNames.at(i), this_init, this_min, this_max);
+    if(i==0) rrvs[i]->setConstant(kTRUE);
+    else if(i==NPar-1) rrvs[i]->setVal(0.);
     argset.add(*(rrvs[i]));
     if(doDebug){
       cout << "[FitHistogram::Fit()]   argset : "; argset.Print();

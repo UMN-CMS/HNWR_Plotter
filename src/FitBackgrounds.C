@@ -3,8 +3,10 @@ using namespace RooFit;
 #include "canvas_margin.h"
 #include "PDFGenerator.C"
 
+void SetParameterFromText(FitHistogram& m, TString txtFileName);
+
 //==== TODO add year here
-void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
+void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool UpdateRange=false, int NIter=0){
 
   setTDRStyle();
   SumW2Error(kTRUE);
@@ -35,7 +37,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
 
   TString dirname = "HNWR_Single"+channel+"_"+region;
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/FitBackgrounds/"+Year+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/FitBackgrounds/"+Year+"/Iter_"+TString::Itoa(NIter,10)+"/";
   gSystem->mkdir(base_plotpath, kTRUE);
 
   //==== output
@@ -87,13 +89,13 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
 
   PDFGenerator pg;
 
-  for(int i_fit=0; i_fit<9; i_fit++){
+  for(int i_fit=0; i_fit<11; i_fit++){
 
     FitHistogram m;
     m.doDebug = false;
     m.SetHist(hist);
     m.SetFitVar("mwr", 800., 8000.);
-    m.ClearPArameters();
+    m.ClearParameters();
     m.InitFitVar();
 
     m.fitRangeMin = 800.;
@@ -120,6 +122,14 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     else if(i_fit==2){
 
       pg.Run(m, "Dijet", 6, "mwr");
+
+      color = kBlack;
+      style = i_fit+1;
+
+    }
+    else if(i_fit==3){
+
+      pg.Run(m, "Dijet", 7, "mwr");
 
       color = kBlack;
       style = i_fit+1;
@@ -190,7 +200,10 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
 
     }
 
-
+    if(UpdateRange){
+      TString txtFileName = WORKING_DIR+"/data/"+dataset+"/"+Year+"/FitParameters/"+region+"_"+channel+"_"+samplealias+"/"+m.Name+".txt";
+      SetParameterFromText(m, txtFileName);
+    }
     FitFunctions.push_back( m.Name );
 
     m.Fit();
@@ -229,7 +242,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
   }
 
   //==== Fit Summary
-  cout << "@@@@ Fit results @@@@" << endl;
+  cout << "@@@@ Fit results" << endl;
   for(int i=0; i<FitFunctions.size(); i++){
     TString fitFunc = FitFunctions.at(i);
     cout << "@@@@   Func = " << fitFunc << endl;
@@ -241,6 +254,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
       raa->Print();
     }
   }
+  cout << "@@@@ END Fit results" << endl;
 
 
   //==== Get data
@@ -417,9 +431,12 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
     }
     N_DATA++;
 
+    cout << "Bin index = " << j << endl;
+    cout << "  this_datapoint = " << this_datapoint << endl;
     for(int ig=0; ig<AllFitGraphs.size(); ig++){
       double this_fitvar = IntegrateGraph(AllFitGraphs.at(ig), x_l, x_r, 1000)/(10*NRebin);
       RSSs.at(ig) += (this_datapoint - this_fitvar) *  (this_datapoint - this_fitvar);
+      cout << "  " << AllFitGraphs.at(ig)->GetName() << "\t" << this_fitvar << "\t" << (this_datapoint - this_fitvar) << endl;
     }
 
   }
@@ -490,110 +507,21 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0){
 
 }
 
+void SetParameterFromText(FitHistogram& m, TString txtFileName){
 
-//===== saving trijet functions..
-/*
-    else if(i_fit==1){
+  string elline;
+  ifstream in(txtFileName);
+  while(getline(in,elline)){
+    std::istringstream is( elline );
+    int ParIndex;
+    double Init,Min,Max;
+    is >> ParIndex;
+    is >> Init;
+    is >> Min;
+    is >> Max;
 
-      m.Name = "TrijetFunction_Alt5Par";
-      m.functionalForm = "func_Trijet_Alt5Par_p0 * (func_Trijet_Alt5Par_p2 * mwr/13000. - 1) / pow(mwr/13000., func_Trijet_Alt5Par_p1 + func_Trijet_Alt5Par_p3 * log(mwr/13000.) + func_Trijet_Alt5Par_p4 * log(mwr/13000.) * log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
+    m.SetParameter(ParIndex, Init, Min, Max);
+  }
 
-      m.InitParameters(5);
-
-      m.parNames.at(0) = "func_Trijet_Alt5Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 100.;
-
-      m.parNames.at(1) = "func_Trijet_Alt5Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 50.;
-
-      m.parNames.at(2) = "func_Trijet_Alt5Par_p2";
-      m.parRangeMins.at(2) = 13000./800., 100.;
-      m.parRangeMaxs.at(2) = 100.;
-
-      m.parNames.at(3) = "func_Trijet_Alt5Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 50.;
-
-      m.parNames.at(4) = "func_Trijet_Alt5Par_p4";
-      m.parRangeMins.at(4) = 0.;
-      m.parRangeMaxs.at(4) = 50.;
-
-      color = kBlack;
-      style = 2;
-
-    }
-    else if(i_fit==2){
-
-      m.Name = "TrijetFunction_Alt4Par";
-      m.functionalForm = "func_Trijet_Alt4Par_p0 * (func_Trijet_Alt4Par_p2 * mwr/13000. - 1) / pow(mwr/13000., func_Trijet_Alt4Par_p1 + func_Trijet_Alt4Par_p3 * log(mwr/13000.))";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(4);
-
-      m.parNames.at(0) = "func_Trijet_Alt4Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 100.;
-
-      m.parNames.at(1) = "func_Trijet_Alt4Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 50.;
-
-      m.parNames.at(2) = "func_Trijet_Alt4Par_p2";
-      m.parRangeMins.at(2) = 13000./800., 100.;
-      m.parRangeMaxs.at(2) = 100.;
-
-      m.parNames.at(3) = "func_Trijet_Alt4Par_p3";
-      m.parRangeMins.at(3) = 0.;
-      m.parRangeMaxs.at(3) = 50.;
-
-      color = kBlack;
-      style = 3;
-
-    }
-    else if(i_fit==3){
-
-      m.Name = "TrijetFunction_Alt3Par";
-      m.functionalForm = "func_Trijet_Alt3Par_p0 * (func_Trijet_Alt3Par_p2 * mwr/13000. - 1) / pow(mwr/13000., func_Trijet_Alt3Par_p1)";
-      m.fitRangeMin = 800.;
-      m.fitRangeMax = 8000.;
-
-      m.InitParameters(3);
-
-      m.parNames.at(0) = "func_Trijet_Alt3Par_p0";
-      m.parRangeMins.at(0) = 1E-5;
-      m.parRangeMaxs.at(0) = 100.;
-
-      m.parNames.at(1) = "func_Trijet_Alt3Par_p1";
-      m.parRangeMins.at(1) = 0.;
-      m.parRangeMaxs.at(1) = 50.;
-
-      m.parNames.at(2) = "func_Trijet_Alt3Par_p2";
-      m.parRangeMins.at(2) = 13000./800., 100.;
-      m.parRangeMaxs.at(2) = 100.;
-
-      color = kBlack;
-      style = 4;
-
-    }
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
+}
 

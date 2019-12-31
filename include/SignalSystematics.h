@@ -13,6 +13,7 @@ public:
   int n_rebin;
   bool UseCustomRebin;
   bool DoDebug;
+  bool isReplica;
   TString region;
 
   double ChannelFrac;
@@ -61,6 +62,7 @@ public:
     n_rebin = 20;
     UseCustomRebin = true;
     DoDebug = false;
+    isReplica = false;
     region = "";
 
     hist_Central = NULL;
@@ -149,9 +151,22 @@ public:
     if(DoDebug) cout << "[SignalSystematics] @@@@ PDF Error" << endl;
     TH1D *hist_DenValue_PDFErrorNominal = (TH1D *)dir_Den->Get("PDFWeights_Error_0_XsecSyst_Den");
     double DenValue_PDFErrorNominal = hist_DenValue_PDFErrorNominal->GetBinContent(1);
+    if(isReplica){
+      DenValue_PDFErrorNominal = 0.;
+      for(int i=1; i<NPDFErrorSet; i++){
+        TString histname = "PDFWeights_Error_"+TString::Itoa(i,10);
+        TH1D *hist = (TH1D *)dir_Den->Get(histname+"_XsecSyst_Den");
+        DenValue_PDFErrorNominal += hist->GetBinContent(1);
+      }
+      DenValue_PDFErrorNominal = DenValue_PDFErrorNominal/NPDFErrorSet;
+      if(DoDebug) cout << "[SignalSystematics] @@@@ isReplica, average = " << DenValue_PDFErrorNominal << endl;
+    }
+
     double tmp = 0.;
     for(int i=0; i<NPDFErrorSet; i++){
       // PDFWeights_Error_20
+
+      if(isReplica && i==0) continue;
 
       TString histname = "PDFWeights_Error_"+TString::Itoa(i,10);
       TH1D *hist = (TH1D *)dir_Den->Get(histname+"_XsecSyst_Den");
@@ -164,6 +179,7 @@ public:
       if(DoDebug) cout << "[SignalSystematics] i = " << i << " : " << hist->GetBinContent(1) << "\ttmp2 = " << tmp << endl;
 
     }
+    if(isReplica) tmp = tmp/(NPDFErrorSet-1);
     if(DoDebug) cout << "[SignalSystematics] ----> Error = " << sqrt(tmp) << endl;
     xsec_PDFErrorSyst = sqrt(tmp);
 
@@ -179,8 +195,8 @@ public:
       DenValues_AlphaS[i] = hist->GetBinContent(1);
 
     }
-    double AlphaSError_Den = fabs(DenValues_AlphaS[0]-DenValues_AlphaS[1])/2.;
-    if(DoDebug) cout << "[SignalSystematics] ----> Error = " << AlphaSError_Den << endl;
+    xsec_AlphaSSyst = fabs(DenValues_AlphaS[0]-DenValues_AlphaS[1])/2.;
+    if(DoDebug) cout << "[SignalSystematics] ----> Error = " << xsec_AlphaSSyst << endl;
 
 
     //===========================================================================================
@@ -352,13 +368,25 @@ public:
       double bin_central = PDFErrorSetToBinValues[0].at(y);
       double diff = 0;
 
+      if(isReplica){
+        bin_central = 0;
+        for(int j=1; j<NPDFErrorSet; j++){
+          bin_central += PDFErrorSetToBinValues[j].at(y);
+        }
+        bin_central = bin_central/NPDFErrorSet;
+      }
+
       if(DoDebug) cout << "bin "<< x << " : central = " << bin_central << endl;
 
+      //if(DoDebug) cout << "bin "<< x << " : central = " << bin_central << endl;
+
       for(int j=0; j<NPDFErrorSet; j++){
+        if(isReplica && j==0) continue;
         double this_diff = PDFErrorSetToBinValues[j].at(y)-bin_central;
         if(DoDebug) cout << "  PDFSet " << j << " : " << PDFErrorSetToBinValues[j].at(y) << " -> diff = " << this_diff << " -> curretn sum diff2 = " << diff << endl;
         diff += this_diff*this_diff;
       }
+      if(isReplica) diff = diff/(NPDFErrorSet-1);
       hist_PDFError->SetBinContent(x, bin_central/ChannelFrac);
       hist_PDFError->SetBinError(x, sqrt(diff)/ChannelFrac);
 

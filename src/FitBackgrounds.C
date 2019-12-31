@@ -1,9 +1,8 @@
-using namespace RooFit;
 #include "mylib.h"
 #include "canvas_margin.h"
-#include "PDFGenerator.C"
+#include "FunctionGenerator.C"
 
-void SetParameterFromText(FitHistogram& m, TString txtFileName);
+void SetParameterFromText(FitHistogram& m, TString txtFileName, TString FunctionName);
 
 //==== TODO add year here
 void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool UpdateRange=false, int NIter=0){
@@ -21,9 +20,17 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool Update
 
   TString Year = "2016";
   TString region = "Resolved_SR";
+  TString regionalias = "Resolved";
   TString channel = "Electron";
-  if(i_region==0) region = "Resolved_SR";
-  else if(i_region==1) region = "Boosted_SR";
+  if(i_region==0){
+    region = "Resolved_SR";
+    regionalias = "Resolved";
+  }
+  else if(i_region==1){
+    region = "Boosted_SR";
+    regionalias = "Boosted";
+  }
+
   if(i_channel==0) channel = "Electron";
   else if(i_channel==1) channel = "Muon";
 
@@ -45,7 +52,7 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool Update
 
   int NRebin = 20;
   double FitRange_l = 800;
-  double FitRange_r = 8000;
+  double FitRange_r = 4000;
 
   TFile *file = new TFile(base_filepath+"HNWRAnalyzer_SkimTree_LRSMHighPt_"+sample+".root");
   TH1D *hist = (TH1D *)file->Get(dirname+"/WRCand_Mass_"+dirname);
@@ -68,10 +75,11 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool Update
 
   TCanvas *c = new TCanvas("c","",600,600);
   canvas_margin(c);
+  c->SetLogy();
   c->cd();
 
   //==== axis
-  TH1D *hist_dummy = new TH1D("hist_dummy", "", 8000, 0., 8000.);
+  TH1D *hist_dummy = new TH1D("hist_dummy", "", 8000-800, 800., 8000.);
   hist_axis(hist_dummy);
   hist_dummy->GetXaxis()->SetRangeUser(800.,8000.);
   if(i_region==0) hist_dummy->GetXaxis()->SetTitle("m(lljj) (GeV)");
@@ -80,32 +88,38 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool Update
   hist_dummy->GetYaxis()->SetTitle("Events / "+TString::Itoa(10*NRebin,10)+" GeV");
   hist_dummy->Draw("axis");
 
-  TLegend *lg = new TLegend(0.6, 0.65, 0.9, 0.9);
-
-  RooPlot* xframe;
   vector<TString> FitFunctions;
-  vector<RooFitResult *> FitResults;
   TString FitCentral = "Dijet_4Par";
 
-  PDFGenerator pg;
+  FunctionGenerator fg;
+  fg.integralValue = hist->Integral();
+  cout << "@@@@ Integral = " << fg.integralValue << endl;
 
-  for(int i_fit=0; i_fit<11; i_fit++){
+  vector<TF1 *> fitFuncs;
+  vector<TFitResultPtr> fitResults;
+  TH1D *confBand = new TH1D("confBand", "", 8000/(10*NRebin), 0., 8000.);;
+
+  //==== write fit result in txt file
+  ofstream fitresultTXT;
+  fitresultTXT.open(base_plotpath+"/FitResult_"+region+"_"+channel+"_"+samplealias+".txt");
+
+  for(int i_fit=0; i_fit<13; i_fit++){
 
     FitHistogram m;
     m.doDebug = false;
     m.SetHist(hist);
-    m.SetFitVar("mwr", 800., 8000.);
+    m.SetFitVar(800., 8000.);
     m.ClearParameters();
     m.InitFitVar();
 
-    m.fitRangeMin = 800.;
-    m.fitRangeMax = 8000.;
+    m.fitRangeMin = FitRange_l;
+    m.fitRangeMax = FitRange_r;
 
     Color_t color;
     Style_t style;
     if(i_fit==0){
 
-      pg.Run(m, "Dijet", 4, "mwr");
+      fg.Run(m, "Dijet", 4);
 
       color = kBlack;
       style = 1;
@@ -113,414 +127,223 @@ void FitBackgrounds(int i_region=0, int i_channel=0, int i_sample=0, bool Update
     }
     else if(i_fit==1){
 
-      pg.Run(m, "Dijet", 5, "mwr");
+      fg.Run(m, "Dijet", 5);
 
       color = kBlack;
-      style = i_fit+1;
+      style = 2;
 
     }
     else if(i_fit==2){
 
-      pg.Run(m, "Dijet", 6, "mwr");
+      fg.Run(m, "Dijet", 6);
 
       color = kBlack;
-      style = i_fit+1;
+      style = 3;
 
     }
     else if(i_fit==3){
 
-      pg.Run(m, "Dijet", 7, "mwr");
+      fg.Run(m, "Dijet", 7);
 
       color = kBlack;
-      style = i_fit+1;
-
-    }
-    else if(i_fit==3){
-
-      pg.Run(m, "PolyExt", 5, "mwr");
-
-      color = kRed;
-      style = i_fit+1;
+      style = 4;
 
     }
     else if(i_fit==4){
 
-      pg.Run(m, "PolyExt", 6, "mwr");
+      fg.Run(m, "ATLAS", 4);
 
-      color = kRed;
-      style = i_fit+1;
+      color = kBlue;
+      style = 2;
 
     }
     else if(i_fit==5){
 
-      pg.Run(m, "PolyExt", 7, "mwr");
+      fg.Run(m, "ATLAS", 5);
 
-      color = kRed;
-      style = i_fit+1;
+      color = kBlue;
+      style = 3;
 
     }
     else if(i_fit==6){
 
-      pg.Run(m, "PolyExt", 8, "mwr");
+      fg.Run(m, "ATLAS", 6);
 
-      color = kRed;
-      style = i_fit+1;
+      color = kBlue;
+      style = 4;
 
     }
     else if(i_fit==7){
 
-      pg.Run(m, "ATLAS", 4, "mwr");
+      fg.Run(m, "ATLAS", 7);
 
       color = kBlue;
-      style = i_fit+1;
+      style = 5;
 
     }
     else if(i_fit==8){
 
-      pg.Run(m, "ATLAS", 5, "mwr");
+      fg.Run(m, "ModifiedExpo", 4);
 
-      color = kBlue;
-      style = i_fit+1;
+      color = kGreen;
+      style = 1;
 
     }
     else if(i_fit==9){
 
-      pg.Run(m, "ATLAS", 6, "mwr");
+      fg.Run(m, "PolyExt", 5);
 
-      color = kBlue;
-      style = i_fit+1;
+      color = kRed;
+      style = 2;
 
     }
     else if(i_fit==10){
 
-      pg.Run(m, "ATLAS", 7, "mwr");
+      fg.Run(m, "PolyExt", 6);
 
-      color = kBlue;
-      style = i_fit+1;
+      color = kRed;
+      style = 3;
+
+    }
+    else if(i_fit==11){
+
+      fg.Run(m, "PolyExt", 7);
+
+      color = kRed;
+      style = 4;
+
+    }
+    else if(i_fit==12){
+
+      fg.Run(m, "PolyExt", 8);
+
+      color = kRed;
+      style = 5;
 
     }
 
+
+    cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+    cout << "@@@@ " << m.Name << endl;
+    cout << "@@@@ Fit function name = " << m.functionalForm << endl;
+    cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+    cout << endl;
+
+
     if(UpdateRange){
-      TString txtFileName = WORKING_DIR+"/data/"+dataset+"/"+Year+"/FitParameters/"+region+"_"+channel+"_"+samplealias+"/"+m.Name+".txt";
-      SetParameterFromText(m, txtFileName);
+      TString txtFileName = ENV_PLOT_PATH+"/"+dataset+"/FitBackgrounds/"+Year+"/Iter_"+TString::Itoa(NIter,10)+"/Input_"+region+"_"+channel+"_"+samplealias+".txt";
+      SetParameterFromText(m, txtFileName, m.Name);
     }
     FitFunctions.push_back( m.Name );
 
     m.Fit();
 
-    FitResults.push_back( m.getFitResult() );
-
-    RooRealVar* rrv = m.getFitVar();
-    RooDataHist* rdh = m.getDataHist();
-
-    if(i_fit==0){
-      xframe = rrv->frame();
-      rdh->plotOn(xframe, MarkerColor(0), LineColor(0), Name("FirstDataHist") );
+    //==== print
+    for(int it_par=0; it_par<m.parRangeMins.size(); it_par++){
+      fitresultTXT << region << "\t" << channel << "\t" << samplealias << "\t" << m.Name << "\t" << it_par << "\t" << m.fitFunc->GetParameter(it_par) << "\t" << m.fitFunc->GetParError(it_par) << "\t" << m.parInit.at(it_par) << "\t" << m.parRangeMins.at(it_par) << "\t" << m.parRangeMaxs.at(it_par) << endl;
+      cout << region << "\t" << channel << "\t" << samplealias << "\t" << m.Name << "\t" << it_par << "\t" << m.fitFunc->GetParameter(it_par) << "\t" << m.fitFunc->GetParError(it_par) << "\t" << m.parInit.at(it_par) << "\t" << m.parRangeMins.at(it_par) << "\t" << m.parRangeMaxs.at(it_par) << endl;
     }
+
+    m.fitFunc->SetLineColor(color);
+    m.fitFunc->SetLineStyle(style);
+    m.fitFunc->SetLineWidth(3);
+    fitFuncs.push_back( m.fitFunc );
+    fitResults.push_back( m.fitResultPtr );
 
     if(m.Name==FitCentral){
-      //m.getPdf()->plotOn( xframe, FillColor(kBlack+1), Range(800,8000), VisualizeError(*(m.getFitResult())), Name(m.Name+"_Linearfiterrorband") );
-      m.getPdf()->plotOn( xframe, FillColor(0), LineColor(0), Range(800,8000), VisualizeError(*(m.getFitResult()),1,kFALSE ), DrawOption("L"), Name(m.Name+"_Samplingfiterrorband") );
+      //confBand = (TH1D *)m.confBand->Clone();
     }
 
-    m.getPdf()->plotOn(xframe,LineColor(color), LineStyle(style), LineWidth(2), Range(800,8000), Name(m.Name+"_Central") );
-    //m.getPdf()->plotOn(xframe,LineColor(0), Range(800,8000), Name(m.Name+"_Central") );
-
-    lg->AddEntry(xframe->findObject(m.Name+"_Central") , m.Name, "l");
-
-    //rdh->plotOn(xframe, Name(m.Name+"_DataOverlay") );
-
   }
+  fitresultTXT.close();
 
-  xframe->Draw("same");
-
-  c->SetLogy();
-
-  cout << "@@@@ Printing items" << endl;
-  for(int i=0; i<xframe->numItems(); i++){
-    cout << xframe->getObject(i)->GetName() << "\t" << xframe->getObject(i)->GetUniqueID() << "\t" << endl;
-  }
-
-  //==== Fit Summary
-  cout << "@@@@ Fit results" << endl;
-  for(int i=0; i<FitFunctions.size(); i++){
-    TString fitFunc = FitFunctions.at(i);
-    cout << "@@@@   Func = " << fitFunc << endl;
-    RooFitResult* FitResult = FitResults.at(i);
-    const RooArgList& arglist = FitResult->floatParsFinal();
-    const int NFitPar = arglist.getSize();
-    for(int j=0; j<NFitPar; j++){
-      RooAbsArg *raa = arglist.at(j);
-      raa->Print();
-    }
-  }
-  cout << "@@@@ END Fit results" << endl;
-
-
-  //==== Get data
-  TGraph *gr_data = (TGraph *)xframe->findObject("FirstDataHist");
-  gr_data->SetMarkerColor(kBlack);
+  TGraphAsymmErrors *gr_data = new TGraphAsymmErrors(hist);
+  gr_data->SetLineWidth(2);
   gr_data->SetLineColor(kBlack);
-
-  //==== Retrieve fit paramter error band as TGraph
-  TGraph *gr_central = (TGraph *)xframe->findObject(FitCentral+"_Central");
-  RooCurve* fiterrorband = xframe->getCurve(FitCentral+"_Samplingfiterrorband");
-  TGraph *gr_fitup = new TGraph(gr_central->GetN());
-  TGraph *gr_fitdn = new TGraph(gr_central->GetN());
-  for(int i =0; i<fiterrorband->GetN(); i++){
-    if(i<gr_central->GetN())
-      gr_fitup->SetPoint(i, fiterrorband->GetX()[i], fiterrorband->GetY()[i]);
-    else
-      gr_fitdn->SetPoint(i, fiterrorband->GetX()[i], fiterrorband->GetY()[i]);
-  }
-  //==== Now integrate them to make histograms
-  TH1D *hist_central = new TH1D("hist_central", "", (8000-800)/(10*NRebin), 800., 8000.);
-  TH1D *hist_fitup = new TH1D("hist_fitup", "", (8000-800)/(10*NRebin), 800., 8000.);
-  TH1D *hist_fitdn = new TH1D("hist_fitdn", "", (8000-800)/(10*NRebin), 800., 8000.);
-  for(int i=1; i<=hist_central->GetXaxis()->GetNbins(); i++){
-    double x_l = hist_central->GetXaxis()->GetBinLowEdge(i);
-    double x_r = hist_central->GetXaxis()->GetBinUpEdge(i);
-
-    double this_bincontent_central = IntegrateGraph(gr_central, x_l, x_r, 1000)/(10*NRebin);
-    double this_bincontent_fitup   = IntegrateGraph(gr_fitup, x_l, x_r, 1000)/(10*NRebin);
-    double this_bincontent_fitdn   = IntegrateGraph(gr_fitdn, x_l, x_r, 1000)/(10*NRebin);
-
-    hist_central->SetBinContent(i, this_bincontent_central);
-    hist_central->SetBinError(i, sqrt(this_bincontent_central));
-    hist_fitup->SetBinContent(i, this_bincontent_fitup);
-    hist_fitdn->SetBinContent(i, this_bincontent_fitdn);
-
-  }
-
-  hist_central->SetLineColor(kBlack);
-  hist_fitup->SetLineColor(kGray);
-  hist_fitdn->SetLineColor(kGray);
-
-  //==== fit variations as systematics
-  //==== Create a graph together to plot error bands
-  //==== GetN should be 4+2*GetNbins
-  const int NSystGraph = 4+2*hist_central->GetXaxis()->GetNbins();
-  TGraph *systerrorband = new TGraph(NSystGraph);
-  //==== And of couse, syst up/down histogram by integration
-  TH1D *hist_systup = (TH1D *)hist_central->Clone(); hist_systup->SetName("hist_systup");
-  TH1D *hist_systdn = (TH1D *)hist_central->Clone(); hist_systdn->SetName("hist_systdn");
-  //==== save graphs and create the band later
-  vector<TGraph *> FitVarsGraphs;
-  //==== get edge values (i.e., at 800 and 8000);
-  double systup_800(gr_central->GetY()[0]), systdn_800(gr_central->GetY()[0]);
-  double systup_8000(gr_central->GetY()[gr_central->GetN()-1]), systdn_8000(gr_central->GetY()[gr_central->GetN()-1]);
-  for(int i=0; i<FitFunctions.size(); i++){
-
-    TString fitFunc = FitFunctions.at(i);
-    if(fitFunc==FitCentral) continue;
-
-    cout << "@@@@ Fit variation with : " << fitFunc << endl;
-    TGraph *this_gr = (TGraph *)xframe->findObject(fitFunc+"_Central");
-    FitVarsGraphs.push_back( this_gr );
-
-    //==== edge values
-    systup_800  = max( systup_800 ,  this_gr->GetY()[0] );
-    systdn_800  = min( systdn_800 ,  this_gr->GetY()[0] );
-    systup_8000 = max( systup_8000 , this_gr->GetY()[this_gr->GetN()-1] );
-    systdn_8000 = min( systdn_8000 , this_gr->GetY()[this_gr->GetN()-1] );
-
-  }
-  systerrorband->SetPoint(0, 800., systup_800);
-  systerrorband->SetPoint(NSystGraph-1, 800., systdn_800);
-  systerrorband->SetPoint(hist_central->GetXaxis()->GetNbins()+1, 8000., systup_8000);
-  systerrorband->SetPoint(hist_central->GetXaxis()->GetNbins()+2, 8000., systdn_8000);
-  //=== Okay, now for each bin, loop over graphs and set values
-  for(int j=1; j<=hist_central->GetXaxis()->GetNbins(); j++){
-    double x_l = hist_central->GetXaxis()->GetBinLowEdge(j);
-    double x_r = hist_central->GetXaxis()->GetBinUpEdge(j);
-    double x_c = hist_central->GetXaxis()->GetBinCenter(j);
-
-    double this_central = hist_central->GetBinContent(j);
-    double this_max(this_central), this_min(this_central);
-    for(int ig=0; ig<FitVarsGraphs.size(); ig++){
-      double this_fitvar = IntegrateGraph(FitVarsGraphs.at(ig), x_l, x_r, 1000)/(10*NRebin);
-      this_max = max( this_max, this_fitvar );
-      this_min = min( this_min, this_fitvar );
-    }
-
-    hist_systup->SetBinContent(j, this_max);
-    hist_systdn->SetBinContent(j, this_min);
-
-    systerrorband->SetPoint(j, x_c, this_max);
-    systerrorband->SetPoint(NSystGraph-1-j, x_c, this_min);
-
-  }
-
-  hist_systup->SetLineColor(kRed);
-  hist_systdn->SetLineColor(kRed);
-
-  systerrorband->SetLineColor(0);
-  systerrorband->SetFillColorAlpha(kRed, 0.4);
-  systerrorband->Draw("fsame");
-  fiterrorband->SetFillColorAlpha(kBlue, 0.4);
-  fiterrorband->Draw("fsame");
-
-  for(int ig=0; ig<FitVarsGraphs.size(); ig++){
-    FitVarsGraphs.at(ig)->Draw("lsame");
-  }
-
-  gr_central->SetLineColor(kBlack);
-  gr_central->Draw("lsame");
+  gr_data->SetMarkerStyle(20);
+  gr_data->SetMarkerColor(kBlack);
   gr_data->Draw("psame");
 
-  //==== To save are the histograms
-  outfile->cd();
-  hist_central->Write();
-  hist_fitup->Write();
-  hist_fitdn->Write();
-  hist_systup->Write();
-  hist_systdn->Write();
-  outfile->Close();
+  //confBand->SetFillColor(kRed);
+  //confBand->Draw("E3same");
 
-  //hist_systup->Draw("histsame");
-  //hist_systdn->Draw("histsame");
+  TLegend *lg = new TLegend(0.6, 0.65, 0.9, 0.9);
+  for(unsigned int i=0; i<fitFuncs.size(); i++){
 
-  lg->AddEntry(fiterrorband, "Fit parameter error", "f");
-  lg->AddEntry(systerrorband, "Fit variation", "f");
+    fitFuncs.at(i)->Draw("same");
+
+    double chi2 = fitFuncs.at(i)->GetChisquare();
+    double ndf = fitFuncs.at(i)->GetNDF();
+
+    double Likelihood = fitResults.at(i)->MinFcnValue();
+
+    TString alias = fitFuncs.at(i)->GetName();
+/*
+    TString str_chi2 = TString::Format("%1.3f", chi2/ndf);
+    alias += " (#chi2/NDF = "+str_chi2+")";
+*/
+    TString str_chi2 = TString::Format("%1.3f", Likelihood);
+    alias += " (ML = "+str_chi2+")";
+
+    lg->AddEntry(fitFuncs.at(i), alias, "l");
+  }
   lg->Draw();
+
+  //==== TLatex
+  TLatex latex_CMSPriliminary, latex_Lumi, channelname;
+  latex_CMSPriliminary.SetNDC();
+  latex_Lumi.SetNDC();
+  channelname.SetNDC();
+  latex_CMSPriliminary.SetTextSize(0.035);
+  latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+
+  TString TotalLumi = "35.92 fb^{-1} (13 TeV)";
+  if(Year=="2017"){
+    TotalLumi = "41.53 fb^{-1} (13 TeV)";
+  }
+  if(Year=="2018"){
+    TotalLumi = "59.74 fb^{-1} (13 TeV)";
+  }
+  latex_Lumi.SetTextSize(0.035);
+  latex_Lumi.SetTextFont(42);
+  latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
+
+  channelname.SetNDC();
+  channelname.SetTextSize(0.037);
+  channelname.DrawLatex(0.2, 0.23, channel+" "+regionalias);
+  channelname.DrawLatex(0.2, 0.18, samplealias);
 
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".pdf");
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".png");
   c->Close();
 
-  //====================================================
-  //==== Fisher test
-  //====================================================
-
-  TFile *testfile = new TFile("testfile.root", "RECREATE");
-  testfile->cd();
-  //==== 1) hist starts from 0 GeV. Change it here
-  TH1D *hist_Data_800GeV = new TH1D("hist_Data_800GeV", "", (8000-800)/(10*NRebin), 800., 8000.);
-  int dummy_counter = 1;
-  for(int j=1; j<=hist->GetXaxis()->GetNbins(); j++){
-    double x_l = hist->GetXaxis()->GetBinLowEdge(j);
-    double x_r = hist->GetXaxis()->GetBinUpEdge(j);
-    double x_c = hist->GetXaxis()->GetBinCenter(j);
-    if(x_l>=800){
-      hist_Data_800GeV->SetBinContent( dummy_counter, hist->GetBinContent(j) );
-      dummy_counter++;
-    }
-  }
-  hist->Write();
-  hist_Data_800GeV->Write();
-  testfile->Close();
-
-  vector<TGraph *> AllFitGraphs;
-  vector<double> RSSs;
-  for(int i=0; i<FitFunctions.size(); i++){
-    TString fitFunc = FitFunctions.at(i);
-    TGraph *this_gr = (TGraph *)xframe->findObject(fitFunc+"_Central");
-    AllFitGraphs.push_back( this_gr );
-    RSSs.push_back( 0. );
-  }
-
-  int N_DATA(0);
-  for(int j=1; j<=hist_Data_800GeV->GetXaxis()->GetNbins(); j++){
-
-    double x_l = hist_Data_800GeV->GetXaxis()->GetBinLowEdge(j);
-    double x_r = hist_Data_800GeV->GetXaxis()->GetBinUpEdge(j);
-
-    double this_datapoint = hist_Data_800GeV->GetBinContent(j);
-    if(this_datapoint==0){
-      cout << "[F-Test] skipping ["<<x_l<<","<<x_r<<"] : zero bin content" << endl; 
-    }
-    N_DATA++;
-
-    cout << "Bin index = " << j << endl;
-    cout << "  this_datapoint = " << this_datapoint << endl;
-    for(int ig=0; ig<AllFitGraphs.size(); ig++){
-      double this_fitvar = IntegrateGraph(AllFitGraphs.at(ig), x_l, x_r, 1000)/(10*NRebin);
-      RSSs.at(ig) += (this_datapoint - this_fitvar) *  (this_datapoint - this_fitvar);
-      cout << "  " << AllFitGraphs.at(ig)->GetName() << "\t" << this_fitvar << "\t" << (this_datapoint - this_fitvar) << endl;
-    }
-
-  }
-
-  for(int ig=0; ig<AllFitGraphs.size(); ig++){
-    TString grname = AllFitGraphs.at(ig)->GetName();
-    cout << grname << " : " << RSSs.at(ig) << endl;
-  }
-
-  vector< pair<TString, TString> > FTestPairNames;
-  vector< pair<double, double> > FTestPairNPars;
-
-  FTestPairNames.push_back( make_pair( "Dijet_4Par_Central", "Dijet_5Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 4, 5 ) );
-
-  FTestPairNames.push_back( make_pair( "Dijet_5Par_Central", "Dijet_6Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 5, 6 ) );
-
-  FTestPairNames.push_back( make_pair( "PolyExt_5Par_Central", "PolyExt_6Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 5, 6 ) );
-
-  FTestPairNames.push_back( make_pair( "PolyExt_6Par_Central", "PolyExt_7Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 6, 7 ) );
-
-  FTestPairNames.push_back( make_pair( "PolyExt_7Par_Central", "PolyExt_8Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 7, 8 ) );
-
-  FTestPairNames.push_back( make_pair( "ATLAS_4Par_Central", "ATLAS_5Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 4, 5 ) );
-
-  FTestPairNames.push_back( make_pair( "ATLAS_5Par_Central", "ATLAS_6Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 5, 6 ) );
-
-  FTestPairNames.push_back( make_pair( "ATLAS_6Par_Central", "ATLAS_7Par_Central" ) );
-  FTestPairNPars.push_back(  make_pair( 6, 7 ) );
-
-  for(int i_pair=0; i_pair<FTestPairNames.size(); i_pair++){
-
-    TString Func_1 = FTestPairNames.at(i_pair).first;
-    TString Func_2 = FTestPairNames.at(i_pair).second;
-    int NPar_1 = FTestPairNPars.at(i_pair).first;
-    int NPar_2 = FTestPairNPars.at(i_pair).second;
-
-
-    cout << "[F-Test] testing Func_1 = " << Func_1 << ", Func_2 = " << Func_2 << endl;
-
-    double RSS_1(-1), RSS_2(-1);
-
-    for(int ig=0; ig<AllFitGraphs.size(); ig++){
-      TString grname = AllFitGraphs.at(ig)->GetName();
-      if(grname==Func_1) RSS_1 = RSSs.at(ig);
-      if(grname==Func_2) RSS_2 = RSSs.at(ig);
-    }
-
-    double F21 = ( (RSS_1-RSS_2)/(NPar_2-NPar_1) ) / ( (RSS_2)/(N_DATA-NPar_2) );
-    double CL21 = 1. - ROOT::Math::fdistribution_cdf(F21, NPar_2-NPar_1, N_DATA-NPar_2 );
-
-    cout << "[F-Test]   N_DATA = " << N_DATA << endl;
-    cout << "[F-Test]   RSS_1 = " << RSS_1 << endl;
-    cout << "[F-Test]   RSS_2 = " << RSS_2 << endl;
-    cout << "[F-Test]   NPar_1 = " << NPar_1 << endl;
-    cout << "[F-Test]   NPar_2 = " << NPar_2 << endl;
-    cout << "[F-Test]   --> F21 = " << F21 << endl;
-    cout << "[F-Test]   --> CL21 = " << CL21 << endl;
-
-  }
-
 
 }
 
-void SetParameterFromText(FitHistogram& m, TString txtFileName){
+void SetParameterFromText(FitHistogram& m, TString txtFileName, TString FunctionName){
 
   string elline;
   ifstream in(txtFileName);
   while(getline(in,elline)){
     std::istringstream is( elline );
-    int ParIndex;
-    double Init,Min,Max;
-    is >> ParIndex;
-    is >> Init;
-    is >> Min;
-    is >> Max;
+    TString region,channel,sample,functionName;
+    int parIndex;
+    double val,err,init,min,max;
+    is >> region;
+    is >> channel;
+    is >> sample;
+    is >> functionName;
+    is >> parIndex;
+    is >> val;
+    is >> err;
+    is >> init;
+    is >> min;
+    is >> max;
 
-    m.SetParameter(ParIndex, Init, Min, Max);
+    if(FunctionName==functionName){
+      m.SetParameter(parIndex, val, min, max);
+      //m.SetParameter(parIndex, min, max);
+    }
   }
 
 }

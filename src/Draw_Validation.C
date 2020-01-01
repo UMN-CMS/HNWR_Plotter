@@ -42,17 +42,13 @@ void Draw_Validation(int XXX=0){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50", "DYJets"};
-    m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50", "DYJets_MG_HT-100To200", "DYJets_MG_HT-1200To2500", "DYJets_MG_HT-200To400", "DYJets_MG_HT-2500ToInf", "DYJets_MG_HT-400To600", "DYJets_MG_HT-600To800", "DYJets_MG_HT-70To100", "DYJets_MG_HT-800To1200"};
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50_MG", "DYJets"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-    m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT-100To200", "WJets_MG_HT-1200To2500", "WJets_MG_HT-200To400", "WJets_MG_HT-2500ToInf", "WJets_MG_HT-400To600", "WJets_MG_HT-600To800", "WJets_MG_HT-70To100", "WJets_MG_HT-800To1200"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    m.map_sample_string_to_list["ttbar"] = {"TT_powheg"};
+    m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg"};
 
     m.map_sample_string_to_legendinfo["ZJets"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
-    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
   }

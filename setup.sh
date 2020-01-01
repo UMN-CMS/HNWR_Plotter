@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CATANVERSION="Run2Legacy_v3__Default"
+export CATANVERSION="Run2Legacy_v4__Default"
 
 export PLOTTER_WORKING_DIR=`pwd`
 

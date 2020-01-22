@@ -120,5 +120,7 @@ public:
 
   TH1D *Rebin(TH1D *hist);
 
+  void AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist);
+
 };
 #endif

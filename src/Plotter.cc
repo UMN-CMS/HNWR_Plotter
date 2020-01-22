@@ -56,11 +56,12 @@ void Plotter::draw_hist(){
       }
       
       cout << "[Drawing " << histname[i_var] << "]" << endl;
-      
+
       TH1D* MC_stacked_staterr = NULL;
-      TH1D* MC_stacked_allerr = NULL;
-      TH1D* MC_stacked_allerr_Up = NULL;
-      TH1D* MC_stacked_allerr_Down = NULL;
+
+      map<TString, TH1D *> map_to_Source_to_Up;
+      map<TString, TH1D *> map_to_Source_to_Down;
+
       THStack* MC_stacked = new THStack("MC_stacked", "");
       TH1D* hist_data = NULL;
       vector<TH1D*> hist_signal;
@@ -205,28 +206,20 @@ void Plotter::draw_hist(){
         }
 
         TString current_MCsector = "";
-        //==== Set Attributes here
         //==== bkg
         if( i_file < bkglist.size() ){
           //==== get which MC sector
           current_MCsector = find_MCsector();
           int n_bins = hist_final->GetXaxis()->GetNbins();
-          if(!MC_stacked_allerr){
-
+          if(!MC_stacked_staterr){
             const Double_t *xcopy=hist_final->GetXaxis()->GetXbins()->GetArray();
-            MC_stacked_allerr = new TH1D("MC_stacked_allerr", "", n_bins, xcopy);
-            MC_stacked_allerr_Up = new TH1D("MC_stacked_allerr_Up", "", n_bins, xcopy);
-            MC_stacked_allerr_Down = new TH1D("MC_stacked_allerr_Down", "", n_bins, xcopy);
             MC_stacked_staterr = new TH1D("MC_stacked_staterr", "", n_bins, xcopy);
-
           }
           hist_final->SetFillColor(map_sample_string_to_legendinfo[current_MCsector].second);
           hist_final->SetLineColor(map_sample_string_to_legendinfo[current_MCsector].second);
 
           //==== MC Norm Scaling
           if(ApplyMCNormSF.at(i_cut)){
-            //hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
-
             //==== FIXME for DY
             if(current_sample.Contains("DYJets")){
               double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
@@ -235,171 +228,165 @@ void Plotter::draw_hist(){
             else{
               hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
             }
-
           }
 
-          //==== Add star error histogram now, just before adding systematic
+          //==== THStack
+          MC_stacked->Add(hist_final);
+
+          //==== TH1D : this will have stat error
           MC_stacked_staterr->Add(hist_final);
 
-          //==== Now Add systematic to hist_final (which has stat err only)
-          //==== Start with BinContent = Central, Error = 0 histogram
-          //==== Square sum each bin
-          TH1D *hist_SumSystUpMax = (TH1D *)hist_final->Clone();
-          TH1D *hist_SumSystDownMax = (TH1D *)hist_final->Clone();
+          //=================
+          //==== SYSTEMATIC
+          //=================
 
+          if(DoDebug) cout << "["<<current_sample<<"] Central = " << hist_final->GetBinContent( hist_final->FindBin(600) ) << endl;
+
+          //==== 1) EMuMethod
           if(current_sample.Contains("EMuMethod")){
-            //==== TODO Add EMu syst
-
+            TH1D *hist_EMuSyst_Up = (TH1D *)hist_final->Clone();
+            TH1D *hist_EMuSyst_Down = (TH1D *)hist_final->Clone();
             double EMuSyst = 0.20;
             if( histname_suffix[i_cut].Contains("Boosted") ) EMuSyst = 0.30;
-
             for(int i=0; i<=hist_final->GetXaxis()->GetNbins()+1; i++){
               double y = hist_final->GetBinContent(i);
-              double err_Stat = hist_final->GetBinError(i);
               double err_EMu = y * EMuSyst;
-              double new_err = sqrt( err_Stat*err_Stat + err_EMu*err_EMu );
-
-              hist_SumSystUpMax->SetBinError( i, new_err );
-              hist_SumSystDownMax->SetBinError( i, new_err );
+              hist_EMuSyst_Up->SetBinContent( i, y + err_EMu );
+              hist_EMuSyst_Down->SetBinContent( i, y - err_EMu );
             }
-
+            AddIfExist(map_to_Source_to_Up, "EMuSyst", hist_EMuSyst_Up);
+            AddIfExist(map_to_Source_to_Down, "EMuSyst", hist_EMuSyst_Down);
           }
-          //==== MC
           else{
+            AddIfExist(map_to_Source_to_Up, "EMuSyst", hist_final);
+            AddIfExist(map_to_Source_to_Down, "EMuSyst", hist_final);
+          }
 
-            //==== norm
-            //==== 1) Lumi
+          //==== 2) Lumi
+          if(current_sample.Contains("EMuMethod")){
+            AddIfExist(map_to_Source_to_Up, "Lumi", hist_final);
+            AddIfExist(map_to_Source_to_Down, "Lumi", hist_final);
+          }
+          else{
+            TH1D *hist_Lumi_Up = (TH1D *)hist_final->Clone();
+            TH1D *hist_Lumi_Down = (TH1D *)hist_final->Clone();
             double Norm_RelSyst_Lumi = LumiError();
-            //==== 2) Xsec //TODO add more samples
-            double Norm_RelSyst_Xsec = 0;
-            if(ApplyMCNormSF.at(i_cut)){
-              if(current_sample.Contains("DYJets")){
-
-                double Scaled_value = GetDYNormSF(DataYear, histname_suffix[i_cut]);
-                double SFErr = GetDYNormSF(DataYear, histname_suffix[i_cut], true);
-
-                Norm_RelSyst_Xsec = SFErr/Scaled_value;
-
-              }
-              else{
-              }
-            }
-
-            //==== sum
-            double Sum_Norm_RelSyst = sqrt( Norm_RelSyst_Lumi*Norm_RelSyst_Lumi + Norm_RelSyst_Xsec*Norm_RelSyst_Xsec );
-
-            //==== Add Norm Syst to hist_final
             for(int i=0; i<=hist_final->GetXaxis()->GetNbins()+1; i++){
               double y = hist_final->GetBinContent(i);
-              double err_Stat = hist_final->GetBinError(i);
-              double err_Norm = y * Sum_Norm_RelSyst;
-              double new_err = sqrt( err_Stat*err_Stat + err_Norm*err_Norm );
+              double err_EMu = y * Norm_RelSyst_Lumi; 
+              hist_Lumi_Up->SetBinContent( i, y + err_EMu );
+              hist_Lumi_Down->SetBinContent( i, y - err_EMu );
+            }
+            AddIfExist(map_to_Source_to_Up, "Lumi", hist_Lumi_Up);
+            AddIfExist(map_to_Source_to_Down, "Lumi", hist_Lumi_Down);
+          }
 
-              hist_SumSystUpMax->SetBinError( i, new_err );
-              hist_SumSystDownMax->SetBinError( i, new_err );
+          //==== 3) Loop over sources
+          for(unsigned it_Syst=0; it_Syst<Systs.size(); it_Syst++){
+
+            TString Syst = Systs.at(it_Syst);
+
+            //==== Exception control
+            //==== 1) Continue EMu
+            if( current_sample.Contains("EMuMethod") ){
+              AddIfExist(map_to_Source_to_Up, Syst, hist_final);
+              AddIfExist(map_to_Source_to_Down, Syst, hist_final);
+              continue;
+            }
+            //==== 2) DYPtRw only for the samples with "Reweighted"
+            if( Syst=="ZPtRw" && !(current_sample.Contains("Reweighted")) ){
+              AddIfExist(map_to_Source_to_Up, "ZPtRw", hist_final);
+              AddIfExist(map_to_Source_to_Down, "ZPtRw", hist_final);
+              continue;
             }
 
-            //==== shape
-            for(unsigned it_Syst=0; it_Syst<Systs.size(); it_Syst++){
+            //==== For this systematic source,
 
-              TString Syst = Systs.at(it_Syst);
-
-              //==== For this systematic source,
-
-              //==== Get Up histogram
-              TDirectory *dir_Up = (TDirectory *)file->Get("Syst_"+Syst+"Up_"+DirName);
-              TH1D *hist_Up = NULL;
-              if(dir_Up){
-                hist_Up = (TH1D *)dir_Up->Get( histname[i_var]+"_Syst_"+Syst+"Up_"+DirName );
-                if(hist_Up){
-                  hist_Up = Rebin(hist_Up);
-                  //hist_Up->Rebin( n_rebin() );
-                }
-                else{
-                  hist_Up = (TH1D *)hist_final->Clone();
-                  EmptyHistogram(hist_Up);
-                }
+            //==== Get Up histogram
+            TDirectory *dir_Up = (TDirectory *)file->Get("Syst_"+Syst+"Up_"+DirName);
+            TH1D *hist_Up = NULL;
+            if(dir_Up){
+              hist_Up = (TH1D *)dir_Up->Get( histname[i_var]+"_Syst_"+Syst+"Up_"+DirName );
+              if(hist_Up){
+                hist_Up = Rebin(hist_Up);
+                //hist_Up->Rebin( n_rebin() );
               }
               else{
                 hist_Up = (TH1D *)hist_final->Clone();
                 EmptyHistogram(hist_Up);
               }
+            }
+            else{
+              hist_Up = (TH1D *)hist_final->Clone();
+              EmptyHistogram(hist_Up);
+            }
 
-              //==== Get Down histogram
-              TDirectory *dir_Down = (TDirectory *)file->Get("Syst_"+Syst+"Down_"+DirName);
-              TH1D *hist_Down = NULL;
-              if(dir_Down){
-                hist_Down = (TH1D *)dir_Down->Get( histname[i_var]+"_Syst_"+Syst+"Down_"+DirName );
-                if(hist_Down){
-                  hist_Down = Rebin(hist_Down);
-                  //hist_Down->Rebin( n_rebin() );
-                }
-                else{
-                  hist_Down = (TH1D *)hist_final->Clone();
-                  EmptyHistogram(hist_Down);
-                }
+            //==== Get Down histogram
+            TDirectory *dir_Down = (TDirectory *)file->Get("Syst_"+Syst+"Down_"+DirName);
+            TH1D *hist_Down = NULL;
+            if(dir_Down){
+              hist_Down = (TH1D *)dir_Down->Get( histname[i_var]+"_Syst_"+Syst+"Down_"+DirName );
+              if(hist_Down){
+                hist_Down = Rebin(hist_Down);
+                //hist_Down->Rebin( n_rebin() );
               }
               else{
                 hist_Down = (TH1D *)hist_final->Clone();
                 EmptyHistogram(hist_Down);
               }
+            }
+            else{
+              hist_Down = (TH1D *)hist_final->Clone();
+              EmptyHistogram(hist_Down);
+            }
 
-              //==== set X-axis range
-              SetXaxisRange(hist_Up);
-              SetXaxisRange(hist_Down);
+            //==== set X-axis range
+            SetXaxisRange(hist_Up);
+            SetXaxisRange(hist_Down);
 
-              //==== make overflows bins
-              TH1D *hist_Up_final = MakeOverflowBin(hist_Up);
-              TH1D *hist_Down_final = MakeOverflowBin(hist_Down);
+            //==== make overflows bins
+            TH1D *hist_Up_final = MakeOverflowBin(hist_Up);
+            TH1D *hist_Down_final = MakeOverflowBin(hist_Down);
 
-              //==== Remove Negative bins
-              TAxis *xaxis = hist_final->GetXaxis();
-              for(int ccc=1; ccc<=xaxis->GetNbins(); ccc++){
-                if(hist_Up_final->GetBinContent(ccc)<0){
-                  hist_Up_final->SetBinContent(ccc, 0.);
-                  hist_Up_final->SetBinError(ccc, 0.);
-                }
-                if(hist_Down_final->GetBinContent(ccc)<0){
-                  hist_Down_final->SetBinContent(ccc, 0.);
-                  hist_Down_final->SetBinError(ccc, 0.);
-                }
+            //==== Remove Negative bins
+            TAxis *xaxis = hist_final->GetXaxis();
+            for(int ccc=1; ccc<=xaxis->GetNbins(); ccc++){
+              if(hist_Up_final->GetBinContent(ccc)<0){
+                hist_Up_final->SetBinContent(ccc, 0.);
+                hist_Up_final->SetBinError(ccc, 0.);
+              }
+              if(hist_Down_final->GetBinContent(ccc)<0){
+                hist_Down_final->SetBinContent(ccc, 0.);
+                hist_Down_final->SetBinError(ccc, 0.);
+              }
+            }
+
+            //==== Apply the same MC Norm Scaling
+            if(ApplyMCNormSF.at(i_cut)){
+              //hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
+
+              //==== FIXME for DY
+              if(current_sample.Contains("DYJets")){
+                double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
+                hist_Up_final->Scale(DYNorm);
+                hist_Down_final->Scale(DYNorm);
+              }
+              else{
+                hist_Up_final->Scale(analysisInputs.MCNormSF[current_sample]);
+                hist_Down_final->Scale(analysisInputs.MCNormSF[current_sample]);
               }
 
-              //==== Apply the same MC Norm Scaling
-              if(ApplyMCNormSF.at(i_cut)){
-                //hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
+            }
 
-                //==== FIXME for DY
-                if(current_sample.Contains("DYJets")){
-                  double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
-                  hist_Up_final->Scale(DYNorm);
-                  hist_Down_final->Scale(DYNorm);
-                }
-                else{
-                  hist_Up_final->Scale(analysisInputs.MCNormSF[current_sample]);
-                  hist_Down_final->Scale(analysisInputs.MCNormSF[current_sample]);
-                }
+            //==== Convert this to MaxUp and MaxDown
+            //==== hist_SystMax.at(0) : Content = Central, Errors = Maximum up-side variation of this syst source
+            //==== hist_SystMax.at(1) : Content = Central, Errors = Maximum down-side variation of this syst source
+            vector<TH1D *> hist_SystMax = ConvertSystematic(hist_final, hist_Up_final, hist_Down_final);
 
-              }
+            AddIfExist(map_to_Source_to_Up, Syst, hist_Up_final);
+            AddIfExist(map_to_Source_to_Down, Syst, hist_Down_final);
 
-              //==== Convert this to MaxUp and MaxDown
-              //==== hist_SystMax.at(0) : Content = Central, Errors = Maximum up-side variation of this syst source
-              //==== hist_SystMax.at(1) : Content = Central, Errors = Maximum down-side variation of this syst source
-              vector<TH1D *> hist_SystMax = ConvertSystematic(hist_final, hist_Up_final, hist_Down_final);
-
-              AddSystematic(hist_SumSystUpMax, hist_SystMax.at(0));
-              AddSystematic(hist_SumSystDownMax, hist_SystMax.at(1));
-
-            } // END Loop syst
-
-          }
-
-          MC_stacked_allerr_Up->Add(hist_SumSystUpMax);
-          MC_stacked_allerr_Down->Add(hist_SumSystDownMax);
-          MC_stacked_allerr->Add(hist_final);
-
-          MC_stacked->Add(hist_final);
-          //MC_stacked_allerr->Add(hist_final);
+          } // END Loop syst
 
         }
         //==== data for i_file = bkglist.size()
@@ -463,22 +450,29 @@ void Plotter::draw_hist(){
       if(!AnyEntry) continue;
       if(DoDebug) cout << "[Draw Canvas]" << endl;
 
-      //==== with MC_stacked_allerr_Up and MC_stacked_allerr_Down, create gr_MC_allerr
-      TGraphAsymmErrors *gr_MC_allerr = GetAsymmError(MC_stacked_allerr_Up, MC_stacked_allerr_Down);
+      TH1D *hist_AllSyst_Up = (TH1D *)MC_stacked_staterr->Clone();
+      TH1D *hist_AllSyst_Down = (TH1D *)MC_stacked_staterr->Clone();
+      SetErrorZero(hist_AllSyst_Up);
+      SetErrorZero(hist_AllSyst_Down);
+      for(map<TString, TH1D *>::iterator it=map_to_Source_to_Up.begin(); it!=map_to_Source_to_Up.end(); it++){
+        TString key = it->first;
+        AddDiffSystematic( hist_AllSyst_Up, map_to_Source_to_Up[key] );
+        AddDiffSystematic( hist_AllSyst_Down, map_to_Source_to_Down[key] );
+      }
 
 /*
-      //==== FIXME debug syst
-      int debug_bin = MC_stacked_allerr_Up->FindBin(90.);
-      cout << "MC_stacked_allerr_Down : " << MC_stacked_allerr_Down->GetBinContent(debug_bin) << "\t" << MC_stacked_allerr_Down->GetBinError(debug_bin) << endl;
-      cout << "MC_stacked_allerr_Up : " << MC_stacked_allerr_Up->GetBinContent(debug_bin) << "\t" << MC_stacked_allerr_Up->GetBinError(debug_bin) << endl; 
-      cout << "MC_stacked_allerr : " << MC_stacked_allerr->GetBinContent(debug_bin) << "\t" << MC_stacked_allerr->GetBinError(debug_bin) << endl;
-      cout << "@@@@ gr_MC_allerr @@@@" << endl;
-      gr_MC_allerr->Print();
+      for(int z=1; z<hist_AllSyst_Up->GetXaxis()->GetNbins(); z++){
+        int x_l = hist_AllSyst_Up->GetXaxis()->GetBinLowEdge(z);
+        int x_r = hist_AllSyst_Up->GetXaxis()->GetBinUpEdge(z);
+        printf("[%d,%d] : %f + %f - %f\n",x_l,x_r,hist_AllSyst_Up->GetBinContent(z),hist_AllSyst_Up->GetBinError(z),hist_AllSyst_Down->GetBinError(z));
+      }
 */
+
+      TGraphAsymmErrors *gr_MC_allerr = GetAsymmError(hist_AllSyst_Up,hist_AllSyst_Down);
 
       if(!drawdata.at(i_cut) && hist_data){
         TString tmpname = hist_data->GetName();
-        hist_data = (TH1D*)MC_stacked_allerr->Clone();
+        hist_data = (TH1D*)MC_stacked_staterr->Clone();
         SetErrorZero(hist_data);
         hist_data->SetName(tmpname);
         hist_data->SetMarkerStyle(20);
@@ -1732,7 +1726,20 @@ vector<double> Plotter::GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_state
 TH1D *Plotter::Rebin(TH1D *hist){
 
   if(histname[i_var]=="WRCand_Mass" && !histname_suffix[i_cut].Contains("LowWR")){
-    hist = RebinWRMass(hist, histname_suffix[i_cut]);
+
+    if( i_file<bkglist.size() ){
+      if( bkglist[i_file].Contains("FromFit") ){
+        //cout << bkglist[i_file] << " --> not rebinning" << endl;
+      }
+      else{
+        hist->Rebin( n_rebin() );
+      }
+    }
+    else{
+      //hist = RebinWRMass(hist, histname_suffix[i_cut]);
+      hist->Rebin( n_rebin() );
+    }
+
   }
   else{
     hist->Rebin( n_rebin() );
@@ -1741,3 +1748,21 @@ TH1D *Plotter::Rebin(TH1D *hist){
   return hist;
 
 }
+
+void Plotter::AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist){
+
+  TH1D *this_hist = map[key];
+  if(!this_hist){
+    map[key] = (TH1D *)hist->Clone();
+  }
+  else{
+    //int thisbin = hist->FindBin(600);
+    //cout << "[Plotter::AddIfExist] " << key << "\t" << map[key]->GetBinContent( thisbin ) << " + " << hist->GetBinContent( thisbin );
+    map[key]->Add(hist);
+    //cout << " = " << map[key]->GetBinContent( thisbin ) << endl;
+  }
+
+
+}
+
+

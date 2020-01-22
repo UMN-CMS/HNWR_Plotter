@@ -413,12 +413,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   if(DataYear==2016){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.94332;
-        DYNorm_err = 0.0202275;
+        DYNorm = 0.948618;
+        DYNorm_err = 0.0203337;
       }
       else if(int_region==1){
-        DYNorm = 0.874663;
-        DYNorm_err = 0.0243903;
+        DYNorm = 0.876334;
+        DYNorm_err = 0.0243717;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -427,12 +427,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.956523;
-        DYNorm_err = 0.020203;
+        DYNorm = 0.964621;
+        DYNorm_err = 0.0203691;
       }
       else if(int_region==1){
-        DYNorm = 0.844299;
-        DYNorm_err = 0.0240842;
+        DYNorm = 0.846312;
+        DYNorm_err = 0.0241246;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -447,12 +447,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2017){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 1.1325;
-        DYNorm_err = 0.0247749;
+        DYNorm = 1.03136;
+        DYNorm_err = 0.0218754;
       }
       else if(int_region==1){
-        DYNorm = 1.05366;
-        DYNorm_err = 0.0465542;
+        DYNorm = 0.980791;
+        DYNorm_err = 0.0282514;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -461,12 +461,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.16589;
-        DYNorm_err = 0.0251022;
+        DYNorm = 1.06885;
+        DYNorm_err = 0.0224918;
       }
       else if(int_region==1){
-        DYNorm = 1.01588;
-        DYNorm_err = 0.036239;
+        DYNorm = 0.958233;
+        DYNorm_err = 0.0275934;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -481,12 +481,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2018){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.92627;
-        DYNorm_err = 0.01956;
+        DYNorm = 0.974837;
+        DYNorm_err = 0.0205766;
       }
       else if(int_region==1){
-        DYNorm = 0.871837;
-        DYNorm_err = 0.0234077;
+        DYNorm = 0.866676;
+        DYNorm_err = 0.0231401;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -495,12 +495,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.954483;
-        DYNorm_err = 0.0200202;
+        DYNorm = 1.00538;
+        DYNorm_err = 0.0210817;
       }
       else if(int_region==1){
-        DYNorm = 0.869478;
-        DYNorm_err = 0.0234382;
+        DYNorm = 0.8476;
+        DYNorm_err = 0.0227495;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -600,6 +600,29 @@ void AddSystematic(TH1D *hist_Central, TH1D *hist_Syst){
 
 }
 
+void AddDiffSystematic(TH1D *hist_Central, TH1D *hist_Syst){
+
+  for(int i=0; i<=hist_Central->GetXaxis()->GetNbins()+1; i++){
+
+    double y_Central = hist_Central->GetBinContent(i);
+
+    double y_Syst = hist_Syst->GetBinContent(i);
+    double Diff = fabs(y_Central-y_Syst);
+
+    double err_Central = hist_Central->GetBinError(i);
+
+    double sumerr = sqrt( err_Central*err_Central + Diff*Diff );
+
+    int x_l = hist_Central->GetXaxis()->GetBinLowEdge(i+1);
+    int x_r = hist_Central->GetXaxis()->GetBinUpEdge(i+1);
+    //printf("[AddDiffSystematic] (%d,%d) : %f +- %f and %f\n",x_l,x_r,y_Central,err_Central,y_Syst);
+
+    hist_Central->SetBinError(i, sumerr);
+
+  }
+
+}
+
 TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_allerr_Down){
 
   int NBin = MC_stacked_allerr_Up->GetXaxis()->GetNbins();
@@ -659,6 +682,26 @@ double IntegrateGraph(TGraph *gr, double xmin, double xmax, int ndx){
 
     double this_x = xmin + double(i) * dx + 0.5*dx; //==== use center
     double this_y = gr->Eval(this_x,0,0); //==== spline method is more accurate when I tested with x^2 or sin(x) function
+
+    //cout << "[IntegrateGraph] this_x = " << this_x << " -> Eval = " << this_y << endl;
+
+    out += this_y * dx;
+
+  }
+  return out;
+
+}
+
+double IntegrateFunction(TF1 *func, double xmin, double xmax, int ndx){
+
+  double out(0.);
+
+  double dx = (xmax-xmin)/ndx;
+
+  for(int i=0; i<ndx; i++){
+
+    double this_x = xmin + double(i) * dx + 0.5*dx; //==== use center
+    double this_y = func->Eval(this_x);
 
     //cout << "[IntegrateGraph] this_x = " << this_x << " -> Eval = " << this_y << endl;
 

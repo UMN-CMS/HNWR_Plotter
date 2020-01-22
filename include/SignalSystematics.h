@@ -54,6 +54,7 @@ public:
   //==== output plot
   bool DrawPlot;
   TString outputdir;
+  TString histPrefix;
 
   SignalSystematics(int nPDFerrset=101){
 
@@ -93,6 +94,7 @@ public:
 
     DrawPlot = false;
     outputdir = "";
+    histPrefix = "";
 
   }
 
@@ -322,7 +324,7 @@ public:
     hist_ScaleUp->Draw("histsame");
     hist_ScaleDn->Draw("histsame");
 
-    if(DrawPlot) c_Scale->SaveAs(outputdir+"/Scale_"+region+".pdf");
+    if(DrawPlot) c_Scale->SaveAs(outputdir+"/"+histPrefix+"Scale_"+region+".pdf");
     c_Scale->Close();
 
     //================
@@ -413,7 +415,7 @@ public:
     hist_PDFErrorUp->Draw("histsame");
     hist_PDFErrorDn->Draw("histsame");
 
-    if(DrawPlot) c_PDFError->SaveAs(outputdir+"/PDFError_"+region+".pdf");
+    if(DrawPlot) c_PDFError->SaveAs(outputdir+"/"+histPrefix+"PDFError_"+region+".pdf");
     c_PDFError->Close();
 
     //==== AlphaS
@@ -487,7 +489,7 @@ public:
     hist_AlphaSUp->Draw("histsame");
     hist_AlphaSDn->Draw("histsame");
 
-    if(DrawPlot) c_AlphaS->SaveAs(outputdir+"/AlphaS_"+region+".pdf");
+    if(DrawPlot) c_AlphaS->SaveAs(outputdir+"/"+histPrefix+"AlphaS_"+region+".pdf");
     c_AlphaS->Close();
 
     //==== Now make output
@@ -503,8 +505,14 @@ public:
         hist_ScaleUp->SetBinContent( i, central_value * hist_ScaleUp->GetBinContent(i) / central_efF_value );
         hist_ScaleDn->SetBinContent( i, central_value * hist_ScaleDn->GetBinContent(i) / central_efF_value );
 
-        hist_PDFErrorUp->SetBinContent( i, central_value * hist_PDFErrorUp->GetBinContent(i) / central_efF_value );      
-        hist_PDFErrorDn->SetBinContent( i, central_value * hist_PDFErrorDn->GetBinContent(i) / central_efF_value );
+        if(DoDebug){
+          double x_l = hist_Central->GetXaxis()->GetBinLowEdge(i);
+          double x_r = hist_Central->GetXaxis()->GetBinUpEdge(i);
+          printf("[%f,%f] : %f\t%f\t%f\t%f\n",x_l,x_r,central_value, hist_PDFErrorUp->GetBinContent(i), hist_PDFErrorDn->GetBinContent(i), central_efF_value);
+        }
+        double this_PDFError = hist_PDFError->GetBinError(i)/hist_PDFError->GetBinContent(i);
+        hist_PDFErrorUp->SetBinContent( i, central_value * (1+this_PDFError) );
+        hist_PDFErrorDn->SetBinContent( i, central_value * (1-this_PDFError) );
 
         hist_AlphaSUp->SetBinContent( i, central_value * hist_AlphaSUp->GetBinContent(i) / central_efF_value );      
         hist_AlphaSDn->SetBinContent( i, central_value * hist_AlphaSDn->GetBinContent(i) / central_efF_value );

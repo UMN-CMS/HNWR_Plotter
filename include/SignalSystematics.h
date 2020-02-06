@@ -393,7 +393,7 @@ public:
       hist_PDFError->SetBinError(x, sqrt(diff)/ChannelFrac);
 
       hist_PDFErrorUp->SetBinContent(x, (bin_central+sqrt(diff))/ChannelFrac );
-      hist_PDFErrorDn->SetBinContent(x, max(0., (bin_central-sqrt(diff))/ChannelFrac ) );
+      hist_PDFErrorDn->SetBinContent(x, max(0.000001, (bin_central-sqrt(diff))/ChannelFrac ) );
 
       if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " <<hist_PDFError->GetBinContent(x) << ", error = " << hist_PDFError->GetBinError(x) << endl;
 
@@ -468,7 +468,7 @@ public:
       hist_AlphaS->SetBinError(x, this_err);
 
       hist_AlphaSUp->SetBinContent(x, bin_central+this_err );
-      hist_AlphaSDn->SetBinContent(x, max(0., bin_central-this_err) );
+      hist_AlphaSDn->SetBinContent(x, max(0.000001, bin_central-this_err) );
 
       if(DoDebug) cout << "[SignalSystematics] bin " << x << " : " << AlphaSToBinValues[0].at(y) << "\t" << AlphaSToBinValues[1].at(y) << " --> " << bin_central << "\t" << this_err << endl;
 
@@ -494,6 +494,11 @@ public:
 
     //==== Now make output
 
+    //==== Lets modify <=0 bincontent to 0.000001
+    for(int i=1; i<=hist_Central->GetXaxis()->GetNbins(); i++){
+      if(hist_Central->GetBinContent(i)<0) hist_Central->SetBinContent(i, 0.000001);
+    }
+
     for(int i=1; i<=hist_Central->GetXaxis()->GetNbins(); i++){
       double central_value = hist_Central->GetBinContent(i);
 
@@ -505,14 +510,17 @@ public:
         hist_ScaleUp->SetBinContent( i, central_value * hist_ScaleUp->GetBinContent(i) / central_efF_value );
         hist_ScaleDn->SetBinContent( i, central_value * hist_ScaleDn->GetBinContent(i) / central_efF_value );
 
+        double this_PDFError = hist_PDFError->GetBinError(i)/hist_PDFError->GetBinContent(i);
+        hist_PDFErrorUp->SetBinContent( i, central_value * (1+this_PDFError) );
+        hist_PDFErrorDn->SetBinContent( i, central_value * max(0.000001, (1-this_PDFError)) ); //TODO DEBUGGING
+
         if(DoDebug){
           double x_l = hist_Central->GetXaxis()->GetBinLowEdge(i);
           double x_r = hist_Central->GetXaxis()->GetBinUpEdge(i);
-          printf("[%f,%f] : %f\t%f\t%f\t%f\n",x_l,x_r,central_value, hist_PDFErrorUp->GetBinContent(i), hist_PDFErrorDn->GetBinContent(i), central_efF_value);
+          //printf("[%f,%f] : %f\t%f\t%f\t%f\n",x_l,x_r,central_value, hist_PDFErrorUp->GetBinContent(i), hist_PDFErrorDn->GetBinContent(i), central_efF_value);
+          printf("[%f,%f] : %f\t%f\n",x_l,x_r,central_value,this_PDFError);
         }
-        double this_PDFError = hist_PDFError->GetBinError(i)/hist_PDFError->GetBinContent(i);
-        hist_PDFErrorUp->SetBinContent( i, central_value * (1+this_PDFError) );
-        hist_PDFErrorDn->SetBinContent( i, central_value * (1-this_PDFError) );
+
 
         hist_AlphaSUp->SetBinContent( i, central_value * hist_AlphaSUp->GetBinContent(i) / central_efF_value );      
         hist_AlphaSDn->SetBinContent( i, central_value * hist_AlphaSDn->GetBinContent(i) / central_efF_value );

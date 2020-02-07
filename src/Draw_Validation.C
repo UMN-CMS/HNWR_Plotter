@@ -42,7 +42,7 @@ void Draw_Validation(int XXX=0){
   //=========================
 
   if(Year==2016){
-    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50_MG", "DYJets"};
+    m.map_sample_string_to_list["ZJets"] = {"DYJets10to50_MG", "DYJets_MG"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg"};
@@ -175,7 +175,8 @@ void Draw_Validation(int XXX=0){
     "ZCand_Mass", "ZCand_Pt", "ZCand_Eta",
     "MET", "HT",
     "MT",
-    "Jet_Size", "NBJets",
+    "Jet_Size",
+    "NBJets_NoSF", "NBJets_WithSF",
   };
 
   m.x_title = {
@@ -185,7 +186,8 @@ void Draw_Validation(int XXX=0){
     "m(Z) (GeV)", "Z p_{T} (GeV)", "Z #eta",
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
-    "# of jets", "# of b-tagged jets",
+    "# of jets",
+    "# of b-tagged jets (No SF)", "# of b-tagged jets (With SF)",
   };
 
   m.units = {
@@ -195,6 +197,7 @@ void Draw_Validation(int XXX=0){
     "GeV", "GeV", "",
     "GeV", "GeV",
     "GeV",
+    "int",
     "int", "int",
   };
 

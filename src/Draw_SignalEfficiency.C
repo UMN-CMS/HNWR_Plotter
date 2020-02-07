@@ -1,20 +1,20 @@
 #include "canvas_margin.h"
 #include "LRSMSignalInfo.h"
 
-void Draw_SignalEfficiency(){
+void Draw_SignalEfficiency(int Year){
 
-  TString Year = "2016";
+  TString str_Year = TString::Itoa(Year,10);
 
   bool IsCR = false;
 
   double TotalLumi = 1.;
-  if(Year=="2016"){
+  if(str_Year=="2016"){
     TotalLumi = 35918.219;
   }
-  else if(Year=="2017"){
+  else if(str_Year=="2017"){
     TotalLumi = 41527.540;
   }
-  else if(Year=="2018"){
+  else if(str_Year=="2018"){
     TotalLumi = 59735.969;
   }
 
@@ -38,8 +38,8 @@ void Draw_SignalEfficiency(){
 
 
   //=== If not, use geenral
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year+"/Signal/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/"+Year+"/";
+  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/Signal/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/"+str_Year+"/";
 
 
   if(IsCR){
@@ -138,7 +138,7 @@ void Draw_SignalEfficiency(){
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
         if(IsCR) hist_dummy->GetYaxis()->SetRangeUser(0., 0.2);
         hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("Efficiency");
+        hist_dummy->GetYaxis()->SetTitle("A#epsilon ");
 
         TLatex str_m_WR;
         str_m_WR.SetNDC();

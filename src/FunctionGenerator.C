@@ -131,6 +131,34 @@ void FunctionGenerator::Run(FitHistogram& m, TString FuncType, int NPar){
 
   }
 
+  else if(FuncType=="PolyExpo"){
+
+    TString formula_exponent = "";
+    for(int i=1; i<NPar; i++){
+      if(i==1) formula_exponent += " - ["+TString::Itoa(i,10)+"]*pow("+X+","+TString::Itoa(i,10)+")";
+      else     formula_exponent += " - ["+TString::Itoa(i,10)+"]*pow("+X+","+TString::Itoa(i,10)+")";
+    }
+
+    m.functionalForm = "[0] * exp( "+formula_exponent+" )";
+
+    m.InitParameters(NPar);
+    for(int i=0; i<NPar; i++){
+      if(i==0){
+        m.parRangeMins.at(i) = 300*this_normSF;
+        m.parRangeMaxs.at(i) = 900*this_normSF;
+      }
+      else if(i==1){
+        m.parRangeMins.at(i) = 10;
+        m.parRangeMaxs.at(i) = 100;
+      }
+      else{
+        m.parRangeMins.at(i) = 0;
+        m.parRangeMaxs.at(i) = 100;
+      }
+    }
+
+  }
+
   else if(FuncType=="ModifiedExpo"){
 
     if(NPar!=4){

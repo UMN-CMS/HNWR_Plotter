@@ -3,6 +3,8 @@
 
 void Draw_Limit(int Year, TString dirname=""){
 
+  bool DrawObs = true;
+
   gErrorIgnoreLevel = kFatal;
 
   bool Usekfactor = true;
@@ -11,18 +13,24 @@ void Draw_Limit(int Year, TString dirname=""){
 
   TString inputfile = "";
   TString TotalLumi = "";
+  TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
-    inputfile = "2019_11_11_174200__20162017_LSF0p75_Fit_50percent_ReducedPDFError";
+    inputfile = "2020_02_06_174822__Year2016_TryPseudo5EventinThreeBins";
     //inputfile = dirname;
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
-    inputfile = "2019_04_02_093447__RunAll_sorted";
+    inputfile = "2020_01_28_150615__Year2017_LargeBinForSyst";
     TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   else if(Year==2018){
-    inputfile = "2019_04_02_093822__RunAll_sorted";
+    inputfile = "2020_02_03_124004__Year2018_LargeBinForSyst";
     TotalLumi = "59.74 fb^{-1} (13 TeV)";
+  }
+  else if(Year==-1){
+    inputfile = "2020_02_03_124004__YearCombined_LargeBinForSyst";
+    TotalLumi = "137.2 fb^{-1} (13 TeV)";
+    str_Year = "YearCombined";
   }
 
   TLatex latex_CMSPriliminary;
@@ -50,9 +58,10 @@ void Draw_Limit(int Year, TString dirname=""){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString filepath_result = WORKING_DIR+"/rootfiles/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile+".txt";
-  TString plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile;
-  if(!Usekfactor) plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+TString::Itoa(Year,10)+"/"+inputfile+"_Nokfactor";
+  TString filepath_result = WORKING_DIR+"/rootfiles/"+dataset+"/Limit/"+Method+"/"+str_Year+"/"+inputfile+".txt";
+  cout << "@@@@ filepath_result = " << filepath_result << endl;
+  TString plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+str_Year+"/"+inputfile;
+  if(!Usekfactor) plotpath = ENV_PLOT_PATH+"/"+dataset+"/Limit/"+Method+"/"+str_Year+"/"+inputfile+"_Nokfactor";
 
   gSystem->mkdir(plotpath, kTRUE);
 
@@ -270,12 +279,14 @@ void Draw_Limit(int Year, TString dirname=""){
             is >> m.limit_exp_1sdDn;
             is >> m.limit_exp_2sdUp;
             is >> m.limit_exp_2sdDn;
+            is >> m.limit_obs;
 
             m.limit_exp *= signal_scale;
             m.limit_exp_1sdUp *= signal_scale;
             m.limit_exp_1sdDn *= signal_scale;
             m.limit_exp_2sdUp *= signal_scale;
             m.limit_exp_2sdDn *= signal_scale;
+            m.limit_obs *= signal_scale;
 
             lrsminfo.LimitResults.push_back( m );
 
@@ -342,6 +353,7 @@ void Draw_Limit(int Year, TString dirname=""){
       vector<double> vec_wr, vec_n;
       vector<double> vec_xsec;
       vector<double> vec_limit_exp, vec_limit_exp_1sdUp, vec_limit_exp_1sdDn, vec_limit_exp_2sdUp, vec_limit_exp_2sdDn;
+      vector<double> vec_limit_obs;
 
       for(unsigned int r=0; r<results.size(); r++){
 
@@ -359,6 +371,7 @@ void Draw_Limit(int Year, TString dirname=""){
             vec_limit_exp_1sdDn.push_back( m.LimitResults.at(l).limit_exp_1sdDn );
             vec_limit_exp_2sdUp.push_back( m.LimitResults.at(l).limit_exp_2sdUp );
             vec_limit_exp_2sdDn.push_back( m.LimitResults.at(l).limit_exp_2sdDn );
+            vec_limit_obs.push_back( m.LimitResults.at(l).limit_obs );
 
           }
         
@@ -372,22 +385,28 @@ void Draw_Limit(int Year, TString dirname=""){
       double arr_limit_exp[n_mass], arr_limit_exp_1sdUp[n_mass], arr_limit_exp_1sdDn[n_mass], arr_limit_exp_2sdUp[n_mass], arr_limit_exp_2sdDn[n_mass];
       double arr_limit_exp_ratio[n_mass], arr_limit_exp_1sdUp_ratio[n_mass], arr_limit_exp_1sdDn_ratio[n_mass], arr_limit_exp_2sdUp_ratio[n_mass], arr_limit_exp_2sdDn_ratio[n_mass];
 
+      double arr_limit_obs[n_mass];
+      double arr_limit_obs_ratio[n_mass];
+
       for(unsigned int r=0;r<n_mass;r++){
 
         arr_wr[r] = vec_wr.at(r);
         arr_n[r] = vec_n.at(r);
         arr_xsec[r] = vec_xsec.at(r);
-        arr_limit_exp[r] = vec_limit_exp.at(r);
+        arr_limit_exp[r]       = vec_limit_exp.at(r);
         arr_limit_exp_1sdUp[r] = vec_limit_exp_1sdUp.at(r);
         arr_limit_exp_1sdDn[r] = vec_limit_exp_1sdDn.at(r);
         arr_limit_exp_2sdUp[r] = vec_limit_exp_2sdUp.at(r);
         arr_limit_exp_2sdDn[r] = vec_limit_exp_2sdDn.at(r);
+        arr_limit_obs[r]       = vec_limit_obs.at(r);
 
-        arr_limit_exp_ratio[r] = arr_xsec[r]/vec_limit_exp_1sdUp.at(r);
+        arr_limit_exp_ratio[r]       = arr_xsec[r]/vec_limit_exp.at(r);
         arr_limit_exp_1sdUp_ratio[r] = arr_xsec[r]/vec_limit_exp_1sdUp.at(r);
         arr_limit_exp_1sdDn_ratio[r] = arr_xsec[r]/vec_limit_exp_1sdDn.at(r);
         arr_limit_exp_2sdUp_ratio[r] = arr_xsec[r]/vec_limit_exp_2sdUp.at(r);
         arr_limit_exp_2sdDn_ratio[r] = arr_xsec[r]/vec_limit_exp_2sdDn.at(r);
+        arr_limit_obs_ratio[r]       = arr_xsec[r]/vec_limit_obs.at(r);
+
 
       }
 
@@ -398,12 +417,14 @@ void Draw_Limit(int Year, TString dirname=""){
       TGraph2D *gr2d_limit_exp_1sdDn = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_1sdDn);
       TGraph2D *gr2d_limit_exp_2sdUp = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_2sdUp);
       TGraph2D *gr2d_limit_exp_2sdDn = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_2sdDn);
+      TGraph2D *gr2d_limit_obs = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_obs);
 
       TGraph2D *gr2d_limit_exp_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_ratio);
       TGraph2D *gr2d_limit_exp_1sdUp_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_1sdUp_ratio);
       TGraph2D *gr2d_limit_exp_1sdDn_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_1sdDn_ratio);
       TGraph2D *gr2d_limit_exp_2sdUp_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_2sdUp_ratio);
       TGraph2D *gr2d_limit_exp_2sdDn_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_exp_2sdDn_ratio);
+      TGraph2D *gr2d_limit_obs_ratio = new TGraph2D(n_mass, arr_wr, arr_n, arr_limit_obs_ratio);
 
       //==== Now fill 2D histogram based on TGraph2D's using Interpolate function
 
@@ -411,6 +432,10 @@ void Draw_Limit(int Year, TString dirname=""){
       TH2D *hist2d_limit_exp_1sdUp_ratio = new TH2D("hist2d_limit_exp_1sdUp_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
       TH2D *hist2d_limit_exp_1sdDn_ratio = new TH2D("hist2d_limit_exp_1sdDn_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
       TH2D *hist2d_limit_exp = new TH2D("hist2d_limit_exp", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
+
+      TH2D *hist2d_limit_obs_ratio = new TH2D("hist2d_limit_obs_ratio", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
+      TH2D *hist2d_limit_obs = new TH2D("hist2d_limit_obs", "", bin_WR_n, bin_WR_min, bin_WR_max, bin_N_n, bin_N_min, bin_N_max);
+
       for(int it_x=1; it_x<=hist2d_limit_exp_ratio->GetXaxis()->GetNbins(); it_x++){
         double x_center = hist2d_limit_exp_ratio->GetXaxis()->GetBinCenter(it_x);
 
@@ -428,11 +453,14 @@ void Draw_Limit(int Year, TString dirname=""){
           double this_exp = gr2d_limit_exp->Interpolate(x_center, y_center);
           double this_exp_1sdUp = gr2d_limit_exp_1sdUp->Interpolate(x_center, y_center);
           double this_exp_1sdDn = gr2d_limit_exp_1sdDn->Interpolate(x_center, y_center);
+          double this_obs = gr2d_limit_obs->Interpolate(x_center, y_center);
           if(this_xsec<=0||this_exp<=0) continue;
 
           double this_exp_ratio = this_xsec/this_exp;
           double this_exp_1sdUp_ratio = this_xsec/this_exp_1sdUp;
           double this_exp_1sdDn_ratio = this_xsec/this_exp_1sdDn;
+
+          double this_obs_ratio = this_xsec/this_obs;
 
           //cout << region << "\t" << x_center << "\t" << y_center << "\t" << this_xsec << "\t" << this_exp << "\t" << this_exp_ratio << endl;
 
@@ -444,12 +472,16 @@ void Draw_Limit(int Year, TString dirname=""){
           hist2d_limit_exp_1sdUp_ratio->SetBinContent(it_x, it_y, this_exp_1sdUp_ratio);
           hist2d_limit_exp_1sdDn_ratio->SetBinContent(it_x, it_y, this_exp_1sdDn_ratio);
           hist2d_limit_exp->SetBinContent(it_x, it_y, this_exp);
+
+          hist2d_limit_obs_ratio->SetBinContent(it_x, it_y, this_obs_ratio);
+          hist2d_limit_obs->SetBinContent(it_x, it_y, this_obs);
         }
       }
 
       //==== Draw "colz" for "Combined (Resolved+Boosted)" results
       if(region=="Combined"){
 
+        //==== TODO change this to obs
         TH2D *hist2d_limit_exp_ratio_clone = (TH2D *)hist2d_limit_exp_ratio->Clone();
         for(int x=1; x<=hist2d_limit_exp_ratio_clone->GetXaxis()->GetNbins(); x++){
           for(int y=1; y<hist2d_limit_exp_ratio_clone->GetYaxis()->GetNbins(); y++){
@@ -480,6 +512,7 @@ void Draw_Limit(int Year, TString dirname=""){
       double conts[] = {1.};  
       hist2d_limit_exp_ratio->SetContour(1,conts);
       hist2d_limit_exp_ratio->SetLineWidth(2);
+      hist2d_limit_exp_ratio->SetLineStyle(3);
       hist2d_limit_exp_ratio->SetLineColor(colors.at(it_region));
       hist2d_limit_exp_ratio->Draw("cont2same");
 
@@ -494,6 +527,12 @@ void Draw_Limit(int Year, TString dirname=""){
       hist2d_limit_exp_1sdDn_ratio->SetLineStyle(3);
       hist2d_limit_exp_1sdDn_ratio->SetLineColor(colors.at(it_region));
       //hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
+
+      hist2d_limit_obs_ratio->SetContour(1,conts);
+      hist2d_limit_obs_ratio->SetLineWidth(2);
+      hist2d_limit_obs_ratio->SetLineStyle(1);
+      hist2d_limit_obs_ratio->SetLineColor(colors.at(it_region));
+      if(DrawObs) hist2d_limit_obs_ratio->Draw("cont2same");
 
       lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region), "l");
 
@@ -584,6 +623,8 @@ void Draw_Limit(int Year, TString dirname=""){
           y_exp_2sdUp[it_N] = (this_result.limit_exp_2sdUp - this_result.limit_exp)/2.;
           y_exp_2sdDn[it_N] = (this_result.limit_exp - this_result.limit_exp_2sdDn)/2.;
 
+          y_obs[it_N] = this_result.limit_obs/2.;
+
           y_xsec[it_N] = this_lrsm.xsec/2.;
           y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec/2.;
           y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec/2.;
@@ -604,6 +645,11 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp_2sd->SetFillColor(kOrange);
         gr_exp_2sd->SetLineColor(kOrange);
         gr_exp_2sd->SetMarkerColor(kOrange);
+
+        TGraphAsymmErrors *gr_obs = new TGraphAsymmErrors(n_N,x_N,y_obs,0,0,0,0);
+        gr_obs->SetLineColor(kBlack);
+        gr_obs->SetLineWidth(3);
+        gr_obs->SetLineStyle(1);
 
         TGraphAsymmErrors *gr_xsec = new TGraphAsymmErrors(n_N, x_N, y_xsec, 0, 0, y_xsec_err_Dn, y_xsec_err_Up);
         gr_xsec->SetLineColor(kRed);
@@ -633,6 +679,7 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp_2sd->Draw("3same");
         gr_exp_1sd->Draw("3same");
         gr_exp->Draw("lsame");
+        if(DrawObs) gr_obs->Draw("lsame");
 
         gr_xsec->Draw("lsame");
 
@@ -723,6 +770,8 @@ void Draw_Limit(int Year, TString dirname=""){
           y_exp_2sdUp[it_N] = (this_result.limit_exp_2sdUp - this_result.limit_exp)/2.;
           y_exp_2sdDn[it_N] = (this_result.limit_exp - this_result.limit_exp_2sdDn)/2.;
 
+          y_obs[it_N] = this_result.limit_obs/2.;
+
           y_xsec[it_N] = this_lrsm.xsec/2.;
           y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec/2.;
           y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec/2.;
@@ -743,6 +792,11 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp_2sd->SetFillColor(kOrange);
         gr_exp_2sd->SetLineColor(kOrange);
         gr_exp_2sd->SetMarkerColor(kOrange);
+
+        TGraphAsymmErrors *gr_obs = new TGraphAsymmErrors(n_WR,x_WR,y_obs,0,0,0,0);
+        gr_obs->SetLineColor(kBlack);
+        gr_obs->SetLineWidth(3);
+        gr_obs->SetLineStyle(1);
 
         TGraphAsymmErrors *gr_xsec = new TGraphAsymmErrors(n_WR, x_WR, y_xsec, 0, 0, y_xsec_err_Dn, y_xsec_err_Up);
         gr_xsec->SetLineColor(kRed);
@@ -771,6 +825,7 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp_2sd->Draw("3same");
         gr_exp_1sd->Draw("3same");
         gr_exp->Draw("lsame");
+        if(DrawObs) gr_obs->Draw("lsame");
 
         gr_xsec->Draw("lsame");
 

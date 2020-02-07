@@ -81,8 +81,7 @@ void Get_DYNormalization(int xxx=0){
   else if(Year=="2017"){
 
     bkgds = {
-      //==== TODO change WJets to HTBinned
-      "WJets_MG",
+      "WJets_MG_HT",
       "TTLL_powheg", "TTLJ_powheg",
       "ttW", "ttZ",
       "WZ_pythia", "ZZ_pythia", "WW_pythia",
@@ -91,7 +90,7 @@ void Get_DYNormalization(int xxx=0){
     };
 
     samplename_DY10to50 = "DYJets10to50_MG_Reweighted";
-    samplename_DY50 = "DYJets_MG_JetBinned_Reweighted";
+    samplename_DY50 = "DYJets_MG_HT_Reweighted";
 
   }
   else if(Year=="2018"){
@@ -101,7 +100,7 @@ void Get_DYNormalization(int xxx=0){
       "TTLL_powheg", "TTLJ_powheg",
       "WJets_MG_HT",
       "WWW", "WWZ", "WZZ", "ZZZ",
-      "SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl",
       "ttW", "ttZ",
     };
 

@@ -36,7 +36,10 @@ void FitHistogram::Fit(){
 
   }
 
-  fitResultPtr = hist_original->Fit(Name,"0QSWLIM","",fitRangeMin,fitRangeMax);
+  //fitResultPtr = hist_original->Fit(Name,"0QSWLIM","",fitRangeMin,fitRangeMax);
+
+  fitResultPtr = hist_original->Fit(Name,"0QSWLI","",fitRangeMin,fitRangeMax);
+
   //(TVirtualFitter::GetFitter())->GetConfidenceIntervals(confBand);
 
 }

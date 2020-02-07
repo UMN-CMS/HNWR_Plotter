@@ -83,7 +83,7 @@ void Get_DYPtReweight(int xxx=0){
       "TTLL_powheg", "TTLJ_powheg",
       "WJets_MG",
       "WWW", "WWZ", "WZZ", "ZZZ",
-      "SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl",
+      "SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl",
       "ttW", "ttZ",
     };
 

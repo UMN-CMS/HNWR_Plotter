@@ -5,7 +5,7 @@
 
 void Make_ShapeForLimit(int Year=2016){
 
-  bool UseCustomRebin = true;
+  bool UseCustomRebin = false;
 
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 40;
@@ -26,8 +26,7 @@ void Make_ShapeForLimit(int Year=2016){
     ScaleLumi *=  1.;
   }
   else if(Year==2018){
-    ScaleLumi *= 59735.969/35918.219;
-    str_Year = "2016";
+    ScaleLumi *= 1;
   }
   else if(Year==20162017){
     Year=2016;
@@ -48,6 +47,7 @@ void Make_ShapeForLimit(int Year=2016){
     "ElectronTriggerSFUp", "ElectronTriggerSFDown",
     "LSFSFUp", "LSFSFDown",
     "PUUp", "PUDown",
+    "ZPtRwUp", "ZPtRwDown",
   };
 
   gStyle->SetOptStat(0);
@@ -77,46 +77,35 @@ void Make_ShapeForLimit(int Year=2016){
 
   if(Year==2016){
 
-    map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["VVV"] = {"VVV"};
+    map_sample_string_to_list["VV_incl"] = {"VV"};
+    map_sample_string_to_list["ttX"] = {"ttX"};
+    map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-    map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-    map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
-    map_sample_string_to_list["ttX"] = {"ttWToLNu", "ttWToQQ", "ttZ"};
-    map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
   }
   else if(Year==2017){
 
-    //==== TODO Now using JetBinned for 2017. Must be fixed
-    map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_JetBinned"};
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_JetBinned_Reweighted"};
-    //==== TODO Now using inclusive for 2017. Must be fixed
-    map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
-    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG"};
-    map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-    map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl"};
-    map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
-    map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+    map_sample_string_to_list["VVV"] = {"VVV"};
+    map_sample_string_to_list["VV_incl"] = {"VV"};
+    map_sample_string_to_list["ttX"] = {"ttX"};
+    map_sample_string_to_list["SingleTop"] = {"SingleTop"};
+    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
   }
   else if(Year==2018){
 
-    map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
+    map_sample_string_to_list["VVV"] = {"VVV"};
+    map_sample_string_to_list["VV_incl"] = {"VV"};
+    map_sample_string_to_list["ttX"] = {"ttX"};
+    map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-    map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
-    map_sample_string_to_list["VVV"] = {"WWW", "WWZ", "WZZ", "ZZZ"};
-    map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_Incl", "SingleTop_tW_top_Incl", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
-    map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
-    map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
   }
 
@@ -235,8 +224,14 @@ void Make_ShapeForLimit(int Year=2016){
 
             if(hist_bkgd){
 
-              if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, region);
-              else               hist_bkgd->Rebin(n_rebin);
+              if(sample.Contains("DYJets") || sample.Contains("EMuMethod")){
+                //==== these are already rebinned
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, region);
+              }
+              else{
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, region);
+                else               hist_bkgd->Rebin(n_rebin);
+              }
 
               //==== remove negative bins
               for(int ibin=1; ibin<=hist_bkgd->GetXaxis()->GetNbins(); ibin++){
@@ -250,23 +245,23 @@ void Make_ShapeForLimit(int Year=2016){
               }
 
               //==== If EMu-method
-              if(sample=="EMuMethod_TTLX_powheg" && syst=="Central"){
+              if(sample.Contains("EMuMethod") && syst=="Central"){
 
                 cout << "@@@@ EMu : " << region << "\t" << channel << endl;
-                hist_bkgd->SetName("EMu"+shapehistname_suffix);
+                hist_bkgd->SetName(sample+shapehistname_suffix);
 
                 double EMuSyst = 0.20;
                 if( region.Contains("Boosted") ) EMuSyst = 0.30;
 
                 TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+1.*EMuSyst);
-                hist_bkgdUp->SetName("EMu_EMuSystUp");
+                hist_bkgdUp->SetName(sample+"_EMuSystUp");
                 TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-1.*EMuSyst);
-                hist_bkgdDown->SetName("EMu_EMuSystDown");
+                hist_bkgdDown->SetName(sample+"_EMuSystDown");
 
                 TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);
-                hist_bkgd_StatUp->SetName("EMu_StatUp");
+                hist_bkgd_StatUp->SetName(sample+"_StatUp");
                 TH1D *hist_bkgd_StatDown = GetStatUpDown(hist_bkgd,-1);
-                hist_bkgd_StatDown->SetName("EMu_StatDown");
+                hist_bkgd_StatDown->SetName(sample+"_StatDown");
 
                 out_bkgd->cd();
 
@@ -302,6 +297,16 @@ void Make_ShapeForLimit(int Year=2016){
             }
 
           }
+          else{
+            //==== If no histogram
+            //==== e.g., SingleTop_sch_Lep has one entry, and with JetEnUp, that event is gone, so no histogram is filled
+            //==== make a empty histogram; bin info from hist_DATA
+            TH1D *hist_empty = (TH1D *)hist_DATA->Clone();
+            hist_empty->SetName(sample+shapehistname_suffix);
+            EmptyHistogram(hist_empty);
+            out_bkgd->cd();
+            hist_empty->Write();
+          }
 
           file_sample->Close();
           delete file_sample;
@@ -322,11 +327,15 @@ void Make_ShapeForLimit(int Year=2016){
 
             TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
 
-            //==== FIXME now only have 2016 signals
             TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/";
             TFile *file_sig = new TFile(temp_base_filepath+"/Signal/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
+/*
+            //==== TODO DEBUGGING
+            TFile *file_sig = new TFile("/data6/Users/jskim/SKFlatOutput/Run2Legacy_v4/HNWRAnalyzer/2017/RunSyst__Signal__RunXsecSyst__RunNewPDF__NNPDF23_lo_as_0130_qed__/"+this_filename);
+            TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
+*/
             if(dir_sig){
 
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
@@ -389,6 +398,7 @@ void Make_ShapeForLimit(int Year=2016){
                   m.UseCustomRebin = UseCustomRebin;
                   m.n_rebin = n_rebin;
                   m.hist_Central = hist_sig;
+                  //m.isReplica = true;//TODO DEBUGGING
                   m.Run();
 
                   m.hist_ScaleUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");

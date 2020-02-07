@@ -26,8 +26,9 @@ else:
   exec('pu2 = prob_MC_'+str(Year))
 
 #### Change to yours
-outdir = '/home/jskim/cernbox/www/Public/HNWR_13TeV/Run2LegacyPileUpInfo/' ## my laptop
+#outdir = '/home/jskim/cernbox/www/Public/HNWR_13TeV/Run2LegacyPileUpInfo/' ## my laptop
 #outdir = '/eos/user/j/jskim/www/Public/HNWR_13TeV/Run2LegacyPileUpInfo/' ## lxplus
+outdir = '/data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v4__Default/PUDistribution/'
 
 if IsFast:
   outname = "Fast_"+str(Year)
@@ -134,7 +135,7 @@ c1.Close()
 c2 = ROOT.TCanvas('c1','',800,800)
 c2.cd()
 hist_SF.Draw('histsame')
-hist_SF.GetXaxis().SetTitle("NVtx")
+hist_SF.GetXaxis().SetTitle("Number of pileup")
 hist_SF.GetYaxis().SetTitle("PU Reweight")
 hist_SF.GetYaxis().SetRangeUser(0.,4.0)
 hist_SF.SetLineWidth(3)

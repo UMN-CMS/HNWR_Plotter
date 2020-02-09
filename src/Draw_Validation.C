@@ -108,11 +108,13 @@ void Draw_Validation(int XXX=0){
       "SingleMuon_OS",
       "SingleMuon_OnZ_OS",
       "SingleMuon_HigherDiLeptonPtCut_OS",
+      "SingleMuon_mllgt110_TwoJets_METgt30_OS",
       "SingleMuon_WithBJet_METgt30_OS",
 
       "SingleElectron_OS",
       "SingleElectron_OnZ_OS",
       "SingleElectron_HigherDiLeptonPtCut_OS",
+      "SingleElectron_mllgt110_TwoJets_METgt30_OS",
       "SingleElectron_WithBJet_METgt30_OS",
 
       //==== SS
@@ -120,12 +122,13 @@ void Draw_Validation(int XXX=0){
       "SingleMuon_SS",
       "SingleMuon_OnZ_SS",
       "SingleMuon_HigherDiLeptonPtCut_SS",
+      "SingleMuon_mllgt110_TwoJets_METgt30_SS",
       "SingleMuon_WithBJet_METgt30_SS",
       "SingleElectron_SS",
       "SingleElectron_OnZ_SS",
       "SingleElectron_HigherDiLeptonPtCut_SS",
+      "SingleElectron_mllgt110_TwoJets_METgt30_SS",
       "SingleElectron_WithBJet_METgt30_SS",
-
 
 /*
       "SingleMuon_W_CR",
@@ -172,33 +175,39 @@ void Draw_Validation(int XXX=0){
     "NEvent", "nPileUp", "nPV", "nPUForReweight",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_RelIso", "Lepton_0_MiniRelIso", "Lepton_0_MVANoIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_RelIso", "Lepton_1_MiniRelIso", "Lepton_1_MVANoIso",
+    "Jet_0_Pt", "Jet_0_Eta", "Jet_0_DeepCSV", "Jet_0_DeepCSV_Scaled",
+    "Jet_1_Pt", "Jet_1_Eta", "Jet_1_DeepCSV", "Jet_1_DeepCSV_Scaled",
     "ZCand_Mass", "ZCand_Pt", "ZCand_Eta",
     "MET", "HT",
     "MT",
     "Jet_Size",
-    "NBJets_NoSF", "NBJets_WithSF",
+    "NBJets_NoSF", "NBJets_WithSF_1a", "NBJets_WithSF_2a", "NBJets_WithSF_2b",
   };
 
   m.x_title = {
     "# of events", "# of PU", "# of PV", "# of PV",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton RelIso","Leading lepton MiniRelIso","Leading lepton MVA (NoIso)",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton RelIso","Subleading lepton MiniRelIso","Subleading lepton MVA (NoIso)",
+    "Leading jet p_{T} (GeV)", "Leading jet #eta", "Leading jet Deep CSV", "Leading jet Deep CSV (reshaped)",
+    "Subleading jet p_{T} (GeV)", "Subleading jet #eta", "Subleading jet Deep CSV", "Subleading jet Deep CSV (reshaped)",
     "m(Z) (GeV)", "Z p_{T} (GeV)", "Z #eta",
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
     "# of jets",
-    "# of b-tagged jets (No SF)", "# of b-tagged jets (With SF)",
+    "# of b-tagged jets (No SF)", "# of b-tagged jets (With SF; 1a)", "# of b-tagged jets (With SF; 2a)", "# of b-tagged jets (With SF; 2b)",
   };
 
   m.units = {
     "int", "int", "int", "int",
     "GeV", "", "", "", "",
     "GeV", "", "", "", "",
+    "GeV", "", "", "",
+    "GeV", "", "", "",
     "GeV", "GeV", "",
     "GeV", "GeV",
     "GeV",
     "int",
-    "int", "int",
+    "int", "int", "int", "int",
   };
 
   for(unsigned int i=0; i<m.histname_suffix.size(); i++){
@@ -243,22 +252,22 @@ void Draw_Validation(int XXX=0){
 
 /*
   //==== test
-  m.histname = {"ZCand_Mass"};
-  m.x_title = {"m(Z) (GeV)"};
-  m.units = {"GeV"};
+  m.histname = {"Lepton_0_DeepCSV"};
+  m.x_title = {"Leading lepton Deep CSV"};
+  m.units = {""};
 */
 /*
   m.histname = {
-    "Lepton_0_Pt",
-    "Lepton_1_Pt",
+    "Jet_0_Pt", "Jet_0_Eta", "Jet_0_DeepCSV", "Jet_0_DeepCSV_Scaled",
+    "Jet_1_Pt", "Jet_1_Eta", "Jet_1_DeepCSV", "Jet_1_DeepCSV_Scaled",
   };
   m.x_title = {
-    "Leading lepton p_{T} (GeV)",
-    "Subleading lepton p_{T} (GeV)",
+    "Leading jet p_{T} (GeV)", "Leading jet #eta", "Leading jet Deep CSV", "Leading jet Deep CSV (reshaped)",
+    "Subleading jet p_{T} (GeV)", "Subleading jet #eta", "Subleading jet Deep CSV", "Subleading jet Deep CSV (reshaped)",
   };
   m.units = {
-    "GeV",
-    "GeV",
+    "GeV", "", "", "",
+    "GeV", "", "", "",
   };
 */
   cout << "m.histname.size() = " <<  m.histname.size() << endl;

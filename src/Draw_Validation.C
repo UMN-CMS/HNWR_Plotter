@@ -181,7 +181,7 @@ void Draw_Validation(int XXX=0){
     "MET", "HT",
     "MT",
     "Jet_Size",
-    "NBJets_NoSF", "NBJets_WithSF_1a", "NBJets_WithSF_2a", "NBJets_WithSF_2b",
+    "NBJets_NoSF", "NBJets_WithSF_1a", "NBJets_WithSF_2a", "NBJets_WithSF_1d",
   };
 
   m.x_title = {
@@ -194,7 +194,7 @@ void Draw_Validation(int XXX=0){
     "#slash{E}_{T}^{miss} (GeV)", "H_{T} (GeV)",
     "m_{T} (GeV)",
     "# of jets",
-    "# of b-tagged jets (No SF)", "# of b-tagged jets (With SF; 1a)", "# of b-tagged jets (With SF; 2a)", "# of b-tagged jets (With SF; 2b)",
+    "# of b-tagged jets (No SF)", "# of b-tagged jets (With SF; 1a)", "# of b-tagged jets (With SF; 2a)", "# of b-tagged jets (With SF; 1d)",
   };
 
   m.units = {

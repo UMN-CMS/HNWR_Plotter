@@ -30,7 +30,7 @@ POG_SingleMuon_OS	Jet_Size	-999	-999
 POG_SingleMuon_OS	NBJets_NoSF	-999	-999
 POG_SingleMuon_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_OnZ_OS	NEvent	-999	-999
 POG_SingleMuon_OnZ_OS	nPileUp	0	100
 POG_SingleMuon_OnZ_OS	nPV	0	100
@@ -63,7 +63,7 @@ POG_SingleMuon_OnZ_OS	Jet_Size	-999	-999
 POG_SingleMuon_OnZ_OS	NBJets_NoSF	-999	-999
 POG_SingleMuon_OnZ_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_OnZ_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_OnZ_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_OnZ_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_OS	NEvent	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_OS	nPileUp	0	100
 POG_SingleMuon_HigherDiLeptonPtCut_OS	nPV	0	100
@@ -96,7 +96,7 @@ POG_SingleMuon_HigherDiLeptonPtCut_OS	Jet_Size	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_NoSF	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	NEvent	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	nPileUp	0	100
 POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	nPV	0	100
@@ -129,7 +129,7 @@ POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	Jet_Size	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_NoSF	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_WithBJet_METgt30_OS	NEvent	-999	-999
 POG_SingleMuon_WithBJet_METgt30_OS	nPileUp	0	100
 POG_SingleMuon_WithBJet_METgt30_OS	nPV	0	100
@@ -162,7 +162,7 @@ POG_SingleMuon_WithBJet_METgt30_OS	Jet_Size	-999	-999
 POG_SingleMuon_WithBJet_METgt30_OS	NBJets_NoSF	-999	-999
 POG_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_OS	NEvent	-999	-999
 POG_SingleElectron_OS	nPileUp	0	100
 POG_SingleElectron_OS	nPV	0	100
@@ -195,7 +195,7 @@ POG_SingleElectron_OS	Jet_Size	-999	-999
 POG_SingleElectron_OS	NBJets_NoSF	-999	-999
 POG_SingleElectron_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_OnZ_OS	NEvent	-999	-999
 POG_SingleElectron_OnZ_OS	nPileUp	0	100
 POG_SingleElectron_OnZ_OS	nPV	0	100
@@ -228,7 +228,7 @@ POG_SingleElectron_OnZ_OS	Jet_Size	-999	-999
 POG_SingleElectron_OnZ_OS	NBJets_NoSF	-999	-999
 POG_SingleElectron_OnZ_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_OnZ_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_OnZ_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_OnZ_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_OS	NEvent	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_OS	nPileUp	0	100
 POG_SingleElectron_HigherDiLeptonPtCut_OS	nPV	0	100
@@ -261,7 +261,7 @@ POG_SingleElectron_HigherDiLeptonPtCut_OS	Jet_Size	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_NoSF	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	NEvent	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	nPileUp	0	100
 POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	nPV	0	100
@@ -294,7 +294,7 @@ POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	Jet_Size	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_NoSF	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_WithBJet_METgt30_OS	NEvent	-999	-999
 POG_SingleElectron_WithBJet_METgt30_OS	nPileUp	0	100
 POG_SingleElectron_WithBJet_METgt30_OS	nPV	0	100
@@ -327,7 +327,7 @@ POG_SingleElectron_WithBJet_METgt30_OS	Jet_Size	-999	-999
 POG_SingleElectron_WithBJet_METgt30_OS	NBJets_NoSF	-999	-999
 POG_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_SS	NEvent	-999	-999
 POG_SingleMuon_SS	nPileUp	0	100
 POG_SingleMuon_SS	nPV	0	100
@@ -360,7 +360,7 @@ POG_SingleMuon_SS	Jet_Size	-999	-999
 POG_SingleMuon_SS	NBJets_NoSF	-999	-999
 POG_SingleMuon_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_OnZ_SS	NEvent	-999	-999
 POG_SingleMuon_OnZ_SS	nPileUp	0	100
 POG_SingleMuon_OnZ_SS	nPV	0	100
@@ -393,7 +393,7 @@ POG_SingleMuon_OnZ_SS	Jet_Size	-999	-999
 POG_SingleMuon_OnZ_SS	NBJets_NoSF	-999	-999
 POG_SingleMuon_OnZ_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_OnZ_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_OnZ_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_OnZ_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_SS	NEvent	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_SS	nPileUp	0	100
 POG_SingleMuon_HigherDiLeptonPtCut_SS	nPV	0	100
@@ -426,7 +426,7 @@ POG_SingleMuon_HigherDiLeptonPtCut_SS	Jet_Size	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_NoSF	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	NEvent	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	nPileUp	0	100
 POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	nPV	0	100
@@ -459,7 +459,7 @@ POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	Jet_Size	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_NoSF	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_WithBJet_METgt30_SS	NEvent	-999	-999
 POG_SingleMuon_WithBJet_METgt30_SS	nPileUp	0	100
 POG_SingleMuon_WithBJet_METgt30_SS	nPV	0	100
@@ -492,7 +492,7 @@ POG_SingleMuon_WithBJet_METgt30_SS	Jet_Size	-999	-999
 POG_SingleMuon_WithBJet_METgt30_SS	NBJets_NoSF	-999	-999
 POG_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_SS	NEvent	-999	-999
 POG_SingleElectron_SS	nPileUp	0	100
 POG_SingleElectron_SS	nPV	0	100
@@ -525,7 +525,7 @@ POG_SingleElectron_SS	Jet_Size	-999	-999
 POG_SingleElectron_SS	NBJets_NoSF	-999	-999
 POG_SingleElectron_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_OnZ_SS	NEvent	-999	-999
 POG_SingleElectron_OnZ_SS	nPileUp	0	100
 POG_SingleElectron_OnZ_SS	nPV	0	100
@@ -558,7 +558,7 @@ POG_SingleElectron_OnZ_SS	Jet_Size	-999	-999
 POG_SingleElectron_OnZ_SS	NBJets_NoSF	-999	-999
 POG_SingleElectron_OnZ_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_OnZ_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_OnZ_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_OnZ_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_SS	NEvent	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_SS	nPileUp	0	100
 POG_SingleElectron_HigherDiLeptonPtCut_SS	nPV	0	100
@@ -591,7 +591,7 @@ POG_SingleElectron_HigherDiLeptonPtCut_SS	Jet_Size	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_NoSF	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	NEvent	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	nPileUp	0	100
 POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	nPV	0	100
@@ -624,7 +624,7 @@ POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	Jet_Size	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_NoSF	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_WithBJet_METgt30_SS	NEvent	-999	-999
 POG_SingleElectron_WithBJet_METgt30_SS	nPileUp	0	100
 POG_SingleElectron_WithBJet_METgt30_SS	nPV	0	100
@@ -657,7 +657,7 @@ POG_SingleElectron_WithBJet_METgt30_SS	Jet_Size	-999	-999
 POG_SingleElectron_WithBJet_METgt30_SS	NBJets_NoSF	-999	-999
 POG_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POG_SingleMuon_W_CR	NEvent	-999	-999
 POG_SingleMuon_W_CR	nPileUp	0	100
 POG_SingleMuon_W_CR	nPV	0	100
@@ -690,7 +690,7 @@ POG_SingleMuon_W_CR	Jet_Size	-999	-999
 POG_SingleMuon_W_CR	NBJets_NoSF	-999	-999
 POG_SingleMuon_W_CR	NBJets_WithSF_1a	-999	-999
 POG_SingleMuon_W_CR	NBJets_WithSF_2a	-999	-999
-POG_SingleMuon_W_CR	NBJets_WithSF_2b	-999	-999
+POG_SingleMuon_W_CR	NBJets_WithSF_1d	-999	-999
 POG_SingleElectron_W_CR	NEvent	-999	-999
 POG_SingleElectron_W_CR	nPileUp	0	100
 POG_SingleElectron_W_CR	nPV	0	100
@@ -723,7 +723,7 @@ POG_SingleElectron_W_CR	Jet_Size	-999	-999
 POG_SingleElectron_W_CR	NBJets_NoSF	-999	-999
 POG_SingleElectron_W_CR	NBJets_WithSF_1a	-999	-999
 POG_SingleElectron_W_CR	NBJets_WithSF_2a	-999	-999
-POG_SingleElectron_W_CR	NBJets_WithSF_2b	-999	-999
+POG_SingleElectron_W_CR	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_OS	NEvent	-999	-999
 POGHighPt_SingleMuon_OS	nPileUp	0	100
 POGHighPt_SingleMuon_OS	nPV	0	100
@@ -756,7 +756,7 @@ POGHighPt_SingleMuon_OS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_OnZ_OS	NEvent	-999	-999
 POGHighPt_SingleMuon_OnZ_OS	nPileUp	0	100
 POGHighPt_SingleMuon_OnZ_OS	nPV	0	100
@@ -789,7 +789,7 @@ POGHighPt_SingleMuon_OnZ_OS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_OnZ_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_OnZ_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_OnZ_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_OnZ_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_OnZ_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	NEvent	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	nPileUp	0	100
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	nPV	0	100
@@ -822,7 +822,7 @@ POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_HigherDiLeptonPtCut_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	NEvent	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	nPileUp	0	100
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	nPV	0	100
@@ -855,7 +855,7 @@ POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_OS	NEvent	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_OS	nPileUp	0	100
 POGHighPt_SingleMuon_WithBJet_METgt30_OS	nPV	0	100
@@ -888,7 +888,7 @@ POGHighPt_SingleMuon_WithBJet_METgt30_OS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_WithBJet_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_OS	NEvent	-999	-999
 POGHighPt_SingleElectron_OS	nPileUp	0	100
 POGHighPt_SingleElectron_OS	nPV	0	100
@@ -921,7 +921,7 @@ POGHighPt_SingleElectron_OS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_OnZ_OS	NEvent	-999	-999
 POGHighPt_SingleElectron_OnZ_OS	nPileUp	0	100
 POGHighPt_SingleElectron_OnZ_OS	nPV	0	100
@@ -954,7 +954,7 @@ POGHighPt_SingleElectron_OnZ_OS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_OnZ_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_OnZ_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_OnZ_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_OnZ_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_OnZ_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	NEvent	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	nPileUp	0	100
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	nPV	0	100
@@ -987,7 +987,7 @@ POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_HigherDiLeptonPtCut_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	NEvent	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	nPileUp	0	100
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	nPV	0	100
@@ -1020,7 +1020,7 @@ POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_OS	NEvent	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_OS	nPileUp	0	100
 POGHighPt_SingleElectron_WithBJet_METgt30_OS	nPV	0	100
@@ -1053,7 +1053,7 @@ POGHighPt_SingleElectron_WithBJet_METgt30_OS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_OS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_WithBJet_METgt30_OS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_SS	NEvent	-999	-999
 POGHighPt_SingleMuon_SS	nPileUp	0	100
 POGHighPt_SingleMuon_SS	nPV	0	100
@@ -1086,7 +1086,7 @@ POGHighPt_SingleMuon_SS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_OnZ_SS	NEvent	-999	-999
 POGHighPt_SingleMuon_OnZ_SS	nPileUp	0	100
 POGHighPt_SingleMuon_OnZ_SS	nPV	0	100
@@ -1119,7 +1119,7 @@ POGHighPt_SingleMuon_OnZ_SS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_OnZ_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_OnZ_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_OnZ_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_OnZ_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_OnZ_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	NEvent	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	nPileUp	0	100
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	nPV	0	100
@@ -1152,7 +1152,7 @@ POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_HigherDiLeptonPtCut_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	NEvent	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	nPileUp	0	100
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	nPV	0	100
@@ -1185,7 +1185,7 @@ POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_SS	NEvent	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_SS	nPileUp	0	100
 POGHighPt_SingleMuon_WithBJet_METgt30_SS	nPV	0	100
@@ -1218,7 +1218,7 @@ POGHighPt_SingleMuon_WithBJet_METgt30_SS	Jet_Size	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_WithBJet_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_SS	NEvent	-999	-999
 POGHighPt_SingleElectron_SS	nPileUp	0	100
 POGHighPt_SingleElectron_SS	nPV	0	100
@@ -1251,7 +1251,7 @@ POGHighPt_SingleElectron_SS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_OnZ_SS	NEvent	-999	-999
 POGHighPt_SingleElectron_OnZ_SS	nPileUp	0	100
 POGHighPt_SingleElectron_OnZ_SS	nPV	0	100
@@ -1284,7 +1284,7 @@ POGHighPt_SingleElectron_OnZ_SS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_OnZ_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_OnZ_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_OnZ_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_OnZ_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_OnZ_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	NEvent	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	nPileUp	0	100
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	nPV	0	100
@@ -1317,7 +1317,7 @@ POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_HigherDiLeptonPtCut_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	NEvent	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	nPileUp	0	100
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	nPV	0	100
@@ -1350,7 +1350,7 @@ POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_mllgt110_TwoJets_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_SS	NEvent	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_SS	nPileUp	0	100
 POGHighPt_SingleElectron_WithBJet_METgt30_SS	nPV	0	100
@@ -1383,7 +1383,7 @@ POGHighPt_SingleElectron_WithBJet_METgt30_SS	Jet_Size	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_SS	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_WithBJet_METgt30_SS	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleMuon_W_CR	NEvent	-999	-999
 POGHighPt_SingleMuon_W_CR	nPileUp	0	100
 POGHighPt_SingleMuon_W_CR	nPV	0	100
@@ -1416,7 +1416,7 @@ POGHighPt_SingleMuon_W_CR	Jet_Size	-999	-999
 POGHighPt_SingleMuon_W_CR	NBJets_NoSF	-999	-999
 POGHighPt_SingleMuon_W_CR	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleMuon_W_CR	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleMuon_W_CR	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleMuon_W_CR	NBJets_WithSF_1d	-999	-999
 POGHighPt_SingleElectron_W_CR	NEvent	-999	-999
 POGHighPt_SingleElectron_W_CR	nPileUp	0	100
 POGHighPt_SingleElectron_W_CR	nPV	0	100
@@ -1449,4 +1449,4 @@ POGHighPt_SingleElectron_W_CR	Jet_Size	-999	-999
 POGHighPt_SingleElectron_W_CR	NBJets_NoSF	-999	-999
 POGHighPt_SingleElectron_W_CR	NBJets_WithSF_1a	-999	-999
 POGHighPt_SingleElectron_W_CR	NBJets_WithSF_2a	-999	-999
-POGHighPt_SingleElectron_W_CR	NBJets_WithSF_2b	-999	-999
+POGHighPt_SingleElectron_W_CR	NBJets_WithSF_1d	-999	-999

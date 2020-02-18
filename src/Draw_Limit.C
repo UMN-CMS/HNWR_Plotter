@@ -3,7 +3,7 @@
 
 void Draw_Limit(int Year, TString dirname=""){
 
-  bool DrawObs = true;
+  bool DrawObs = false;
 
   gErrorIgnoreLevel = kFatal;
 
@@ -673,7 +673,8 @@ void Draw_Limit(int Year, TString dirname=""){
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
         hist_dummy->GetXaxis()->SetRangeUser(0., 7000.);
         hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrowlljj) (fb)");
+        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarroweejj) (fb)");
+        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrow#mu#mujj) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");
@@ -819,7 +820,8 @@ void Draw_Limit(int Year, TString dirname=""){
         hist_axis(hist_dummy);
         hist_dummy->GetXaxis()->SetRangeUser(800,7000);
         hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrowlljj) (fb)");
+        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarroweejj) (fb)");
+        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrow#mu#mujj) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");

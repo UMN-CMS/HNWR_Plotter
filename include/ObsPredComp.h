@@ -132,6 +132,7 @@ public:
     gr_Obs->SetLineColor(kBlack);
     hist_Obs->Draw("phistsame");
     gr_Obs->Draw("p0same");
+    hist_empty_up->Draw("axissame");
 
     TLegend *lg_up = new TLegend(0.6, 0.7, 0.9, 0.9);
 
@@ -204,6 +205,7 @@ public:
 
     hist_ratio->Draw("p9histsame");
     gr_ratio_point->Draw("p0same");
+    hist_empty_bottom->Draw("axissame");
 
     c_comp->cd();
     TLatex latex_CMSPriliminary, latex_Lumi;

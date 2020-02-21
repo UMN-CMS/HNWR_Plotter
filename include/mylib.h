@@ -413,12 +413,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   if(DataYear==2016){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.948618;
-        DYNorm_err = 0.0203337;
+        DYNorm = 0.948615;
+        DYNorm_err = 0.0203336;
       }
       else if(int_region==1){
-        DYNorm = 0.876334;
-        DYNorm_err = 0.0243717;
+        DYNorm = 0.876052;
+        DYNorm_err = 0.0243671;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -427,12 +427,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.964621;
-        DYNorm_err = 0.0203691;
+        DYNorm = 0.964614;
+        DYNorm_err = 0.020369;
       }
       else if(int_region==1){
-        DYNorm = 0.846312;
-        DYNorm_err = 0.0241246;
+        DYNorm = 0.845392;
+        DYNorm_err = 0.0241098;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -447,12 +447,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2017){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 1.03136;
+        DYNorm = 1.03135;
         DYNorm_err = 0.0218754;
       }
       else if(int_region==1){
-        DYNorm = 0.980791;
-        DYNorm_err = 0.0282514;
+        DYNorm = 0.980653;
+        DYNorm_err = 0.0282497;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -461,12 +461,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.06885;
-        DYNorm_err = 0.0224918;
+        DYNorm = 1.06884;
+        DYNorm_err = 0.0224917;
       }
       else if(int_region==1){
-        DYNorm = 0.958233;
-        DYNorm_err = 0.0275934;
+        DYNorm = 0.957747;
+        DYNorm_err = 0.0275874;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -481,12 +481,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2018){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.974837;
-        DYNorm_err = 0.0205766;
+        DYNorm = 0.974832;
+        DYNorm_err = 0.0205765;
       }
       else if(int_region==1){
-        DYNorm = 0.866676;
-        DYNorm_err = 0.0231401;
+        DYNorm = 0.866475;
+        DYNorm_err = 0.0231383;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -495,12 +495,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.00538;
-        DYNorm_err = 0.0210817;
+        DYNorm = 1.00537;
+        DYNorm_err = 0.0210814;
       }
       else if(int_region==1){
-        DYNorm = 0.8476;
-        DYNorm_err = 0.0227495;
+        DYNorm = 0.847074;
+        DYNorm_err = 0.0227443;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -511,10 +511,6 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
       cout << "Wrong DY Norm" << endl;
       exit(EXIT_FAILURE);
     }
-  }
-  else{
-    cout << "(mylib.h) [GetDYNormSF()] : Wrong DataYear; " << DataYear << endl;
-    exit(EXIT_FAILURE);
   }
 
   if(geterror) return DYNorm_err;
@@ -646,7 +642,7 @@ TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_al
 
 }
 
-TH1D *RebinWRMass(TH1D *hist, TString region){
+TH1D *RebinWRMass(TH1D *hist, TString region, int DataYear){
 
   int lastbin = hist->GetXaxis()->GetNbins();
 
@@ -657,8 +653,17 @@ TH1D *RebinWRMass(TH1D *hist, TString region){
     if(region.Contains("Boosted")) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
   }
   else{
-    vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 4000, 8000};
-    if(region.Contains("Boosted")) vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
+    vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000};
+    if(region.Contains("Boosted")){
+      if( DataYear==2016 && 
+          ( region.Contains("HNWR_SingleMuon_EMu_Boosted_CR") || region.Contains("HNWR_SingleElectron_Boosted_SR") || region.Contains("elFatJet") || region=="" )
+      ){
+        vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
+      }
+      else{
+        vec_bins = {0, 800, 1000, 1200, 1500, 1700, 8000};
+      }
+    }
   }
 
   const int n_bin = vec_bins.size()-1;

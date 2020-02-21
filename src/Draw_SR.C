@@ -4,7 +4,7 @@
 void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool ScaleMC=false){
 
   bool UsePromptMC = false;
-  bool UseFit = true;
+  bool UseFit = false;
 
   //==============
   //==== get env
@@ -21,12 +21,14 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   Plotter m;
   m.DoDebug = false;
   m.DataYear = Year;
-  
+
   //=====================
   //==== set data class
   //=====================
-  
-  m.data_class = dataset+"/Regions/"+TString::Itoa(Year,10)+"/";
+
+  TString str_Year = TString::Itoa(Year,10);
+  if(Year<0) str_Year = "YearCombined";
+  m.data_class = dataset+"/Regions/"+str_Year+"/";
   
   //================================
   //==== set prefixes and suffixes
@@ -127,6 +129,55 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
 
   }
+  else if(Year<0){
+
+    m.data_class = dataset+"/Regions/";
+
+    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"]  = {
+      "2016 DYJets10to50_MG_Reweighted", "2016 DYJets_MG_HT_Reweighted",
+      "2017 DYJets10to50_MG_Reweighted", "2017 DYJets_MG_HT_Reweighted",
+      "2018 DYJets10to50_MG_Reweighted", "2018 DYJets_MG_HT_Reweighted",
+    };
+    m.map_sample_string_to_list["WJets_MG_HT"] = {
+      "2016 WJets_MG_HT",
+      "2017 WJets_MG_HT",
+      "2018 WJets_MG_HT",
+    };
+    m.map_sample_string_to_list["VV_incl"] = {
+      "2016 VV",
+      "2017 VV",
+      "2018 VV",
+    };
+    m.map_sample_string_to_list["VVV"] = {
+      "2016 VVV",
+      "2017 VVV",
+      "2018 VVV",
+    };
+    m.map_sample_string_to_list["SingleTop"] = {
+      "2016 SingleTop",
+      "2017 SingleTop",
+      "2018 SingleTop",
+    };
+    m.map_sample_string_to_list["ttX"] = {
+      "2016 ttX",
+      "2017 ttX",
+      "2018 ttX",
+    };
+    m.map_sample_string_to_list["EMuMethod"]     = {
+      "2016 EMuMethod_TTLX_powheg",
+      "2017 EMuMethod_TTLX_powheg",
+      "2018 EMuMethod_TTLX_powheg",
+    };
+
+    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
+    m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
+    m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
+    m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
+
+  }
 
   //===============================
   //==== set and make sample list
@@ -206,6 +257,18 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "", "int", "int",
   };
 
+  if(Year<0){
+    m.histname = {
+      "WRCand_Mass"
+    };
+    m.x_title = {
+      "m_{WR} (GeV)",
+    };
+    m.units = {
+      "GeV",
+    };
+  }
+
 /*
   m.histname = {
     "ZCand_Mass",
@@ -217,7 +280,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "GeV",
   };
 */
-
+/*
   m.histname = {
     "WRCand_Mass"
   };
@@ -227,7 +290,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   m.units = {
     "GeV",
   };
-
+*/
 /*
   m.histname = {
     "ZCand_Pt"
@@ -318,25 +381,30 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== Fill MCNorm SF
   //=====================
 
-  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/MCSF.txt", m.bkglist);
+  m.analysisInputs.SetMCSF(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/MCSF.txt", m.bkglist);
 
   //======================
   //==== Get Systematics
   //======================
 
-  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/Syst.txt");
+  m.analysisInputs.SetCalculatedSysts(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/Syst.txt");
   m.Systs = {
     "JetRes",
     "JetEn",
+    "MuonRecoSF",
     "MuonEn",
     "MuonIDSF",
+    "MuonISOSF",
     "MuonTriggerSF",
+    "ElectronRecoSF",
     "ElectronRes",
     "ElectronEn",
     "ElectronIDSF",
     "ElectronTriggerSF",
     "LSFSF",
     "PU",
+    "ZPtRw",
+    "Prefire",
   };
 
   //=============================
@@ -447,7 +515,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   }
   skeleton_rebins.close();
 
-  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_rebins.txt");
+  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/SR_rebins.txt");
 
   //=============
   //==== y_maxs
@@ -469,7 +537,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   m.default_y_max = 20.;
   m.default_y_min = 0.;
 
-  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_yaxis.txt");
+  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/SR_yaxis.txt");
 
   //=============
   //==== x_mins
@@ -486,7 +554,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   }
   skeleton_x_mins.close();
 
-  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/SR_xaxis.txt");
+  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/SR_xaxis.txt");
 
   //===============
   //==== k-factor
@@ -504,10 +572,10 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/";
 
   if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
-  if(UseFit) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+TString::Itoa(Year,10)+"/UseFit/";
+  if(UseFit) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/UseFit/";
 
   m.make_plot_directory();
   

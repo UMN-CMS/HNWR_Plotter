@@ -7,17 +7,20 @@ void Draw_SignalEfficiency(int Year){
 
   bool IsCR = false;
 
+  TString string_TotalLumi = "";
   double TotalLumi = 1.;
-  if(str_Year=="2016"){
+  if(Year==2016){
+    string_TotalLumi = "35.92 fb^{-1} (13 TeV)";
     TotalLumi = 35918.219;
   }
-  else if(str_Year=="2017"){
+  else if(Year==2017){
+    string_TotalLumi = "41.53 fb^{-1} (13 TeV)";
     TotalLumi = 41527.540;
   }
-  else if(str_Year=="2018"){
+  else if(Year==2018){
+    string_TotalLumi = "59.74 fb^{-1} (13 TeV)";
     TotalLumi = 59735.969;
   }
-
 
   setTDRStyle();
   gStyle->SetOptStat(0);
@@ -144,6 +147,12 @@ void Draw_SignalEfficiency(int Year){
         str_m_WR.SetNDC();
         str_m_WR.SetTextSize(0.035);
         str_m_WR.DrawLatex(0.2, 0.85, "m_{WR} = "+TString::Itoa(m_WR,10)+" (GeV)");
+
+        TLatex latex_Lumi;
+        latex_Lumi.SetNDC();
+        latex_Lumi.SetTextSize(0.035);
+        latex_Lumi.DrawLatex(0.2, 0.81, "Run"+str_Year);
+        //latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
 
         TLegend *lg = new TLegend(0.6, 0.7, 0.93, 0.93);
         lg->SetBorderSize(0);

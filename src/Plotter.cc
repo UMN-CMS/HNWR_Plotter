@@ -90,19 +90,36 @@ void Plotter::draw_hist(){
       for(i_file = 0; i_file < bkglist.size()+1+signal_LRSMinfo.size(); i_file++){ // +1 for data
       
         TString filepath, current_sample, signal_name_for_tex;
-        
+
+
+        //==== For year combination
+        int ThisSampleDataYear = DataYear;
+        TString str_ThisSampleDataYear = TString::Itoa(DataYear,10);
+
         //==== root file path name
         //==== bkg
         if( i_file < bkglist.size() ){
           TString tmp = bkglist[i_file];
+
           if(bkglist[i_file].Contains("fake") || bkglist[i_file].Contains("chargeflip") || bkglist[i_file].Contains("FromEMu") ) tmp += "_"+PrimaryDataset[i_cut];
           filepath = "./rootfiles/"+data_class+"/"+filename_prefix+filename_skim+"_"+tmp+filename_suffix;
+          if(DataYear<0){
+            str_ThisSampleDataYear = tmp(0,4);
+            ThisSampleDataYear = str_ThisSampleDataYear.Atoi();
+
+            tmp = tmp(5,tmp.Capacity());
+
+            filepath = "./rootfiles/"+data_class+"/"+str_ThisSampleDataYear+"/"+filename_prefix+filename_skim+"_"+tmp+filename_suffix;
+          }
           current_sample = bkglist[i_file];
         }
         //==== data for i_file = bkglist.size()
         else if( i_file == bkglist.size() ){
           filepath = "./rootfiles/"+data_class+"/"+filename_prefix+filename_skim+"_data_"+PrimaryDataset[i_cut]+filename_suffix;
           current_sample = "data";
+          if(DataYear<0){
+            filepath = "./rootfiles/"+data_class+"/YearCombined/"+filename_prefix+filename_skim+"_data_"+PrimaryDataset[i_cut]+filename_suffix;
+          }
         }
         //==== signal starting from i_file = bkglist.size()+1
         else{
@@ -222,7 +239,7 @@ void Plotter::draw_hist(){
           if(ApplyMCNormSF.at(i_cut)){
             //==== FIXME for DY
             if(current_sample.Contains("DYJets")){
-              double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
+              double DYNorm = GetDYNormSF(ThisSampleDataYear, histname_suffix[i_cut]);
               hist_final->Scale(DYNorm);
             }
             else{
@@ -299,6 +316,12 @@ void Plotter::draw_hist(){
               AddIfExist(map_to_Source_to_Down, "ZPtRw", hist_final);
               continue;
             }
+            //==== 3) DYNorm only for DY
+            if( Syst=="DYNorm" && !(current_sample.Contains("DYJets")) ){
+              AddIfExist(map_to_Source_to_Up, "DYNorm", hist_final);
+              AddIfExist(map_to_Source_to_Down, "DYNorm", hist_final);
+              continue;
+            }
 
             //==== For this systematic source,
 
@@ -367,7 +390,7 @@ void Plotter::draw_hist(){
 
               //==== FIXME for DY
               if(current_sample.Contains("DYJets")){
-                double DYNorm = GetDYNormSF(DataYear, histname_suffix[i_cut]);
+                double DYNorm = GetDYNormSF(ThisSampleDataYear, histname_suffix[i_cut]);
                 hist_Up_final->Scale(DYNorm);
                 hist_Down_final->Scale(DYNorm);
               }
@@ -452,8 +475,6 @@ void Plotter::draw_hist(){
 
       TH1D *hist_AllSyst_Up = (TH1D *)MC_stacked_staterr->Clone();
       TH1D *hist_AllSyst_Down = (TH1D *)MC_stacked_staterr->Clone();
-      SetErrorZero(hist_AllSyst_Up);
-      SetErrorZero(hist_AllSyst_Down);
       for(map<TString, TH1D *>::iterator it=map_to_Source_to_Up.begin(); it!=map_to_Source_to_Up.end(); it++){
         TString key = it->first;
         AddDiffSystematic( hist_AllSyst_Up, map_to_Source_to_Up[key] );
@@ -480,6 +501,7 @@ void Plotter::draw_hist(){
         hist_data->SetMarkerColor(kBlack);
         hist_data->SetLineColor(kBlack);
       }
+
       draw_canvas(MC_stacked, MC_stacked_staterr, gr_MC_allerr, hist_data, hist_signal, lg, drawdata.at(i_cut));
 
       //==== legend is already deleted in draw_canvas()
@@ -792,13 +814,13 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
   //==== y=0 line
   double x_0[2], y_0[2];
-  x_0[0] = -5000;  y_0[0] = 0;
-  x_0[1] = 5000;  y_0[1] = 0;
+  x_0[0] = -9000;  y_0[0] = 0;
+  x_0[1] = 9000;  y_0[1] = 0;
   TGraph *g0 = new TGraph(2, x_0, y_0);
   //==== y=1 line
   double x_1[2], y_1[2];
-  x_1[0] = 5000;  y_1[0] = 1;
-  x_1[1] = -5000;  y_1[1] = 1;
+  x_1[0] = 9000;  y_1[0] = 1;
+  x_1[1] = -9000;  y_1[1] = 1;
   TGraph *g1 = new TGraph(2, x_1, y_1);
   
   //==== If we draw data, prepare top/bottom pads
@@ -1558,6 +1580,7 @@ TString Plotter::TotalLumi(){
   if(DataYear==2016) return "35.92";
   else if(DataYear==2017) return "41.53";
   else if(DataYear==2018) return "59.74";
+  else if(DataYear<0) return "137.19";
   else{
     cout << "[Plotter::TotalLumi] Wrong DataYear" << DataYear << endl;
     exit(EXIT_FAILURE);
@@ -1572,6 +1595,7 @@ double Plotter::LumiError(){
   if(DataYear==2016) return 0.025;
   else if(DataYear==2017) return 0.023;
   else if(DataYear==2018) return 0.025;
+  else if(DataYear<0) return 0.025;
   else{
     cout << "[Plotter::LumiError] Wrong DataYear" << DataYear << endl;
     exit(EXIT_FAILURE);
@@ -1727,6 +1751,7 @@ TH1D *Plotter::Rebin(TH1D *hist){
 
   if(histname[i_var]=="WRCand_Mass" && !histname_suffix[i_cut].Contains("LowWR")){
 
+/*
     if( i_file<bkglist.size() ){
       if( bkglist[i_file].Contains("FromFit") ){
         //cout << bkglist[i_file] << " --> not rebinning" << endl;
@@ -1736,9 +1761,12 @@ TH1D *Plotter::Rebin(TH1D *hist){
       }
     }
     else{
-      //hist = RebinWRMass(hist, histname_suffix[i_cut]);
+      //hist = RebinWRMass(hist, histname_suffix[i_cut], DataYear);
       hist->Rebin( n_rebin() );
     }
+*/
+
+    hist = RebinWRMass(hist, histname_suffix[i_cut], DataYear);
 
   }
   else{

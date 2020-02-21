@@ -77,8 +77,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
   if(Year=="2016"){
 
     sym_samples = {
-      "TTLL_powheg",
-      "TTLJ_powheg",
       "TTLX_powheg",
     };
 
@@ -97,8 +95,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
   else if(Year=="2017"){
 
     sym_samples = {
-      "TTLL_powheg",
-      "TTLJ_powheg",
       "TTLX_powheg",
     };
 
@@ -117,8 +113,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
   else if(Year=="2018"){
 
     sym_samples = {
-      "TTLL_powheg",
-      "TTLJ_powheg",
       "TTLX_powheg",
     };
 
@@ -245,15 +239,15 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
           if(var=="WRCand_Mass"){
 
             if(xxx>0){
-              hist_EE = RebinWRMass(hist_EE, SR);
-              hist_MM = RebinWRMass(hist_MM, SR);
-              hist_EM = RebinWRMass(hist_EM, SR);
+              hist_EE = RebinWRMass(hist_EE, SR, xxx);
+              hist_MM = RebinWRMass(hist_MM, SR, xxx);
+              hist_EM = RebinWRMass(hist_EM, SR, xxx);
             }
 
             else{
-              hist_EE = RebinWRMass(hist_EE, SR+"Low");
-              hist_MM = RebinWRMass(hist_MM, SR+"Low");
-              hist_EM = RebinWRMass(hist_EM, SR+"Low");
+              hist_EE = RebinWRMass(hist_EE, SR+"Low", xxx);
+              hist_MM = RebinWRMass(hist_MM, SR+"Low", xxx);
+              hist_EM = RebinWRMass(hist_EM, SR+"Low", xxx);
             }
 
           }          
@@ -533,12 +527,12 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             //==== rebin
             if(var=="WRCand_Mass"){
               if(xxx>0){
-                hist_Pred_EE = RebinWRMass(hist_Pred_EE,SR);
-                hist_Obs_EE = RebinWRMass(hist_Obs_EE,SR);
+                hist_Pred_EE = RebinWRMass(hist_Pred_EE,SR, xxx);
+                hist_Obs_EE = RebinWRMass(hist_Obs_EE,SR, xxx);
               }
               else{
-                hist_Pred_EE = RebinWRMass(hist_Pred_EE,SR+"Low");
-                hist_Obs_EE = RebinWRMass(hist_Obs_EE,SR+"Low");
+                hist_Pred_EE = RebinWRMass(hist_Pred_EE,SR+"Low", xxx);
+                hist_Obs_EE = RebinWRMass(hist_Obs_EE,SR+"Low", xxx);
               }
             }
             else{
@@ -599,12 +593,12 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             //==== rebin
             if(var=="WRCand_Mass"){
               if(xxx>0){
-                hist_Pred_MM = RebinWRMass(hist_Pred_MM,SR);
-                hist_Obs_MM = RebinWRMass(hist_Obs_MM,SR);
+                hist_Pred_MM = RebinWRMass(hist_Pred_MM,SR, xxx);
+                hist_Obs_MM = RebinWRMass(hist_Obs_MM,SR, xxx);
               } 
               else{
-                hist_Pred_MM = RebinWRMass(hist_Pred_MM,SR+"Low");
-                hist_Obs_MM = RebinWRMass(hist_Obs_MM,SR+"Low");
+                hist_Pred_MM = RebinWRMass(hist_Pred_MM,SR+"Low", xxx);
+                hist_Obs_MM = RebinWRMass(hist_Obs_MM,SR+"Low", xxx);
               }
             } 
             else{

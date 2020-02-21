@@ -56,7 +56,7 @@ void Draw_CompareDYPtReweight(int xxx=0){
   }
   else if(Year=="2017"){
     samplename_DY10to50 = "DYJets10to50_MG";
-    samplename_DY50 = "DYJets_MG_JetBinned";
+    samplename_DY50 = "DYJets_MG_HT";
   }
   else if(Year=="2018"){
     samplename_DY10to50 = "DYJets10to50_MG";

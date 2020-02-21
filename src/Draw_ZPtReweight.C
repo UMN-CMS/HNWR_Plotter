@@ -1,7 +1,7 @@
 #include "canvas_margin.h"
 #include "mylib.h"
 
-void Draw_ZPtReweight(int xxx=2016){
+void Draw_ZPtReweight(int xxx=0){
 
   TString Year = "2016";
   TString TotalLumi = "35.92 fb^{-1} (13 TeV)";

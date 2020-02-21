@@ -461,9 +461,12 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   m.Systs = {
     "JetRes",
     "JetEn",
+    "MuonRecoSF",
     "MuonEn",
     "MuonIDSF",
+    "MuonISOSF",
     "MuonTriggerSF",
+    "ElectronRecoSF",
     "ElectronRes",
     "ElectronEn",
     "ElectronIDSF",
@@ -471,6 +474,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "LSFSF",
     "PU",
     "ZPtRw",
+    "Prefire",
   };
 
   //=============

@@ -5,7 +5,7 @@
 
 void Make_ShapeForLimit(int Year=2016){
 
-  bool UseCustomRebin = false;
+  bool UseCustomRebin = true;
 
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 40;
@@ -17,7 +17,6 @@ void Make_ShapeForLimit(int Year=2016){
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
-  //==== FIXME now only have 2016 signals
   TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
     ScaleLumi *= 1.;
@@ -38,9 +37,12 @@ void Make_ShapeForLimit(int Year=2016){
     "Central",
     "JetResUp", "JetResDown",
     "JetEnUp", "JetEnDown",
+    "MuonRecoSFUp", "MuonRecoSFDown",
     "MuonEnUp", "MuonEnDown",
     "MuonIDSFUp", "MuonIDSFDown",
+    "MuonISOSFUp", "MuonISOSFDown",
     "MuonTriggerSFUp", "MuonTriggerSFDown",
+    "ElectronRecoSFUp", "ElectronRecoSFDown",
     "ElectronResUp", "ElectronResDown",
     "ElectronEnUp", "ElectronEnDown",
     "ElectronIDSFUp", "ElectronIDSFDown",
@@ -49,6 +51,10 @@ void Make_ShapeForLimit(int Year=2016){
     "PUUp", "PUDown",
     "ZPtRwUp", "ZPtRwDown",
   };
+  if(Year<=2017){
+    systs.push_back( "PrefireUp" );
+    systs.push_back( "PrefireDown" );
+  }
 
   gStyle->SetOptStat(0);
 
@@ -82,8 +88,12 @@ void Make_ShapeForLimit(int Year=2016){
     map_sample_string_to_list["ttX"] = {"ttX"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
+
+    //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
+    //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
+
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
 
   }
   else if(Year==2017){
@@ -93,8 +103,13 @@ void Make_ShapeForLimit(int Year=2016){
     map_sample_string_to_list["ttX"] = {"ttX"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
+
+    //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
+    //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
+
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+
 
   }
   else if(Year==2018){
@@ -104,8 +119,12 @@ void Make_ShapeForLimit(int Year=2016){
     map_sample_string_to_list["ttX"] = {"ttX"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
+
+    //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
+    //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
+
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
 
   }
 
@@ -157,7 +176,7 @@ void Make_ShapeForLimit(int Year=2016){
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
-      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, region);
+      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year);
       else               hist_DATA->Rebin(n_rebin);
 
       //==== temporary lumi scaling; scale content, sqrt() sqruare stat
@@ -226,10 +245,10 @@ void Make_ShapeForLimit(int Year=2016){
 
               if(sample.Contains("DYJets") || sample.Contains("EMuMethod")){
                 //==== these are already rebinned
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, region);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year);
               }
               else{
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, region);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year);
                 else               hist_bkgd->Rebin(n_rebin);
               }
 
@@ -327,13 +346,14 @@ void Make_ShapeForLimit(int Year=2016){
 
             TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
 
+
             TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/";
             TFile *file_sig = new TFile(temp_base_filepath+"/Signal/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
 /*
             //==== TODO DEBUGGING
-            TFile *file_sig = new TFile("/data6/Users/jskim/SKFlatOutput/Run2Legacy_v4/HNWRAnalyzer/2017/RunSyst__Signal__RunXsecSyst__RunNewPDF__NNPDF23_lo_as_0130_qed__/"+this_filename);
+            TFile *file_sig = new TFile("/data6/Users/jskim/SKFlatOutput/Run2Legacy_v4/HNWRAnalyzer/"+str_Year+"/RunSyst__Signal__RunXsecSyst__RunNewPDF__NNPDF23_lo_as_0130_qed__/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 */
             if(dir_sig){
@@ -341,7 +361,7 @@ void Make_ShapeForLimit(int Year=2016){
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
 
               if(hist_sig){
-                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, region);
+                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year);
                 else               hist_sig->Rebin(n_rebin);
                 hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
 
@@ -381,6 +401,7 @@ void Make_ShapeForLimit(int Year=2016){
                   //==== xsec
 
                   SignalSystematics m;
+                  m.DataYear = Year;
                   m.file = file_sig;
                   //m.DoDebug = true;
 

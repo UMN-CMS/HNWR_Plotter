@@ -5,7 +5,14 @@
 
 void Make_ShapeForLimit(int Year=2016){
 
+  TString str_Year = TString::Itoa(Year,10);
+
   bool UseCustomRebin = true;
+
+  bool UncorrelateSyst = true;
+
+  TString nuisancePrefix = "";
+  if(UncorrelateSyst) nuisancePrefix = "Run"+str_Year+"_";
 
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 40;
@@ -17,7 +24,6 @@ void Make_ShapeForLimit(int Year=2016){
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
 
-  TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
     ScaleLumi *= 1.;
   }
@@ -205,7 +211,7 @@ void Make_ShapeForLimit(int Year=2016){
         else{
           dirname = "Syst_"+syst+"_"+Suffix+"_"+region;
           histname = ShapeVarName+"_"+dirname;
-          shapehistname_suffix = "_"+syst;
+          shapehistname_suffix = "_"+nuisancePrefix+syst;
         }
 
         vector<TString> samplelist;
@@ -273,14 +279,14 @@ void Make_ShapeForLimit(int Year=2016){
                 if( region.Contains("Boosted") ) EMuSyst = 0.30;
 
                 TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+1.*EMuSyst);
-                hist_bkgdUp->SetName(sample+"_EMuSystUp");
+                hist_bkgdUp->SetName(sample+"_"+nuisancePrefix+"EMuSystUp");
                 TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-1.*EMuSyst);
-                hist_bkgdDown->SetName(sample+"_EMuSystDown");
+                hist_bkgdDown->SetName(sample+"_"+nuisancePrefix+"EMuSystDown");
 
                 TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);
-                hist_bkgd_StatUp->SetName(sample+"_StatUp");
+                hist_bkgd_StatUp->SetName(sample+"_"+nuisancePrefix+"StatUp");
                 TH1D *hist_bkgd_StatDown = GetStatUpDown(hist_bkgd,-1);
-                hist_bkgd_StatDown->SetName(sample+"_StatDown");
+                hist_bkgd_StatDown->SetName(sample+"_"+nuisancePrefix+"StatDown");
 
                 out_bkgd->cd();
 
@@ -296,17 +302,22 @@ void Make_ShapeForLimit(int Year=2016){
                 if(syst=="Central"){
 
                   TH1D *hist_bkgdstatup = GetStatUpDown(hist_bkgd,+1);
-                  hist_bkgdstatup->SetName(sample+"_StatUp");
+                  hist_bkgdstatup->SetName(sample+"_"+nuisancePrefix+"StatUp");
                   TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd,-1);
-                  hist_bkgdstatdown->SetName(sample+"_StatDown");
+                  hist_bkgdstatdown->SetName(sample+"_"+nuisancePrefix+"StatDown");
 
                   out_bkgd->cd();
                   hist_bkgdstatup->Write();
                   hist_bkgdstatdown->Write();
 
-                }
+                  hist_bkgd->SetName(sample+shapehistname_suffix);
 
-                hist_bkgd->SetName(sample+shapehistname_suffix);
+                }
+                else{
+
+                  hist_bkgd->SetName(sample+shapehistname_suffix);
+
+                }
 
                 out_bkgd->cd();
                 hist_bkgd->Write();
@@ -321,7 +332,14 @@ void Make_ShapeForLimit(int Year=2016){
             //==== e.g., SingleTop_sch_Lep has one entry, and with JetEnUp, that event is gone, so no histogram is filled
             //==== make a empty histogram; bin info from hist_DATA
             TH1D *hist_empty = (TH1D *)hist_DATA->Clone();
-            hist_empty->SetName(sample+shapehistname_suffix);
+
+            if(syst=="Central"){
+              hist_empty->SetName(sample+shapehistname_suffix);
+            }
+            else{
+              hist_empty->SetName(sample+shapehistname_suffix);
+            }
+
             EmptyHistogram(hist_empty);
             out_bkgd->cd();
             hist_empty->Write();
@@ -363,7 +381,13 @@ void Make_ShapeForLimit(int Year=2016){
               if(hist_sig){
                 if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year);
                 else               hist_sig->Rebin(n_rebin);
-                hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
+
+                if(syst=="Central"){
+                  hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
+                }
+                else{
+                  hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
+                }
 
                 //==== remove negative bins
                 for(int ibin=1; ibin<=hist_sig->GetXaxis()->GetNbins(); ibin++){

@@ -717,4 +717,151 @@ double IntegrateFunction(TF1 *func, double xmin, double xmax, int ndx){
 
 }
 
+double GetKFactor(int mWR, int mN){
+  if(mWR==200){
+    if(mN < mWR/2.) return 1.13;
+    else return 1.13;
+  }
+  else if(mWR==400){
+    if(mN < mWR/2.) return 1.15;
+    else return 1.16;
+  }
+  else if(mWR==600){
+    if(mN < mWR/2.) return 1.17;
+    else return 1.17;
+  }
+  else if(mWR==800){
+    if(mN < mWR/2.) return 1.19;
+    else return 1.20;
+  }
+  else if(mWR==1000){
+    if(mN < mWR/2.) return 1.21;
+    else return 1.21;
+  }
+  else if(mWR==1200){
+    if(mN < mWR/2.) return 1.23;
+    else return 1.24;
+  }
+  else if(mWR==1400){
+    if(mN < mWR/2.) return 1.24;
+    else return 1.25;
+  }
+  else if(mWR==1600){
+    if(mN < mWR/2.) return 1.24;
+    else return 1.26;
+  }
+  else if(mWR==1800){
+    if(mN < mWR/2.) return 1.25;
+    else return 1.28;
+  }
+  else if(mWR==2000){
+    if(mN < mWR/2.) return 1.27;
+    else return 1.28;
+  }
+  else if(mWR==2200){
+    if(mN < mWR/2.) return 1.29;
+    else return 1.30;
+  }
+  else if(mWR==2400){
+    if(mN < mWR/2.) return 1.30;
+    else return 1.31;
+  }
+  else if(mWR==2600){
+    if(mN < mWR/2.) return 1.30;
+    else return 1.33;
+  }
+  else if(mWR==2800){
+    if(mN < mWR/2.) return 1.31;
+    else return 1.34;
+  }
+  else if(mWR==3000){
+    if(mN < mWR/2.) return 1.33;
+    else return 1.36;
+  }
+  else if(mWR==3200){
+    if(mN < mWR/2.) return 1.35;
+    else return 1.37;
+  }
+  else if(mWR==3400){
+    if(mN < mWR/2.) return 1.35;
+    else return 1.38;
+  }
+  else if(mWR==3600){
+    if(mN < mWR/2.) return 1.35;
+    else return 1.39;
+  }
+  else if(mWR==3800){
+    if(mN < mWR/2.) return 1.36;
+    else return 1.40;
+  }
+  else if(mWR==4000){
+    if(mN < mWR/2.) return 1.35;
+    else return 1.40;
+  }
+  else if(mWR==4200){
+    if(mN < mWR/2.) return 1.34;
+    else return 1.40;
+  }
+  else if(mWR==4400){
+    if(mN < mWR/2.) return 1.33;
+    else return 1.40;
+  }
+  else if(mWR==4600){
+    if(mN < mWR/2.) return 1.32;
+    else return 1.40;
+  }
+  else if(mWR==4800){
+    if(mN < mWR/2.) return 1.30;
+    else return 1.40;
+  }
+  else if(mWR==5000){
+    if(mN < mWR/2.) return 1.30;
+    else return 1.40;
+  }
+  else if(mWR==5200){
+    if(mN < mWR/2.) return 1.30;
+    else return 1.40;
+  }
+  else if(mWR==5400){
+    if(mN < mWR/2.) return 1.29;
+    else return 1.41;
+  }
+  else if(mWR==5600){
+    if(mN < mWR/2.) return 1.27;
+    else return 1.41;
+  }
+  else if(mWR==5800){
+    if(mN < mWR/2.) return 1.26;
+    else return 1.42;
+  }
+  else if(mWR==6000){
+    if(mN < mWR/2.) return 1.26;
+    else return 1.43;
+  }
+  else if(mWR==6200){
+    if(mN < mWR/2.) return 1.26;
+    else return 1.44;
+  }
+  else if(mWR==6400){
+    if(mN < mWR/2.) return 1.26;
+    else return 1.46;
+  }
+  else if(mWR==6600){
+    if(mN < mWR/2.) return 1.25;
+    else return 1.48;
+  }
+  else if(mWR==6800){
+    if(mN < mWR/2.) return 1.25;
+    else return 1.50;
+  }
+  else if(mWR==7000){
+    if(mN < mWR/2.) return 1.25;
+    else return 1.51;
+  }
+  else{
+    cout << "[GetKFactor] Wrong mWR and mN : " << mWR << "\t" << mN << endl;
+    return 1.;
+  }
+}
+
 #endif

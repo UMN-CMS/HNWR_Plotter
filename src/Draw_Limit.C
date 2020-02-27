@@ -1,5 +1,6 @@
 #include "canvas_margin.h"
 #include "LRSMSignalInfo.h"
+#include "mylib.h"
 
 void Draw_Limit(int Year, TString dirname=""){
 
@@ -15,20 +16,20 @@ void Draw_Limit(int Year, TString dirname=""){
   TString TotalLumi = "";
   TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
-    inputfile = "2020_02_06_174822__Year2016_TryPseudo5EventinThreeBins";
+    inputfile = "2020_02_27_125644__Year2016_OnShellOnly_UnCorr";
     //inputfile = dirname;
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
-    inputfile = "2020_01_28_150615__Year2017_LargeBinForSyst";
+    inputfile = "2020_02_27_125645__Year2017_OnShellOnly_UnCorr";
     TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   else if(Year==2018){
-    inputfile = "2020_02_03_124004__Year2018_LargeBinForSyst";
+    inputfile = "2020_02_27_125646__Year2018_OnShellOnly_UnCorr";
     TotalLumi = "59.74 fb^{-1} (13 TeV)";
   }
   else if(Year==-1){
-    inputfile = "2020_02_03_124004__YearCombined_LargeBinForSyst";
+    inputfile = "2020_02_27_125648__YearCombined_OnShellOnly_UnCorr";
     TotalLumi = "137.2 fb^{-1} (13 TeV)";
     str_Year = "YearCombined";
   }
@@ -232,21 +233,21 @@ void Draw_Limit(int Year, TString dirname=""){
         while(getline(in_xsec,line_xsec)){
           std::istringstream is( line_xsec );
 
-          double mwr, mn, xsec;
+          double mwr, mn, xsec, xsec_err;
 
           is >> mwr;
           is >> mn;
           is >> xsec;
+          is >> xsec_err;
 
           //==== pb -> fb
           xsec = 1000.*xsec;
           //==== upper limit is xsec(ee+mm)
 
           if(Usekfactor){
-            //==== TODO temp. k-factor
-            if(mwr<4000) xsec *= 1.29;
-            else if(mwr<5000) xsec *= 1.38;
-            else xsec *= 1.41;
+
+            double this_kfactor = GetKFactor(int(mwr), int(mn));
+            xsec *= this_kfactor;
           }
           if(int(m_WR)==int(mwr) && int(m_N)==int(mn)){
             theory_xsec_found = true;
@@ -539,11 +540,11 @@ void Draw_Limit(int Year, TString dirname=""){
     } // END Loop region
 
     gr_atlas->Draw("lsame");
-    gr_atlas_boosted->Draw("lsame");
+    //gr_atlas_boosted->Draw("lsame");
     gr_EXO17011->Draw("lsame");
 
     lg->AddEntry( gr_atlas, "Exp. ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
-    lg->AddEntry( gr_atlas_boosted, "Exp. ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
+    //lg->AddEntry( gr_atlas_boosted, "Exp. ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
     lg->AddEntry( gr_EXO17011, "Exp. CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");

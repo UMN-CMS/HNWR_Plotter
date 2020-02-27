@@ -74,8 +74,8 @@ void Draw_SignalDistribution(int xxx=0){
       "ZCand_Mass",
       "WRCand_Mass", "WRCand_Pt",
       "NCand_Mass", "NCand_Pt",
-      "dPhi_lJ",
       "MET", 
+      "NBJets",
     };
 
     xtitles = {
@@ -85,8 +85,8 @@ void Draw_SignalDistribution(int xxx=0){
       "m_{ll} (GeV)",
       "m_{WR} (GeV)", "p_{T} of WR (GeV)",
       "m_{N} (GeV)", "p_{T} of N (GeV)",
-      "#Delta#phi(l,J)",
       "MET (GeV)",
+      "Number of b-tagged jet",
     };
 
     for(unsigned int it_var=0; it_var<vars.size(); it_var++){
@@ -204,6 +204,11 @@ void Draw_SignalDistribution(int xxx=0){
       if(var.Contains("dPhi")){
         x_min = 0.;
         x_max = 4.;
+        n_rebin = 1;
+      }
+      if(var=="NBJets"){
+        x_min = 0.;
+        x_max = 10.;
         n_rebin = 1;
       }
 

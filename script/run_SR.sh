@@ -1,4 +1,4 @@
-for year in 2016 2017 2018
+for year in 2016 2017 2018 -1
 do
   for i in 0
   do

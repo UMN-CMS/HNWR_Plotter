@@ -10,28 +10,6 @@ Years = [
 '2017',
 '2018',
 ]
-
-Systs = [
-    ["JetRes","Jet energy resolution"],
-    ["JetEn","Jet energy scale"],
-    ["MuonRecoSF","Muon reconstruction"],
-    ["MuonEn","Muon momentum scale"],
-    ["MuonIDSF","Muon identification"],
-    ["MuonISOSF","Muon isolation"],
-    ["MuonTriggerSF","Muon trigger"],
-    ["ElectronRecoSF","Electron reconstruction"],
-    ["ElectronRes","Electron energy resolution"],
-    ["ElectronEn","Electron energy scale"],
-    ["ElectronIDSF","Electron identification"],
-    ["ElectronTriggerSF","Electron trigger"],
-    ["LSFSF","LSF scale factor"],
-    ["PU","Pileup modeling"],
-    ["ZPtRw","\\PZ \\pt"],
-]
-
-BkgdSample = 'DYJets_MG_HT_Reweighted'
-BkgdSampleLatex = '\\DYJ'
-
 channels = [
 'SingleElectron',
 'SingleMuon',
@@ -41,129 +19,165 @@ regions = [
 'Boosted',
 ]
 
-print '''\multirow{2}{*}{Source} & $\Pe\Pe$ bkgd. & $\Pe\Pe$ signal & $\mu\mu$ bkgd. & $\mu\mu$ signal \\\\
-                        & (\%) & (\%) & (\%) & (\%) \\\\
-\hline
-Integrated luminosity & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'''
+ToRuns = [
 
-for Syst in Systs:
+  [
+    'AllMCBkgd',
+    'Non-\\ttbar/Signal',
+    [
+      ["JetRes","Jet energy resolution"],
+      ["JetEn","Jet energy scale"],
+      ["MuonRecoSF","Muon reconstruction"],
+      ["MuonEn","Muon momentum scale"],
+      ["MuonIDSF","Muon identification"],
+      ["MuonISOSF","Muon isolation"],
+      ["MuonTriggerSF","Muon trigger"],
+      ["ElectronRecoSF","Electron reconstruction"],
+      ["ElectronRes","Electron energy resolution"],
+      ["ElectronEn","Electron energy scale"],
+      ["ElectronIDSF","Electron identification"],
+      ["ElectronTriggerSF","Electron trigger"],
+      ["LSFSF","LSF scale factor"],
+      ["PU","Pileup modeling"],
+    ],
+  ],
 
-  SystAlias = Syst[0]
-  SystLatex = Syst[1]
-  out = SystLatex
+  [ 
+    'DYJets_MG_HT_Reweighted',
+    '\\DYJ',
+    [ 
+      ["ZPtRw","\\PZ \\pt"],
+    ],
+  ],
 
-  for channel in channels:
-    for i_sample in range(0,2):
-      Sample = BkgdSample
+]
 
-      #### Exception A
-      # 1) ZPtRw only for bkgd
-      if SystAlias=="ZPtRw" and i_sample==1:
-        out += '& \\NA'
-        continue
+print '''Integrated luminosity & Non-\\ttbar/Signal & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'''
 
-      #### 1--2
-      #### first element : region 0
-      #### second element : region 1
-      systRanges = []
-      for region in regions:
+for ToRun in ToRuns:
 
-        if i_sample==1:
-          if region=='Resolved':
-            Sample = 'WR4000_N3000'
-          else:
-            Sample = 'WR4000_N100'
+  BkgdSample = ToRun[0]
+  BkgdSampleLatex = ToRun[1]
+  Systs = ToRun[2]
 
-        #### filename
-        fname = 'HNWRAnalyzer_SkimTree_LRSMHighPt_'+Sample+'.root'
-        if i_sample==1:
-          fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
+  for Syst in Systs:
 
-        #### Loop over years to get range
-        syst_Min = 999999999
-        syst_Max = -999999999
-        for Year in Years:
-          basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/'
+    SystAlias = Syst[0]
+    SystLatex = Syst[1]
+    out = SystLatex+' & '+BkgdSampleLatex
+
+    for channel in channels:
+      for i_sample in range(0,2):
+        Sample = BkgdSample
+
+        #### Exception A
+        # 1) ZPtRw only for bkgd
+        if SystAlias=="ZPtRw" and i_sample==1:
+          out += '& \\NA'
+          continue
+
+        #### 1--2
+        #### first element : region 0
+        #### second element : region 1
+        systRanges = []
+        for region in regions:
+
           if i_sample==1:
-            basedir += 'Signal/'
+            if region=='Resolved':
+              Sample = 'WR4000_N3000'
+            else:
+              Sample = 'WR4000_N100'
 
-          #### dirName
-          dirName = 'HNWR_'+channel+'_'+region+'_SR'
+          #### filename
+          fname = 'HNWRAnalyzer_SkimTree_LRSMHighPt_'+Sample+'.root'
+          if i_sample==1:
+            fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
 
-          #### Get TFile
-          f = ROOT.TFile(basedir+fname)
+          #### Loop over years to get range
+          syst_Min = 999999999
+          syst_Max = -999999999
+          for Year in Years:
+            basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/'
+            if i_sample==1:
+              basedir += 'Signal/'
 
-          #### Get Nominal
-          h_Nom = f.Get(dirName+'/NEvent_'+dirName)
-          y_Nom = h_Nom.GetBinContent(1)
+            #### dirName
+            dirName = 'HNWR_'+channel+'_'+region+'_SR'
 
-          #### Get Up
-          h_Up = f.Get('Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName)
-          y_Up = h_Up.GetBinContent(1)
-          diff_Up = abs(y_Up-y_Nom)
-          #### Get Down
-          h_Down = f.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
-          y_Down = h_Down.GetBinContent(1)
-          diff_Down = abs(y_Down-y_Nom)
+            #### Get TFile
+            f = ROOT.TFile(basedir+fname)
 
-          #### Calculate syst
-          this_syst = max( 100.*diff_Up/y_Nom, 100.*diff_Down/y_Nom )
+            #### Get Nominal
+            h_Nom = f.Get(dirName+'/NEvent_'+dirName)
+            y_Nom = h_Nom.GetBinContent(1)
 
-          #### Replace syst_Min and syst_Max
-          syst_Min = min( syst_Min, this_syst )
-          syst_Max = max( syst_Max, this_syst )
+            #### Get Up
+            h_Up = f.Get('Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName)
+            y_Up = h_Up.GetBinContent(1)
+            diff_Up = abs(y_Up-y_Nom)
+            #### Get Down
+            h_Down = f.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
+            y_Down = h_Down.GetBinContent(1)
+            diff_Down = abs(y_Down-y_Nom)
 
-          #### Close TFile
-          f.Close()
+            #### Calculate syst
+            this_syst = max( 100.*diff_Up/y_Nom, 100.*diff_Down/y_Nom )
 
-        #### Year loop is done for this region
-        #### Append str_syst
+            #### Replace syst_Min and syst_Max
+            syst_Min = min( syst_Min, this_syst )
+            syst_Max = max( syst_Max, this_syst )
 
-        str_syst_Min = '%1.1f'%syst_Min
-        str_syst_Max = '%1.1f'%syst_Max
+            #### Close TFile
+            f.Close()
 
-        if str_syst_Min=='0.0':
-          str_syst_Min = '0'
-        if str_syst_Max=='0.0':
-          str_syst_Max = '0'
+          #### Year loop is done for this region
+          #### Append str_syst
 
-        if str_syst_Min==str_syst_Max:
-          systRanges.append( str_syst_Min )
-        else:
-          systRanges.append( str_syst_Min+'--'+str_syst_Max )
+          str_syst_Min = '%1.1f'%syst_Min
+          str_syst_Max = '%1.1f'%syst_Max
 
-      if 'Electron' in SystAlias and channel=='SingleMuon':
-        out += ' & \\NA'
-        continue
-      if 'Muon' in SystAlias and channel=='SingleElectron':
-        out += ' & \\NA'
-        continue
+          if str_syst_Min=='0.0':
+            str_syst_Min = '0'
+          if str_syst_Max=='0.0':
+            str_syst_Max = '0'
 
-      str_resolved_syst = systRanges[0]
-      if str_resolved_syst=="0":
-        str_resolved_syst="$<0.1$"
+          if str_syst_Min==str_syst_Max:
+            systRanges.append( str_syst_Min )
+          else:
+            systRanges.append( str_syst_Min+'--'+str_syst_Max )
 
-      str_boosted_syst = systRanges[1]
-      if str_boosted_syst=="0":
-        str_boosted_syst="$<0.1$"
+        if 'Electron' in SystAlias and channel=='SingleMuon':
+          out += ' & \\NA'
+          continue
+        if 'Muon' in SystAlias and channel=='SingleElectron':
+          out += ' & \\NA'
+          continue
 
-      #### Exception B
-      # 1) LSFSF only for boosted
-      if SystAlias=="LSFSF":
-        out += ' & %s (%s)' % ('\\NA', str_boosted_syst)
-        continue
+        str_resolved_syst = systRanges[0]
+        if str_resolved_syst=="0":
+          str_resolved_syst="$<0.1$"
 
-      out += ' & %s (%s)' % (str_resolved_syst, str_boosted_syst)
+        str_boosted_syst = systRanges[1]
+        if str_boosted_syst=="0":
+          str_boosted_syst="$<0.1$"
 
-  print out+' \\\\'
+        #### Exception B
+        # 1) LSFSF only for boosted
+        if SystAlias=="LSFSF":
+          out += ' & %s (%s)' % ('\\NA', str_boosted_syst)
+          continue
 
-print '''Flavor sideband & 20 (30) & \NA & 20 (30) & \NA \\\\'''
+        out += ' & %s (%s)' % (str_resolved_syst, str_boosted_syst)
+
+    print out+' \\\\'
+
+print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
 
 #### PDF uncertainty for signal
 
-PDFErrorSet_out = 'PDF error'
-AlphaS_out = '\\alpS'
-Scale_out = 'renormalization/factorization scales'
+PDFErrorSet_out = 'PDF error & Signal'
+AlphaS_out = '\\alpS & Signal'
+Scale_out = 'renormalization/factorization scales & Signal'
 
 for channel in channels:
 
@@ -318,6 +332,3 @@ print PDFErrorSet_out+' \\\\'
 print AlphaS_out+' \\\\'
 print Scale_out+' \\\\'
 
-#### Finalize
-
-print '''\hline'''

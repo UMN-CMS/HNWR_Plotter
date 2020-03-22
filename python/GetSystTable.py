@@ -19,6 +19,14 @@ regions = [
 'Boosted',
 ]
 
+ResolvedMass = 'WR5000_N3000'
+BoostedMass = 'WR5000_N400'
+
+print '@@@@ Refrence mass points are'
+print 'Resolved : '+ResolvedMass
+print 'Boosted : '+BoostedMass
+print '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+
 ToRuns = [
 
   [
@@ -84,9 +92,9 @@ for ToRun in ToRuns:
 
           if i_sample==1:
             if region=='Resolved':
-              Sample = 'WR4000_N3000'
+              Sample = ResolvedMass
             else:
-              Sample = 'WR4000_N100'
+              Sample = BoostedMass
 
           #### filename
           fname = 'HNWRAnalyzer_SkimTree_LRSMHighPt_'+Sample+'.root'
@@ -190,9 +198,9 @@ for channel in channels:
   for region in regions:
 
     if region=='Resolved':
-      Sample = 'WR4000_N3000'
+      Sample = ResolvedMass
     else:
-      Sample = 'WR4000_N100'
+      Sample = BoostedMass
 
     fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
 

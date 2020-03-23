@@ -3,16 +3,26 @@
 #include "SignalSystematics.h"
 #include "mylib.h"
 
+bool IsCorrelated(TString syst){
+
+  if(syst.Contains("JetRes")) return true;
+  if(syst.Contains("JetEn")) return true;
+
+  return false;
+
+}
+
 void Make_ShapeForLimit(int Year=2016){
 
   TString str_Year = TString::Itoa(Year,10);
 
   bool UseCustomRebin = true;
 
-  bool UncorrelateSyst = true;
-
+/*
+  bool UncorrelateSyst = false;
   TString nuisancePrefix = "";
   if(UncorrelateSyst) nuisancePrefix = "Run"+str_Year+"_";
+*/
 
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 40;
@@ -196,10 +206,16 @@ void Make_ShapeForLimit(int Year=2016){
 
       //==== sample
 
+      //=== big systematic loop starts here
       for(unsigned it_syst=0; it_syst<systs.size(); it_syst++){
 
         TString syst = systs.at(it_syst);
         TString shapehistname_suffix = "";
+
+        //==== for correlated 
+        TString nuisancePrefix = "";
+        //==== for uncorrelated
+        if( !IsCorrelated(syst) ) nuisancePrefix = "Run"+str_Year+"_";
 
         cout << "@@@@     syst = " << syst << endl;
 

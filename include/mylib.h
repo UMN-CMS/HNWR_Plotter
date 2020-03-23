@@ -447,12 +447,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2017){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 1.03135;
-        DYNorm_err = 0.0218754;
+        DYNorm = 1.03096;
+        DYNorm_err = 0.0218684;
       }
       else if(int_region==1){
-        DYNorm = 0.980653;
-        DYNorm_err = 0.0282497;
+        DYNorm = 0.977149;
+        DYNorm_err = 0.0282647;
       }
       else{
         cout << "Wrong DY Norm" << endl;

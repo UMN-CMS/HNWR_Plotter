@@ -1,6 +1,7 @@
 OnlyLatex="false"
 
-for i in 2016 2017 2018
+#for i in 2016 2017 2018
+for i in 2017
 do
   root -l -b -q "src/Get_EMuRatio.C($i,$OnlyLatex) "
   root -l -b -q "src/Get_EMuRatio.C(-$i,$OnlyLatex) "

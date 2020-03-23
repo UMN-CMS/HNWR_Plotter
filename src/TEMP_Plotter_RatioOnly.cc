@@ -263,8 +263,9 @@ void TEMP_Plotter_RatioOnly::draw_hist(){
           if(current_sample.Contains("EMuMethod")){
             TH1D *hist_EMuSyst_Up = (TH1D *)hist_final->Clone();
             TH1D *hist_EMuSyst_Down = (TH1D *)hist_final->Clone();
-            double EMuSyst = 0.20;
-            if( histname_suffix[i_cut].Contains("Boosted") ) EMuSyst = 0.30;
+
+            double EMuSyst = EMuSyst_Resolved;
+            if( histname_suffix[i_cut].Contains("Boosted") ) EMuSyst = EMuSyst_Boosted;
             for(int i=0; i<=hist_final->GetXaxis()->GetNbins()+1; i++){
               double y = hist_final->GetBinContent(i);
               double err_EMu = y * EMuSyst;
@@ -822,7 +823,23 @@ void TEMP_Plotter_RatioOnly::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, 
   x_1[0] = 9000;  y_1[0] = 1;
   x_1[1] = -9000;  y_1[1] = 1;
   TGraph *g1 = new TGraph(2, x_1, y_1);
-  
+
+  //==== Error line
+  double EMuError = 0.3;
+  if(histname_suffix[i_cut].Contains("Boosted")){
+    EMuError = 0.2;
+  }
+  //==== y=up line
+  double x_up[2], y_up[2];
+  x_up[0] = 9000;  y_up[0] = 1+EMuError;
+  x_up[1] = -9000;  y_up[1] = 1+EMuError;
+  TGraph *g_up = new TGraph(2, x_up, y_up);
+  //==== y=down line
+  double x_down[2], y_down[2];
+  x_down[0] = 9000;  y_down[0] = 1-EMuError;
+  x_down[1] = -9000;  y_down[1] = 1-EMuError;
+  TGraph *g_down = new TGraph(2, x_down, y_down);
+
   //==== If we draw data, prepare top/bottom pads
   TCanvas* c1 = new TCanvas(histname[i_var], "", 800, 800);
   c1->Draw();
@@ -871,77 +888,6 @@ void TEMP_Plotter_RatioOnly::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, 
   }
 */
 
-  //==== empty histogram for axis
-  TH1D *hist_empty = (TH1D*)mc_stack->GetHists()->At(0)->Clone();
-  hist_empty->SetName("DUMMY_FOR_AXIS");
-  //=== get dX
-  double dx = (hist_empty->GetXaxis()->GetXmax() - hist_empty->GetXaxis()->GetXmin())/hist_empty->GetXaxis()->GetNbins();
-  TString YTitle = DoubleToString(dx);
-
-  hist_empty->GetYaxis()->SetTitle(YTitle);
-  hist_empty->SetLineWidth(0);
-  hist_empty->SetLineColor(0);
-  hist_empty->SetMarkerSize(0);
-  hist_empty->SetMarkerColor(0);
-  double Ymin = default_y_min;
-  double YmaxScale = 1.2;
-  if(UseLogy.at(i_cut)>0){
-    Ymin = UseLogy.at(i_cut);
-    YmaxScale = 10;
-    hist_empty->SetMinimum(UseLogy.at(i_cut));
-
-    if(drawratio.at(i_cut)) c1->SetLogy();
-    else c1->SetLogy();
-  }
-  hist_empty->Draw("histsame");
-  //==== hide X Label for top plot
-  if(drawratio.at(i_cut)) hist_empty->GetXaxis()->SetLabelSize(0);
-  
-  //==== bkg
-  if(!mc_stack->GetHists()){
-    cout << "[No Background]" << endl;
-    return;
-  }
-  mc_stack->Draw("histsame");
-
-  //==== signal
-  if(CurrentSC==NoClass){
-
-    for(unsigned int i=0; i<signal_survive.size(); i++){
-      LRSMSignalInfo this_lrsm = signal_survive.at(i);
-      hist_signal[i]->Draw("histsame");
-    }
-
-  }
-  else{
-
-    for(int i_sigcl=0; i_sigcl<AllSignalClasses.size(); i_sigcl++){
-
-      signal_class this_cl = AllSignalClasses.at(i_sigcl);
-
-      if(CurrentSC==this_cl){
-
-        for(unsigned int i=0; i<signal_survive.size(); i++){
-          LRSMSignalInfo this_lrsm = signal_survive.at(i);
-          if( find(map_class_to_LRSMSignalInfo[this_cl].begin(), map_class_to_LRSMSignalInfo[this_cl].end(), this_lrsm) != map_class_to_LRSMSignalInfo[this_cl].end()){
-            hist_signal[i]->Draw("histsame");
-          }
-        }
-
-      }
-
-    }
-
-  }
-
-  //==== background err
-  mc_allerror->SetMarkerColor(0);
-  mc_allerror->SetMarkerSize(0);
-  mc_allerror->SetFillStyle(3013);
-  mc_allerror->SetFillColor(kBlack);
-  mc_allerror->SetLineColor(0);
-  mc_allerror->Draw("sameE2");
-
   //==== Draw Data at last
   vector<float> err_up_tmp;
   vector<float> err_down_tmp;
@@ -982,31 +928,8 @@ void TEMP_Plotter_RatioOnly::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, 
   gr_data->SetMarkerSize(0.);
   gr_data->SetMarkerColor(kBlack);
   gr_data->SetLineColor(kBlack);
-  hist_data->Draw("phistsame");
-  gr_data->Draw("p0same");
 
-  //==== ymax
-  double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
-  hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
-  if(histname[i_var]=="WRCand_Mass" && histname_suffix[i_cut].Contains("_SR") && !(histname_suffix[i_cut].Contains("EMu")) ){
-
-    if(histname_suffix[i_cut].Contains("Resolved")) hist_empty->GetYaxis()->SetRangeUser( 1E-1, YmaxScale*AutoYmax );
-    else hist_empty->GetYaxis()->SetRangeUser( 1, YmaxScale*AutoYmax );
-  }
-
-  //==== legend
-  legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
-  if(DrawData){
-    legend->AddEntry(hist_data, "Data", "pe");
-  }
-  else{
-    legend->AddEntry(hist_data, "Total background", "pe");
-  }
-  if(drawratio.at(i_cut)) c1->cd();
-  draw_legend(legend, DrawData);
-  hist_empty->Draw("axissame");
-
-  //==== Ratio
+  //==== Now draw
 
   TString this_xtitle = x_title[i_var];
   if(histname[i_var]=="WRCand_Mass"){
@@ -1018,162 +941,158 @@ void TEMP_Plotter_RatioOnly::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, 
     }
   }
 
-  if(!drawratio.at(i_cut)){
-    hist_axis(hist_empty);
-    hist_empty->GetXaxis()->SetTitle(this_xtitle);
+  //==== MC-DATA
+  c1->cd();
+  TString name_suffix = hist_data->GetName();
+  TH1D *ratio_point = (TH1D *)hist_data->Clone();
+  ratio_point->SetName(name_suffix+"_central");
+
+  TH1D *hist_empty_bottom = (TH1D *)ratio_point->Clone();
+
+  if( histname_suffix[i_cut].Contains("Boosted") ){
+    hist_empty_bottom->GetXaxis()->SetRangeUser(0.,900);
+    hist_empty_bottom->GetYaxis()->SetRangeUser(0.,2.0);
   }
   else{
-    //==== MC-DATA
-    c1->cd();
-    TString name_suffix = hist_data->GetName();
-    TH1D *ratio_point = (TH1D *)hist_data->Clone();
-    ratio_point->SetName(name_suffix+"_central");
+    hist_empty_bottom->GetXaxis()->SetRangeUser(0.,900);
+    hist_empty_bottom->GetYaxis()->SetRangeUser(0.,2.0);
+  }
+  hist_empty_bottom->SetNdivisions(504,"Y");
+  hist_empty_bottom->GetXaxis()->SetTitle(this_xtitle);
+  hist_empty_bottom->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
+  hist_empty_bottom->SetFillColor(0);
+  hist_empty_bottom->SetMarkerSize(0);
+  hist_empty_bottom->SetMarkerStyle(0);
+  hist_empty_bottom->SetLineColor(kWhite);
+  hist_empty_bottom->Draw("axis");
+  hist_axis(hist_empty_bottom);
 
-    TH1D *hist_empty_bottom = (TH1D *)ratio_point->Clone();
+  TH1D *tmp_ratio_point = (TH1D *)hist_data->Clone();
+  //==== just to get the ratio central value
+  tmp_ratio_point->Divide(mc_staterror);
+  TGraphAsymmErrors *gr_ratio_point = new TGraphAsymmErrors(tmp_ratio_point);
+  gr_ratio_point->SetName("gr_"+name_suffix+"_central");
+  gr_ratio_point->SetLineWidth(2.0);
+  gr_ratio_point->SetMarkerSize(0.);
+  gr_ratio_point->SetLineColor(kBlack);
 
-    if( histname_suffix[i_cut].Contains("Boosted") ){
-      hist_empty_bottom->GetXaxis()->SetRangeUser(0.,800);
-      hist_empty_bottom->GetYaxis()->SetRangeUser(0.,3.0);
-    }
-    else{
-      hist_empty_bottom->GetXaxis()->SetRangeUser(0.,900);
-      hist_empty_bottom->GetYaxis()->SetRangeUser(0.,3.0);
-    }
-    hist_empty_bottom->SetNdivisions(504,"Y");
-    hist_empty_bottom->GetXaxis()->SetTitle(this_xtitle);
-    hist_empty_bottom->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
-    hist_empty_bottom->SetFillColor(0);
-    hist_empty_bottom->SetMarkerSize(0);
-    hist_empty_bottom->SetMarkerStyle(0);
-    hist_empty_bottom->SetLineColor(kWhite);
-    hist_empty_bottom->Draw("axis");
-    hist_axis(hist_empty_bottom);
+  //==== again, stat is histogram
+  TH1D *ratio_staterr = (TH1D *)hist_data->Clone();
+  ratio_staterr->SetName(name_suffix+"_staterr");
+  //==== syst is graph
+  TGraphAsymmErrors *ratio_allerr = (TGraphAsymmErrors *)mc_allerror->Clone();
+  ratio_allerr->SetName(name_suffix+"_allerr");
 
-    TH1D *tmp_ratio_point = (TH1D *)hist_data->Clone();
-    //==== just to get the ratio central value
-    tmp_ratio_point->Divide(mc_staterror);
-    TGraphAsymmErrors *gr_ratio_point = new TGraphAsymmErrors(tmp_ratio_point);
-    gr_ratio_point->SetName("gr_"+name_suffix+"_central");
-    gr_ratio_point->SetLineWidth(2.0);
-    gr_ratio_point->SetMarkerSize(0.);
-    gr_ratio_point->SetLineColor(kBlack);
+  for(int i=1; i<=ratio_point->GetXaxis()->GetNbins(); i++){
+    //==== FIXME for zero? how?
+    if(mc_staterror->GetBinContent(i)!=0){
 
-    //==== again, stat is histogram
-    TH1D *ratio_staterr = (TH1D *)hist_data->Clone();
-    ratio_staterr->SetName(name_suffix+"_staterr");
-    //==== syst is graph
-    TGraphAsymmErrors *ratio_allerr = (TGraphAsymmErrors *)mc_allerror->Clone();
-    ratio_allerr->SetName(name_suffix+"_allerr");
+      //==== ratio point
+      //==== BinContent = Data/Bkgd
+      //==== BinError = DataError/Bkgd
+      ratio_point->SetBinContent( i, ratio_point->GetBinContent(i) / mc_staterror->GetBinContent(i) );
+      ratio_point->SetBinError ( i, ratio_point->GetBinError(i) / mc_staterror->GetBinContent(i) );
 
-    for(int i=1; i<=ratio_point->GetXaxis()->GetNbins(); i++){
-      //==== FIXME for zero? how?
-      if(mc_staterror->GetBinContent(i)!=0){
-
-        //==== ratio point
-        //==== BinContent = Data/Bkgd
-        //==== BinError = DataError/Bkgd
-        ratio_point->SetBinContent( i, ratio_point->GetBinContent(i) / mc_staterror->GetBinContent(i) );
-        ratio_point->SetBinError ( i, ratio_point->GetBinError(i) / mc_staterror->GetBinContent(i) );
-
-        if(err_down_tmp.at(i-1)  !=0.) {
-          gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1) / mc_staterror->GetBinContent(i) );
-          gr_ratio_point->SetPointEXlow(i-1, 0);
-          gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1) / mc_staterror->GetBinContent(i));
-          gr_ratio_point->SetPointEXhigh(i-1, 0);
-        }
-        else{
-          gr_ratio_point->SetPointEYlow(i-1, 0);
-          gr_ratio_point->SetPointEXlow(i-1, 0);
-          gr_ratio_point->SetPointEYhigh(i-1, 1.8 / mc_staterror->GetBinContent(i));
-          gr_ratio_point->SetPointEXhigh(i-1, 0);
-        }
-        //==== ratio staterr
-        //==== BinContent = 1
-        //==== BinError = Bkgd(Stat)Error/Bkgd
-        ratio_staterr->SetBinContent( i, 1. );
-        ratio_staterr->SetBinError( i, mc_staterror->GetBinError(i)/ mc_staterror->GetBinContent(i) );
-        //==== ratio allerr
-        //==== BinContent = 1
-        //==== BinError = Bkgd(Stat+Syst)Error/Bkgd
-
-        ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.); 
-        ratio_allerr->SetPointEYhigh( i-1, ratio_allerr->GetErrorYhigh(i-1) / mc_staterror->GetBinContent(i) );
-        ratio_allerr->SetPointEYlow( i-1,  ratio_allerr->GetErrorYlow(i-1) / mc_staterror->GetBinContent(i) );
+      if(err_down_tmp.at(i-1)  !=0.) {
+        gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1) / mc_staterror->GetBinContent(i) );
+        gr_ratio_point->SetPointEXlow(i-1, 0);
+        gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1) / mc_staterror->GetBinContent(i));
+        gr_ratio_point->SetPointEXhigh(i-1, 0);
       }
-      else if(mc_staterror->GetBinContent(i)==0 && ratio_point->GetBinContent(i)==0){
-        ratio_point->SetBinContent( i, 0 );
-        ratio_point->SetBinError ( i, 0 );
-        gr_ratio_point->SetPoint(i-1, 0, 0);
+      else{
         gr_ratio_point->SetPointEYlow(i-1, 0);
         gr_ratio_point->SetPointEXlow(i-1, 0);
-        gr_ratio_point->SetPointEYhigh(i-1, 0);
+        gr_ratio_point->SetPointEYhigh(i-1, 1.8 / mc_staterror->GetBinContent(i));
         gr_ratio_point->SetPointEXhigh(i-1, 0);
-        ratio_staterr->SetBinContent( i, 1. );
-        ratio_staterr->SetBinError( i, 0);
-
-        ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.);
-        ratio_allerr->SetPointEYhigh( i-1, 0. );
-        ratio_allerr->SetPointEYlow( i-1, 0. );
-
       }
-      //==== If bkgd <= 0
-      else{
-        double this_max_ratio = 5.0;
-        double this_data = ratio_point->GetBinContent(i);
-        double this_data_err = ratio_point->GetBinError(i);
+      //==== ratio staterr
+      //==== BinContent = 1
+      //==== BinError = Bkgd(Stat)Error/Bkgd
+      ratio_staterr->SetBinContent( i, 1. );
+      ratio_staterr->SetBinError( i, mc_staterror->GetBinError(i)/ mc_staterror->GetBinContent(i) );
+      //==== ratio allerr
+      //==== BinContent = 1
+      //==== BinError = Bkgd(Stat+Syst)Error/Bkgd
 
-        ratio_point->SetBinContent( i, this_max_ratio );
-        ratio_point->SetBinError ( i, this_data_err*this_max_ratio/this_data );
-
-        double tmp_x, tmp_y;
-        gr_ratio_point->GetPoint(i-1, tmp_x, tmp_y);
-        gr_ratio_point->SetPoint(i-1, tmp_x, this_max_ratio);
-        gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1)*this_max_ratio/this_data);
-        gr_ratio_point->SetPointEXlow(i-1, 0);
-        gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1)*this_max_ratio/this_data);
-        gr_ratio_point->SetPointEXhigh(i-1, 0);
-        ratio_staterr->SetBinContent( i, 1. );
-        ratio_staterr->SetBinError( i, 0);
-
-        ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.);
-        ratio_allerr->SetPointEYhigh( i-1, 0. );
-        ratio_allerr->SetPointEYlow( i-1, 0. );
-
-      }
+      ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.); 
+      ratio_allerr->SetPointEYhigh( i-1, ratio_allerr->GetErrorYhigh(i-1) / mc_staterror->GetBinContent(i) );
+      ratio_allerr->SetPointEYlow( i-1,  ratio_allerr->GetErrorYlow(i-1) / mc_staterror->GetBinContent(i) );
     }
-    double this_ratio_min = min(0.8,1.1*GetMinimum(ratio_point,0.));
-    double this_ratio_max = max(1.2,1.1*GetMaximum(ratio_point,0.));
+    else if(mc_staterror->GetBinContent(i)==0 && ratio_point->GetBinContent(i)==0){
+      ratio_point->SetBinContent( i, 0 );
+      ratio_point->SetBinError ( i, 0 );
+      gr_ratio_point->SetPoint(i-1, 0, 0);
+      gr_ratio_point->SetPointEYlow(i-1, 0);
+      gr_ratio_point->SetPointEXlow(i-1, 0);
+      gr_ratio_point->SetPointEYhigh(i-1, 0);
+      gr_ratio_point->SetPointEXhigh(i-1, 0);
+      ratio_staterr->SetBinContent( i, 1. );
+      ratio_staterr->SetBinError( i, 0);
 
-    ratio_allerr->SetFillColor(kGray);
-    ratio_allerr->SetFillStyle(1001);
-    ratio_allerr->SetMarkerSize(0);
-    ratio_allerr->SetMarkerStyle(0);
-    ratio_allerr->SetLineColor(kWhite);
-    ratio_allerr->Draw("E2same");
+      ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.);
+      ratio_allerr->SetPointEYhigh( i-1, 0. );
+      ratio_allerr->SetPointEYlow( i-1, 0. );
 
-    ratio_staterr->SetFillColor(kOrange+2);
-    ratio_staterr->SetMarkerSize(0);
-    ratio_staterr->SetMarkerStyle(0);
-    ratio_staterr->SetLineColor(kWhite);
-    ratio_staterr->Draw("E2same");
+    }
+    //==== If bkgd <= 0
+    else{
+      double this_max_ratio = 5.0;
+      double this_data = ratio_point->GetBinContent(i);
+      double this_data_err = ratio_point->GetBinError(i);
 
-    ratio_point->Draw("p9histsame");
-    gr_ratio_point->Draw("p0same");
+      ratio_point->SetBinContent( i, this_max_ratio );
+      ratio_point->SetBinError ( i, this_data_err*this_max_ratio/this_data );
 
-    TLegend *lg_ratio = new TLegend(0.7, 0.8, 0.9, 0.9);
-    //lg_ratio->SetFillStyle(0);
-    //lg_ratio->SetBorderSize(0);
-    lg_ratio->SetNColumns(2);
-    lg_ratio->AddEntry(ratio_staterr, "Stat.", "f");
-    lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
-    //lg_ratio->AddEntry(ratio_point, "Obs./Pred.", "p");
-    lg_ratio->Draw();
+      double tmp_x, tmp_y;
+      gr_ratio_point->GetPoint(i-1, tmp_x, tmp_y);
+      gr_ratio_point->SetPoint(i-1, tmp_x, this_max_ratio);
+      gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1)*this_max_ratio/this_data);
+      gr_ratio_point->SetPointEXlow(i-1, 0);
+      gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1)*this_max_ratio/this_data);
+      gr_ratio_point->SetPointEXhigh(i-1, 0);
+      ratio_staterr->SetBinContent( i, 1. );
+      ratio_staterr->SetBinError( i, 0);
 
-    hist_empty_bottom->Draw("axissame");
+      ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.);
+      ratio_allerr->SetPointEYhigh( i-1, 0. );
+      ratio_allerr->SetPointEYlow( i-1, 0. );
 
-    //==== y=1 line
-    g1->Draw("same");
+    }
   }
+  double this_ratio_min = min(0.8,1.1*GetMinimum(ratio_point,0.));
+  double this_ratio_max = max(1.2,1.1*GetMaximum(ratio_point,0.));
+
+  ratio_allerr->SetFillColor(kGray);
+  ratio_allerr->SetFillStyle(1001);
+  ratio_allerr->SetMarkerSize(0);
+  ratio_allerr->SetMarkerStyle(0);
+  ratio_allerr->SetLineColor(kWhite);
+  ratio_allerr->Draw("E2same");
+
+  ratio_staterr->SetFillColor(kOrange+2);
+  ratio_staterr->SetMarkerSize(0);
+  ratio_staterr->SetMarkerStyle(0);
+  ratio_staterr->SetLineColor(kWhite);
+  ratio_staterr->Draw("E2same");
+
+  ratio_point->Draw("p9histsame");
+  gr_ratio_point->Draw("p0same");
+
+  TLegend *lg_ratio = new TLegend(0.7, 0.8, 0.9, 0.9);
+  //lg_ratio->SetFillStyle(0);
+  //lg_ratio->SetBorderSize(0);
+  lg_ratio->SetNColumns(2);
+  lg_ratio->AddEntry(ratio_staterr, "Stat.", "f");
+  lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
+  //lg_ratio->AddEntry(ratio_point, "Obs./Pred.", "p");
+  lg_ratio->Draw();
+
+  hist_empty_bottom->Draw("axissame");
+
+  //==== y=1 line
+  g1->Draw("same");
+  //g_up->Draw("same");
+  //g_down->Draw("same");
 
   if(DoDebug) cout << "[draw_canvas] " << "plots are all drawn" << endl;
 
@@ -1226,8 +1145,22 @@ void TEMP_Plotter_RatioOnly::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, 
   if(DoDebug) cout << "[draw_canvas] TLatex all done" << endl;
   mkdir(thiscut_plotpath);
   if(DoDebug) cout << "[draw_canvas] output directory created : " << thiscut_plotpath << endl;
-  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".pdf");
-  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".png");
+
+  TLatex latex_EMuSyst;
+  latex_EMuSyst.SetNDC();
+  latex_EMuSyst.SetTextSize(0.035);
+
+  TString ErrString = "EMuSyst";
+  if( histname_suffix[i_cut].Contains("Boosted") ){
+    latex_EMuSyst.DrawLatex(0.20, 0.80, "e#mu Syst. = "+TString::Itoa(int(100*EMuSyst_Boosted),10)+"%");
+    ErrString += TString::Itoa(int(100*EMuSyst_Boosted),10);
+  }
+  else{
+    latex_EMuSyst.DrawLatex(0.20, 0.80, "e#mu Syst. = "+TString::Itoa(int(100*EMuSyst_Resolved),10)+"%");
+    ErrString += TString::Itoa(int(100*EMuSyst_Resolved),10);
+  }
+
+  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+"_"+ErrString+".pdf");
 
   delete legend;
   delete c1;

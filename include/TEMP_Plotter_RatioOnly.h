@@ -122,5 +122,8 @@ public:
 
   void AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist);
 
+  double EMuSyst_Resolved;
+  double EMuSyst_Boosted;
+
 };
 #endif

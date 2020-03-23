@@ -4,6 +4,9 @@
 
 void Draw_Limit(int Year, TString dirname=""){
 
+  //==== TODO
+  //==== Change result to obs (Both CMS and ATALS previoud result)
+
   bool DrawObs = false;
 
   gErrorIgnoreLevel = kFatal;
@@ -16,21 +19,21 @@ void Draw_Limit(int Year, TString dirname=""){
   TString TotalLumi = "";
   TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
-    inputfile = "2020_02_27_125644__Year2016_OnShellOnly_UnCorr";
+    inputfile = "2020_03_10_143448__Year2016_Full_NoFreqOption_1000Toys";
     //inputfile = dirname;
-    TotalLumi = "35.92 fb^{-1} (13 TeV)";
+    TotalLumi = "35.92 fb^{-1}";
   }
   else if(Year==2017){
-    inputfile = "2020_02_27_125645__Year2017_OnShellOnly_UnCorr";
-    TotalLumi = "41.53 fb^{-1} (13 TeV)";
+    inputfile = "2020_03_12_222646__Year2017_JetSystCorr";
+    TotalLumi = "41.53 fb^{-1}";
   }
   else if(Year==2018){
-    inputfile = "2020_02_27_125646__Year2018_OnShellOnly_UnCorr";
-    TotalLumi = "59.74 fb^{-1} (13 TeV)";
+    inputfile = "2020_03_12_222647__Year2018_JetSystCorr";
+    TotalLumi = "59.74 fb^{-1}";
   }
   else if(Year==-1){
-    inputfile = "2020_02_27_125648__YearCombined_OnShellOnly_UnCorr";
-    TotalLumi = "137.2 fb^{-1} (13 TeV)";
+    inputfile = "2020_03_12_222648__YearCombined_JetSystCorr";
+    TotalLumi = "137.2 fb^{-1}";
     str_Year = "YearCombined";
   }
 
@@ -543,9 +546,9 @@ void Draw_Limit(int Year, TString dirname=""){
     //gr_atlas_boosted->Draw("lsame");
     gr_EXO17011->Draw("lsame");
 
-    lg->AddEntry( gr_atlas, "Exp. ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
-    //lg->AddEntry( gr_atlas_boosted, "Exp. ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
-    lg->AddEntry( gr_EXO17011, "Exp. CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
+    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");
 
@@ -674,8 +677,8 @@ void Draw_Limit(int Year, TString dirname=""){
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
         hist_dummy->GetXaxis()->SetRangeUser(0., 7000.);
         hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarroweejj) (fb)");
-        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrow#mu#mujj) (fb)");
+        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarroweeqq) (fb)");
+        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muqq) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");
@@ -688,7 +691,9 @@ void Draw_Limit(int Year, TString dirname=""){
         TLatex str_m_WR;
         str_m_WR.SetNDC();
         str_m_WR.SetTextSize(0.035);
-        str_m_WR.DrawLatex(0.65, 0.85, "m_{WR} = "+TString::Itoa(m_WR,10)+" GeV");
+        str_m_WR.DrawLatex(0.55, 0.85, "m_{WR} = "+TString::Itoa(m_WR,10)+" GeV");
+        if(channel=="EE")        latex_ch.DrawLatex(0.55, 0.80, region+" ee channel");
+        else if(channel=="MuMu") latex_ch.DrawLatex(0.55, 0.80, region+" #mu#mu channel");
 
         lg->Draw();
 
@@ -704,7 +709,7 @@ void Draw_Limit(int Year, TString dirname=""){
     } // END Loop over WR
 
 
-    vector<double> test_Ns = {-500, 200, 400};
+    vector<double> test_Ns = {-500, 100, 200, 400};
 
 
     for(int z=0; z<test_Ns.size(); z++){
@@ -821,8 +826,8 @@ void Draw_Limit(int Year, TString dirname=""){
         hist_axis(hist_dummy);
         hist_dummy->GetXaxis()->SetRangeUser(800,7000);
         hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarroweejj) (fb)");
-        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#timesBR(W_{R}#rightarrow#mu#mujj) (fb)");
+        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarroweeqq) (fb)");
+        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muqq) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");
@@ -846,7 +851,9 @@ void Draw_Limit(int Year, TString dirname=""){
           NMassString = "m_{N} = m_{WR}/2";
         }
 
-        str_m_WR.DrawLatex(0.65, 0.85, NMassString);
+        str_m_WR.DrawLatex(0.55, 0.85, NMassString);
+        if(channel=="EE")        latex_ch.DrawLatex(0.55, 0.80, region+" ee channel");
+        else if(channel=="MuMu") latex_ch.DrawLatex(0.55, 0.80, region+" #mu#mu channel");
 
         lg->Draw();
 

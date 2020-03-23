@@ -271,18 +271,18 @@ void Plotter::draw_hist(){
               hist_EMuSyst_Up->SetBinContent( i, y + err_EMu );
               hist_EMuSyst_Down->SetBinContent( i, y - err_EMu );
             }
-            AddIfExist(map_to_Source_to_Up, "EMuSyst", hist_EMuSyst_Up);
-            AddIfExist(map_to_Source_to_Down, "EMuSyst", hist_EMuSyst_Down);
+            AddIfExist(map_to_Source_to_Up, "EMuSyst", hist_EMuSyst_Up, hist_final, ThisSampleDataYear, false);
+            AddIfExist(map_to_Source_to_Down, "EMuSyst", hist_EMuSyst_Down, hist_final, ThisSampleDataYear, false);
           }
           else{
-            AddIfExist(map_to_Source_to_Up, "EMuSyst", hist_final);
-            AddIfExist(map_to_Source_to_Down, "EMuSyst", hist_final);
+            AddIfExist(map_to_Source_to_Up, "EMuSyst", hist_final, hist_final, ThisSampleDataYear, false);
+            AddIfExist(map_to_Source_to_Down, "EMuSyst", hist_final, hist_final, ThisSampleDataYear, false);
           }
 
           //==== 2) Lumi
           if(current_sample.Contains("EMuMethod")){
-            AddIfExist(map_to_Source_to_Up, "Lumi", hist_final);
-            AddIfExist(map_to_Source_to_Down, "Lumi", hist_final);
+            AddIfExist(map_to_Source_to_Up, "Lumi", hist_final, hist_final, ThisSampleDataYear, false);
+            AddIfExist(map_to_Source_to_Down, "Lumi", hist_final, hist_final, ThisSampleDataYear, false);
           }
           else{
             TH1D *hist_Lumi_Up = (TH1D *)hist_final->Clone();
@@ -294,8 +294,8 @@ void Plotter::draw_hist(){
               hist_Lumi_Up->SetBinContent( i, y + err_EMu );
               hist_Lumi_Down->SetBinContent( i, y - err_EMu );
             }
-            AddIfExist(map_to_Source_to_Up, "Lumi", hist_Lumi_Up);
-            AddIfExist(map_to_Source_to_Down, "Lumi", hist_Lumi_Down);
+            AddIfExist(map_to_Source_to_Up, "Lumi", hist_Lumi_Up, hist_final, ThisSampleDataYear, false);
+            AddIfExist(map_to_Source_to_Down, "Lumi", hist_Lumi_Down, hist_final, ThisSampleDataYear, false);
           }
 
           //==== 3) Loop over sources
@@ -303,23 +303,28 @@ void Plotter::draw_hist(){
 
             TString Syst = Systs.at(it_Syst);
 
+            bool isCorr = false;
+            if(Syst.Contains("JetRes") || Syst.Contains("JetEn")){
+              isCorr = true;
+            }
+
             //==== Exception control
             //==== 1) Continue EMu
             if( current_sample.Contains("EMuMethod") ){
-              AddIfExist(map_to_Source_to_Up, Syst, hist_final);
-              AddIfExist(map_to_Source_to_Down, Syst, hist_final);
+              AddIfExist(map_to_Source_to_Up, Syst, hist_final, hist_final, ThisSampleDataYear, isCorr);
+              AddIfExist(map_to_Source_to_Down, Syst, hist_final, hist_final, ThisSampleDataYear, isCorr);
               continue;
             }
             //==== 2) DYPtRw only for the samples with "Reweighted"
             if( Syst=="ZPtRw" && !(current_sample.Contains("Reweighted")) ){
-              AddIfExist(map_to_Source_to_Up, "ZPtRw", hist_final);
-              AddIfExist(map_to_Source_to_Down, "ZPtRw", hist_final);
+              AddIfExist(map_to_Source_to_Up, "ZPtRw", hist_final, hist_final, ThisSampleDataYear, isCorr);
+              AddIfExist(map_to_Source_to_Down, "ZPtRw", hist_final, hist_final, ThisSampleDataYear, isCorr);
               continue;
             }
             //==== 3) DYNorm only for DY
             if( Syst=="DYNorm" && !(current_sample.Contains("DYJets")) ){
-              AddIfExist(map_to_Source_to_Up, "DYNorm", hist_final);
-              AddIfExist(map_to_Source_to_Down, "DYNorm", hist_final);
+              AddIfExist(map_to_Source_to_Up, "DYNorm", hist_final, hist_final, ThisSampleDataYear, isCorr);
+              AddIfExist(map_to_Source_to_Down, "DYNorm", hist_final, hist_final, ThisSampleDataYear, isCorr);
               continue;
             }
 
@@ -406,8 +411,8 @@ void Plotter::draw_hist(){
             //==== hist_SystMax.at(1) : Content = Central, Errors = Maximum down-side variation of this syst source
             vector<TH1D *> hist_SystMax = ConvertSystematic(hist_final, hist_Up_final, hist_Down_final);
 
-            AddIfExist(map_to_Source_to_Up, Syst, hist_Up_final);
-            AddIfExist(map_to_Source_to_Down, Syst, hist_Down_final);
+            AddIfExist(map_to_Source_to_Up, Syst, hist_Up_final, hist_final, ThisSampleDataYear, isCorr);
+            AddIfExist(map_to_Source_to_Down, Syst, hist_Down_final, hist_final, ThisSampleDataYear, isCorr);
 
           } // END Loop syst
 
@@ -955,9 +960,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     double U =  (N==0) ? ( ROOT::Math::gamma_quantile_c(alpha,N+1,1) ) : ( ROOT::Math::gamma_quantile_c(alpha/2,N+1,1) );
     if( N!=0 ){
       gr_data->SetPointEYlow(i, N-L );
-      gr_data->SetPointEXlow(i, 0);
+      //gr_data->SetPointEXlow(i, 0);
       gr_data->SetPointEYhigh(i, U-N );
-      gr_data->SetPointEXhigh(i, 0);
+      //gr_data->SetPointEXhigh(i, 0);
       err_down_tmp.push_back(N-L);
       err_up_tmp.push_back(U-N);
      }
@@ -973,9 +978,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
       }
 
       gr_data->SetPointEYlow(i, zerodata_err_low);
-      gr_data->SetPointEXlow(i, 0.);
+      //gr_data->SetPointEXlow(i, 0.);
       gr_data->SetPointEYhigh(i, zerodata_err_high);
-      gr_data->SetPointEXhigh(i, 0.);
+      //gr_data->SetPointEXhigh(i, 0.);
       err_down_tmp.push_back(zerodata_err_low);
       err_up_tmp.push_back(zerodata_err_high);
     }
@@ -1037,7 +1042,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     //hist_empty_bottom->GetYaxis()->SetRangeUser(0,YmaxScale*GetMaximum(ratio_point,0.));
     //hist_empty_bottom->GetYaxis()->SetRangeUser(0,1.9);
     hist_empty_bottom->GetXaxis()->SetTitle(this_xtitle);
-    hist_empty_bottom->GetYaxis()->SetTitle("#frac{Obs.}{Pred.}");
+    hist_empty_bottom->GetYaxis()->SetTitle("#frac{Data}{Pred.}");
+    if(histname_suffix[i_cut].Contains("DYCR")) hist_empty_bottom->GetYaxis()->SetTitle("#frac{Data}{Sim.}");
+    if(histname_suffix[i_cut].Contains("LowWRCR")) hist_empty_bottom->GetYaxis()->SetTitle("#frac{Data}{Sim.}");
     hist_empty_bottom->SetFillColor(0);
     hist_empty_bottom->SetMarkerSize(0);
     hist_empty_bottom->SetMarkerStyle(0);
@@ -1073,15 +1080,15 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
         if(err_down_tmp.at(i-1)  !=0.) {
           gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1) / mc_staterror->GetBinContent(i) );
-          gr_ratio_point->SetPointEXlow(i-1, 0);
+          //gr_ratio_point->SetPointEXlow(i-1, 0);
           gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1) / mc_staterror->GetBinContent(i));
-          gr_ratio_point->SetPointEXhigh(i-1, 0);
+          //gr_ratio_point->SetPointEXhigh(i-1, 0);
         }
         else{
           gr_ratio_point->SetPointEYlow(i-1, 0);
-          gr_ratio_point->SetPointEXlow(i-1, 0);
+          //gr_ratio_point->SetPointEXlow(i-1, 0);
           gr_ratio_point->SetPointEYhigh(i-1, 1.8 / mc_staterror->GetBinContent(i));
-          gr_ratio_point->SetPointEXhigh(i-1, 0);
+          //gr_ratio_point->SetPointEXhigh(i-1, 0);
         }
         //==== ratio staterr
         //==== BinContent = 1
@@ -1142,11 +1149,11 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     hist_empty_bottom->GetYaxis()->SetRangeUser(0.5,1.5);
     //hist_empty_bottom->GetYaxis()->SetRangeUser(this_ratio_min,this_ratio_max);
 
-    ratio_allerr->SetFillColor(kGray);
-    ratio_allerr->SetFillStyle(1001);
+    ratio_allerr->SetMarkerColor(0);
     ratio_allerr->SetMarkerSize(0);
-    ratio_allerr->SetMarkerStyle(0);
-    ratio_allerr->SetLineColor(kWhite);
+    ratio_allerr->SetFillStyle(3013);
+    ratio_allerr->SetFillColor(kBlack);
+    ratio_allerr->SetLineColor(0);
     ratio_allerr->Draw("E2same");
 
     ratio_staterr->SetFillColor(kOrange+2);
@@ -1158,12 +1165,12 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     ratio_point->Draw("p9histsame");
     gr_ratio_point->Draw("p0same");
 
-    TLegend *lg_ratio = new TLegend(0.7, 0.8, 0.9, 0.9);
+    TLegend *lg_ratio = new TLegend(0.75, 0.76, 0.90, 0.9);
     //lg_ratio->SetFillStyle(0);
     //lg_ratio->SetBorderSize(0);
-    lg_ratio->SetNColumns(2);
-    lg_ratio->AddEntry(ratio_staterr, "Stat.", "f");
-    lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
+    //lg_ratio->SetNColumns(2);
+    lg_ratio->AddEntry(ratio_staterr, "Stat. uncert.", "f");
+    //lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
     //lg_ratio->AddEntry(ratio_point, "Obs./Pred.", "p");
     lg_ratio->Draw();
 
@@ -1421,7 +1428,7 @@ TString Plotter::DoubleToString(double dx){
   if(units[i_var]=="int"){
     return "Events";
   }
-  else if(histname[i_var].Contains("WRCand_Mass")){ //FIXME need rebin?
+  else if(histname[i_var].Contains("WRCand_Mass") && ! histname_suffix[i_cut].Contains("LowWRCR") ){ //FIXME need rebin?
     return "Events / bin";
   }
   else{
@@ -1779,17 +1786,51 @@ TH1D *Plotter::Rebin(TH1D *hist){
 
 }
 
-void Plotter::AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist){
+void Plotter::AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist, TH1D *hist_Nominal, int Year, bool IsCorr){
 
-  TH1D *this_hist = map[key];
-  if(!this_hist){
-    map[key] = (TH1D *)hist->Clone();
+  //==== If Correlated, or Simply one year
+  //==== key = "Syst"
+  if(IsCorr || Year>0){
+    TH1D *this_hist = map[key];
+    if(!this_hist){
+      map[key] = (TH1D *)hist->Clone();
+    }
+    else{
+      map[key]->Add(hist);
+    }
   }
+  //==== If Uncorrelated (and Year<0),
+  //==== key = "2016Syst"
+  //==== Also, we have to add dummy "2017Syst", and "2018Syst" too
   else{
-    //int thisbin = hist->FindBin(600);
-    //cout << "[Plotter::AddIfExist] " << key << "\t" << map[key]->GetBinContent( thisbin ) << " + " << hist->GetBinContent( thisbin );
-    map[key]->Add(hist);
-    //cout << " = " << map[key]->GetBinContent( thisbin ) << endl;
+
+    for(int i=2016; i<=2018; i++){
+
+      TString str_year = TString::Itoa(i,10);
+
+      //==== Adding this year
+      if(i==Year){
+        TH1D *this_hist = map[str_year+key];
+        if(!this_hist){
+          map[str_year+key] = (TH1D *)hist->Clone();
+        }
+        else{
+          map[str_year+key]->Add(hist);
+        }
+      }
+      //==== Adding dummy
+      else{
+        TH1D *this_hist = map[str_year+key];
+        if(!this_hist){
+          map[str_year+key] = (TH1D *)hist_Nominal->Clone();
+        }
+        else{
+          map[str_year+key]->Add(hist_Nominal);
+        }
+      }
+
+    }
+
   }
 
 

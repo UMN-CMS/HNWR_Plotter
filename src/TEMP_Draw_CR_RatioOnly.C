@@ -1,7 +1,7 @@
 #include "TEMP_Plotter_RatioOnly.cc"
 #include <fstream>
 
-void TEMP_Draw_CR_RatioOnly(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool ScaleMC=false){
+void TEMP_Draw_CR_RatioOnly(int Year=2016, bool UseDYPtReweight=false, bool ScaleMC=false, double err_Resolved=0.20, double err_Boosted=0.30){
 
   bool UsePromptMC = false;
 
@@ -20,7 +20,10 @@ void TEMP_Draw_CR_RatioOnly(int Year=2016, int WhichRegion=0, bool UseDYPtReweig
   TEMP_Plotter_RatioOnly m;
   m.DoDebug = false;
   m.DataYear = Year;
-  
+
+  m.EMuSyst_Resolved = err_Resolved;
+  m.EMuSyst_Boosted = err_Boosted;
+
   //=====================
   //==== set data class
   //=====================
@@ -121,103 +124,20 @@ void TEMP_Draw_CR_RatioOnly(int Year=2016, int WhichRegion=0, bool UseDYPtReweig
 
   //==== _Di<Lepton>_<JetSel>_<ifOffZ>_<charge>
 
-  //==== DY CR, log scale
-  if(WhichRegion==0){
+  m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT", "EMuMethod"};
+  if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"};
 
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ttbar", "ZJets_MG_HT"};
-    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ttbar", "ZJets_MG_HT_Reweighted"};
+  m.histname_suffix = {
 
-    m.histname_suffix = {
+    //==== Resolved LowWRCR for validation
+    "HNWR_SingleElectron_Resolved_LowWRCR",
+    "HNWR_SingleMuon_Resolved_LowWRCR",
 
-      "HNWR_SingleElectron_Resolved_DYCR",
-      "HNWR_SingleMuon_Resolved_DYCR",
-      "HNWR_SingleElectron_Boosted_DYCR",
-      "HNWR_SingleMuon_Boosted_DYCR",
+    //==== Boosted LowWRCR for validation
+    "HNWR_SingleElectron_Boosted_LowWRCR",
+    "HNWR_SingleMuon_Boosted_LowWRCR",
 
-/*
-
-      //==== Resolved EMu
-      "HNWR_EMu_Resolved_SR",
-
-      //==== Boosted EMu
-      "HNWR_SingleElectron_EMu_Boosted_CR",
-      "HNWR_SingleMuon_EMu_Boosted_CR",
-
-      //==== Resolved EMu, but DYCR. This is dominated by ttbar, so it is here..
-      //==== This region is not important
-      "HNWR_EMu_Resolved_DYCR",
-
-      //==== LowWRCR emu regions
-      "HNWR_EMu_Resolved_LowWRCR",
-      "HNWR_SingleElectron_EMu_Boosted_LowWRCR",
-      "HNWR_SingleMuon_EMu_Boosted_LowWRCR",
-
-      //==== Resolved LowWRCR for validation
-      "HNWR_SingleElectron_Resolved_LowWRCR",
-      "HNWR_SingleMuon_Resolved_LowWRCR",
-
-      //==== Boosted LowWRCR for validation
-      "HNWR_SingleElectron_Boosted_LowWRCR",
-      "HNWR_SingleMuon_Boosted_LowWRCR",
-
-*/
-
-
-
-
-
-
-    };
-
-  }
-
-  //==== EMu
-  if(WhichRegion==1){
-
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT", "ttbar"};
-    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "ttbar"};
-
-    m.histname_suffix = {
-
-      //==== Resolved EMu
-      "HNWR_EMu_Resolved_SR",
-
-      //==== Boosted EMu
-      "HNWR_SingleElectron_EMu_Boosted_CR",
-      "HNWR_SingleMuon_EMu_Boosted_CR",
-
-      //==== Resolved EMu, but DYCR. This is dominated by ttbar, so it is here..
-      //==== This region is not important
-      "HNWR_EMu_Resolved_DYCR",
-
-      //==== LowWRCR emu regions
-      "HNWR_EMu_Resolved_LowWRCR",
-      "HNWR_SingleElectron_EMu_Boosted_LowWRCR",
-      "HNWR_SingleMuon_EMu_Boosted_LowWRCR",
-
-    };
-
-  }
-
-  //==== EMu Validation (i.e., LowWR)
-  if(WhichRegion==2){
-
-    m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT", "EMuMethod"};
-    if(UseDYPtReweight) m.samples_to_use = {"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"};
-
-    m.histname_suffix = {
-
-      //==== Resolved LowWRCR for validation
-      "HNWR_SingleElectron_Resolved_LowWRCR",
-      "HNWR_SingleMuon_Resolved_LowWRCR",
-
-      //==== Boosted LowWRCR for validation
-      "HNWR_SingleElectron_Boosted_LowWRCR",
-      "HNWR_SingleMuon_Boosted_LowWRCR",
-
-    };
-
-  }
+  };
 
   //============================
   //==== set variables to draw
@@ -403,11 +323,7 @@ void TEMP_Draw_CR_RatioOnly(int Year=2016, int WhichRegion=0, bool UseDYPtReweig
       return;
     }
 
-    //==== Log plot boolean
-    if(WhichRegion==0) m.UseLogy.push_back(1);
-    if(WhichRegion==1) m.UseLogy.push_back(-1);
-    if(WhichRegion==2) m.UseLogy.push_back(-1);
-    if(WhichRegion==3) m.UseLogy.push_back(1);
+    m.UseLogy.push_back(-1);
 
     if(ScaleMC) m.ApplyMCNormSF.push_back(true);
     else m.ApplyMCNormSF.push_back(false);

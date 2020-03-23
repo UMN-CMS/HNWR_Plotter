@@ -701,7 +701,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->Draw();
 
         latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-        latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
+        latex_Lumi.DrawLatex(0.80, 0.96, TotalLumi);
 
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.pdf");
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.png");
@@ -861,7 +861,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->Draw();
 
         latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-        latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
+        latex_Lumi.DrawLatex(0.80, 0.96, TotalLumi);
 
 
         TString outname = "";

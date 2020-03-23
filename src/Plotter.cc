@@ -71,9 +71,9 @@ void Plotter::draw_hist(){
       TLegend *lg;
       if(drawratio.at(i_cut)){
         //==== CR
-        if(signal_LRSMinfo.size()==0) lg = new TLegend(0.60, 0.35, 0.96, 0.92);
+        if(signal_LRSMinfo.size()==0) lg = new TLegend(0.60, 0.45, 0.96, 0.90);
         //==== SR
-        else lg = new TLegend(0.51, 0.36, 0.94, 0.91);
+        else lg = new TLegend(0.51, 0.46, 0.94, 0.90);
       }
       else{
         if(IsNoLSFCutPlot){
@@ -1004,11 +1004,18 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   //==== ymax
   double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
   hist_empty->GetYaxis()->SetRangeUser( Ymin, YmaxScale*AutoYmax );
-  if(histname[i_var]=="WRCand_Mass" && histname_suffix[i_cut].Contains("_SR") && !(histname_suffix[i_cut].Contains("EMu")) ){
 
+  //==== Exception
+  //=== 1) WRCand mass
+  if(histname[i_var]=="WRCand_Mass" && histname_suffix[i_cut].Contains("_SR") && !(histname_suffix[i_cut].Contains("EMu")) ){
     if(histname_suffix[i_cut].Contains("Resolved")) hist_empty->GetYaxis()->SetRangeUser( 1E-1, YmaxScale*AutoYmax );
     else hist_empty->GetYaxis()->SetRangeUser( 1, YmaxScale*AutoYmax );
   }
+  //==== 2) ZCand_Mass for DYCR
+  if(histname[i_var]=="ZCand_Mass" && histname_suffix[i_cut].Contains("_DYCR")){
+    hist_empty->GetYaxis()->SetRangeUser( 10, 1E8 );
+  }
+
 
   //==== legend
   if(!IsNoLSFCutPlot){

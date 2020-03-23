@@ -312,7 +312,7 @@ void Draw_Limit(int Year, TString dirname=""){
     TCanvas *c_2D = new TCanvas("c_2D", "", 800, 600);
     canvas_margin(c_2D);
     c_2D->SetBottomMargin( 0.10 );
-    c_2D->SetRightMargin( 0.13 );
+    c_2D->SetRightMargin( 0.16 );
     c_2D->SetLeftMargin( 0.11 );
     c_2D->cd();
     c_2D->SetLogz();
@@ -508,7 +508,10 @@ void Draw_Limit(int Year, TString dirname=""){
         //hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.01);
         hist2d_limit_exp_ratio_clone->GetZaxis()->SetLabelSize(0.03);
 
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.04);
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("Upper limit / Theory");
         hist2d_limit_exp_ratio_clone->Draw("colzsame");
+        hist2d_limit_exp_ratio_clone->Draw("axissame");
 
       }
 

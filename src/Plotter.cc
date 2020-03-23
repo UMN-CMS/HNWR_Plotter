@@ -1204,7 +1204,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     latex_Lumi.SetNDC();
     latex_CMSPriliminary.SetTextSize(0.035);
     if(IsNoLSFCutPlot){
-      latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Simulation Preliminary}}}");
+      latex_CMSPriliminary.DrawLatex(0.17, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Simulation Preliminary}}}");
     }
     else{
       latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
@@ -1212,7 +1212,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);
-    latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi()+" fb^{-1} (13 TeV)");
+    latex_Lumi.DrawLatex(0.80, 0.96, TotalLumi()+" fb^{-1}");
 
     TString str_channel = GetStringChannelRegion(LeptonChannels.at(i_cut), RegionType.at(i_cut));
     TLatex channelname;

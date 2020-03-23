@@ -26,8 +26,11 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //=====================
 
   TString str_Year = TString::Itoa(Year,10);
-  if(Year<0) str_Year = "YearCombined";
   m.data_class = dataset+"/Regions/"+str_Year+"/";
+  if(Year<0){
+    str_Year = "YearCombined";
+    m.data_class = dataset+"/Regions/";
+  }
 
   //================================
   //==== set prefixes and suffixes
@@ -117,8 +120,6 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
 
   }
   else if(Year<0){
-
-    m.data_class = dataset+"/Regions/";
 
     m.map_sample_string_to_list["ZJets_MG_HT"]  = {
       "2016 DYJets10to50_MG", "2016 DYJets_MG_HT",

@@ -29,6 +29,7 @@ public :
   //==== Get All Mass Info
   void GetMassMaps();
   void GetMassMapsPlot();
+  void GetMassMapsNoLSFCutPlot();
   void GetMassMapsSigDist();
   int NTotalMass;
   map< double, vector<double> > maps_WR_to_N;
@@ -194,12 +195,36 @@ void LRSMSignalInfo::GetMassMaps(){
 void LRSMSignalInfo::GetMassMapsPlot(){
 
   vector<double> m_WRs = {
-2400, 2400, 2400,
-4400, 4400, 4400, 
+5000, 5000,
   };
   vector<double> m_Ns = {
-400, 1200, 2300,
-400, 2200, 4300, 
+3000, 100,
+  };
+
+  maps_WR_to_N.clear();
+  maps_N_to_WR.clear();
+  NTotalMass = 0;
+
+  for(unsigned int i=0; i<m_WRs.size(); i++){
+
+    double m_WR = m_WRs.at(i);
+    double m_N = m_Ns.at(i);
+
+    maps_WR_to_N[m_WR].push_back( m_N );
+    maps_N_to_WR[m_N].push_back( m_WR );
+    NTotalMass++;
+
+  }
+
+}
+
+void LRSMSignalInfo::GetMassMapsNoLSFCutPlot(){
+
+  vector<double> m_WRs = {
+3000, 5000,
+  };
+  vector<double> m_Ns = {
+100, 100
   };
 
   maps_WR_to_N.clear();

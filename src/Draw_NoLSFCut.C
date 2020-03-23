@@ -1,10 +1,11 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool ScaleMC=false){
+void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
 
+  bool UseDYPtReweight = true;
+  bool ScaleMC = true;
   bool UsePromptMC = false;
-  bool UseFit = false;
 
   //==============
   //==== get env
@@ -21,16 +22,17 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   Plotter m;
   m.DoDebug = false;
   m.DataYear = Year;
+  m.IsNoLSFCutPlot = true;
 
   //=====================
   //==== set data class
   //=====================
 
   TString str_Year = TString::Itoa(Year,10);
-  m.data_class = dataset+"/Regions/"+str_Year+"/";
+  m.data_class = dataset+"/NoLSFCut/"+str_Year+"/";
   if(Year<0){
     str_Year = "YearCombined";
-    m.data_class = dataset+"/Regions/";
+    m.data_class = dataset+"/NoLSFCut/";
   }
 
   //================================
@@ -49,7 +51,6 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
 
     m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
     m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"]     = {"DYJets10to50_MG_Reweighted",         "DYJets_MG_HT_Reweighted"};
-    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted_Fit"] = {"DYJets10to50_MG_Reweighted", "FromFit_DYJets_MG_HT_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
@@ -58,12 +59,9 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
     m.map_sample_string_to_list["ttX"] = {"ttWToLNu", "ttWToQQ", "ttZ"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    m.map_sample_string_to_list["EMuMethod"]     = {        "EMuMethod_TTLX_powheg"};
-    m.map_sample_string_to_list["EMuMethod_Fit"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
     m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted_Fit"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
@@ -72,15 +70,12 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
 
   }
   else if(Year==2017){
 
     m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
     m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"]     = {"DYJets10to50_MG_Reweighted",         "DYJets_MG_HT_Reweighted"};
-    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted_Fit"] = {"DYJets10to50_MG_Reweighted", "FromFit_DYJets_MG_HT_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
@@ -89,12 +84,9 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad" ,"SingleTop_tch_antitop_Incl" ,"SingleTop_tch_top_Incl"};
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    m.map_sample_string_to_list["EMuMethod"]     = {        "EMuMethod_TTLX_powheg"};
-    m.map_sample_string_to_list["EMuMethod_Fit"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
     m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted_Fit"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
@@ -103,15 +95,12 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
 
   }
   else if(Year==2018){
 
     m.map_sample_string_to_list["ZJets_MG_HT"] = {"DYJets10to50_MG", "DYJets_MG_HT"};
     m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"]     = {"DYJets10to50_MG_Reweighted",         "DYJets_MG_HT_Reweighted"};
-    m.map_sample_string_to_list["ZJets_MG_HT_Reweighted_Fit"] = {"DYJets10to50_MG_Reweighted", "FromFit_DYJets_MG_HT_Reweighted"};
     m.map_sample_string_to_list["WJets_MG"] = {"WJets_MG"};
     m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
     m.map_sample_string_to_list["VV_incl"] = {"WZ_pythia", "ZZ_pythia", "WW_pythia"};
@@ -120,12 +109,9 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_list["SingleTop"] = {"SingleTop_sch_Lep", "SingleTop_tW_antitop_NoFullyHad", "SingleTop_tW_top_NoFullyHad", "SingleTop_tch_antitop_Incl", "SingleTop_tch_top_Incl"};
     m.map_sample_string_to_list["ttX"] = {"ttW", "ttZ"};
     m.map_sample_string_to_list["ttbar"] = {"TTLL_powheg", "TTLJ_powheg"};
-    m.map_sample_string_to_list["EMuMethod"]     = {        "EMuMethod_TTLX_powheg"};
-    m.map_sample_string_to_list["EMuMethod_Fit"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
     m.map_sample_string_to_legendinfo["ZJets_MG_HT"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
-    m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted_Fit"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
@@ -134,8 +120,6 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
 
   }
   else if(Year<0){
@@ -168,7 +152,6 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
       "2017 VVV",
       "2018 VVV",
     };
-
     m.map_sample_string_to_list["SingleTop"] = {
       "2016 SingleTop",
       "2017 SingleTop",
@@ -179,10 +162,10 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
       "2017 ttX",
       "2018 ttX",
     };
-    m.map_sample_string_to_list["EMuMethod"]     = {
-      "2016 EMuMethod_TTLX_powheg",
-      "2017 EMuMethod_TTLX_powheg",
-      "2018 EMuMethod_TTLX_powheg",
+    m.map_sample_string_to_list["ttbar"] = {
+      "2016 TTLL_powheg", "2016 TTLJ_powheg",
+      "2017 TTLL_powheg", "2017 TTLJ_powheg",
+      "2018 TTLL_powheg", "2018 TTLJ_powheg",
     };
 
     m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
@@ -192,7 +175,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
 
@@ -203,16 +186,12 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== _Di<Lepton>_<JetSel>_<ifOffZ>_<charge>
 
   if(WhichRegion==0){
-    m.samples_to_use                     = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT", "EMuMethod"};
-    if(UseDYPtReweight) m.samples_to_use = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT_Reweighted", "EMuMethod"};
-    if(UseFit) m.samples_to_use          = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT_Reweighted_Fit", "EMuMethod_Fit"};
+    m.samples_to_use                     = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT", "ttbar"};
+    if(UseDYPtReweight) m.samples_to_use = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT_Reweighted", "ttbar"};
 
     m.histname_suffix = {
 
-      "HNWR_SingleElectron_Resolved_SR",
       "HNWR_SingleElectron_Boosted_SR",
-
-      "HNWR_SingleMuon_Resolved_SR",
       "HNWR_SingleMuon_Boosted_SR",
 
     };
@@ -274,17 +253,15 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "", "int", "int",
   };
 
-  if(Year<0){
-    m.histname = {
-      "WRCand_Mass"
-    };
-    m.x_title = {
-      "m_{WR} (GeV)",
-    };
-    m.units = {
-      "GeV",
-    };
-  }
+  m.histname = {
+    "FatJet_0_LSF",
+  };
+  m.x_title = {
+    "AK8 jet LSF_{3}",
+  };
+  m.units = {
+    "",
+  };
 
 /*
   m.histname = {
@@ -355,14 +332,14 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
       m.RegionType.push_back(20);
     }
 
-    m.UseLogy.push_back(1);
+    m.UseLogy.push_back(-1);
 
     if(ScaleMC) m.ApplyMCNormSF.push_back(true);
     else m.ApplyMCNormSF.push_back(false);
 
     m.drawdata.push_back(false);
 
-    m.drawratio.push_back(true);
+    m.drawratio.push_back(false);
 
   }
 
@@ -423,6 +400,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     "ZPtRw",
     "Prefire",
   };
+  m.Systs.clear();
 
   //=============================
   //==== set signal mass points
@@ -431,7 +409,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   TString xsectxtfilepath = WORKING_DIR+"/data/"+dataset+"/xsec_190705_GenXsecAN_eeANDmm.txt";
 
   LRSMSignalInfo lrsminfo;
-  lrsminfo.GetMassMapsPlot();
+  lrsminfo.GetMassMapsNoLSFCutPlot();
   //vector<Color_t> colors_WR = {kGreen, kViolet, kGray, kOrange};
   vector<Color_t> colors_WR = {kBlack, kGray, kSpring};
 
@@ -532,7 +510,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   }
   skeleton_rebins.close();
 
-  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/SR_rebins.txt");
+  m.SetRebins(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/NoLSFCut_rebins.txt");
 
   //=============
   //==== y_maxs
@@ -554,7 +532,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   m.default_y_max = 20.;
   m.default_y_min = 0.;
 
-  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/SR_yaxis.txt");
+  m.SetYAxis(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/NoLSFCut_yaxis.txt");
 
   //=============
   //==== x_mins
@@ -571,7 +549,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   }
   skeleton_x_mins.close();
 
-  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/SR_xaxis.txt");
+  m.SetXAxis(WORKING_DIR+"/data/"+dataset+"/"+str_Year+"/NoLSFCut_xaxis.txt");
 
   //===============
   //==== k-factor
@@ -589,10 +567,9 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/NoLSFCut/"+str_Year+"/";
 
   if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
-  if(UseFit) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/UseFit/";
 
   m.make_plot_directory();
   

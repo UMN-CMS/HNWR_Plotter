@@ -15,6 +15,8 @@ Plotter::Plotter(){
 
   DataYear = 2016;
 
+  IsNoLSFCutPlot = false;
+
 }
 
 Plotter::~Plotter(){
@@ -74,10 +76,10 @@ void Plotter::draw_hist(){
         else lg = new TLegend(0.51, 0.36, 0.94, 0.91);
       }
       else{
-        //==== CR
-        if(signal_LRSMinfo.size()==0) lg = new TLegend(0.60, 0.35, 0.95, 0.92);
-        //==== SR
-        else lg = new TLegend(0.55, 0.50, 0.93, 0.90);
+        if(IsNoLSFCutPlot){
+          //==== IsNoLSFCutPlot
+          lg = new TLegend(0.50, 0.50, 0.88, 0.90);
+        }
       }
 
       clear_legend_info();
@@ -144,6 +146,9 @@ void Plotter::draw_hist(){
           signal_name_for_tex = signal_LRSMinfo.at(signal_index).GetTEXName();
 
           filepath = "./rootfiles/"+data_class+"/Signal/"+filename_prefix+"_"+string_signal_mass+filename_suffix;
+          if(DataYear<0){
+            filepath = "./rootfiles/"+data_class+"/YearCombined/Signal/"+filename_prefix+"_"+string_signal_mass+filename_suffix;
+          }
           //cout << filepath << endl;
           current_sample = signal_name_for_tex;
         }
@@ -947,7 +952,9 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   mc_allerror->SetFillStyle(3013);
   mc_allerror->SetFillColor(kBlack);
   mc_allerror->SetLineColor(0);
-  mc_allerror->Draw("sameE2");
+  if(!IsNoLSFCutPlot){
+    mc_allerror->Draw("sameE2");
+  }
 
   //==== Draw Data at last
   vector<float> err_up_tmp;
@@ -989,8 +996,10 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   gr_data->SetMarkerSize(0.);
   gr_data->SetMarkerColor(kBlack);
   gr_data->SetLineColor(kBlack);
-  hist_data->Draw("phistsame");
-  gr_data->Draw("p0same");
+  if(!IsNoLSFCutPlot){
+    hist_data->Draw("phistsame");
+    gr_data->Draw("p0same");
+  }
 
   //==== ymax
   double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
@@ -1002,12 +1011,16 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   }
 
   //==== legend
-  legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
+  if(!IsNoLSFCutPlot){
+    legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
+  }
   if(DrawData){
     legend->AddEntry(hist_data, "Data", "pe");
   }
   else{
-    legend->AddEntry(hist_data, "Total background", "pe");
+    if(!IsNoLSFCutPlot){
+      legend->AddEntry(hist_data, "Total background", "pe");
+    }
   }
   if(drawratio.at(i_cut)) c1_up->cd();
   draw_legend(legend, DrawData);
@@ -1190,7 +1203,12 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     latex_CMSPriliminary.SetNDC();
     latex_Lumi.SetNDC();
     latex_CMSPriliminary.SetTextSize(0.035);
-    latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+    if(IsNoLSFCutPlot){
+      latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Simulation Preliminary}}}");
+    }
+    else{
+      latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+    }
 
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);

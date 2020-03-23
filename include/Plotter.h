@@ -122,5 +122,7 @@ public:
 
   void AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist, TH1D *hist_Nominal, int Year, bool IsCorr);
 
+  bool IsNoLSFCutPlot;
+
 };
 #endif

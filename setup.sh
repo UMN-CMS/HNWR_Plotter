@@ -27,7 +27,7 @@ elif [[ $HOSTNAME == *"lxplus"* ]]; then
   alias pl='rsync -auv --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
   alias plforce='rsync -auv -I --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
 
-elif [[ $HOSTNAME == *"cms2"* ]]; then
+elif [[ $HOSTNAME == *"cms1"* ]] || [[ $HOSTNAME == *"cms2"* ]] ; then
 
   #### use cvmfs for root ####
   export CMS_PATH=/cvmfs/cms.cern.ch

@@ -1014,6 +1014,10 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   if(histname[i_var]=="ZCand_Mass" && histname_suffix[i_cut].Contains("_DYCR")){
     hist_empty->GetYaxis()->SetRangeUser( 10, 1E8 );
   }
+  //==== 3) ZCand_Pt for DYCR
+  if(histname[i_var]=="ZCand_Pt" && histname_suffix[i_cut].Contains("_DYCR") && histname_suffix[i_cut].Contains("Boosted")){
+    hist_empty->GetYaxis()->SetRangeUser( 10, 2E5 );
+  }
 
 
   //==== legend

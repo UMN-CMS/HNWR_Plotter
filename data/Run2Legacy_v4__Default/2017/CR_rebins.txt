@@ -17,8 +17,8 @@ HNWR_SingleElectron_Resolved_DYCR	HNFatJet_Pt	20
 HNWR_SingleElectron_Resolved_DYCR	HNFatJet_Eta	5
 HNWR_SingleElectron_Resolved_DYCR	HNFatJet_Mass	10
 HNWR_SingleElectron_Resolved_DYCR	HNFatJet_SDMass	10
-HNWR_SingleElectron_Resolved_DYCR	ZCand_Pt	100
-HNWR_SingleElectron_Resolved_DYCR	ZCand_Mass	10
+HNWR_SingleElectron_Resolved_DYCR	ZCand_Pt	50
+HNWR_SingleElectron_Resolved_DYCR	ZCand_Mass	5
 HNWR_SingleElectron_Resolved_DYCR	dR_ll	-999
 HNWR_SingleElectron_Resolved_DYCR	MET	10
 HNWR_SingleElectron_Resolved_DYCR	HT	10
@@ -49,8 +49,8 @@ HNWR_SingleMuon_Resolved_DYCR	HNFatJet_Pt	20
 HNWR_SingleMuon_Resolved_DYCR	HNFatJet_Eta	5
 HNWR_SingleMuon_Resolved_DYCR	HNFatJet_Mass	10
 HNWR_SingleMuon_Resolved_DYCR	HNFatJet_SDMass	10
-HNWR_SingleMuon_Resolved_DYCR	ZCand_Pt	100
-HNWR_SingleMuon_Resolved_DYCR	ZCand_Mass	10
+HNWR_SingleMuon_Resolved_DYCR	ZCand_Pt	50
+HNWR_SingleMuon_Resolved_DYCR	ZCand_Mass	5
 HNWR_SingleMuon_Resolved_DYCR	dR_ll	-999
 HNWR_SingleMuon_Resolved_DYCR	MET	10
 HNWR_SingleMuon_Resolved_DYCR	HT	10
@@ -81,8 +81,8 @@ HNWR_SingleElectron_Boosted_DYCR	HNFatJet_Pt	20
 HNWR_SingleElectron_Boosted_DYCR	HNFatJet_Eta	5
 HNWR_SingleElectron_Boosted_DYCR	HNFatJet_Mass	10
 HNWR_SingleElectron_Boosted_DYCR	HNFatJet_SDMass	10
-HNWR_SingleElectron_Boosted_DYCR	ZCand_Pt	100
-HNWR_SingleElectron_Boosted_DYCR	ZCand_Mass	10
+HNWR_SingleElectron_Boosted_DYCR	ZCand_Pt	50
+HNWR_SingleElectron_Boosted_DYCR	ZCand_Mass	5
 HNWR_SingleElectron_Boosted_DYCR	dR_ll	-999
 HNWR_SingleElectron_Boosted_DYCR	MET	10
 HNWR_SingleElectron_Boosted_DYCR	HT	10
@@ -113,8 +113,8 @@ HNWR_SingleMuon_Boosted_DYCR	HNFatJet_Pt	20
 HNWR_SingleMuon_Boosted_DYCR	HNFatJet_Eta	5
 HNWR_SingleMuon_Boosted_DYCR	HNFatJet_Mass	10
 HNWR_SingleMuon_Boosted_DYCR	HNFatJet_SDMass	10
-HNWR_SingleMuon_Boosted_DYCR	ZCand_Pt	100
-HNWR_SingleMuon_Boosted_DYCR	ZCand_Mass	10
+HNWR_SingleMuon_Boosted_DYCR	ZCand_Pt	50
+HNWR_SingleMuon_Boosted_DYCR	ZCand_Mass	5
 HNWR_SingleMuon_Boosted_DYCR	dR_ll	-999
 HNWR_SingleMuon_Boosted_DYCR	MET	10
 HNWR_SingleMuon_Boosted_DYCR	HT	10
@@ -241,8 +241,8 @@ HNWR_EMu_Resolved_DYCR	HNFatJet_Pt	20
 HNWR_EMu_Resolved_DYCR	HNFatJet_Eta	5
 HNWR_EMu_Resolved_DYCR	HNFatJet_Mass	10
 HNWR_EMu_Resolved_DYCR	HNFatJet_SDMass	10
-HNWR_EMu_Resolved_DYCR	ZCand_Pt	100
-HNWR_EMu_Resolved_DYCR	ZCand_Mass	10
+HNWR_EMu_Resolved_DYCR	ZCand_Pt	50
+HNWR_EMu_Resolved_DYCR	ZCand_Mass	5
 HNWR_EMu_Resolved_DYCR	dR_ll	-999
 HNWR_EMu_Resolved_DYCR	MET	10
 HNWR_EMu_Resolved_DYCR	HT	10

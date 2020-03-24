@@ -1,7 +1,8 @@
 #for year in 2016 2017 2018
 for year in -1
 do
-  for i in 0 1 2
+  #for i in 0 1 2
+  for i in 0
   do
 
     ## No DYPtReweight, No MCSF

@@ -71,15 +71,12 @@ void Plotter::draw_hist(){
       TLegend *lg;
       if(drawratio.at(i_cut)){
         //==== CR
-        if(signal_LRSMinfo.size()==0) lg = new TLegend(0.60, 0.45, 0.96, 0.90);
+        if(signal_LRSMinfo.size()==0) lg = new TLegend(0.60, 0.45, 0.92, 0.90);
         //==== SR
-        else lg = new TLegend(0.51, 0.46, 0.94, 0.90);
+        else lg = new TLegend(0.48, 0.46, 0.91, 0.90);
       }
       else{
-        if(IsNoLSFCutPlot){
-          //==== IsNoLSFCutPlot
-          lg = new TLegend(0.50, 0.50, 0.88, 0.90);
-        }
+        lg = new TLegend(0.50, 0.50, 0.88, 0.90);
       }
 
       clear_legend_info();
@@ -105,15 +102,18 @@ void Plotter::draw_hist(){
 
           if(bkglist[i_file].Contains("fake") || bkglist[i_file].Contains("chargeflip") || bkglist[i_file].Contains("FromEMu") ) tmp += "_"+PrimaryDataset[i_cut];
           filepath = "./rootfiles/"+data_class+"/"+filename_prefix+filename_skim+"_"+tmp+filename_suffix;
+          current_sample = bkglist[i_file];
+
           if(DataYear<0){
             str_ThisSampleDataYear = tmp(0,4);
             ThisSampleDataYear = str_ThisSampleDataYear.Atoi();
 
             tmp = tmp(5,tmp.Capacity());
 
+            current_sample = tmp+"_"+str_ThisSampleDataYear;
+
             filepath = "./rootfiles/"+data_class+"/"+str_ThisSampleDataYear+"/"+filename_prefix+filename_skim+"_"+tmp+filename_suffix;
           }
-          current_sample = bkglist[i_file];
         }
         //==== data for i_file = bkglist.size()
         else if( i_file == bkglist.size() ){
@@ -248,7 +248,7 @@ void Plotter::draw_hist(){
               hist_final->Scale(DYNorm);
             }
             else{
-              hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
+              //hist_final->Scale(analysisInputs.MCNormSF[current_sample]);
             }
           }
 
@@ -405,8 +405,8 @@ void Plotter::draw_hist(){
                 hist_Down_final->Scale(DYNorm);
               }
               else{
-                hist_Up_final->Scale(analysisInputs.MCNormSF[current_sample]);
-                hist_Down_final->Scale(analysisInputs.MCNormSF[current_sample]);
+                //hist_Up_final->Scale(analysisInputs.MCNormSF[current_sample]);
+                //hist_Down_final->Scale(analysisInputs.MCNormSF[current_sample]);
               }
 
             }
@@ -814,6 +814,8 @@ void Plotter::draw_legend(TLegend* lg, bool DrawData){
 
 void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErrors *mc_allerror, TH1D *hist_data, vector<TH1D *> hist_signal, TLegend *legend, bool DrawData){
 
+  if(DoDebug) cout << "[Plotter::draw_canvas] called" << endl;
+
   if(!hist_data) return;
 
   //==== signal_class
@@ -906,6 +908,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     else c1->SetLogy();
   }
   hist_empty->Draw("histsame");
+  //if(histname[i_var]=="WRCand_Mass" && histname_suffix[i_cut].Contains("_LowWRCR")) hist_empty->GetYaxis()->SetMaxDigits(4);
   //==== hide X Label for top plot
   if(drawratio.at(i_cut)) hist_empty->GetXaxis()->SetLabelSize(0);
   
@@ -952,9 +955,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   mc_allerror->SetFillStyle(3013);
   mc_allerror->SetFillColor(kBlack);
   mc_allerror->SetLineColor(0);
-  if(!IsNoLSFCutPlot){
-    mc_allerror->Draw("sameE2");
-  }
+  mc_allerror->Draw("sameE2");
 
   //==== Draw Data at last
   vector<float> err_up_tmp;
@@ -996,10 +997,8 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   gr_data->SetMarkerSize(0.);
   gr_data->SetMarkerColor(kBlack);
   gr_data->SetLineColor(kBlack);
-  if(!IsNoLSFCutPlot){
-    hist_data->Draw("phistsame");
-    gr_data->Draw("p0same");
-  }
+  hist_data->Draw("phistsame");
+  gr_data->Draw("p0same");
 
   //==== ymax
   double AutoYmax = max( GetMaximum(gr_data), GetMaximum(mc_allerror) );
@@ -1018,16 +1017,18 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
 
   //==== legend
-  if(!IsNoLSFCutPlot){
-    legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
-  }
+  legend->AddEntry(mc_allerror, "Stat.+syst. uncert.", "f");
+  //==== dummy graph for legend..
+  //==== this is because hist_data does not have horizontal error bars,
+  //==== and gr_data does not have points
+  TGraphAsymmErrors *gr_data_dummy = (TGraphAsymmErrors *)gr_data->Clone();
+  gr_data_dummy->SetMarkerStyle(20);
+  gr_data_dummy->SetMarkerSize(1.2);
   if(DrawData){
-    legend->AddEntry(hist_data, "Data", "pe");
+    legend->AddEntry(gr_data_dummy, "Data", "lpe");
   }
   else{
-    if(!IsNoLSFCutPlot){
-      legend->AddEntry(hist_data, "Total background", "pe");
-    }
+    legend->AddEntry(gr_data_dummy, "Total background", "lpe");
   }
   if(drawratio.at(i_cut)) c1_up->cd();
   draw_legend(legend, DrawData);
@@ -1166,7 +1167,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     }
     double this_ratio_min = min(0.8,1.1*GetMinimum(ratio_point,0.));
     double this_ratio_max = max(1.2,1.1*GetMaximum(ratio_point,0.));
-    hist_empty_bottom->GetYaxis()->SetRangeUser(0.5,1.5);
+    hist_empty_bottom->GetYaxis()->SetRangeUser(0.5,1.6);
     //hist_empty_bottom->GetYaxis()->SetRangeUser(this_ratio_min,this_ratio_max);
 
     ratio_allerr->SetMarkerColor(0);
@@ -1176,7 +1177,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     ratio_allerr->SetLineColor(0);
     ratio_allerr->Draw("E2same");
 
-    ratio_staterr->SetFillColor(kOrange+2);
+    ratio_staterr->SetFillColor(kGray);
     ratio_staterr->SetMarkerSize(0);
     ratio_staterr->SetMarkerStyle(0);
     ratio_staterr->SetLineColor(kWhite);
@@ -1192,7 +1193,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     lg_ratio->AddEntry(ratio_staterr, "Stat. uncert.", "f");
     //lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
     //lg_ratio->AddEntry(ratio_point, "Obs./Pred.", "p");
-    lg_ratio->Draw();
+    //lg_ratio->Draw();
 
     hist_empty_bottom->Draw("axissame");
 
@@ -1210,16 +1211,11 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     latex_CMSPriliminary.SetNDC();
     latex_Lumi.SetNDC();
     latex_CMSPriliminary.SetTextSize(0.035);
-    if(IsNoLSFCutPlot){
-      latex_CMSPriliminary.DrawLatex(0.17, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Simulation Preliminary}}}");
-    }
-    else{
-      latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-    }
+    latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
 
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);
-    latex_Lumi.DrawLatex(0.80, 0.96, TotalLumi()+" fb^{-1}");
+    latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi()+" fb^{-1} (13 TeV)");
 
     TString str_channel = GetStringChannelRegion(LeptonChannels.at(i_cut), RegionType.at(i_cut));
     TLatex channelname;
@@ -1238,7 +1234,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
     latex_Lumi.SetTextSize(0.035);
     latex_Lumi.SetTextFont(42);
-    latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi()+" fb^{-1} (13 TeV)");
+    latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi()+" fb^{-1} (13 TeV)");
 
     TLatex latex_eemmem;
     latex_eemmem.SetNDC();
@@ -1258,6 +1254,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   if(DoDebug) cout << "[draw_canvas] output directory created : " << thiscut_plotpath << endl;
   c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".pdf");
   c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".png");
+  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".C");
 
   delete legend;
   delete c1;
@@ -1475,7 +1472,12 @@ TString Plotter::DoubleToString(double dx){
     }
     //=== no integer
     else{
-      return "Events / 0."+TString::Itoa(dx_first_two_digits,10)+" "+units[i_var];
+      if(histname[i_var].Contains("_LSF")){
+        return "Events / 0.0"+TString::Itoa(dx_first_two_digits,10)+" "+units[i_var];
+      }
+      else{
+        return "Events / 0."+TString::Itoa(dx_first_two_digits,10)+" "+units[i_var];
+      }
     }
   }
 
@@ -1614,7 +1616,7 @@ TString Plotter::TotalLumi(){
   if(DataYear==2016) return "35.92";
   else if(DataYear==2017) return "41.53";
   else if(DataYear==2018) return "59.74";
-  else if(DataYear<0) return "137.19";
+  else if(DataYear<0) return "137";
   else{
     cout << "[Plotter::TotalLumi] Wrong DataYear" << DataYear << endl;
     exit(EXIT_FAILURE);

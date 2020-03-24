@@ -173,14 +173,14 @@ void canvas_margin_limit(TCanvas *c1){
 
 void canvas_margin(TCanvas *c1, TPad *c1_up, TPad *c1_down){
   c1_up->SetTopMargin( 0.07 );
-  c1_up->SetBottomMargin( 0.02 );
+  c1_up->SetBottomMargin( 0.025 );
   c1_up->SetLeftMargin( 0.15 );
-  c1_up->SetRightMargin( 0.03 );
+  c1_up->SetRightMargin( 0.032 );
 
-  c1_down->SetTopMargin( 0.03 );
+  c1_down->SetTopMargin( 0.035 );
   c1_down->SetBottomMargin( 0.4 );
   c1_down->SetLeftMargin( 0.15 );
-  c1_down->SetRightMargin( 0.03 );
+  c1_down->SetRightMargin( 0.032 );
   //c1_down->SetGridx();
   //c1_down->SetGridy();
   
@@ -329,8 +329,8 @@ void hist_axis(TH1D *hist, TH1D *hist_compare){
 
   //==== top plot
   hist->GetYaxis()->SetLabelSize(0.05);
-  hist->GetYaxis()->SetTitleSize(0.07);
-  hist->GetYaxis()->SetTitleOffset(1.02);
+  hist->GetYaxis()->SetTitleSize(0.070);
+  hist->GetYaxis()->SetTitleOffset(1.10);
   //==== hide x-axis for top plot
   hist->GetXaxis()->SetLabelSize(0);
 

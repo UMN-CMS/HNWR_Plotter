@@ -1,8 +1,9 @@
 #include "Plotter.cc"
 #include <fstream>
 
-void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
+void Draw_NoLSFCut(int Year=-1){
 
+  int WhichRegion = 0;
   bool UseDYPtReweight = true;
   bool ScaleMC = true;
   bool UsePromptMC = false;
@@ -67,8 +68,8 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
@@ -92,8 +93,8 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
@@ -117,8 +118,8 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
@@ -173,8 +174,8 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
 
   }
@@ -186,8 +187,9 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
   //==== _Di<Lepton>_<JetSel>_<ifOffZ>_<charge>
 
   if(WhichRegion==0){
-    m.samples_to_use                     = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT", "ttbar"};
-    if(UseDYPtReweight) m.samples_to_use = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT_Reweighted", "ttbar"};
+
+    m.samples_to_use                     = {"Multiboson", "ttX", "SingleTop", "ZJets_MG_HT", "WJets_MG_HT", "ttbar"};
+    if(UseDYPtReweight) m.samples_to_use = {"Multiboson", "ttX", "SingleTop", "ZJets_MG_HT_Reweighted", "WJets_MG_HT", "ttbar"};
 
     m.histname_suffix = {
 
@@ -254,13 +256,13 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
   };
 
   m.histname = {
-    "FatJet_0_LSF",
+    "FatJet_0_LSF", "HNFatJet_LSF",
   };
   m.x_title = {
-    "AK8 jet LSF_{3}",
+    "AK8 jet LSF_{3}", "AK8 jet LSF_{3}",
   };
   m.units = {
-    "",
+    "", "",
   };
 
 /*
@@ -339,7 +341,7 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
 
     m.drawdata.push_back(false);
 
-    m.drawratio.push_back(false);
+    m.drawratio.push_back(true);
 
   }
 
@@ -438,7 +440,12 @@ void Draw_NoLSFCut(int Year=2016, int WhichRegion=0){
         is >> xsec;
 
         if(m_WR==mwr && m_N==mn){
-          this_xsec = xsec;
+
+          //==== applying k-factor
+          double kfactor = GetKFactor(mwr, mn);
+          cout << mwr << "\t" << mn << "\t" << xsec << "\t" << kfactor  << endl;
+          this_xsec = xsec * kfactor * 30; //XXX We are scaling signal
+
           break;
         }
 

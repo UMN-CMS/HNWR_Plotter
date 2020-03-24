@@ -1,2 +1,4 @@
 HNWR_SingleElectron_Resolved_SR	FatJet_0_LSF	0	1
 HNWR_SingleMuon_Resolved_SR	FatJet_0_LSF	0	1
+HNWR_SingleElectron_Resolved_SR HNFatJet_LSF	0 1
+HNWR_SingleMuon_Resolved_SR HNFatJet_LSF	0 1

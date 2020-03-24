@@ -21,19 +21,19 @@ void Draw_Limit(int Year, TString dirname=""){
   if(Year==2016){
     inputfile = "2020_03_10_143448__Year2016_Full_NoFreqOption_1000Toys";
     //inputfile = dirname;
-    TotalLumi = "35.92 fb^{-1}";
+    TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
     inputfile = "2020_03_12_222646__Year2017_JetSystCorr";
-    TotalLumi = "41.53 fb^{-1}";
+    TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   else if(Year==2018){
     inputfile = "2020_03_12_222647__Year2018_JetSystCorr";
-    TotalLumi = "59.74 fb^{-1}";
+    TotalLumi = "59.74 fb^{-1} (13 TeV)";
   }
   else if(Year==-1){
     inputfile = "2020_03_12_222648__YearCombined_JetSystCorr";
-    TotalLumi = "137.2 fb^{-1}";
+    TotalLumi = "137 fb^{-1} (13 TeV)";
     str_Year = "YearCombined";
   }
 
@@ -78,8 +78,8 @@ void Draw_Limit(int Year, TString dirname=""){
   };
   vector<TString> aliases = {
     "Combined",
-    "Resolved SR",
-    "Boosted SR",
+    "Resolved",
+    "Boosted",
   };
   vector<Color_t> colors = {
     kBlack,
@@ -311,9 +311,9 @@ void Draw_Limit(int Year, TString dirname=""){
 
     TCanvas *c_2D = new TCanvas("c_2D", "", 800, 600);
     canvas_margin(c_2D);
-    c_2D->SetBottomMargin( 0.10 );
+    c_2D->SetBottomMargin( 0.125 );
     c_2D->SetRightMargin( 0.16 );
-    c_2D->SetLeftMargin( 0.11 );
+    c_2D->SetLeftMargin( 0.13 );
     c_2D->cd();
     c_2D->SetLogz();
 
@@ -338,10 +338,10 @@ void Draw_Limit(int Year, TString dirname=""){
 
     hist_dummy->GetYaxis()->SetLabelSize(0.035);
     hist_dummy->GetXaxis()->SetLabelSize(0.035);
-    hist_dummy->GetYaxis()->SetTitleSize(0.04);
-    hist_dummy->GetXaxis()->SetTitleSize(0.04);
-    hist_dummy->GetYaxis()->SetTitleOffset(1.25);
-    hist_dummy->GetXaxis()->SetTitleOffset(1.0);
+    hist_dummy->GetYaxis()->SetTitleSize(0.06);
+    hist_dummy->GetXaxis()->SetTitleSize(0.057);
+    hist_dummy->GetYaxis()->SetTitleOffset(1.0);
+    hist_dummy->GetXaxis()->SetTitleOffset(0.93);
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
@@ -508,8 +508,9 @@ void Draw_Limit(int Year, TString dirname=""){
         //hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.01);
         hist2d_limit_exp_ratio_clone->GetZaxis()->SetLabelSize(0.03);
 
-        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.04);
-        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("Upper limit / Theory");
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.043);
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleOffset(1.05);
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("95% CL upper limit on cross section/ Theory");
         hist2d_limit_exp_ratio_clone->Draw("colzsame");
         hist2d_limit_exp_ratio_clone->Draw("axissame");
 
@@ -519,9 +520,9 @@ void Draw_Limit(int Year, TString dirname=""){
       double conts[] = {1.};  
       hist2d_limit_exp_ratio->SetContour(1,conts);
       hist2d_limit_exp_ratio->SetLineWidth(2);
-      hist2d_limit_exp_ratio->SetLineStyle(3);
+      hist2d_limit_exp_ratio->SetLineStyle(1);
       hist2d_limit_exp_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_ratio->Draw("cont2same");
+      hist2d_limit_exp_ratio->Draw("cont3same");
 
       hist2d_limit_exp_1sdUp_ratio->SetContour(1,conts);
       hist2d_limit_exp_1sdUp_ratio->SetLineWidth(2);
@@ -561,21 +562,18 @@ void Draw_Limit(int Year, TString dirname=""){
 
     c_2D->cd();
     latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-    latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
+    latex_Lumi.DrawLatex(0.65, 0.96, TotalLumi);
 
     TLatex latex_ch;
     latex_ch.SetNDC();
     latex_ch.SetTextSize(0.040);
-    if(channel=="EE")        latex_ch.DrawLatex(0.05, 0.07, "ee");
-    else if(channel=="MuMu") latex_ch.DrawLatex(0.05, 0.07, "#mu#mu");
+    if(channel=="EE")        latex_ch.DrawLatex(0.20, 0.5, "ee channel");
+    else if(channel=="MuMu") latex_ch.DrawLatex(0.20, 0.5, "#mu#mu channel");
 
     c_2D->SaveAs(plotpath+"/2D_"+channel+".pdf");
     c_2D->SaveAs(plotpath+"/2D_"+channel+".png");
+    c_2D->SaveAs(plotpath+"/2D_"+channel+".C");
     c_2D->Close();
-
-    //==== TODO
-    //==== Below is to draw 1D limit plots, but under development..
-    //==== Not running them for now
 
     //==== 1D : Limit vs N, for each WR
 
@@ -584,9 +582,13 @@ void Draw_Limit(int Year, TString dirname=""){
       double m_WR = it->first;
       vector<double> this_m_Ns = it->second;
 
-      for(unsigned int it_region=0; it_region<regions.size(); it_region++){
+      vector<TString> regions_2 = { "Resolved", "Boosted", "Combined"};
+      TGraphAsymmErrors *gr_exp_Resolved;
+      TGraphAsymmErrors *gr_exp_Boosted;
 
-        TString region = regions.at(it_region);
+      for(unsigned int it_region=0; it_region<regions_2.size(); it_region++){
+
+        TString region = regions_2.at(it_region);
 
         const int n_N = this_m_Ns.size();
         double x_N[n_N], y_obs[n_N], y_exp[n_N], y_exp_1sdUp[n_N], y_exp_1sdDn[n_N], y_exp_2sdUp[n_N], y_exp_2sdDn[n_N];
@@ -642,6 +644,12 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp->SetLineColor(kBlack);
         gr_exp->SetLineWidth(3);
         gr_exp->SetLineStyle(2);
+        if(it_region==0){
+          gr_exp_Resolved = (TGraphAsymmErrors *)gr_exp->Clone();
+        }
+        if(it_region==1){
+          gr_exp_Boosted = (TGraphAsymmErrors *)gr_exp->Clone();
+        }
 
         TGraphAsymmErrors *gr_exp_1sd = new TGraphAsymmErrors(n_N, x_N, y_exp, 0, 0, y_exp_1sdDn, y_exp_1sdUp);
         gr_exp_1sd->SetFillColor(kGreen+1);
@@ -678,16 +686,22 @@ void Draw_Limit(int Year, TString dirname=""){
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
-        hist_dummy->GetXaxis()->SetRangeUser(0., 7000.);
+        hist_dummy->GetXaxis()->SetRangeUser(0., 6800.);
         hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarroweeqq) (fb)");
-        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muqq) (fb)");
+        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarroweeq#bar{q'}) (fb)");
+        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muq#bar{q'}) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");
         gr_exp_1sd->Draw("3same");
         gr_exp->Draw("lsame");
         if(DrawObs) gr_obs->Draw("lsame");
+        if(it_region==2){
+          gr_exp_Resolved->SetLineColor(kRed);
+          //gr_exp_Resolved->Draw("lsame");
+          gr_exp_Boosted->SetLineColor(kBlue);
+          //gr_exp_Boosted->Draw("lsame");
+        }
 
         gr_xsec->Draw("lsame");
 
@@ -701,19 +715,21 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->Draw();
 
         latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-        latex_Lumi.DrawLatex(0.80, 0.96, TotalLumi);
+        latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.pdf");
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.png");
+        c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.C");
         c_1D_vsN->Close();
 
       } // END Loop over regions
 
     } // END Loop over WR
 
+    //==== 1D : Limit vs WR, for each N
+    //==== negative N means N=WR/2
 
     vector<double> test_Ns = {-500, 100, 200, 400};
-
 
     for(int z=0; z<test_Ns.size(); z++){
 
@@ -750,10 +766,13 @@ void Draw_Limit(int Year, TString dirname=""){
 
       }
 
+      vector<TString> regions_2 = { "Resolved", "Boosted", "Combined"};
+      TGraphAsymmErrors *gr_exp_Resolved;
+      TGraphAsymmErrors *gr_exp_Boosted;
 
-      for(unsigned int it_region=0; it_region<regions.size(); it_region++){
+      for(unsigned int it_region=0; it_region<regions_2.size(); it_region++){
 
-        TString region = regions.at(it_region);
+        TString region = regions_2.at(it_region);
         const int n_WR = lrsminfo_Half.size();
 
         double x_WR[n_WR], y_obs[n_WR], y_exp[n_WR], y_exp_1sdUp[n_WR], y_exp_1sdDn[n_WR], y_exp_2sdUp[n_WR], y_exp_2sdDn[n_WR];
@@ -792,6 +811,12 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp->SetLineColor(kBlack);
         gr_exp->SetLineWidth(3);
         gr_exp->SetLineStyle(2);
+        if(it_region==0){
+          gr_exp_Resolved = (TGraphAsymmErrors *)gr_exp->Clone();
+        }
+        if(it_region==1){
+          gr_exp_Boosted = (TGraphAsymmErrors *)gr_exp->Clone();
+        }
 
         TGraphAsymmErrors *gr_exp_1sd = new TGraphAsymmErrors(n_WR, x_WR, y_exp, 0, 0, y_exp_1sdDn, y_exp_1sdUp);
         gr_exp_1sd->SetFillColor(kGreen+1);
@@ -827,16 +852,22 @@ void Draw_Limit(int Year, TString dirname=""){
         TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7000.);
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
-        hist_dummy->GetXaxis()->SetRangeUser(800,7000);
+        hist_dummy->GetXaxis()->SetRangeUser(800,6800);
         hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
-        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarroweeqq) (fb)");
-        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#times#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muqq) (fb)");
+        hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarroweeq#bar{q'}) (fb)");
+        if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muq#bar{q'}) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
 
         gr_exp_2sd->Draw("3same");
         gr_exp_1sd->Draw("3same");
         gr_exp->Draw("lsame");
         if(DrawObs) gr_obs->Draw("lsame");
+        if(it_region==2){
+          gr_exp_Resolved->SetLineColor(kRed);
+          //gr_exp_Resolved->Draw("lsame");
+          gr_exp_Boosted->SetLineColor(kBlue);
+          //gr_exp_Boosted->Draw("lsame");
+        }
 
         gr_xsec->Draw("lsame");
 
@@ -861,7 +892,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->Draw();
 
         latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-        latex_Lumi.DrawLatex(0.80, 0.96, TotalLumi);
+        latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
 
         TString outname = "";
@@ -874,6 +905,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
         c_1D_vsN->SaveAs(plotpath+"/"+outname+".pdf");
         c_1D_vsN->SaveAs(plotpath+"/"+outname+".png");
+        c_1D_vsN->SaveAs(plotpath+"/"+outname+".C");
         c_1D_vsN->Close();
 
       }

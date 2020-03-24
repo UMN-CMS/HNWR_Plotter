@@ -53,7 +53,7 @@ void LRSMSignalInfo::SetNames(){
     if(prod_channel=="SchWR"){
 
       filename = "WRtoNLtoLLJJ_WR"+TString::Itoa(mass_WR,10)+"_N"+TString::Itoa(mass_N,10);
-      legendalias = "m_{WR} = "+TString::Itoa(mass_WR,10)+" GeV, m_{N} = "+TString::Itoa(mass_N,10);
+      legendalias = "(m_{W_{R}}, m_{N}) = ("+TString::Itoa(mass_WR,10)+", "+TString::Itoa(mass_N,10)+") GeV";
       texname = "SignalSchWR"+lep_channel+"WR"+TString::Itoa(mass_WR,10)+"N"+TString::Itoa(mass_N,10);
     }
 
@@ -221,10 +221,10 @@ void LRSMSignalInfo::GetMassMapsPlot(){
 void LRSMSignalInfo::GetMassMapsNoLSFCutPlot(){
 
   vector<double> m_WRs = {
-3000, 5000,
+5000, 5000, 5000,
   };
   vector<double> m_Ns = {
-100, 100
+100, 200, 400,
   };
 
   maps_WR_to_N.clear();

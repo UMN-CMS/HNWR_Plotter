@@ -69,11 +69,11 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("t#bar{t}", kRed);
 
   }
   else if(Year==2017){
@@ -100,11 +100,11 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("t#bar{t}", kRed);
 
   }
   else if(Year==2018){
@@ -131,11 +131,11 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
-    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
+    m.map_sample_string_to_legendinfo["ttbar"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["EMuMethod_Fit"]  = make_pair("t#bar{t}", kRed);
 
   }
   else if(Year<0){
@@ -190,9 +190,9 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
     m.map_sample_string_to_legendinfo["VV_incl"] = make_pair("diboson", kSpring-1);
     m.map_sample_string_to_legendinfo["VVV"] = make_pair("triboson", kMagenta);
     m.map_sample_string_to_legendinfo["Multiboson"] = make_pair("Multiboson", kSpring-1);
-    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("singletop", kRed+2);
-    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttX", kOrange+2);
-    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("ttbar", kRed);
+    m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
+    m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
+    m.map_sample_string_to_legendinfo["EMuMethod"] = make_pair("t#bar{t}", kRed);
 
   }
 
@@ -460,7 +460,11 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
         is >> xsec;
 
         if(m_WR==mwr && m_N==mn){
-          this_xsec = xsec;
+
+          //==== applying k-factor
+          double kfactor = GetKFactor(mwr, mn);
+          cout << mwr << "\t" << mn << "\t" << xsec << "\t" << kfactor  << endl;
+          this_xsec = xsec * kfactor;
           break;
         }
 

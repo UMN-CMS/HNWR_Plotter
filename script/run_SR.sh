@@ -5,10 +5,10 @@ do
   do
 
     ## No DYPtReweight, No MCSF
-    root -l -b -q "src/Draw_SR.C($year, $i, false, false)"
+    #root -l -b -q "src/Draw_SR.C($year, $i, false, false)"
 
     ## DYPtReweight, No MCSF
-    root -l -b -q "src/Draw_SR.C($year, $i, true, false)"
+    #root -l -b -q "src/Draw_SR.C($year, $i, true, false)"
 
     ## DYPtReweight, MCSF
     root -l -b -q "src/Draw_SR.C($year, $i, true, true)"

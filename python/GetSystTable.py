@@ -185,7 +185,7 @@ for ToRun in ToRuns:
         #### Exception B
         # 1) LSFSF only for boosted
         if SystAlias=="LSFSF":
-          out += ' & %s (%s)' % ('\\NA', str_boosted_syst)
+          out += ' & %s~(%s)' % ('\\NA', str_boosted_syst)
           continue
 
         out += ' & %s (%s)' % (str_resolved_syst, str_boosted_syst)

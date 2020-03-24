@@ -561,8 +561,8 @@ void Draw_Limit(int Year, TString dirname=""){
     hist_dummy->Draw("axissame");
 
     c_2D->cd();
-    latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-    latex_Lumi.DrawLatex(0.65, 0.96, TotalLumi);
+    latex_CMSPriliminary.DrawLatex(0.13, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+    latex_Lumi.DrawLatex(0.66, 0.96, TotalLumi);
 
     TLatex latex_ch;
     latex_ch.SetNDC();

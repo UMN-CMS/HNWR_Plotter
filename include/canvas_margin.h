@@ -156,10 +156,10 @@ void setTDRStyle() {
 }
 
 void canvas_margin(TCanvas *c1){
-  c1->SetTopMargin( 0.05 );
+  c1->SetTopMargin( 0.052 );
   c1->SetBottomMargin( 0.13 );
-  c1->SetRightMargin( 0.05 );
-  c1->SetLeftMargin( 0.16 );
+  c1->SetRightMargin( 0.032 );
+  c1->SetLeftMargin( 0.15 );
 
 }
 
@@ -214,8 +214,8 @@ void hist_axis(TH1D *hist){
   hist->SetTitle("");
 
   hist->GetYaxis()->SetLabelSize(0.04);
-  hist->GetYaxis()->SetTitleSize(0.06);
-  hist->GetYaxis()->SetTitleOffset(1.10);
+  hist->GetYaxis()->SetTitleSize(0.054);
+  hist->GetYaxis()->SetTitleOffset(1.30);
 
   hist->GetXaxis()->SetLabelSize(0.03);
   hist->GetXaxis()->SetTitleSize(0.05);

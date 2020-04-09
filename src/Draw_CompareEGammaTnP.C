@@ -138,7 +138,6 @@ void Draw_CompareEGammaTnP(){
   lg->Draw();
 
   c1->SaveAs(base_plotpath+"/"+Which+"_"+Year+".pdf");
-  c1->SaveAs(base_plotpath+"/"+Which+"_"+Year+".png");
   c1->Close();
 
 

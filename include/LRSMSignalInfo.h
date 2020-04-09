@@ -168,10 +168,10 @@ void LRSMSignalInfo::GetMassMaps(){
 
 /*
   m_WRs = {
-4400, 4400, 4400,
+4000,
   };
   m_Ns = {
-400, 2200, 4300,
+3000,
   };
 */
 

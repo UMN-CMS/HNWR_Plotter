@@ -379,7 +379,6 @@ void FitBackgrounds(int Year=2016, int i_region=0, int i_channel=0, int i_sample
   channelname.DrawLatex(0.2, 0.18, samplealias);
 
   c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".pdf");
-  c->SaveAs(base_plotpath+"/"+region+"_"+channel+"_"+samplealias+".png");
   c->Close();
 
 

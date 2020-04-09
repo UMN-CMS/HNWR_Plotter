@@ -318,7 +318,6 @@ void Draw_FakeRate(){
           lg_Norm->Draw();
 
           c_norm->SaveAs(this_dirname+"/TriggerNorm_"+trig+"_"+var+".pdf");
-          c_norm->SaveAs(this_dirname+"/TriggerNorm_"+trig+"_"+var+".png");
           c_norm->Close();
         
         }
@@ -421,7 +420,6 @@ void Draw_FakeRate(){
           dummy->GetYaxis()->SetRangeUser(0, y_max);
 
           c_Dist->SaveAs(this_dirname+"/Dist_"+sample+"_"+var+".pdf");
-          c_Dist->SaveAs(this_dirname+"/Dist_"+sample+"_"+var+".png");
 
           c_Dist->Close();
 
@@ -444,7 +442,6 @@ void Draw_FakeRate(){
           lg->Draw();
 
           c_MCFR_all->SaveAs(this_dirname+"/1D_MCFR_AllSamples_"+var+".pdf");
-          c_MCFR_all->SaveAs(this_dirname+"/1D_MCFR_AllSamples_"+var+".png");
         }
 
         c_MCFR_all->Close();
@@ -565,7 +562,6 @@ void Draw_FakeRate(){
           lg_DATA->Draw();
           c_DATA_Den->SetLogy();
           c_DATA_Den->SaveAs(this_dirname+"/1D_DATA_AwayJetPt"+this_AwayJetPt+"_Dist_Den_"+var+".pdf");
-          c_DATA_Den->SaveAs(this_dirname+"/1D_DATA_AwayJetPt"+this_AwayJetPt+"_Dist_Den_"+var+".png");
           c_DATA_Den->Close();
 
           //==== Num distrib
@@ -588,7 +584,6 @@ void Draw_FakeRate(){
           lg_DATA->Draw();
           c_DATA_Num->SetLogy();
           c_DATA_Num->SaveAs(this_dirname+"/1D_DATA_AwayJetPt"+this_AwayJetPt+"_Dist_Num_"+var+".pdf");
-          c_DATA_Num->SaveAs(this_dirname+"/1D_DATA_AwayJetPt"+this_AwayJetPt+"_Dist_Num_"+var+".png");
           c_DATA_Num->Close();
 
           //==== FR
@@ -610,7 +605,6 @@ void Draw_FakeRate(){
           gr_FR->Draw("lsame");
 
           c_FR->SaveAs(this_dirname+"/1D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+var+".pdf");
-          c_FR->SaveAs(this_dirname+"/1D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+var+".png");
           c_FR->Close();
 
 
@@ -683,7 +677,6 @@ void Draw_FakeRate(){
         hist_FR_2D->GetXaxis()->SetRangeUser(40,200);
 
         c_FR_2D->SaveAs(this_dirname+"/2D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+Which2DToUse+".pdf");
-        c_FR_2D->SaveAs(this_dirname+"/2D_DATA_AwayJetPt"+this_AwayJetPt+"_FR_"+Which2DToUse+".png");
         c_FR_2D->Close();
 
 

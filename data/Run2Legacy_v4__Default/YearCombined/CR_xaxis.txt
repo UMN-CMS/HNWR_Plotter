@@ -154,7 +154,7 @@ HNWR_EMu_Resolved_SR	MT	0	500
 HNWR_EMu_Resolved_SR	Jet_Size	-999	-999
 HNWR_EMu_Resolved_SR	NBJets	-999	-999
 HNWR_EMu_Resolved_SR	NCand_Mass	0	2500
-HNWR_EMu_Resolved_SR	WRCand_Mass	0	5500
+HNWR_EMu_Resolved_SR	WRCand_Mass	800	8000
 HNWR_EMu_Resolved_SR	NCand_Pt	-999	-999
 HNWR_EMu_Resolved_SR	WRCand_Pt	-999	-999
 HNWR_EMu_Resolved_SR	LSFFatJet_Size	-999	-999
@@ -186,7 +186,7 @@ HNWR_SingleElectron_EMu_Boosted_CR	MT	0	500
 HNWR_SingleElectron_EMu_Boosted_CR	Jet_Size	-999	-999
 HNWR_SingleElectron_EMu_Boosted_CR	NBJets	-999	-999
 HNWR_SingleElectron_EMu_Boosted_CR	NCand_Mass	0	2500
-HNWR_SingleElectron_EMu_Boosted_CR	WRCand_Mass	0	5500
+HNWR_SingleElectron_EMu_Boosted_CR	WRCand_Mass	800	8000
 HNWR_SingleElectron_EMu_Boosted_CR	NCand_Pt	-999	-999
 HNWR_SingleElectron_EMu_Boosted_CR	WRCand_Pt	-999	-999
 HNWR_SingleElectron_EMu_Boosted_CR	LSFFatJet_Size	-999	-999
@@ -218,7 +218,7 @@ HNWR_SingleMuon_EMu_Boosted_CR	MT	0	500
 HNWR_SingleMuon_EMu_Boosted_CR	Jet_Size	-999	-999
 HNWR_SingleMuon_EMu_Boosted_CR	NBJets	-999	-999
 HNWR_SingleMuon_EMu_Boosted_CR	NCand_Mass	0	2500
-HNWR_SingleMuon_EMu_Boosted_CR	WRCand_Mass	0	5500
+HNWR_SingleMuon_EMu_Boosted_CR	WRCand_Mass	800	8000
 HNWR_SingleMuon_EMu_Boosted_CR	NCand_Pt	-999	-999
 HNWR_SingleMuon_EMu_Boosted_CR	WRCand_Pt	-999	-999
 HNWR_SingleMuon_EMu_Boosted_CR	LSFFatJet_Size	-999	-999

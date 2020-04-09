@@ -401,7 +401,6 @@ void Draw_SignalDistribution(int xxx=0){
       hist_dummy->GetYaxis()->SetRangeUser(0.001, y_max_scale*this_ymax); //FIXME use getymin?
 
       c1->SaveAs(this_plotpath+"/HN"+channel+"_"+var+".pdf");
-      c1->SaveAs(this_plotpath+"/HN"+channel+"_"+var+".png");
 
 
       c1->Close();

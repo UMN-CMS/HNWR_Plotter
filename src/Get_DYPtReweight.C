@@ -166,7 +166,6 @@ void Get_DYPtReweight(int xxx=0){
       hist_dummy_shape->GetYaxis()->SetTitle("Shape");
       hist_dummy_shape->GetXaxis()->SetTitle("p_{T} of dilepton (GeV)");
       c_shape->SaveAs(base_plotpath+"/"+region+"_Shape_"+leptonFlavour+".pdf");
-      c_shape->SaveAs(base_plotpath+"/"+region+"_Shape_"+leptonFlavour+".png");
       c_shape->Close();
 
       //==== ratio
@@ -232,7 +231,6 @@ void Get_DYPtReweight(int xxx=0){
     latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
 
     c_reweight->SaveAs(base_plotpath+"/"+region+"_Reweight.pdf");
-    c_reweight->SaveAs(base_plotpath+"/"+region+"_Reweight.png");
     c_reweight->Close();
 
   }

@@ -155,7 +155,6 @@ void Draw_CompareDYPtReweight(int xxx=0){
       latex_Lumi.DrawLatex(0.72, 0.96, TotalLumi);
 
       c_comp->SaveAs(base_plotpath+"/"+region+"_"+leptonFlavour+"_"+var+".pdf");
-      c_comp->SaveAs(base_plotpath+"/"+region+"_"+leptonFlavour+"_"+var+".png");
       c_comp->Close();
     }
 

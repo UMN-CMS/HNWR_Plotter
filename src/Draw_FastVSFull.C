@@ -292,7 +292,6 @@ void Draw_FastVSFull(){
       lg->Draw();
 
       c1->SaveAs(this_plotpath+"/"+var+".pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".png");
       c1->Close();
 
     }

@@ -379,7 +379,6 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
         lg->Draw();
 
         c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".pdf");
-        c1->SaveAs(base_plotpath+"/Ratios_"+SR+"_"+var+"_"+sym_sample+".png");
         c1->Close();
 
       } // END variable loop
@@ -484,7 +483,10 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
         if(var=="WRCand_Mass" && sym_sample=="TTLX_powheg"){
           TFile *file_EMuDataSubtracted = new TFile(base_plotpath+"/EMuDataSubtracted_"+region_EM+".root", "RECREATE");
           file_EMuDataSubtracted->cd();
+          file_EMuDataSubtracted->mkdir(region_EM);
+          file_EMuDataSubtracted->cd(region_EM);
           hist_EMu->Write();
+          file_EMuDataSubtracted->cd();
           file_EMuDataSubtracted->Close();
         }
 

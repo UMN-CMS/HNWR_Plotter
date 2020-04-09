@@ -642,7 +642,7 @@ TGraphAsymmErrors* GetAsymmError(TH1D *MC_stacked_allerr_Up, TH1D *MC_stacked_al
 
 }
 
-TH1D *RebinWRMass(TH1D *hist, TString region, int DataYear){
+TH1D *RebinWRMass(TH1D *hist, TString region, int DataYear, bool IsShape=false){
 
   int lastbin = hist->GetXaxis()->GetNbins();
 
@@ -653,17 +653,23 @@ TH1D *RebinWRMass(TH1D *hist, TString region, int DataYear){
     if(region.Contains("Boosted")) vec_bins = {0, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 8000};
   }
   else{
-    vec_bins = {0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000};
+    vec_bins = {0., 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000};
     if(region.Contains("Boosted")){
       if( DataYear==2016 && 
           ( region.Contains("HNWR_SingleMuon_EMu_Boosted_CR") || region.Contains("HNWR_SingleElectron_Boosted_SR") || region.Contains("elFatJet") || region=="" )
       ){
-        vec_bins = {0, 800, 1000, 1200, 1500, 1800, 8000};
+        vec_bins = {0., 800, 1000, 1200, 1500, 1800, 8000};
       }
       else{
-        vec_bins = {0, 800, 1000, 1200, 1500, 1700, 8000};
+        vec_bins = {0., 800, 1000, 1200, 1500, 1700, 8000};
       }
     }
+
+    //==== for shape, ignore fist bin
+    if(IsShape){
+      vec_bins.erase( vec_bins.begin() + 0 );
+    }
+
   }
 
   const int n_bin = vec_bins.size()-1;
@@ -862,6 +868,18 @@ double GetKFactor(int mWR, int mN){
     cout << "[GetKFactor] Wrong mWR and mN : " << mWR << "\t" << mN << endl;
     return 1.;
   }
+}
+
+bool IsCorrelated(TString syst){
+
+  //==== Most of the systematics are Correlated
+  //==== Let's return "false" for noncorrelated
+  if(syst.Contains("JetRes")) return false;
+  if(syst.Contains("TriggerSF")) return false;
+  if(syst.Contains("LSFSF")) return false;
+
+  return true;
+
 }
 
 #endif

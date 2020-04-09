@@ -270,55 +270,44 @@ void Draw_PYTHIAVSMADGRAPH(){
       hist_dummy->GetXaxis()->SetRangeUser(500., 1500);
       hist_dummy->GetYaxis()->SetRangeUser(0., 0.3);
       c1->SaveAs(this_plotpath+"/"+var+"_500_1500.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".500_1500.png");
 
       hist_dummy->GetXaxis()->SetRangeUser(3500., 4500);
       hist_dummy->GetYaxis()->SetRangeUser(0., 0.08);
       c1->SaveAs(this_plotpath+"/"+var+"_3500_4500.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".3500_4500.png");
     }
     else if(var=="M_gen_N"){
       hist_dummy->GetXaxis()->SetRangeUser(99., 101.);
       hist_dummy->GetYaxis()->SetRangeUser(0., 1.1);
       c1->SaveAs(this_plotpath+"/"+var+"_99_101.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".99_101.png");
 
       hist_dummy->GetXaxis()->SetRangeUser(499., 501.);
       hist_dummy->GetYaxis()->SetRangeUser(0., 1.1);
       c1->SaveAs(this_plotpath+"/"+var+"_499_501.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".499_501.png");
 
       hist_dummy->GetXaxis()->SetRangeUser(999., 1001);
       hist_dummy->GetYaxis()->SetRangeUser(0., 1.1);
       c1->SaveAs(this_plotpath+"/"+var+"_999_1001.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".999_1001.png");
     }
     else if(var=="M_gen_WRStar"){
       hist_dummy->GetXaxis()->SetRangeUser(0., 1000);
       c1->SaveAs(this_plotpath+"/"+var+"_0_1000.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+"_0_1000.png");
 
       hist_dummy->GetYaxis()->SetRangeUser(0., 0.35);
       hist_dummy->GetXaxis()->SetRangeUser(0., 100);
       c1->SaveAs(this_plotpath+"/"+var+"_0_100.pdf");
-      c1->SaveAs(this_plotpath+"/"+var+"_0_100.png");
     }
     else if(var=="dR_gen_WRStar"){
       c1->SaveAs(this_plotpath+"/"+var+".pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".png");
     }
     else if(var=="dR_gen_WRStar_gen_secLep"){
       c1->SaveAs(this_plotpath+"/"+var+".pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".png");
     }
     else if(var.Contains("Pt_")){
       c1->SaveAs(this_plotpath+"/"+var+".pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".png");
     }
     else if(var.Contains("Eta_")){
       hist_dummy->GetYaxis()->SetRangeUser(0., 1.6*y_max);
       c1->SaveAs(this_plotpath+"/"+var+".pdf");
-      c1->SaveAs(this_plotpath+"/"+var+".png");
     }
     else{
 

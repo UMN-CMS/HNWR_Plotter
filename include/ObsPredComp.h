@@ -53,7 +53,7 @@ public:
 
   void Save(TString outputpath){
     c_comp->SaveAs(outputpath+".pdf");
-    c_comp->SaveAs(outputpath+".png");
+    //c_comp->SaveAs(outputpath+".png");
     c_comp->Close();
   }
 

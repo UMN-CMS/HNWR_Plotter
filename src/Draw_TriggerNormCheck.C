@@ -165,7 +165,6 @@ void Draw_TriggerNormCheck(){
         }
 
         c_norm->SaveAs(this_plotdir+trig+"_"+var+".pdf");
-        c_norm->SaveAs(this_plotdir+trig+"_"+var+".png");
         c_norm->Close();
 
       }

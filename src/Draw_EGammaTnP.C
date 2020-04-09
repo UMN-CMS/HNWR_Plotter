@@ -198,7 +198,6 @@ void Draw_EGammaTnP(int int_year=2016){
   latex_Trigger.DrawLatex(0.03, 0.03, "#splitline{HEEP}{"+TriggerList+"}");
 
   c_pt->SaveAs(base_plotpath+"/Effs_vs_pt.pdf");
-  c_pt->SaveAs(base_plotpath+"/Effs_vs_pt.png");
   c_pt->Close();
 
 }

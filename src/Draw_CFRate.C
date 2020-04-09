@@ -203,7 +203,6 @@ void Draw_CFRate(){
           dummy->GetYaxis()->SetRangeUser(0, y_max);
 
           c_Dist->SaveAs(this_dirname+"/Dist_"+sample+"_"+var+".pdf");
-          c_Dist->SaveAs(this_dirname+"/Dist_"+sample+"_"+var+".png");
 
           c_Dist->Close();
 
@@ -222,7 +221,6 @@ void Draw_CFRate(){
           dummy->Draw("hist");
           dummy->GetYaxis()->SetRangeUser(0,1.0);
           c_CF->SaveAs(this_dirname+"/1D_CF_"+sample+"_"+var+".pdf");
-          c_CF->SaveAs(this_dirname+"/1D_CF_"+sample+"_"+var+".png");
           c_CF->Close();
 */
 
@@ -252,7 +250,6 @@ void Draw_CFRate(){
         lg->Draw();
 
         c_CF_all->SaveAs(this_dirname+"/1D_CF_AllSamples_"+var+".pdf");
-        c_CF_all->SaveAs(this_dirname+"/1D_CF_AllSamples_"+var+".png");
 
         c_CF_all->Close();
 

@@ -68,7 +68,6 @@ void Draw_ZPtReweight(int xxx=0){
 
   hist_Reweight->Draw("colz");
   c_2D->SaveAs(base_plotpath+"/Reweights_"+Year+"_2D.pdf");
-  c_2D->SaveAs(base_plotpath+"/Reweights_"+Year+"_2D.png");
   c_2D->Close();
 
   //==== Get mass binnings
@@ -166,7 +165,6 @@ void Draw_ZPtReweight(int xxx=0){
   //hist_dummy->GetXaxis()->SetRangeUser(20, 250);
 
   c1->SaveAs(base_plotpath+"/Reweights_"+Year+".pdf");
-  c1->SaveAs(base_plotpath+"/Reweights_"+Year+".png");
   c1->Close();
 
 }

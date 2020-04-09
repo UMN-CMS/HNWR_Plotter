@@ -41,12 +41,10 @@ void Draw_SignalEfficiency(int Year){
 
 
   //=== If not, use geenral
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/Signal/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/"+str_Year+"/";
 
 
   if(IsCR){
-    base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/Signal/";
     base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/SignalEfficiency/CR/";
   }
 
@@ -126,7 +124,11 @@ void Draw_SignalEfficiency(int Year){
         cout << "  Suffix = " << Suffix << endl;
 
         TString channel = "ee";
-        if(Suffix.Contains("SingleMuon")) channel = "#mu#mu";
+        TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/Signal_EE/";
+        if(Suffix.Contains("SingleMuon")){
+          channel = "#mu#mu";
+          base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/Signal_MuMu/";
+        }
 
         TString this_plotdir = base_plotpath+"/"+Config+"/"+Suffix;
         gSystem->mkdir(this_plotdir, kTRUE);
@@ -264,7 +266,6 @@ void Draw_SignalEfficiency(int Year){
         channelname.DrawLatex(0.2, 0.88, channel);
 
         c_eff->SaveAs(this_plotdir+"/WR"+TString::Itoa(m_WR,10)+".pdf");
-        c_eff->SaveAs(this_plotdir+"/WR"+TString::Itoa(m_WR,10)+".png");
         c_eff->Close();
 
       } // END Loop Suffix

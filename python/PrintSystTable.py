@@ -1,5 +1,13 @@
 import os,ROOT,math
 import CMS_lumi, tdrstyle
+from IsCorrelated import IsCorrelated
+
+def IsCorrelatedToString(syst):
+
+  if IsCorrelated(syst):
+    return "Correlated"
+  else:
+    return "Uncorrelated"
 
 WORKING_DIR = os.environ['PLOTTER_WORKING_DIR']
 dataset = os.environ['CATANVERSION']
@@ -70,7 +78,7 @@ ToRuns = [
 
 ]
 
-print '''Integrated luminosity & Non-\\ttbar/Signal & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'''
+print 'Integrated luminosity & Non-\\ttbar/Signal & '+IsCorrelatedToString('Lumi')+' & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'
 
 for ToRun in ToRuns:
 
@@ -82,9 +90,14 @@ for ToRun in ToRuns:
 
     SystAlias = Syst[0]
     SystLatex = Syst[1]
-    out = SystLatex+' & '+BkgdSampleLatex
+    out = SystLatex+' & '+BkgdSampleLatex+' & '+IsCorrelatedToString(SystAlias)
 
     for channel in channels:
+
+      EEorMuMu = "EE"
+      if "Muon" in channel:
+        EEorMuMu = "MuMu"
+
       for i_sample in range(0,2):
 
         Samples = [BkgdSample]
@@ -120,7 +133,7 @@ for ToRun in ToRuns:
             for Year in Years:
               basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/'
               if i_sample==1:
-                basedir += 'Signal/'
+                basedir += 'Signal_'+EEorMuMu+'/'
 
               #### dirName
               dirName = 'HNWR_'+channel+'_'+region+'_SR'
@@ -208,6 +221,11 @@ for channel in channels:
   PDFErrorSet_systRanges = []
   AlphaS_systRanges = []
   Scale_systRanges = []
+
+  EEorMuMu = "EE"
+  if "Muon" in channel:
+    EEorMuMu = "MuMu"
+
   for region in regions:
 
     Samples = []
@@ -227,7 +245,7 @@ for channel in channels:
     for Sample in Samples:
       fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
       for Year in Years:
-        basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/Signal/'
+        basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/Signal_'+EEorMuMu+'/'
 
         #### dirName
         dirName = 'HNWR_'+channel+'_'+region+'_SR'

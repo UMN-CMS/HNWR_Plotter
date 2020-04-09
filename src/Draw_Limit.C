@@ -19,20 +19,20 @@ void Draw_Limit(int Year, TString dirname=""){
   TString TotalLumi = "";
   TString str_Year = TString::Itoa(Year,10);
   if(Year==2016){
-    inputfile = "2020_03_10_143448__Year2016_Full_NoFreqOption_1000Toys";
+    inputfile = "2020_04_08_020412__Year2016_EMuMethod_UpdateCorrel";
     //inputfile = dirname;
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
-    inputfile = "2020_03_12_222646__Year2017_JetSystCorr";
+    inputfile = "2020_04_08_020412__Year2017_EMuMethod_UpdateCorrel";
     TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   else if(Year==2018){
-    inputfile = "2020_03_12_222647__Year2018_JetSystCorr";
+    inputfile = "2020_04_08_020413__Year2018_EMuMethod_UpdateCorrel";
     TotalLumi = "59.74 fb^{-1} (13 TeV)";
   }
   else if(Year==-1){
-    inputfile = "2020_03_12_222648__YearCombined_JetSystCorr";
+    inputfile = "2020_04_08_020414__YearCombined_EMuMethod_UpdateCorrel";
     TotalLumi = "137 fb^{-1} (13 TeV)";
     str_Year = "YearCombined";
   }
@@ -53,7 +53,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
   setTDRStyle();
   gStyle->SetOptStat(0);
-  gStyle->SetPalette(kBeach);
+  gStyle->SetPalette(55);
 
   TH1::SetDefaultSumw2(true);
   TH1::AddDirectory(kFALSE);
@@ -345,7 +345,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(400., 5400.);
+    hist_dummy->GetXaxis()->SetRangeUser(800., 5400.);
     hist_dummy->GetYaxis()->SetRangeUser(100., 5400.);
     hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
@@ -508,9 +508,9 @@ void Draw_Limit(int Year, TString dirname=""){
         //hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.01);
         hist2d_limit_exp_ratio_clone->GetZaxis()->SetLabelSize(0.03);
 
-        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.043);
-        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleOffset(1.05);
-        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("95% CL upper limit on cross section/ Theory");
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.040);
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleOffset(1.30);
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("95% CL upper limit on cross section/ Theory (g_{R}=g_{L})");
         hist2d_limit_exp_ratio_clone->Draw("colzsame");
         hist2d_limit_exp_ratio_clone->Draw("axissame");
 
@@ -571,7 +571,6 @@ void Draw_Limit(int Year, TString dirname=""){
     else if(channel=="MuMu") latex_ch.DrawLatex(0.20, 0.5, "#mu#mu channel");
 
     c_2D->SaveAs(plotpath+"/2D_"+channel+".pdf");
-    c_2D->SaveAs(plotpath+"/2D_"+channel+".png");
     c_2D->SaveAs(plotpath+"/2D_"+channel+".C");
     c_2D->Close();
 
@@ -675,7 +674,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->AddEntry( gr_exp, "Expected limit", "l");
         lg->AddEntry( gr_exp_1sd, "68% expected", "f");
         lg->AddEntry( gr_exp_2sd, "95% expected", "f");
-        lg->AddEntry( gr_xsec, "Theory", "l");
+        lg->AddEntry( gr_xsec, "Theory (g_{R}=g_{L})", "l");
 
         TCanvas *c_1D_vsN = new TCanvas("c1", "", 800, 800);
         canvas_margin(c_1D_vsN);
@@ -718,7 +717,6 @@ void Draw_Limit(int Year, TString dirname=""){
         latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.pdf");
-        c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.png");
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.C");
         c_1D_vsN->Close();
 
@@ -842,7 +840,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->AddEntry( gr_exp, "Expected limit", "l");
         lg->AddEntry( gr_exp_1sd, "68% expected", "f");
         lg->AddEntry( gr_exp_2sd, "95% expected", "f");
-        lg->AddEntry( gr_xsec, "Theory", "l");
+        lg->AddEntry( gr_xsec, "Theory (g_{R}=g_{L})", "l");
 
         TCanvas *c_1D_vsN = new TCanvas("c1", "", 800, 800);
         canvas_margin(c_1D_vsN);
@@ -904,7 +902,6 @@ void Draw_Limit(int Year, TString dirname=""){
         }
 
         c_1D_vsN->SaveAs(plotpath+"/"+outname+".pdf");
-        c_1D_vsN->SaveAs(plotpath+"/"+outname+".png");
         c_1D_vsN->SaveAs(plotpath+"/"+outname+".C");
         c_1D_vsN->Close();
 

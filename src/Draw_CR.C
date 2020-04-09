@@ -481,7 +481,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
 
     //==== Log plot boolean
     if(WhichRegion==0) m.UseLogy.push_back(1);
-    if(WhichRegion==1) m.UseLogy.push_back(-1);
+    if(WhichRegion==1) m.UseLogy.push_back(1);
     if(WhichRegion==2) m.UseLogy.push_back(-1);
     if(WhichRegion==3) m.UseLogy.push_back(1);
 
@@ -625,7 +625,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/";;
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/";
 
   if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
   if(UsePromptMC) m.plotpath += "/UsePromptMC/";

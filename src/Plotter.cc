@@ -16,6 +16,7 @@ Plotter::Plotter(){
   DataYear = 2016;
 
   IsNoLSFCutPlot = false;
+  DrawPostFit = false;
 
 }
 
@@ -145,9 +146,9 @@ void Plotter::draw_hist(){
           TString string_signal_mass = signal_LRSMinfo.at(signal_index).GetFileName();
           signal_name_for_tex = signal_LRSMinfo.at(signal_index).GetTEXName();
 
-          filepath = "./rootfiles/"+data_class+"/Signal/"+filename_prefix+"_"+string_signal_mass+filename_suffix;
+          filepath = "./rootfiles/"+data_class+"/Signal_"+WhichChannel+"/"+filename_prefix+"_"+string_signal_mass+filename_suffix;
           if(DataYear<0){
-            filepath = "./rootfiles/"+data_class+"/YearCombined/Signal/"+filename_prefix+"_"+string_signal_mass+filename_suffix;
+            filepath = "./rootfiles/"+data_class+"/YearCombined/Signal_"+WhichChannel+"/"+filename_prefix+"_"+string_signal_mass+filename_suffix;
           }
           //cout << filepath << endl;
           current_sample = signal_name_for_tex;
@@ -193,7 +194,7 @@ void Plotter::draw_hist(){
         TH1D* hist_temp = (TH1D*)dir->Get(fullhistname);
         if(!hist_temp || hist_temp->GetEntries() == 0){
           if(DoDebug){
-            cout << "No histogram : " << current_sample << endl;
+            cout << "No histogram : \"" << DirName << "\"" << "\t" << "\"" << fullhistname  << "\"" << endl;
           }
           file->Close();
           delete file;
@@ -261,9 +262,7 @@ void Plotter::draw_hist(){
           //=================
           //==== SYSTEMATIC
           //=================
-
-          if(DoDebug) cout << "["<<current_sample<<"] Central = " << hist_final->GetBinContent( hist_final->FindBin(600) ) << endl;
-
+/*
           //==== 1) EMuMethod
           if(current_sample.Contains("EMuMethod")){
             TH1D *hist_EMuSyst_Up = (TH1D *)hist_final->Clone();
@@ -303,7 +302,32 @@ void Plotter::draw_hist(){
             AddIfExist(map_to_Source_to_Down, "Lumi", hist_Lumi_Down, hist_final, ThisSampleDataYear, false);
           }
 
-          //==== 3) Loop over sources
+          //==== 3) DYNorm syst
+          if(ApplyMCNormSF.at(i_cut)){
+
+            if(current_sample.Contains("DYJets")){
+
+              double DYNorm = GetDYNormSF(ThisSampleDataYear, histname_suffix[i_cut], false);
+              double DYNormErr = GetDYNormSF(ThisSampleDataYear, histname_suffix[i_cut], true);
+
+              //==== hist_final is already scaled by DYNorm
+
+              TH1D *hist_DYNormSyst_Up = (TH1D *)hist_final->Clone();
+              TH1D *hist_DYNormSyst_Down = (TH1D *)hist_final->Clone();
+              hist_DYNormSyst_Up->Scale( (DYNorm+DYNormErr)/DYNorm );
+              hist_DYNormSyst_Down->Scale( (DYNorm-DYNormErr)/DYNorm );
+
+              AddIfExist(map_to_Source_to_Up, "DYNormSyst", hist_DYNormSyst_Up, hist_final, ThisSampleDataYear, false);
+              AddIfExist(map_to_Source_to_Down, "DYNormSyst", hist_DYNormSyst_Down, hist_final, ThisSampleDataYear, false);
+            }
+            else{
+              AddIfExist(map_to_Source_to_Up, "DYNormSyst", hist_final, hist_final, ThisSampleDataYear, false);
+              AddIfExist(map_to_Source_to_Down, "DYNormSyst", hist_final, hist_final, ThisSampleDataYear, false);
+            }
+
+          } // END if ApplyMCNormSF
+*/
+          //==== 5) Loop over sources
           for(unsigned it_Syst=0; it_Syst<Systs.size(); it_Syst++){
 
             TString Syst = Systs.at(it_Syst);
@@ -324,12 +348,6 @@ void Plotter::draw_hist(){
             if( Syst=="ZPtRw" && !(current_sample.Contains("Reweighted")) ){
               AddIfExist(map_to_Source_to_Up, "ZPtRw", hist_final, hist_final, ThisSampleDataYear, isCorr);
               AddIfExist(map_to_Source_to_Down, "ZPtRw", hist_final, hist_final, ThisSampleDataYear, isCorr);
-              continue;
-            }
-            //==== 3) DYNorm only for DY
-            if( Syst=="DYNorm" && !(current_sample.Contains("DYJets")) ){
-              AddIfExist(map_to_Source_to_Up, "DYNorm", hist_final, hist_final, ThisSampleDataYear, isCorr);
-              AddIfExist(map_to_Source_to_Down, "DYNorm", hist_final, hist_final, ThisSampleDataYear, isCorr);
               continue;
             }
 
@@ -485,6 +503,7 @@ void Plotter::draw_hist(){
 
       TH1D *hist_AllSyst_Up = (TH1D *)MC_stacked_staterr->Clone();
       TH1D *hist_AllSyst_Down = (TH1D *)MC_stacked_staterr->Clone();
+      if(DrawPostFit) map_to_Source_to_Up.clear();
       for(map<TString, TH1D *>::iterator it=map_to_Source_to_Up.begin(); it!=map_to_Source_to_Up.end(); it++){
         TString key = it->first;
         AddDiffSystematic( hist_AllSyst_Up, map_to_Source_to_Up[key] );
@@ -968,11 +987,13 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     double U =  (N==0) ? ( ROOT::Math::gamma_quantile_c(alpha,N+1,1) ) : ( ROOT::Math::gamma_quantile_c(alpha/2,N+1,1) );
     if( N!=0 ){
       gr_data->SetPointEYlow(i, N-L );
-      //gr_data->SetPointEXlow(i, 0);
       gr_data->SetPointEYhigh(i, U-N );
-      //gr_data->SetPointEXhigh(i, 0);
       err_down_tmp.push_back(N-L);
       err_up_tmp.push_back(U-N);
+      if(histname[i_var]!="WRCand_Mass"){
+        gr_data->SetPointEXlow(i, 0);
+        gr_data->SetPointEXhigh(i, 0);
+      }
      }
     else{
       double zerodata_err_low = 0.1;
@@ -986,11 +1007,13 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
       }
 
       gr_data->SetPointEYlow(i, zerodata_err_low);
-      //gr_data->SetPointEXlow(i, 0.);
       gr_data->SetPointEYhigh(i, zerodata_err_high);
-      //gr_data->SetPointEXhigh(i, 0.);
       err_down_tmp.push_back(zerodata_err_low);
       err_up_tmp.push_back(zerodata_err_high);
+      if(histname[i_var]!="WRCand_Mass"){
+        gr_data->SetPointEXlow(i, 0);
+        gr_data->SetPointEXhigh(i, 0);
+      }
     }
   }
   gr_data->SetLineWidth(2.0);
@@ -1028,11 +1051,13 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   TGraphAsymmErrors *gr_data_dummy = (TGraphAsymmErrors *)gr_data->Clone();
   gr_data_dummy->SetMarkerStyle(20);
   gr_data_dummy->SetMarkerSize(1.2);
+  TString dataLegendGOption="ep";
+  if(histname[i_var]=="WRCand_Mass") dataLegendGOption="lpe";
   if(DrawData){
-    legend->AddEntry(gr_data_dummy, "Data", "lpe");
+    legend->AddEntry(gr_data_dummy, "Data", dataLegendGOption);
   }
   else{
-    legend->AddEntry(gr_data_dummy, "Total background", "lpe");
+    legend->AddEntry(gr_data_dummy, "Total background", dataLegendGOption);
   }
   if(drawratio.at(i_cut)) c1_up->cd();
   draw_legend(legend, DrawData);
@@ -1105,15 +1130,19 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
 
         if(err_down_tmp.at(i-1)  !=0.) {
           gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1) / mc_staterror->GetBinContent(i) );
-          //gr_ratio_point->SetPointEXlow(i-1, 0);
           gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1) / mc_staterror->GetBinContent(i));
-          //gr_ratio_point->SetPointEXhigh(i-1, 0);
+          if(histname[i_var]!="WRCand_Mass"){
+            gr_ratio_point->SetPointEXlow(i-1, 0);
+            gr_ratio_point->SetPointEXhigh(i-1, 0);
+          }
         }
         else{
           gr_ratio_point->SetPointEYlow(i-1, 0);
-          //gr_ratio_point->SetPointEXlow(i-1, 0);
           gr_ratio_point->SetPointEYhigh(i-1, 1.8 / mc_staterror->GetBinContent(i));
-          //gr_ratio_point->SetPointEXhigh(i-1, 0);
+          if(histname[i_var]!="WRCand_Mass"){
+            gr_ratio_point->SetPointEXlow(i-1, 0);
+            gr_ratio_point->SetPointEXhigh(i-1, 0);
+          }
         }
         //==== ratio staterr
         //==== BinContent = 1
@@ -1133,15 +1162,18 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
         ratio_point->SetBinError ( i, 0 );
         gr_ratio_point->SetPoint(i-1, 0, 0);
         gr_ratio_point->SetPointEYlow(i-1, 0);
-        gr_ratio_point->SetPointEXlow(i-1, 0);
         gr_ratio_point->SetPointEYhigh(i-1, 0);
-        gr_ratio_point->SetPointEXhigh(i-1, 0);
         ratio_staterr->SetBinContent( i, 1. );
         ratio_staterr->SetBinError( i, 0);
 
         ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.);
         ratio_allerr->SetPointEYhigh( i-1, 0. );
         ratio_allerr->SetPointEYlow( i-1, 0. );
+
+        if(histname[i_var]!="WRCand_Mass"){
+          gr_ratio_point->SetPointEXlow(i-1, 0);
+          gr_ratio_point->SetPointEXhigh(i-1, 0);
+        }
 
       }
       //==== If bkgd <= 0
@@ -1157,15 +1189,18 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
         gr_ratio_point->GetPoint(i-1, tmp_x, tmp_y);
         gr_ratio_point->SetPoint(i-1, tmp_x, this_max_ratio);
         gr_ratio_point->SetPointEYlow(i-1, err_down_tmp.at(i-1)*this_max_ratio/this_data);
-        gr_ratio_point->SetPointEXlow(i-1, 0);
         gr_ratio_point->SetPointEYhigh(i-1, err_up_tmp.at(i-1)*this_max_ratio/this_data);
-        gr_ratio_point->SetPointEXhigh(i-1, 0);
         ratio_staterr->SetBinContent( i, 1. );
         ratio_staterr->SetBinError( i, 0);
 
         ratio_allerr->SetPoint(i-1,mc_staterror->GetXaxis()->GetBinCenter(i), 1.);
         ratio_allerr->SetPointEYhigh( i-1, 0. );
         ratio_allerr->SetPointEYlow( i-1, 0. );
+
+        if(histname[i_var]!="WRCand_Mass"){
+          gr_ratio_point->SetPointEXlow(i-1, 0);
+          gr_ratio_point->SetPointEXhigh(i-1, 0);
+        }
 
       }
     }
@@ -1185,7 +1220,7 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     ratio_staterr->SetMarkerSize(0);
     ratio_staterr->SetMarkerStyle(0);
     ratio_staterr->SetLineColor(kWhite);
-    ratio_staterr->Draw("E2same");
+    //if(!DrawPostFit) ratio_staterr->Draw("E2same");
 
     ratio_point->Draw("p9histsame");
     gr_ratio_point->Draw("p0same");
@@ -1257,7 +1292,6 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
   mkdir(thiscut_plotpath);
   if(DoDebug) cout << "[draw_canvas] output directory created : " << thiscut_plotpath << endl;
   c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".pdf");
-  c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".png");
   c1->SaveAs(thiscut_plotpath+"/"+histname[i_var]+"_"+histname_suffix[i_cut]+".C");
 
   delete legend;
@@ -1704,8 +1738,8 @@ TString Plotter::GetStringChannelRegion(int A, int B){
 
   else if(abs(B)==20) region = "Boosted SR";
   else if(abs(B)==21) region = "Boosted DY CR";
-  else if(abs(B)==22) region = "Boosted e#mu w/ e-Jet";
-  else if(abs(B)==23) region = "Boosted e#mu w/ #mu-Jet";
+  else if(abs(B)==22) region = "Boosted e#mu CR w/ e-Jet";
+  else if(abs(B)==23) region = "Boosted e#mu CR w/ #mu-Jet";
   else if(abs(B)==24) region = "Boosted Low m(lJ)";
   else if(abs(B)==25) region = "Boosted e#mu Low m(lJ) w/ e-Jet";
   else if(abs(B)==26) region = "Boosted e#mu Low m(lJ) w/ #mu-Jet";

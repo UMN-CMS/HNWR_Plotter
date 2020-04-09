@@ -3,15 +3,6 @@
 #include "SignalSystematics.h"
 #include "mylib.h"
 
-bool IsCorrelated(TString syst){
-
-  if(syst.Contains("JetRes")) return true;
-  if(syst.Contains("JetEn")) return true;
-
-  return false;
-
-}
-
 void Make_ShapeForLimit(int Year=2016){
 
   TString str_Year = TString::Itoa(Year,10);
@@ -110,6 +101,7 @@ void Make_ShapeForLimit(int Year=2016){
 
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+    map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
 
   }
   else if(Year==2017){
@@ -125,7 +117,7 @@ void Make_ShapeForLimit(int Year=2016){
 
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
-
+    map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
 
   }
   else if(Year==2018){
@@ -141,6 +133,7 @@ void Make_ShapeForLimit(int Year=2016){
 
     map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
+    map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
 
   }
 
@@ -149,7 +142,8 @@ void Make_ShapeForLimit(int Year=2016){
       "Boosted_SR",
   };
   vector<TString> bkgds = {
-"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
+//"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
+"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "ttbar"
   };
 
   vector<TString> channels = {
@@ -182,8 +176,8 @@ void Make_ShapeForLimit(int Year=2016){
       TString PD = "SingleElectron";
       if(channel=="MuMu") PD = "SingleMuon";
 
-      TFile *out_bkgd = new TFile(base_plotpath+"/"+channel+"_"+region+"_Bkgd.root","RECREATE");
-      TFile *out_sig = new TFile(base_plotpath+"/"+channel+"_"+region+"_Signal.root","RECREATE");
+      TFile *out_bkgd = new TFile(base_plotpath+"/"+channel+"_"+region+".root","RECREATE");
+      //TFile *out_sig = new TFile(base_plotpath+"/"+channel+"_"+region+"_Signal.root","RECREATE");
 
       //==== DATA
 
@@ -192,7 +186,7 @@ void Make_ShapeForLimit(int Year=2016){
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
-      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year);
+      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year, true);
       else               hist_DATA->Rebin(n_rebin);
 
       //==== temporary lumi scaling; scale content, sqrt() sqruare stat
@@ -267,10 +261,10 @@ void Make_ShapeForLimit(int Year=2016){
 
               if(sample.Contains("DYJets") || sample.Contains("EMuMethod")){
                 //==== these are already rebinned
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
               }
               else{
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
                 else               hist_bkgd->Rebin(n_rebin);
               }
 
@@ -382,7 +376,7 @@ void Make_ShapeForLimit(int Year=2016){
 
 
             TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/";
-            TFile *file_sig = new TFile(temp_base_filepath+"/Signal/"+this_filename);
+            TFile *file_sig = new TFile(temp_base_filepath+"/Signal_"+channel+"/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
 /*
@@ -395,8 +389,13 @@ void Make_ShapeForLimit(int Year=2016){
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
 
               if(hist_sig){
-                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year);
+                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year, true);
                 else               hist_sig->Rebin(n_rebin);
+
+								//==== negative or zero bins
+								for(int ix=1; ix<=hist_sig->GetXaxis()->GetNbins(); ix++){
+									hist_sig->SetBinContent(ix, max(0.000001, hist_sig->GetBinContent(ix)) );
+								}
 
                 if(syst=="Central"){
                   hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
@@ -420,7 +419,7 @@ void Make_ShapeForLimit(int Year=2016){
 
                 }
 
-                out_sig->cd();
+                out_bkgd->cd();
                 hist_sig->Write();
 
                 if(syst=="Central"){
@@ -433,7 +432,7 @@ void Make_ShapeForLimit(int Year=2016){
                   TH1D *hist_sigstatdown = GetStatUpDown(hist_sig,-1);
                   hist_sigstatdown->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_StatDown");
 
-                  out_sig->cd();
+                  out_bkgd->cd();
                   hist_sigstatup->Write();
                   hist_sigstatdown->Write();
 
@@ -470,7 +469,7 @@ void Make_ShapeForLimit(int Year=2016){
                   m.hist_AlphaSUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSUp");
                   m.hist_AlphaSDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSDown");
 
-                  out_sig->cd();
+                  out_bkgd->cd();
 
                   m.hist_ScaleUp->Write();
                   m.hist_ScaleDn->Write();
@@ -500,7 +499,7 @@ void Make_ShapeForLimit(int Year=2016){
       } // END Loop Systematic source
 
       out_bkgd->Close();
-      out_sig->Close();
+      //out_sig->Close();
 
       file_DATA->Close();
       delete file_DATA;

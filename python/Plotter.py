@@ -29,6 +29,15 @@ class SampleGroup:
     print '  TLatexAlias = '+str(self.TLatexAlias)
     print '  LatexAlias = '+str(self.LatexAlias)
 
+## LRSMSignalInfo ##
+class LRSMSignalInfo:
+  def __init__(self, mWR, mN, Year, xsec, kfactor):
+    self.mWR = mWR
+    self.mN = mN
+    self.Year = Year
+    self.xsec = xsec
+    self.kfactor = kfactor
+
 ## Variable ##
 class Variable:
   def __init__(self, Name, TLatexAlias, Unit):
@@ -463,9 +472,16 @@ class Plotter:
             h_Bkgd_TotErr_Min.SetBinError(ix+1, err_Min_Updated)
         ##==>End Systematic loop
 
-        ## hist.gr
-        gr_Bkgd_TotErr = mylib.GetAsymmError(h_Bkgd_TotErr_Max,h_Bkgd_TotErr_Min)
+        ## Blind mode
+        if not Region.DrawData:
+          h_Data = h_Bkgd.Clone(h_Data.GetName())
+          h_Data.SetMarkerStyle(20)
+          h_Data.SetMarkerSize(1.2)
+          h_Data.SetMarkerColor(ROOT.kBlack)
+          h_Data.SetLineColor(ROOT.kBlack)
 
+        ## hist => gr
+        gr_Bkgd_TotErr = mylib.GetAsymmError(h_Bkgd_TotErr_Max,h_Bkgd_TotErr_Min)
         gr_Data = ROOT.TGraphAsymmErrors(h_Data)
 
         err_up_tmp = []
@@ -550,7 +566,7 @@ class Plotter:
         h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )
         ## Exception control
         if (Variable.Name=="WRCand_Mass") and ("_SR" in Region.Name) and ("EMu" not in Region.Name):
-          if ("Region.Name" in Region.Name):
+          if ("Resolved" in Region.Name):
             h_dummy_up.GetYaxis().SetRangeUser( 1E-1, yMaxScale*yMax )
           else:
             h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )

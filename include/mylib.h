@@ -417,8 +417,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0203336;
       }
       else if(int_region==1){
-        DYNorm = 0.876052;
-        DYNorm_err = 0.0243671;
+        DYNorm = 0.869791;
+        DYNorm_err = 0.0247752;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -431,8 +431,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.020369;
       }
       else if(int_region==1){
-        DYNorm = 0.845392;
-        DYNorm_err = 0.0241098;
+        DYNorm = 0.838429;
+        DYNorm_err = 0.0247198;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -451,8 +451,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0218684;
       }
       else if(int_region==1){
-        DYNorm = 0.977149;
-        DYNorm_err = 0.0282647;
+        DYNorm = 0.97541;
+        DYNorm_err = 0.0290485;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -461,12 +461,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.06884;
-        DYNorm_err = 0.0224917;
+        DYNorm = 1.07024;
+        DYNorm_err = 0.0225204;
       }
       else if(int_region==1){
-        DYNorm = 0.957747;
-        DYNorm_err = 0.0275874;
+        DYNorm = 0.96038;
+        DYNorm_err = 0.028569;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -485,8 +485,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0205765;
       }
       else if(int_region==1){
-        DYNorm = 0.866475;
-        DYNorm_err = 0.0231383;
+        DYNorm = 0.861063;
+        DYNorm_err = 0.0235285;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -499,8 +499,8 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
         DYNorm_err = 0.0210814;
       }
       else if(int_region==1){
-        DYNorm = 0.847074;
-        DYNorm_err = 0.0227443;
+        DYNorm = 0.844995;
+        DYNorm_err = 0.0233501;
       }
       else{
         cout << "Wrong DY Norm" << endl;

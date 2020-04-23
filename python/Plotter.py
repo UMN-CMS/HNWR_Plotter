@@ -6,24 +6,30 @@ import CMS_lumi, tdrstyle
 import math
 from array import array
 
+
+## SampleGroup ##
 class SampleGroup:
-  def __init__(self, Name="", Type='', Samples=[], Color=0, Style=1, TLatexAlias="", LatexAlias=""):
+  def __init__(self, Name, Type, Samples, Year, Color=0, Style=1, TLatexAlias="", LatexAlias=""):
     self.Name = Name
     self.Type = Type
     self.Samples = Samples
+    self.Year = Year
     self.Color = Color
     self.Style = Style
     self.TLatexAlias = TLatexAlias
     self.LatexAlias = LatexAlias
+
   def Print(self):
     print 'Sample group name = '+self.Name
     print '  Type = '+self.Type
     print '  Samples = ',
     print self.Samples
+    print '  Year = '+str(self.Year)
     print '  Color = '+str(self.Color)
     print '  TLatexAlias = '+str(self.TLatexAlias)
     print '  LatexAlias = '+str(self.LatexAlias)
 
+## Variable ##
 class Variable:
   def __init__(self, Name, TLatexAlias, Unit):
     self.Name = Name
@@ -32,6 +38,7 @@ class Variable:
   def Print(self):
     print '(%s, %s, %s)' % (self.Name, self.TLatexAlias, self.Unit)
 
+## Region ##
 class Region:
   def __init__(self, Name, PrimaryDataset, DrawData=True, Logy=-1, TLatexAlias=""):
     self.Name = Name
@@ -42,11 +49,30 @@ class Region:
   def Print(self):
     print '(%s, %s, DrawData=%s, Logy=%f, %s)'%(self.Name, self.PrimaryDataset, self.DrawData, self.Logy, self.TLatexAlias)
 
+## Systematic ##
+class Systematic:
+  def __init__(self, Name, Direction, Year):
+    self.Name = Name
+    self.Direction = Direction
+    self.Year = Year ## if <0, it's correalted
+  def FullName(self):
+    if self.Year>0:
+      return 'Run'+str(self.Year)+'_'+self.Name
+    else:
+      return self.Name
+  def Print(self):
+    str_Direction = 'Up' if self.Direction>0 else 'Down'
+    if self.Direction==0:
+      str_Direction = "Central"
+    print '(%s, %s, %d)'%(self.Name, str_Direction, self.Year)
+
+## Plotter ##
 class Plotter:
 
   def __init__(self):
 
     self.DataYear = 2016
+    self.DataDirectory = "2016"
 
     self.SampleGroups = []
     self.RegionsToDraw = []
@@ -85,6 +111,15 @@ class Plotter:
       s.Print()
     self.PrintBorder()
 
+  def PrintSystematics(self):
+    self.PrintBorder()
+    print '[Plotter.PrintSystematics()] Printing systematics'
+    for s in self.Systematics:
+      s.Print()
+    self.PrintBorder()
+
+  ## Benning related
+
   def SetBinningFilepath(self, RebinFilepath, XaxisFilepath, YaxisFilepath):
     self.RebinFilepath = RebinFilepath
     self.XaxisFilepath = XaxisFilepath
@@ -115,10 +150,10 @@ class Plotter:
         return hist
       else:
         return hist
-
   def ZeroDataCheckCut(self,var,xlow,xhigh):
     ## TODO
     return False
+
   def Draw(self):
 
     ROOT.gErrorIgnoreLevel = ROOT.kFatal
@@ -142,7 +177,7 @@ class Plotter:
       os.system('mkdir -p '+Outdir)
 
       ## Data file
-      f_Data = ROOT.TFile(Indir+self.Filename_prefix+self.Filename_skim+'_data_'+Region.PrimaryDataset+self.Filename_suffix+'.root')
+      f_Data = ROOT.TFile(Indir+'/'+self.DataDirectory+'/'+self.Filename_prefix+self.Filename_skim+'_data_'+Region.PrimaryDataset+self.Filename_suffix+'.root')
 
       ## Loop over variables
 
@@ -269,16 +304,41 @@ class Plotter:
           h_Bkgd_ForSyst = 0
           dirName = Region.Name
 
-          if Syst!="Central":
-            dirName = "Syst_"+Syst+"_"+Region.Name
+          if Syst.Name!="Central":
+
+            if Syst.Direction>0:
+              dirName = "Syst_"+Syst.Name+"Up_"+Region.Name
+            else:
+              dirName = "Syst_"+Syst.Name+"Down_"+Region.Name
 
           for SampleGroup in self.SampleGroups:
             Color = SampleGroup.Color
             LegendAdded = False
             for Sample in SampleGroup.Samples:
-              f_Sample = ROOT.TFile(Indir+self.Filename_prefix+self.Filename_skim+'_'+Sample+self.Filename_suffix+'.root')
-              h_Sample = f_Sample.Get(dirName+'/'+Variable.Name+'_'+dirName)
+              f_Sample = ROOT.TFile(Indir+'/'+str(SampleGroup.Year)+'/'+self.Filename_prefix+self.Filename_skim+'_'+Sample+self.Filename_suffix+'.root')
+              h_Sample = 0
+
+              ## Uncorrelated sources
+              if Syst.Year!=SampleGroup.Year:
+                tmp_dirName = Region.Name
+                h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
+              ## Exception control
+              ## 1) ZPtRw only for the samples with "Reweighted"
+              ## if other samples, we just call nominal shape
+              elif (Syst.Name=="ZPtRw") and ("Reweighted" not in Sample):
+                tmp_dirName = Region.Name
+                h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
+              ## 2) Lumi
+              ## Scale later
+              elif (Syst.Name=="Lumi"):
+                tmp_dirName = Region.Name
+                h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
+              ## For all other cases
+              else:
+                h_Sample = f_Sample.Get(dirName+'/'+Variable.Name+'_'+dirName)
+
               if not h_Sample:
+                #print 'No hist : %s %s'%(Syst.Name,Sample)
                 continue
 
               ## Make overflow
@@ -290,7 +350,16 @@ class Plotter:
               h_Sample.SetLineWidth(0)
               h_Sample.SetFillColor(Color)
 
-              if Syst=="Central":
+              ## Exception control
+              ## 1) Lumi
+              if Syst.Name=="Lumi" and (Syst.Year==SampleGroup.Year):
+                lumierr = mylib.LumiError(SampleGroup.Year)
+                for ix in range(0,h_Sample.GetXaxis().GetNbins()):
+                  y = h_Sample.GetBinContent(ix+1)
+                  y_new = y + y*float(Syst.Direction)*lumierr
+                  h_Sample.SetBinContent(ix+1, y_new)
+
+              if Syst.Name=="Central":
 
                 stack_Bkgd.Add(h_Sample)
                 if not h_Bkgd:
@@ -310,22 +379,20 @@ class Plotter:
                 else:
                   h_Bkgd_ForSyst.Add(h_Sample)
 
+              f_Sample.Close()
             ##==>End Sample loop
           ##==>End SampleGroup loop
 
-          if Syst!="Central":
-            if Syst.endswith('Up'):
-              SystematicUps[Syst[:-2]] = h_Bkgd_ForSyst
-            elif Syst.endswith('Down'):
-              SystematicDowns[Syst[:-4]] = h_Bkgd_ForSyst
+          if Syst.Name!="Central":
+            if Syst.Direction>0:
+              SystematicUps[Syst.FullName()] = h_Bkgd_ForSyst
             else:
-              print 'WTF is this Syst?? : '+Syst
+              SystematicDowns[Syst.FullName()] = h_Bkgd_ForSyst
 
         ##==>End Syst loop
         #print SystematicUps
         #print SystematicDowns
 
-        ## TODO Corr/Uncorr
         ## Syst Up/Down . Max/Min
         h_Bkgd_TotErr_Max = h_Bkgd.Clone()
         h_Bkgd_TotErr_Min = h_Bkgd.Clone()

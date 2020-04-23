@@ -1,6 +1,7 @@
 import os,ROOT
-from Plotter import SampleGroup, Variable, Region
+from Plotter import SampleGroup, Variable, Region, Systematic
 from Plotter import Plotter
+from IsCorrelated import IsCorrelated
 import argparse
 
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
@@ -23,10 +24,10 @@ m = Plotter()
 #### In/Out
 m.DataYear = args.Year
 str_Year = str(args.Year)
-m.InputDirectory = WORKING_DIR+'/rootfiles/'+dataset+"/Regions/"+str(args.Year)+"/"
+m.InputDirectory = WORKING_DIR+'/rootfiles/'+dataset+"/Regions/"
 if args.Year<0:
   str_Year = 'YearCombined'
-  m.InputDirectory = WORKING_DIR+'/'+dataset+"/Regions/"
+m.DataDirectory = str_Year
 m.Filename_prefix = "HNWRAnalyzer"
 m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
@@ -39,6 +40,7 @@ m.ScaleMC = args.ScaleMC
 
 #### Systematic
 tmp_Systematics = [
+  "Lumi",
   "JetRes",
   "JetEn",
   "MuonRecoSF",
@@ -51,16 +53,28 @@ tmp_Systematics = [
   "ElectronEn",
   "ElectronIDSF",
   "ElectronTriggerSF",
-  #"LSFSF",
+  "LSFSF",
   "PU",
-  #"ZPtRw",
+  "ZPtRw",
   "Prefire",
 ]
+#tmp_Systematics = ["Lumi"]
 
-m.Systematics = ["Central"]
+m.Systematics = [ Systematic(Name="Central", Direction=0, Year=-1) ]
 for s in tmp_Systematics:
-  m.Systematics.append(s+"Up")
-  m.Systematics.append(s+"Down")
+  isCorr = IsCorrelated(s)
+  if isCorr:
+    m.Systematics.append( Systematic(Name=s, Direction=+1, Year=-1) )
+    m.Systematics.append( Systematic(Name=s, Direction=-1, Year=-1) )
+  else:
+    if args.Year>0:
+      m.Systematics.append( Systematic(Name=s, Direction=+1, Year=args.Year) )
+      m.Systematics.append( Systematic(Name=s, Direction=-1, Year=args.Year) )
+    else:
+      for Y in [2016,2017,2018]:
+        m.Systematics.append( Systematic(Name=s, Direction=+1, Year=Y) )
+        m.Systematics.append( Systematic(Name=s, Direction=-1, Year=Y) )
+m.PrintSystematics()
 
 #### Binning infos
 m.SetBinningFilepath(
@@ -70,46 +84,22 @@ m.SetBinningFilepath(
 )
 
 #### Predef samples
-####  __init__(self, Name="", Type=Type, Samples=[], Color=0, Style=1, TLatexAlias="", LatexAlias=""):
-SampleGroup_DY = SampleGroup(
-  Name='DY',
-  Type='Bkgd',
-  Samples=['DYJets_MG_HT'],
-  Color=ROOT.kYellow,
-  Style=1,
-  TLatexAlias='Z+Jets',
-  LatexAlias='ZJets'
-)
+from PredefinedSamples import *
 if args.ApplyZPtRwg:
-  SampleGroup_DY.Samples=['DYJets_MG_HT_Reweighted']
-
-SampleGroup_ttbar = SampleGroup(
-  Name='ttbar',
-  Type='Bkgd',
-  Samples=['TTLX_powheg'],
-  Color=ROOT.kRed,
-  Style=1,
-  TLatexAlias='t#bar{t}',
-  LatexAlias='ttbar'
-)
-
-SampleGroup_Others = SampleGroup(
-  Name='Others',
-  Type='Bkgd',
-  Samples=['Others'],
-  Color=870,
-  Style=1,
-  TLatexAlias='Other backgrounds',
-  LatexAlias='Others'
-)
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
 
 if args.Category==0:
   #### Define Samples
-  m.SampleGroups = [
-    SampleGroup_Others,
-    SampleGroup_ttbar,
-    SampleGroup_DY,
-  ]
+  if args.Year>0:
+    exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_ttbar_%s, SampleGroup_DY_%s]'%(args.Year,args.Year,args.Year))
+  else:
+    m.SampleGroups = [
+      SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,
+      SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
+      SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
+    ]
   #### Signals
   #### Print
   m.PrintSamples()
@@ -125,11 +115,14 @@ if args.Category==0:
 
 if args.Category==1:
   #### Define Samples
-  m.SampleGroups = [
-    SampleGroup_Others,
-    SampleGroup_DY,
-    SampleGroup_ttbar,
-  ]
+  if args.Year>0:
+    exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_DY_%s, SampleGroup_ttbar_%s]'%(args.Year,args.Year,args.Year))
+  else:
+    m.SampleGroups = [
+      SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,
+      SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
+      SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
+    ]
   #### Signals
   #### Print
   m.PrintSamples()

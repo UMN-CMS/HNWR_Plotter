@@ -16,6 +16,18 @@ def TotalLumi(DataYear):
     print "[mylib.py, TotalLumi()] Wrong DataYear : %d"%DataYear
     return "35.9"
 
+def LumiError(DataYear):
+
+  if DataYear==2016:
+    return 0.025
+  elif DataYear==2017:
+    return 0.023
+  elif DataYear==2018:
+    return 0.025
+  else:
+    print "[mylib.py, LumiError()] Wrong DataYear : %d"%DataYear
+    return 0.
+
 def MakeOverflowBin(hist):
 
   #### GetXaxis().SetRangeUser() should be done first

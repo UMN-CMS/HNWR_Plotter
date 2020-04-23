@@ -33,3 +33,4 @@
 
 # mine
 data/tmp_*.txt
+*.pyc

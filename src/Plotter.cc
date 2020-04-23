@@ -17,6 +17,7 @@ Plotter::Plotter(){
 
   IsNoLSFCutPlot = false;
   DrawPostFit = false;
+  DrawPreFit = false;
 
 }
 
@@ -262,7 +263,7 @@ void Plotter::draw_hist(){
           //=================
           //==== SYSTEMATIC
           //=================
-/*
+
           //==== 1) EMuMethod
           if(current_sample.Contains("EMuMethod")){
             TH1D *hist_EMuSyst_Up = (TH1D *)hist_final->Clone();
@@ -326,7 +327,7 @@ void Plotter::draw_hist(){
             }
 
           } // END if ApplyMCNormSF
-*/
+
           //==== 5) Loop over sources
           for(unsigned it_Syst=0; it_Syst<Systs.size(); it_Syst++){
 
@@ -503,7 +504,7 @@ void Plotter::draw_hist(){
 
       TH1D *hist_AllSyst_Up = (TH1D *)MC_stacked_staterr->Clone();
       TH1D *hist_AllSyst_Down = (TH1D *)MC_stacked_staterr->Clone();
-      if(DrawPostFit) map_to_Source_to_Up.clear();
+      if(DrawPostFit||DrawPreFit) map_to_Source_to_Up.clear();
       for(map<TString, TH1D *>::iterator it=map_to_Source_to_Up.begin(); it!=map_to_Source_to_Up.end(); it++){
         TString key = it->first;
         AddDiffSystematic( hist_AllSyst_Up, map_to_Source_to_Up[key] );
@@ -1229,8 +1230,8 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     //lg_ratio->SetFillStyle(0);
     //lg_ratio->SetBorderSize(0);
     //lg_ratio->SetNColumns(2);
-    lg_ratio->AddEntry(ratio_staterr, "Stat. uncert.", "f");
-    //lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
+    //lg_ratio->AddEntry(ratio_staterr, "Stat. uncert.", "f");
+    lg_ratio->AddEntry(ratio_allerr, "Stat.+syst.", "f");
     //lg_ratio->AddEntry(ratio_point, "Obs./Pred.", "p");
     //lg_ratio->Draw();
 
@@ -1261,6 +1262,19 @@ void Plotter::draw_canvas(THStack *mc_stack, TH1D *mc_staterror, TGraphAsymmErro
     channelname.SetNDC();
     channelname.SetTextSize(0.037);
     channelname.DrawLatex(0.2, 0.88, str_channel);
+
+    if(DrawPostFit){
+      channelname.DrawLatex(0.2, 0.82, "Post-fit");
+    }
+    else if(DrawPreFit){
+      channelname.DrawLatex(0.2, 0.82, "Pre-fit");
+    }
+    else{
+      if(histname_suffix[i_cut].Contains("EMu")){
+        channelname.DrawLatex(0.2, 0.82, "Pre-fit");
+      }
+    }
+
   }
   else{
     //==== This is for Paper
@@ -1824,24 +1838,14 @@ vector<double> Plotter::GetRebinZeroBackground(THStack *mc_stack, TH1D *mc_state
 TH1D *Plotter::Rebin(TH1D *hist){
 
   if(histname[i_var]=="WRCand_Mass" && !histname_suffix[i_cut].Contains("LowWR")){
-
-/*
-    if( i_file<bkglist.size() ){
-      if( bkglist[i_file].Contains("FromFit") ){
-        //cout << bkglist[i_file] << " --> not rebinning" << endl;
-      }
-      else{
-        hist->Rebin( n_rebin() );
-      }
-    }
-    else{
-      //hist = RebinWRMass(hist, histname_suffix[i_cut], DataYear);
-      hist->Rebin( n_rebin() );
-    }
-*/
-
     hist = RebinWRMass(hist, histname_suffix[i_cut], DataYear);
-
+  }
+  else if(histname[i_var]=="HNFatJet_Pt"){
+/*
+    double ptbins[5+1] = {0, 200, 350, 450, 1000, 9999};
+    hist = (TH1D *)hist->Rebin(5, hist->GetName(), ptbins);
+*/
+    hist->Rebin( n_rebin() );
   }
   else{
     hist->Rebin( n_rebin() );
@@ -1855,7 +1859,7 @@ void Plotter::AddIfExist(map<TString, TH1D *>& map, TString key, TH1D *hist, TH1
 
   //==== If Correlated, or Simply one year
   //==== key = "Syst"
-  if(IsCorr || Year>0){
+  if(IsCorr){
     TH1D *this_hist = map[key];
     if(!this_hist){
       map[key] = (TH1D *)hist->Clone();

@@ -11,6 +11,7 @@ ROOT.gROOT.SetBatch(ROOT.kTRUE)
 parser = argparse.ArgumentParser(description='CR plot commands')
 parser.add_argument('-c', dest='Category', type=int, default=0)
 parser.add_argument('-y', dest='Year', type=int)
+parser.add_argument('--debug',action='store_true')
 parser.add_argument('--ScaleMC', action='store_true')
 parser.add_argument('--ApplyZPtRwg', action='store_true')
 args = parser.parse_args()
@@ -20,6 +21,8 @@ dataset = os.environ['CATANVERSION']
 ENV_PLOT_PATH = os.environ['PLOT_PATH']
 
 m = Plotter()
+
+m.DoDebug = args.debug
 
 #### In/Out
 m.DataYear = args.Year
@@ -57,6 +60,7 @@ tmp_Systematics = [
   "PU",
   "ZPtRw",
   "Prefire",
+  "DYNorm",
 ]
 #tmp_Systematics = ["Lumi"]
 

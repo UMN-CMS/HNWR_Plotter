@@ -155,3 +155,104 @@ def GetAsymmError(MC_stacked_allerr_Up, MC_stacked_allerr_Down):
   out = ROOT.TGraphAsymmErrors(NBin, array("d", x), array("d", y),  array("d", x_lerr), array("d", x_rerr), array("d", y_lerr), array("d", y_rerr))
   return out
 
+def GetDYNormSF(DataYear, channel):
+
+  DYNorm = 1.
+  DYNorm_err = 0.
+
+  int_channel = -1 ## 0 : ee, 1 : mm
+  if "Electron" in channel:
+    int_channel = 0
+  elif "Muon" in channel:
+    int_channel = 1
+  elif "_EMu_" in channel:
+    return 1., 0.
+  else:
+    print 'Wrong channel name '+channel
+    exit()
+
+  int_region = -1 ## 0 : Resolved, 1 : Boosted
+  if "Resolved" in channel:
+    int_region = 0;
+  elif "Boosted" in channel:
+    int_region = 1;
+  else:
+    print 'Wrong region name '+channel
+    exit()
+
+  #print '%s -> int_channel = %d, int_region = %d'%(channel,int_channel,int_region)
+
+  if DataYear==2016:
+    if int_channel==0:
+      if int_region==0:
+        DYNorm = 0.948615
+        DYNorm_err = 0.0203336
+      elif int_region==1:
+        DYNorm = 0.869791
+        DYNorm_err = 0.0247752
+      else:
+        print "Wrong DY Norm"
+        exit()
+    elif int_channel==1:
+      if int_region==0:
+        DYNorm = 0.964614
+        DYNorm_err = 0.020369
+      elif int_region==1:
+        DYNorm = 0.838429
+        DYNorm_err = 0.0247198
+      else:
+        print "Wrong DY Norm"
+        exit()
+    else:
+      print "Wrong DY Norm"
+      exit()
+  elif DataYear==2017:
+    if int_channel==0:
+      if int_region==0:
+        DYNorm = 1.03096
+        DYNorm_err = 0.0218684
+      elif int_region==1:
+        DYNorm = 0.97541
+        DYNorm_err = 0.0290485
+      else:
+        print "Wrong DY Norm"
+        exit()
+    elif int_channel==1:
+      if int_region==0:
+        DYNorm = 1.07024
+        DYNorm_err = 0.0225204
+      elif int_region==1:
+        DYNorm = 0.96038
+        DYNorm_err = 0.028569
+      else:
+        print "Wrong DY Norm"
+        exit()
+    else:
+      print "Wrong DY Norm"
+      exit()
+  elif DataYear==2018:
+    if int_channel==0:
+      if int_region==0:
+        DYNorm = 0.974832
+        DYNorm_err = 0.0205765
+      elif int_region==1:
+        DYNorm = 0.861063
+        DYNorm_err = 0.0235285
+      else:
+        print "Wrong DY Norm"
+        exit()
+    elif int_channel==1:
+      if int_region==0:
+        DYNorm = 1.00537
+        DYNorm_err = 0.0210814
+      elif int_region==1:
+        DYNorm = 0.844995
+        DYNorm_err = 0.0233501
+      else:
+        print "Wrong DY Norm"
+        exit()
+    else:
+      print "Wrong DY Norm"
+      exit()
+
+  return DYNorm, DYNorm_err

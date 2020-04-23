@@ -71,6 +71,8 @@ class Plotter:
 
   def __init__(self):
 
+    self.DoDebug = False
+
     self.DataYear = 2016
     self.DataDirectory = "2016"
 
@@ -183,6 +185,9 @@ class Plotter:
 
       for Variable in self.VariablesToDraw:
 
+        if self.DoDebug:
+          print '[DEBUG] Trying to draw variable = '+Variable.Name
+
         ## BinInfo
         nRebin = Rebins[Variable.Name]
         xMin = XaxisRanges[Variable.Name][0]
@@ -202,6 +207,8 @@ class Plotter:
         HistsToDraw = dict()
 
         ## Get data first
+        if self.DoDebug:
+          print '[DEBUG] Trying to get data histogram..'
         h_Data = f_Data.Get(Region.Name+'/'+Variable.Name+'_'+Region.Name)
 
         ## Make overflow
@@ -224,8 +231,13 @@ class Plotter:
         h_Data.SetMarkerColor(ROOT.kBlack)
         h_Data.SetLineColor(ROOT.kBlack)
 
+        if self.DoDebug:
+          print '[DEBUG] data histogram finished'
+
         ## Prepare canvas
 
+        if self.DoDebug:
+          print '[DEBUG] Preparing canvas..'
         c1 = ROOT.TCanvas('c1', '', 800, 800)
 
         c1_up = ROOT.TPad("c1_up", "", 0, 0.25, 1, 1)
@@ -289,9 +301,13 @@ class Plotter:
 
         h_dummy_up, h_dummy_down = canvas_margin.hist_axis(h_dummy_up, h_dummy_down)
 
+        if self.DoDebug:
+          print '[DEBUG] Canvas is ready'
+
         ## Loop over samples
         ## For Legend, save 
         HistsForLegend = []
+        AliasForLegend = [] ## Prevent double-counting
         stack_Bkgd = ROOT.THStack("stack_Bkgd", "")
         h_Bkgd = 0
         ## Save systematic
@@ -300,6 +316,10 @@ class Plotter:
 
         ## Loop over systematics
         for Syst in self.Systematics:
+
+          if self.DoDebug:
+            print '[DEBUG] Trying to make histogram for Syst = ',
+            Syst.Print()
 
           h_Bkgd_ForSyst = 0
           dirName = Region.Name
@@ -314,12 +334,14 @@ class Plotter:
           for SampleGroup in self.SampleGroups:
             Color = SampleGroup.Color
             LegendAdded = False
+
             for Sample in SampleGroup.Samples:
               f_Sample = ROOT.TFile(Indir+'/'+str(SampleGroup.Year)+'/'+self.Filename_prefix+self.Filename_skim+'_'+Sample+self.Filename_suffix+'.root')
               h_Sample = 0
 
-              ## Uncorrelated sources
-              if Syst.Year!=SampleGroup.Year:
+              ## Uncorrelated sources has Syst.Year = 2016 or 2017 or 2018
+              ## For this cases, SampleGroup.Year should be matched
+              if (Syst.Year>0) and (Syst.Year!=SampleGroup.Year):
                 tmp_dirName = Region.Name
                 h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
               ## Exception control
@@ -328,9 +350,9 @@ class Plotter:
               elif (Syst.Name=="ZPtRw") and ("Reweighted" not in Sample):
                 tmp_dirName = Region.Name
                 h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
-              ## 2) Lumi
-              ## Scale later
-              elif (Syst.Name=="Lumi"):
+              ## 2) Lumi, DYNorm
+              ## Use centralm and scale them later
+              elif (Syst.Name in ["Lumi", "DYNorm"]):
                 tmp_dirName = Region.Name
                 h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
               ## For all other cases
@@ -347,18 +369,33 @@ class Plotter:
 
               h_Sample = self.Rebin(h_Sample, Region.Name, Variable.Name, nRebin)
               h_Sample.SetLineColor(Color)
-              h_Sample.SetLineWidth(0)
+              h_Sample.SetLineWidth(1)
               h_Sample.SetFillColor(Color)
 
-              ## Exception control
-              ## 1) Lumi
-              if Syst.Name=="Lumi" and (Syst.Year==SampleGroup.Year):
+              ## Scale
+              MCSF, MCSFerr = 1., 0.
+              if self.ScaleMC:
+                ## now, only for DY
+                if "DYJets" in Sample:
+                  MCSF, MCSFerr = mylib.GetDYNormSF(SampleGroup.Year, Region.Name)
+              h_Sample.Scale( MCSF )
+
+              ## Manual systematic
+              ## 1) [Lumi] Uncorrelated
+              if (Syst.Name=="Lumi") and (Syst.Year==SampleGroup.Year):
                 lumierr = mylib.LumiError(SampleGroup.Year)
                 for ix in range(0,h_Sample.GetXaxis().GetNbins()):
                   y = h_Sample.GetBinContent(ix+1)
                   y_new = y + y*float(Syst.Direction)*lumierr
                   h_Sample.SetBinContent(ix+1, y_new)
+              ## 2) [DYNorm] Correlated, only for DY
+              if (Syst.Name=="DYNorm") and ("DYJets" in Sample):
+                for ix in range(0,h_Sample.GetXaxis().GetNbins()):
+                  y = h_Sample.GetBinContent(ix+1) ## already scaled by MCSF
+                  y_new = y * ( MCSF + float(Syst.Direction)*MCSFerr ) / MCSF
+                  h_Sample.SetBinContent(ix+1, y_new)
 
+              ## If central, add to h_Bkgd
               if Syst.Name=="Central":
 
                 stack_Bkgd.Add(h_Sample)
@@ -368,10 +405,11 @@ class Plotter:
                   h_Bkgd.Add(h_Sample)
 
                 HistsToDraw[Sample] = h_Sample.Clone()
-                if not LegendAdded:
+                if (not LegendAdded) and (SampleGroup.TLatexAlias not in AliasForLegend):
                   HistsForLegend.append( [HistsToDraw[Sample],SampleGroup.TLatexAlias] )
+                  AliasForLegend.append(SampleGroup.TLatexAlias)
                   LegendAdded = True
-
+              ## else (i.e., systematic), add to h_Bkgd_ForSyst
               else:
 
                 if not h_Bkgd_ForSyst:
@@ -379,7 +417,9 @@ class Plotter:
                 else:
                   h_Bkgd_ForSyst.Add(h_Sample)
 
+              ## Close file
               f_Sample.Close()
+
             ##==>End Sample loop
           ##==>End SampleGroup loop
 

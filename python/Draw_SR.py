@@ -1,7 +1,8 @@
 import os,ROOT
-from Plotter import SampleGroup, Variable, Region, Systematic
+from Plotter import SampleGroup, LRSMSignalInfo, Variable, Region, Systematic
 from Plotter import Plotter
 from IsCorrelated import IsCorrelated
+import mylib
 import argparse
 
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
@@ -17,11 +18,24 @@ parser.add_argument('--ScaleMC', action='store_true')
 parser.add_argument('--ApplyZPtRwg', action='store_true')
 args = parser.parse_args()
 
+## Blind mode
 drawData = not args.blind
 
+## Enviroment
 WORKING_DIR = os.environ['PLOTTER_WORKING_DIR']
 dataset = os.environ['CATANVERSION']
 ENV_PLOT_PATH = os.environ['PLOT_PATH']
+
+## Signal mass
+mWR, mN = 5000, 3000
+if args.Category==1:
+  mWR, mN = 5000, 100
+LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
+LRSMSignalInfoToDraw.Color = ROOT.kBlack
+LRSMSignalInfoToDraw.Style = 5
+LRSMSignalInfoToDraw.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
+
 
 m = Plotter()
 
@@ -37,9 +51,9 @@ m.DataDirectory = str_Year
 m.Filename_prefix = "HNWRAnalyzer"
 m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
-m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PYTEST_SR/"+str_Year+"/"
+m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/"
 if args.ApplyZPtRwg:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PYTEST_SR/"+str_Year+"/ApplyZPtRwg/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwg/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -106,17 +120,23 @@ else:
     SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
     SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
   ]
-#### Signals
+#### Signal
+m.SignalsToDraw = [LRSMSignalInfoToDraw]
+
 #### Print
 m.PrintSamples()
 
 #### Define reiongs
-m.RegionsToDraw = [
-  Region('HNWR_SingleElectron_Resolved_SR', 'SingleElectron', DrawData=drawData, Logy=1, TLatexAlias='#splitline{ee}{Resolved SR}'),
-  Region('HNWR_SingleMuon_Resolved_SR', 'SingleMuon', DrawData=drawData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved SR}'),
-  Region('HNWR_SingleElectron_Boosted_SR', 'SingleElectron', DrawData=drawData, Logy=1, TLatexAlias='#splitline{ee}{Boosted SR}'),
-  Region('HNWR_SingleMuon_Boosted_SR', 'SingleMuon', DrawData=drawData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted SR}'),
-]
+if args.Category==0:
+  m.RegionsToDraw = [
+    Region('HNWR_SingleElectron_Resolved_SR', 'SingleElectron', DrawData=drawData, Logy=1, TLatexAlias='#splitline{ee}{Resolved SR}'),
+    Region('HNWR_SingleMuon_Resolved_SR', 'SingleMuon', DrawData=drawData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved SR}'),
+  ]
+elif args.Category==1:
+  m.RegionsToDraw = [
+    Region('HNWR_SingleElectron_Boosted_SR', 'SingleElectron', DrawData=drawData, Logy=1, TLatexAlias='#splitline{ee}{Boosted SR}'),
+    Region('HNWR_SingleMuon_Boosted_SR', 'SingleMuon', DrawData=drawData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted SR}'),
+  ]
 m.PrintRegions()
 
 #### Define Variables

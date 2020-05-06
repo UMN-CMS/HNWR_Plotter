@@ -205,13 +205,13 @@ for ToRun in ToRuns:
 
     print out+' \\\\'
 
-print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
+#print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
 
 #### PDF uncertainty for signal
 
-PDFErrorSet_out = 'PDF error & Signal'
-AlphaS_out = '\\alpS & Signal'
-Scale_out = 'renormalization/factorization scales & Signal'
+PDFErrorSet_out = 'PDF error & Signal & Correlated'
+AlphaS_out = '\\alpS & Signal & Correlated'
+Scale_out = 'renormalization/factorization scales & Signal & Correlated'
 
 for channel in channels:
 

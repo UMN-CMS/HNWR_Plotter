@@ -31,12 +31,18 @@ class SampleGroup:
 
 ## LRSMSignalInfo ##
 class LRSMSignalInfo:
-  def __init__(self, mWR, mN, Year, xsec, kfactor):
+  def __init__(self, mWR, mN):
     self.mWR = mWR
     self.mN = mN
-    self.Year = Year
-    self.xsec = xsec
-    self.kfactor = kfactor
+    self.xsec = 1.
+    self.kfactor = 1.
+    self.Color = ROOT.kBlack
+    self.Style = 3
+
+    self.TLatexAlias = "(m_{W_{R}}, m_{N}) = (%d, %d) GeV"%(self.mWR, self.mN)
+
+  def Print(self):
+    print '(%d, %d, %f, %f)'%(self.mWR, self.mN, self.xsec, self.kfactor)
 
 ## Variable ##
 class Variable:
@@ -88,7 +94,7 @@ class Plotter:
     self.SampleGroups = []
     self.RegionsToDraw = []
     self.VariablesToDraw = []
-    self.Signals = []
+    self.SignalsToDraw = []
 
     self.Systematics = []
     self.InputDirectory = ""
@@ -345,6 +351,10 @@ class Plotter:
             LegendAdded = False
 
             for Sample in SampleGroup.Samples:
+
+              if self.DoDebug:
+                print '[DEBUG] Trying to make histogram for Sample = '+Sample
+
               f_Sample = ROOT.TFile(Indir+'/'+str(SampleGroup.Year)+'/'+self.Filename_prefix+self.Filename_skim+'_'+Sample+self.Filename_suffix+'.root')
               h_Sample = 0
 
@@ -521,15 +531,12 @@ class Plotter:
 
         ## Legend
         lg = 0
-        if Region.DrawData:
-          ## No signal
-          if len(self.Signals)==0:
-            lg = ROOT.TLegend(0.60, 0.45, 0.92, 0.90)
-          ## With Signal
-          else:
-            lg = ROOT.TLegend(0.48, 0.46, 0.91, 0.90)
+        ## No signal
+        if len(self.SignalsToDraw)==0:
+          lg = ROOT.TLegend(0.50, 0.45, 0.92, 0.90)
+        ## With Signal
         else:
-          lg = ROOT.TLegend(0.50, 0.50, 0.88, 0.90)
+          lg = ROOT.TLegend(0.50, 0.46, 0.92, 0.90)
         lg.SetBorderSize(0)
         lg.SetFillStyle(0)
 
@@ -571,9 +578,12 @@ class Plotter:
           else:
             h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )
         if (Variable.Name=="ZCand_Mass") and ("_DYCR" in Region.Name):
-          h_dummy_up.GetYaxis().SetRangeUser(10, 1E8)
-        if (Variable.Name=="ZCand_Pt") and ("_DYCR" in Region.Name) and ("Boosted" in Region.Name):
-          h_dummy_up.GetYaxis().SetRangeUser(10, 2E5)
+          h_dummy_up.GetYaxis().SetRangeUser(10, 2E8)
+        if (Variable.Name=="ZCand_Pt") and ("_DYCR" in Region.Name):
+          if ("Resolved" in Region.Name):
+            h_dummy_up.GetYaxis().SetRangeUser(10, 5E6)
+          else:
+            h_dummy_up.GetYaxis().SetRangeUser(10, 2E5)
 
         ## Draw up
         c1_up.cd()
@@ -592,6 +602,39 @@ class Plotter:
         gr_Data.SetLineColor(ROOT.kBlack)
         h_Data.Draw("phistsame")
         gr_Data.Draw("p0same")
+
+        ## Signal
+        LeptonChannel = "EE" if ("Electron" in Region.Name) else "MuMu"
+        h_Sigs = []
+        for Sig in self.SignalsToDraw:
+          f_Sig = ROOT.TFile(Indir+'/'+self.DataDirectory+'/Signal_'+LeptonChannel+'/'+self.Filename_prefix+'_WRtoNLtoLLJJ_WR%d_N%d'%(Sig.mWR,Sig.mN)+self.Filename_suffix+'.root')
+          h_Sig = f_Sig.Get(Region.Name+'/'+Variable.Name+'_'+Region.Name)
+          if not h_Sig:
+            continue
+          h_Sigs.append(h_Sig)
+
+          ## Make overflow
+          h_Sig.GetXaxis().SetRangeUser(xMin,xMax)
+          h_Sig = mylib.MakeOverflowBin(h_Sig)
+
+          ## Rebin
+          h_Sig = self.Rebin(h_Sig, Region.Name, Variable.Name, nRebin)
+
+          ## Scale
+          h_Sig.Scale( Sig.xsec * Sig.kfactor )
+
+          ## Att
+          h_Sig.SetLineWidth(3)
+          h_Sig.SetLineColor(Sig.Color)
+          h_Sig.SetLineStyle(Sig.Style)
+
+          ## legend
+          lg.AddEntry(h_Sig, Sig.TLatexAlias, 'l')
+
+          c1_up.cd()
+
+          ## Draw
+          h_Sig.Draw("histsame")
 
         h_dummy_up.Draw("axissame")
 

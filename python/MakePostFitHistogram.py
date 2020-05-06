@@ -31,12 +31,8 @@ Regions = [
 
 Samples = [
 'TTLX_powheg',
-'VVV',
-'VV',
-'ttX',
-'SingleTop',
-'WJets_MG_HT',
 'DYJets_MG_HT_Reweighted',
+"Others",
 ]
 
 for Sample in Samples:
@@ -55,7 +51,7 @@ for Sample in Samples:
 
     for Channel in Channels:
 
-      f = ROOT.TFile(basedir+'/fitDiagnostics_YearCombined_card_CRAdded_'+Channel+'_Combined_WR3000_N1600.root')
+      f = ROOT.TFile(basedir+'/fitDiagnostics_YearCombined_card_CRAdded_'+Channel+'_Combined_WR4000_N3000.root')
 
       shapedirName = 'shapes_fit_b'
       if PreORPost=='Pre':
@@ -74,20 +70,17 @@ for Sample in Samples:
 
         massbins = [0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000]
         if "Boosted" in Region:
-          if Year=="2016" and Channel=="EE" and "Boosted" in Region:
-            massbins = [0, 800, 1000, 1200, 1500, 1800, 8000]
-          else:
-            massbins = [0, 800, 1000, 1200, 1500, 1700, 8000]
+          massbins = [0, 800, 1000, 1200, 1500, 1800, 8000]
 
         dirName = 'HNWR_'+PD+'_'+Region
         #### Exception for CRs
         if Region=="Resolved_CR":
           if Channel=="EE":
             dirName = "HNWR_EMu_Resolved_SR"
-            continue
+            #continue
           else:
             dirName = "HNWR_EMu_Resolved_SR"
-            #continue
+            continue
         if Region=="Boosted_CR":
           if Channel=="EE":
             dirName = "HNWR_SingleMuon_EMu_Boosted_CR"

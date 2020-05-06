@@ -16,6 +16,8 @@ parser.add_argument('--ScaleMC', action='store_true')
 parser.add_argument('--ApplyZPtRwg', action='store_true')
 args = parser.parse_args()
 
+## Enviroment
+
 WORKING_DIR = os.environ['PLOTTER_WORKING_DIR']
 dataset = os.environ['CATANVERSION']
 ENV_PLOT_PATH = os.environ['PLOT_PATH']
@@ -34,9 +36,9 @@ m.DataDirectory = str_Year
 m.Filename_prefix = "HNWRAnalyzer"
 m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
-m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PYTEST_CR/"+str_Year+"/"
+m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/"
 if args.ApplyZPtRwg:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PYTEST_CR/"+str_Year+"/ApplyZPtRwg/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -94,6 +96,10 @@ if args.ApplyZPtRwg:
   SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
 
+###############
+#### DY CR ####
+###############
+
 if args.Category==0:
   #### Define Samples
   if args.Year>0:
@@ -110,12 +116,16 @@ if args.Category==0:
 
   #### Define reiongs
   m.RegionsToDraw = [
-    Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY sideband}'),
-    Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY sideband}'),
-    Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY sideband}'),
-    Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY sideband}'),
+    Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR}'),
   ]
   m.PrintRegions()
+
+######################
+#### emu sideband ####
+######################
 
 if args.Category==1:
   #### Define Samples
@@ -134,17 +144,23 @@ if args.Category==1:
   #### Define reiongs
   m.RegionsToDraw = [
     ## Resolved EMu
-    Region('HNWR_EMu_Resolved_SR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor sideband}'),
+    Region('HNWR_EMu_Resolved_SR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor CR}'),
     ## Boosted EMu
-    Region('HNWR_SingleElectron_EMu_Boosted_CR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor sideband}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu+#e-Jet}{Boosted flavor sideband}'),
+    Region('HNWR_SingleElectron_EMu_Boosted_CR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu+#e-Jet}{Boosted flavor CR}'),
     ## Resolved EMu, but DYCR. This is dominated by ttbar, so it is here..
     ## This region is not important
-    Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='Resolved e#mu DY sideband'),
+    Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mi}{Resolved DY CR}'),
     ## LowWRCR emu regions
-    Region('HNWR_EMu_Resolved_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{e#mu}{Resolved low-mass sideband}'),
-    Region('HNWR_SingleElectron_EMu_Boosted_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted low-mass sideband}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted low-mass sideband}'),
+    Region('HNWR_EMu_Resolved_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{e#mu}{Resolved low-mass CR}'),
+    Region('HNWR_SingleElectron_EMu_Boosted_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted low-mass CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted low-mass CR}'),
+    ## Resolved LowWRCR for validation
+    Region('HNWR_SingleElectron_Resolved_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{ee}{Resolved low-mass CR}'),
+    Region('HNWR_SingleMuon_Resolved_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Resolved low-mass CR}'),
+    ## Boosted LowWRCR for validation
+    Region('HNWR_SingleElectron_Boosted_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{ee}{Boosted low-mass CR}'),
+    Region('HNWR_SingleMuon_Boosted_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Boosted low-mass CR}'),
   ]
   m.PrintRegions()
 

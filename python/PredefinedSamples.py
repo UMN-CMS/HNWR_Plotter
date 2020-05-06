@@ -33,6 +33,7 @@ SampleGroup_DY_2018 = SampleGroup(
   LatexAlias='ZJets'
 )
 
+## ttbar
 SampleGroup_ttbar_2016 = SampleGroup(
   Name='ttbar',
   Type='Bkgd',
@@ -64,6 +65,7 @@ SampleGroup_ttbar_2018 = SampleGroup(
   LatexAlias='ttbar'
 )
 
+## others
 SampleGroup_Others_2016 = SampleGroup(
   Name='Others',
   Type='Bkgd',
@@ -93,4 +95,36 @@ SampleGroup_Others_2018 = SampleGroup(
   Style=1,
   TLatexAlias='Other backgrounds',
   LatexAlias='Others'
+)
+
+## WJets_MG_HT
+SampleGroup_WJets_2016 = SampleGroup(
+  Name='WJets_MG_HT',
+  Type='Bkgd',
+  Samples=['WJets_MG_HT'],
+  Year = 2016,
+  Color=870,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='WJets_MG_HT'
+)
+SampleGroup_WJets_2017 = SampleGroup(
+  Name='WJets_MG_HT',
+  Type='Bkgd',
+  Samples=['WJets_MG_HT'],
+  Year = 2017,
+  Color=870,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='WJets_MG_HT'
+)
+SampleGroup_WJets_2018 = SampleGroup(
+  Name='WJets_MG_HT',
+  Type='Bkgd',
+  Samples=['WJets_MG_HT'],
+  Year = 2018,
+  Color=870,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='WJets_MG_HT'
 )

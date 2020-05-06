@@ -655,14 +655,7 @@ TH1D *RebinWRMass(TH1D *hist, TString region, int DataYear, bool IsShape=false){
   else{
     vec_bins = {0., 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000};
     if(region.Contains("Boosted")){
-      if( DataYear==2016 && 
-          ( region.Contains("HNWR_SingleMuon_EMu_Boosted_CR") || region.Contains("HNWR_SingleElectron_Boosted_SR") || region.Contains("elFatJet") || region=="" )
-      ){
-        vec_bins = {0., 800, 1000, 1200, 1500, 1800, 8000};
-      }
-      else{
-        vec_bins = {0., 800, 1000, 1200, 1500, 1700, 8000};
-      }
+      vec_bins = {0., 800, 1000, 1200, 1500, 1800, 8000};
     }
 
     //==== for shape, ignore fist bin
@@ -877,6 +870,8 @@ bool IsCorrelated(TString syst){
   if(syst.Contains("JetRes")) return false;
   if(syst.Contains("TriggerSF")) return false;
   if(syst.Contains("LSFSF")) return false;
+
+  if(syst.Contains("ShapeUnct")) return false;
 
   return true;
 

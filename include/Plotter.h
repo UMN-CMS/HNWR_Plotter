@@ -124,6 +124,7 @@ public:
 
   bool IsNoLSFCutPlot;
   bool DrawPostFit;
+  bool DrawPreFit;
 
 };
 #endif

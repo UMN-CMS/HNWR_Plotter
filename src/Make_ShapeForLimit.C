@@ -90,8 +90,7 @@ void Make_ShapeForLimit(int Year=2016){
 
   if(Year==2016){
 
-    map_sample_string_to_list["VVV"] = {"VVV"};
-    map_sample_string_to_list["VV_incl"] = {"VV"};
+    map_sample_string_to_list["Multiboson"] = {"Multiboson"};
     map_sample_string_to_list["ttX"] = {"ttX"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
@@ -99,15 +98,16 @@ void Make_ShapeForLimit(int Year=2016){
     //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
     //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
     map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
+
+    map_sample_string_to_list["Others"] = {"Others"};
 
   }
   else if(Year==2017){
 
-    map_sample_string_to_list["VVV"] = {"VVV"};
-    map_sample_string_to_list["VV_incl"] = {"VV"};
+    map_sample_string_to_list["Multiboson"] = {"Multiboson"};
     map_sample_string_to_list["ttX"] = {"ttX"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
@@ -115,15 +115,16 @@ void Make_ShapeForLimit(int Year=2016){
     //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
     //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
     map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
+
+    map_sample_string_to_list["Others"] = {"Others"};
 
   }
   else if(Year==2018){
 
-    map_sample_string_to_list["VVV"] = {"VVV"};
-    map_sample_string_to_list["VV_incl"] = {"VV"};
+    map_sample_string_to_list["Multiboson"] = {"Multiboson"};
     map_sample_string_to_list["ttX"] = {"ttX"};
     map_sample_string_to_list["SingleTop"] = {"SingleTop"};
     map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
@@ -131,9 +132,11 @@ void Make_ShapeForLimit(int Year=2016){
     //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
     //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
 
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets10to50_MG_Reweighted", "DYJets_MG_HT_Reweighted"};
+    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets_MG_HT_Reweighted"};
     map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
     map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
+
+    map_sample_string_to_list["Others"] = {"Others"};
 
   }
 
@@ -142,8 +145,9 @@ void Make_ShapeForLimit(int Year=2016){
       "Boosted_SR",
   };
   vector<TString> bkgds = {
-//"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
-"VVV", "VV_incl", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "ttbar"
+//"Multiboson", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
+//"Multiboson", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "ttbar"
+"Others", "ZJets_MG_HT_Reweighted", "ttbar",
   };
 
   vector<TString> channels = {
@@ -289,14 +293,14 @@ void Make_ShapeForLimit(int Year=2016){
                 if( region.Contains("Boosted") ) EMuSyst = 0.30;
 
                 TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+1.*EMuSyst);
-                hist_bkgdUp->SetName(sample+"_"+nuisancePrefix+"EMuSystUp");
+                hist_bkgdUp->SetName(sample+"_EMuSystUp");
                 TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-1.*EMuSyst);
-                hist_bkgdDown->SetName(sample+"_"+nuisancePrefix+"EMuSystDown");
+                hist_bkgdDown->SetName(sample+"_EMuSystDown");
 
                 TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);
-                hist_bkgd_StatUp->SetName(sample+"_"+nuisancePrefix+"StatUp");
+                hist_bkgd_StatUp->SetName(sample+"_StatUp");
                 TH1D *hist_bkgd_StatDown = GetStatUpDown(hist_bkgd,-1);
-                hist_bkgd_StatDown->SetName(sample+"_"+nuisancePrefix+"StatDown");
+                hist_bkgd_StatDown->SetName(sample+"_StatDown");
 
                 out_bkgd->cd();
 
@@ -312,15 +316,46 @@ void Make_ShapeForLimit(int Year=2016){
                 if(syst=="Central"){
 
                   TH1D *hist_bkgdstatup = GetStatUpDown(hist_bkgd,+1);
-                  hist_bkgdstatup->SetName(sample+"_"+nuisancePrefix+"StatUp");
+                  hist_bkgdstatup->SetName(sample+"_StatUp");
                   TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd,-1);
-                  hist_bkgdstatdown->SetName(sample+"_"+nuisancePrefix+"StatDown");
+                  hist_bkgdstatdown->SetName(sample+"_StatDown");
 
                   out_bkgd->cd();
                   hist_bkgdstatup->Write();
                   hist_bkgdstatdown->Write();
 
                   hist_bkgd->SetName(sample+shapehistname_suffix);
+
+                  //==== TODO test emu shape unct
+                  if(sample=="TTLX_powheg"){
+                    TString shapefilename = "ResolvedShapeUnct";
+                    if(region.Contains("Boosted")){
+                      if(channel=="EE") shapefilename = "BoostedEJetShapeUnct";
+                      else shapefilename = "BoostedMuJetShapeUnct";
+                    }
+                    TFile *f_ttchape = new TFile(ENV_PLOT_PATH+"/"+dataset+"/TTBarShapes/"+TString::Itoa(Year,10)+"/shapes_"+shapefilename+".root");
+                    TH1D *f_ttchape_Up = (TH1D *)f_ttchape->Get(shapefilename+"Up");
+                    TH1D *f_ttchape_Down = (TH1D *)f_ttchape->Get(shapefilename+"Down");
+
+                    TH1D *hist_tt_ShapeUp = (TH1D *)hist_bkgd->Clone();
+                    hist_tt_ShapeUp->SetName(sample+"_Run"+str_Year+"_"+shapefilename+"Up");
+                    TH1D *hist_tt_ShapeDown = (TH1D *)hist_bkgd->Clone();
+                    hist_tt_ShapeDown->SetName(sample+"_Run"+str_Year+"_"+shapefilename+"Down");
+                    for(int c=1; c<=hist_tt_ShapeUp->GetXaxis()->GetNbins(); c++){
+                      double x_l_1 = hist_tt_ShapeUp->GetXaxis()->GetBinLowEdge(c);
+                      double x_r_1 = hist_tt_ShapeUp->GetXaxis()->GetBinUpEdge(c);
+                      double x_l_2 = f_ttchape_Up->GetXaxis()->GetBinLowEdge(c);
+                      double x_r_2 = f_ttchape_Up->GetXaxis()->GetBinUpEdge(c);
+                      hist_tt_ShapeUp->SetBinContent(c, hist_tt_ShapeUp->GetBinContent(c) * f_ttchape_Up->GetBinContent(c));
+                      hist_tt_ShapeDown->SetBinContent(c, hist_tt_ShapeDown->GetBinContent(c) * f_ttchape_Down->GetBinContent(c));
+                    }
+                    hist_tt_ShapeUp->Scale( hist_bkgd->Integral() / hist_tt_ShapeUp->Integral() );
+                    hist_tt_ShapeDown->Scale( hist_bkgd->Integral() / hist_tt_ShapeDown->Integral() );
+
+                    out_bkgd->cd();
+                    hist_tt_ShapeUp->Write();
+                    hist_tt_ShapeDown->Write();
+                  }
 
                 }
                 else{

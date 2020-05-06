@@ -467,6 +467,12 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
         double x_min = -9999;
         double x_max = 9999;
 
+        if("HNFatJet_Pt"){
+          n_rebin = 50;
+          x_min = 0;
+          x_max = 1000;
+        }
+
         //==== Subtract non-TT
         for(unsigned int it_asym=0; it_asym<asym_samples.size(); it_asym++){
           TFile *file_asym = new TFile(base_filepath+"/"+filename_prefix+asym_samples.at(it_asym)+".root");
@@ -545,12 +551,18 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             //==== Draw
 
             ObsPredComp m_EE;
+/*
             m_EE.hist_Obs = hist_Obs_EE;
             m_EE.hist_Pred = hist_Pred_EE;
             m_EE.alias_Obs = "MC";
             m_EE.alias_Pred = "e#mu-sideband";
+*/
+            m_EE.hist_Obs = hist_Pred_EE;
+            m_EE.hist_Pred = hist_Obs_EE;
+            m_EE.alias_Obs = "From e#mu-sideband";
+            m_EE.alias_Pred = "MC";
             m_EE.x_title = var;
-            m_EE.Logy = true;
+            m_EE.Logy = false;
             m_EE.TotalLumi = TotalLumi;
 
             TString this_outputdir = base_plotpath+"/Comparison/";
@@ -558,6 +570,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
             m_EE.Draw();
             if(var=="WRCand_Mass") m_EE.Save(this_outputdir+SR+"_"+var+"_"+region_EE+"_"+sym_sample);
+            if(var=="HNFatJet_Pt") m_EE.Save(this_outputdir+SR+"_"+var+"_"+region_EE+"_"+sym_sample);
 
           }
         }
@@ -611,12 +624,18 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
             //==== Draw
 
             ObsPredComp m_MM;
+/*
             m_MM.hist_Obs = hist_Obs_MM;
             m_MM.hist_Pred = hist_Pred_MM;
             m_MM.alias_Obs = "MC";
             m_MM.alias_Pred = "e#mu-sideband";
+*/
+            m_MM.hist_Obs = hist_Pred_MM;
+            m_MM.hist_Pred = hist_Obs_MM;
+            m_MM.alias_Obs = "From e#mu-sideband";
+            m_MM.alias_Pred = "MC";
             m_MM.x_title = var;
-            m_MM.Logy = true;
+            m_MM.Logy = false;
             m_MM.TotalLumi = TotalLumi;
 
             TString this_outputdir = base_plotpath+"/Comparison/";
@@ -624,6 +643,7 @@ void Get_EMuRatio(int xxx=2016, bool PrintLatexOnly=false){
 
             m_MM.Draw();
             if(var=="WRCand_Mass") m_MM.Save(this_outputdir+SR+"_"+var+"_"+region_MM+"_"+sym_sample);
+            if(var=="HNFatJet_Pt") m_MM.Save(this_outputdir+SR+"_"+var+"_"+region_EE+"_"+sym_sample);
 
           }
 

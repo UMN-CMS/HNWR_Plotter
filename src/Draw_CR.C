@@ -275,8 +275,8 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== EMu Validation (i.e., LowWR)
   if(WhichRegion==2){
 
-    m.samples_to_use = {"WJets_MG_HT", "Multiboson", "ttX", "SingleTop", "ZJets_MG_HT", "EMuMethod"};
-    if(UseDYPtReweight) m.samples_to_use = {"WJets_MG_HT", "Multiboson", "ttX", "SingleTop", "ZJets_MG_HT_Reweighted", "EMuMethod"};
+    m.samples_to_use = {"WJets_MG_HT", "Multiboson", "ttX", "SingleTop", "ZJets_MG_HT", "ttbar"};
+    if(UseDYPtReweight) m.samples_to_use = {"WJets_MG_HT", "Multiboson", "ttX", "SingleTop", "ZJets_MG_HT_Reweighted", "ttbar"};
 
     m.histname_suffix = {
 
@@ -297,7 +297,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //============================
 
   m.histname = {
-    "NEvent", "nPileUp", "nPV", "N_VTX",
+    //"NEvent", "nPileUp", "nPV", "N_VTX",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
     "dPhi_ll",
@@ -314,7 +314,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   };
 
   m.x_title = {
-    "# of events", "# of PU", "# of PV", "# of vtx",
+    //"# of events", "# of PU", "# of PV", "# of vtx",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton TrkRelIso",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton TrkRelIso",
     "#DeltaR(l_{1},l_{2})",
@@ -331,7 +331,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   };
 
   m.units = {
-    "int", "int", "int", "int",
+    //"int", "int", "int", "int",
     "GeV", "", "",
     "GeV", "", "",
     "",
@@ -385,10 +385,10 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
 */
 /*
   m.histname = {
-    "Jet_1_Pt",
+    "HNFatJet_Pt",
   };
   m.x_title = {
-    "p_{T} of dilepton (GeV)",
+    "Away AK8 jet p_{T} (GeV)",
   };
   m.units = {
     "GeV",
@@ -481,7 +481,11 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
 
     //==== Log plot boolean
     if(WhichRegion==0) m.UseLogy.push_back(1);
-    if(WhichRegion==1) m.UseLogy.push_back(1);
+    if(WhichRegion==1){
+      if(this_region.Contains("LowWRCR")) m.UseLogy.push_back(-1);
+      else m.UseLogy.push_back(1);
+      //m.UseLogy.push_back(-1);
+    }
     if(WhichRegion==2) m.UseLogy.push_back(-1);
     if(WhichRegion==3) m.UseLogy.push_back(1);
 
@@ -625,7 +629,7 @@ void Draw_CR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/FromCPP_CR/"+str_Year+"/";
 
   if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
   if(UsePromptMC) m.plotpath += "/UsePromptMC/";

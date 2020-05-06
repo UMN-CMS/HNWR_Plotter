@@ -230,7 +230,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //============================
   
   m.histname = {
-    "NEvent", "nPileUp", "nPV", "N_VTX",
+    //"NEvent", "nPileUp", "nPV", "N_VTX",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
     "dPhi_ll",
@@ -247,7 +247,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   };
 
   m.x_title = {
-    "# of events", "# of PU", "# of PV", "# of vtx",
+    //"# of events", "# of PU", "# of PV", "# of vtx",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton TrkRelIso",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton TrkRelIso",
     "#DeltaR(l_{1},l_{2})",
@@ -264,7 +264,7 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   };
 
   m.units = {
-    "int", "int", "int", "int",
+    //"int", "int", "int", "int",
     "GeV", "", "",
     "GeV", "", "",
     "",
@@ -600,10 +600,10 @@ void Draw_SR(int Year=2016, int WhichRegion=0, bool UseDYPtReweight=false, bool 
   //==== prepare plot directories
   //===============================
 
-  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/";
+  m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/FromCPP_SR/"+str_Year+"/";
 
   if(UseDYPtReweight) m.plotpath += "/DYPtReweight/";
-  if(UseMCTT) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/UseMCTT/";
+  if(UseMCTT) m.plotpath = ENV_PLOT_PATH+"/"+dataset+"/FromCPP_SR/"+str_Year+"/UseMCTT/";
 
   m.make_plot_directory();
   

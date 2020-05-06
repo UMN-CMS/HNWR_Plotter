@@ -20,7 +20,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
   Plotter m;
   m.DoDebug = false;
   m.DataYear = Year;
-  m.DrawPostFit = true;
+  m.DrawPreFit = true;
 
   //=====================
   //==== set data class
@@ -47,10 +47,11 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
 
   m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"]     = {"DYJets_MG_HT_Reweighted"};
   m.map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-  m.map_sample_string_to_list["Multiboson"] = {"VV","VVV"};
+  m.map_sample_string_to_list["Multiboson"] = {"Multiboson"};
   m.map_sample_string_to_list["SingleTop"] = {"SingleTop"};
   m.map_sample_string_to_list["ttX"] = {"ttX"};
   m.map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
+  m.map_sample_string_to_list["Others"] = {"Others"};
 
   m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
   m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
@@ -58,13 +59,14 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
   m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
   m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
   m.map_sample_string_to_legendinfo["ttbar"] = make_pair("t#bar{t}", kRed);
+  m.map_sample_string_to_legendinfo["Others"] = make_pair("Other backgrounds", 870);
 
   if(Year<0){
 
     m.map_sample_string_to_list["ZJets_MG_HT_Reweighted"]  = {
-      "2016 DYJets10to50_MG_Reweighted", "2016 DYJets_MG_HT_Reweighted",
-      "2017 DYJets10to50_MG_Reweighted", "2017 DYJets_MG_HT_Reweighted",
-      "2018 DYJets10to50_MG_Reweighted", "2018 DYJets_MG_HT_Reweighted",
+      "2016 DYJets_MG_HT_Reweighted",
+      "2017 DYJets_MG_HT_Reweighted",
+      "2018 DYJets_MG_HT_Reweighted",
     };
     m.map_sample_string_to_list["WJets_MG_HT"] = {
       "2016 WJets_MG_HT",
@@ -72,12 +74,9 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
       "2018 WJets_MG_HT",
     };
     m.map_sample_string_to_list["Multiboson"] = {
-      "2016 VV",
-      "2017 VV",
-      "2018 VV",
-      "2016 VVV",
-      "2017 VVV",
-      "2018 VVV",
+      "2016 Multiboson",
+      "2017 Multiboson",
+      "2018 Multiboson",
     };
     m.map_sample_string_to_list["SingleTop"] = {
       "2016 SingleTop",
@@ -94,6 +93,11 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
       "2017 TTLX_powheg",
       "2018 TTLX_powheg",
     };
+    m.map_sample_string_to_list["Others"] = {
+      "2016 Others",
+      "2017 Others",
+      "2018 Others",
+    };
 
     m.map_sample_string_to_legendinfo["ZJets_MG_HT_Reweighted"] = make_pair("Z+Jets", kYellow);
     m.map_sample_string_to_legendinfo["WJets_MG_HT"] = make_pair("W+Jets", 870);
@@ -101,6 +105,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
     m.map_sample_string_to_legendinfo["SingleTop"] = make_pair("Single top", kRed+2);
     m.map_sample_string_to_legendinfo["ttX"] = make_pair("ttV", kOrange+2);
     m.map_sample_string_to_legendinfo["ttbar"] = make_pair("t#bar{t}", kRed);
+    m.map_sample_string_to_legendinfo["Others"] = make_pair("Other backgrounds", 870);
 
   }
 
@@ -113,7 +118,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
   //==== EMu
   if(WhichRegion==0){
 
-    m.samples_to_use = {"Multiboson", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "ttbar"};
+    m.samples_to_use = {"Others", "ZJets_MG_HT_Reweighted", "ttbar"};
 
     m.histname_suffix = {
 
@@ -129,7 +134,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
 
   //==== SR
   else if(WhichRegion==1){
-    m.samples_to_use = {"WJets_MG_HT", "ttX", "Multiboson", "SingleTop", "ZJets_MG_HT_Reweighted", "ttbar"};
+    m.samples_to_use = {"Others", "ZJets_MG_HT_Reweighted", "ttbar"};
 
     m.histname_suffix = {
 
@@ -148,7 +153,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
   //============================
   
   m.histname = {
-    "NEvent", "nPileUp", "nPV", "N_VTX",
+    //"NEvent", "nPileUp", "nPV", "N_VTX",
     "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_TrkRelIso",
     "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_TrkRelIso",
     "dPhi_ll",
@@ -165,7 +170,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
   };
 
   m.x_title = {
-    "# of events", "# of PU", "# of PV", "# of vtx",
+    //"# of events", "# of PU", "# of PV", "# of vtx",
     "Leading lepton p_{T} (GeV)", "Leading lepton #eta", "Leading lepton TrkRelIso",
     "Subleading lepton p_{T} (GeV)", "Subleading lepton #eta", "Subleading lepton TrkRelIso",
     "#DeltaR(l_{1},l_{2})",
@@ -182,7 +187,7 @@ void Draw_PreFit(int Year=2016, int WhichRegion=0){
   };
 
   m.units = {
-    "int", "int", "int", "int",
+    //"int", "int", "int", "int",
     "GeV", "", "",
     "GeV", "", "",
     "",

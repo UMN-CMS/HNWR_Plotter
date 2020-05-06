@@ -18,21 +18,22 @@ void Draw_Limit(int Year, TString dirname=""){
   TString inputfile = "";
   TString TotalLumi = "";
   TString str_Year = TString::Itoa(Year,10);
+
+  inputfile = dirname;
   if(Year==2016){
-    inputfile = "2020_04_08_020412__Year2016_EMuMethod_UpdateCorrel";
     //inputfile = dirname;
     TotalLumi = "35.92 fb^{-1} (13 TeV)";
   }
   else if(Year==2017){
-    inputfile = "2020_04_08_020412__Year2017_EMuMethod_UpdateCorrel";
+    //inputfile = "";
     TotalLumi = "41.53 fb^{-1} (13 TeV)";
   }
   else if(Year==2018){
-    inputfile = "2020_04_08_020413__Year2018_EMuMethod_UpdateCorrel";
+    //inputfile = "";
     TotalLumi = "59.74 fb^{-1} (13 TeV)";
   }
   else if(Year==-1){
-    inputfile = "2020_04_08_020414__YearCombined_EMuMethod_UpdateCorrel";
+    //inputfile = "";
     TotalLumi = "137 fb^{-1} (13 TeV)";
     str_Year = "YearCombined";
   }

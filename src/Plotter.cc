@@ -333,10 +333,7 @@ void Plotter::draw_hist(){
 
             TString Syst = Systs.at(it_Syst);
 
-            bool isCorr = false;
-            if(Syst.Contains("JetRes") || Syst.Contains("JetEn")){
-              isCorr = true;
-            }
+            bool isCorr = IsCorrelated(Syst);
 
             //==== Exception control
             //==== 1) Continue EMu
@@ -507,6 +504,7 @@ void Plotter::draw_hist(){
       if(DrawPostFit||DrawPreFit) map_to_Source_to_Up.clear();
       for(map<TString, TH1D *>::iterator it=map_to_Source_to_Up.begin(); it!=map_to_Source_to_Up.end(); it++){
         TString key = it->first;
+        //cout << key << endl;
         AddDiffSystematic( hist_AllSyst_Up, map_to_Source_to_Up[key] );
         AddDiffSystematic( hist_AllSyst_Down, map_to_Source_to_Down[key] );
       }

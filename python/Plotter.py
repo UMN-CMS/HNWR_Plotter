@@ -160,7 +160,7 @@ class Plotter:
     return Rebins, XaxisRanges
   def Rebin(self, hist, region, var, nRebin):
     if var=='WRCand_Mass':
-      return mylib.RebinWRMass(hist, region, self.DataYear,False)
+      return mylib.RebinWRMass(hist, region, self.DataYear)
     else:
       if nRebin>0:
         hist.Rebin(nRebin)
@@ -200,14 +200,15 @@ class Plotter:
 
       for Variable in self.VariablesToDraw:
 
-        if self.DoDebug:
-          print '[DEBUG] Trying to draw variable = '+Variable.Name
-
         ## BinInfo
         nRebin = Rebins[Variable.Name]
         xMin = XaxisRanges[Variable.Name][0]
         xMax = XaxisRanges[Variable.Name][1]
         yMax = -999
+
+        if self.DoDebug:
+          print '[DEBUG] Trying to draw variable = '+Variable.Name
+          print '[DEBUG] (xMin,xMax) = (%s,%s)'%(xMin,xMax)
 
         ## xtitle
         xtitle = Variable.TLatexAlias
@@ -533,10 +534,10 @@ class Plotter:
         lg = 0
         ## No signal
         if len(self.SignalsToDraw)==0:
-          lg = ROOT.TLegend(0.50, 0.45, 0.92, 0.90)
+          lg = ROOT.TLegend(0.55, 0.45, 0.92, 0.90)
         ## With Signal
         else:
-          lg = ROOT.TLegend(0.50, 0.46, 0.92, 0.90)
+          lg = ROOT.TLegend(0.55, 0.46, 0.92, 0.90)
         lg.SetBorderSize(0)
         lg.SetFillStyle(0)
 
@@ -743,6 +744,9 @@ class Plotter:
         channelname.SetNDC()
         channelname.SetTextSize(0.037)
         channelname.DrawLatex(0.2, 0.88, Region.TLatexAlias)
+
+        ## Extra lines
+        exec(self.ExtraLines)
 
         ## Save
         c1.SaveAs(Outdir+Variable.Name+'_'+Region.Name+'.pdf')

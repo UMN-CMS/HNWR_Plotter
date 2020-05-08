@@ -1,14 +1,5 @@
 import os,ROOT
 
-def canvas_margin(c1):
-
-  c1.SetTopMargin( 0.052 )
-  c1.SetBottomMargin( 0.13 )
-  c1.SetRightMargin( 0.032 )
-  c1.SetLeftMargin( 0.15 )
-
-  return c1
-
 def canvas_margin(c1, c1_up, c1_down):
 
   c1_up.SetTopMargin( 0.07 )

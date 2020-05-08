@@ -96,15 +96,12 @@ def MakeOverflowBin(hist):
   hist_out.SetName(hist.GetName())
   return hist_out
 
-def RebinWRMass(hist, region, DataYear, IsShape=False):
+def RebinWRMass(hist, region, DataYear):
 
   lastbin = hist.GetXaxis().GetNbins()
-  vec_bins = [0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000]
+  vec_bins = [800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000]
   if "Boosted" in region:
-    vec_bins = [0, 800, 1000, 1200, 1500, 1700, 8000]
-
-  if IsShape:
-    vec_bins.remove(0)
+    vec_bins = [800, 1000, 1200, 1500, 1800, 8000]
 
   n_bin = len(vec_bins)-1
   hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )

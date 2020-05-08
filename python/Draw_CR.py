@@ -147,7 +147,7 @@ if args.Category==1:
     Region('HNWR_EMu_Resolved_SR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor CR}'),
     ## Boosted EMu
     Region('HNWR_SingleElectron_EMu_Boosted_CR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor CR}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu+#e-Jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted flavor CR}'),
     ## Resolved EMu, but DYCR. This is dominated by ttbar, so it is here..
     ## This region is not important
     Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mi}{Resolved DY CR}'),

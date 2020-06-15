@@ -8,6 +8,7 @@ ENV_PLOT_PATH = os.environ['PLOT_PATH']
 Years = [
 '2016',
 '2017',
+'2018',
 ]
 
 Bkgds = [
@@ -35,26 +36,6 @@ for Year in Years:
 
   Bkgds = []
   BkgdAliases = []
-
-  if Year=='2016':
-    Bkgds = [
-      'TTLX_powheg',
-      'DYJets_MG_HT_Reweighted',
-    ]
-    BkgdAliases = [
-      '\\ttbar',
-      'DY'
-    ]
-  elif Year=='2017':
-    Bkgds = [
-      'TTLX_powheg',
-      'DYJets_MG_JetBinned_Reweighted',
-    ]
-    BkgdAliases = [
-      '\\ttbar',
-      'DY'
-    ]
-
 
   for i_S in range(0,len(Suffixs)):
 
@@ -209,7 +190,11 @@ for Year in Years:
 
           mWR = Signal[0]
           mN = Signal[1]
-          f = ROOT.TFile(base_filepath+'/Signal/HNWRAnalyzer_WRtoNLtoLLJJ_WR'+str(mWR)+'_N'+str(mN)+'.root')
+
+          SignalDir = "Signal_EE"
+          if Suffix=="SingleMuon":
+            SignalDir = "Signal_MuMu"
+          f = ROOT.TFile(base_filepath+'/'+SignalDir+'/HNWRAnalyzer_WRtoNLtoLLJJ_WR'+str(mWR)+'_N'+str(mN)+'.root')
           h = f.Get('CutFlow/'+Cut+'_HNWR')
           y = 0.
           if h:

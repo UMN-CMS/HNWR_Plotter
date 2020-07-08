@@ -49,7 +49,7 @@ ToRuns = [
 
   [
     'AllMCBkgd',
-    'Non-\\ttbar/Signal',
+    'All bkgd./Signal',
     [
       ["JetRes","Jet energy resolution"],
       ["JetEn","Jet energy scale"],
@@ -78,7 +78,7 @@ ToRuns = [
 
 ]
 
-print 'Integrated luminosity & Non-\\ttbar/Signal & '+IsCorrelatedToString('Lumi')+' & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'
+print 'Integrated luminosity & All bkgd./Signal & '+IsCorrelatedToString('Lumi')+' & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'
 
 for ToRun in ToRuns:
 
@@ -206,6 +206,8 @@ for ToRun in ToRuns:
     print out+' \\\\'
 
 #print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
+
+print '''DY normalizaion & \DYJ & Correlated & 30 (30) & \NA & 30 (30) & \NA \\\\'''
 
 #### PDF uncertainty for signal
 

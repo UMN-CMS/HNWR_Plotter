@@ -55,14 +55,18 @@ class Variable:
 
 ## Region ##
 class Region:
-  def __init__(self, Name, PrimaryDataset, DrawData=True, Logy=-1, TLatexAlias=""):
+  def __init__(self, Name, PrimaryDataset, UnblindData=True, Logy=-1, TLatexAlias=""):
     self.Name = Name
     self.PrimaryDataset = PrimaryDataset
-    self.DrawData = DrawData
+    self.UnblindData = UnblindData
     self.Logy = Logy
     self.TLatexAlias = TLatexAlias
+
+    self.DrawData = True
+    self.DrawRatio = True
+
   def Print(self):
-    print '(%s, %s, DrawData=%s, Logy=%f, %s)'%(self.Name, self.PrimaryDataset, self.DrawData, self.Logy, self.TLatexAlias)
+    print '(%s, %s, UnblindData=%s, Logy=%f, %s)'%(self.Name, self.PrimaryDataset, self.UnblindData, self.Logy, self.TLatexAlias)
 
 ## Systematic ##
 class Systematic:
@@ -104,6 +108,8 @@ class Plotter:
     self.OutputDirectory = ""
 
     self.ScaleMC = False
+
+    self.ExtraLines = ""
 
   def PrintBorder(self):
     print '--------------------------------------------------------------------------'
@@ -226,6 +232,9 @@ class Plotter:
         if self.DoDebug:
           print '[DEBUG] Trying to get data histogram..'
         h_Data = f_Data.Get(Region.Name+'/'+Variable.Name+'_'+Region.Name)
+        if not h_Data:
+          print Variable.Name+'_'+Region.Name+'.pdf ==> No data, skipped'
+          continue
 
         ## Make overflow
         h_Data.GetXaxis().SetRangeUser(xMin,xMax)
@@ -249,76 +258,6 @@ class Plotter:
 
         if self.DoDebug:
           print '[DEBUG] data histogram finished'
-
-        ## Prepare canvas
-
-        if self.DoDebug:
-          print '[DEBUG] Preparing canvas..'
-        c1 = ROOT.TCanvas('c1', '', 800, 800)
-
-        c1_up = ROOT.TPad("c1_up", "", 0, 0.25, 1, 1)
-        c1_down = ROOT.TPad("c1_down", "", 0, 0, 1, 0.25)
-        c1, c1_up, c1_down = canvas_margin.canvas_margin(c1, c1_up, c1_down)
-        c1.Draw()
-        c1_up.Draw()
-        c1_down.Draw()
-
-        c1_up.cd()
-        if Region.Logy>0:
-          c1_up.SetLogy(True)
-
-        c1.cd()
-
-        latex_CMSPriliminary = ROOT.TLatex()
-        latex_Lumi = ROOT.TLatex()
-
-        latex_CMSPriliminary.SetNDC()
-        latex_Lumi.SetNDC()
-        latex_CMSPriliminary.SetTextSize(0.035)
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}")
-
-        latex_Lumi.SetTextSize(0.035)
-        latex_Lumi.SetTextFont(42)
-        latex_Lumi.DrawLatex(0.73, 0.96, mylib.TotalLumi(float(self.DataYear))+" fb^{-1} (13 TeV)")
-
-        c1_up.cd()
-        h_dummy_up = ROOT.TH1D('h_dumy_up', '', nBin, xBins)
-        h_dummy_up.GetXaxis().SetRangeUser(xMin, xMax)
-        if nRebin>0:
-          binsize = h_dummy_up.GetXaxis().GetBinUpEdge(1)-h_dummy_up.GetXaxis().GetBinLowEdge(1)
-          str_binsize = '%d'%(binsize)
-          if binsize!=int(binsize):
-            str_binsize = '%1.2f'%(binsize)
-          h_dummy_up.GetYaxis().SetTitle('Events / '+str_binsize+' '+Variable.Unit)
-        else:
-          h_dummy_up.GetYaxis().SetTitle('Events / bin')
-        if Variable.Name=='WRCand_Mass':
-          h_dummy_up.GetYaxis().SetTitle('Events / bin')
-        h_dummy_up.Draw("histsame")
-
-        c1_down.cd()
-        h_dummy_down = ROOT.TH1D('h_dumy_down', '', nBin, xBins)
-        h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
-        h_dummy_down.SetNdivisions(504,"Y")
-        h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)
-        h_dummy_down.GetXaxis().SetTitle(xtitle)
-        h_dummy_down.GetYaxis().SetRangeUser(0.5,1.6)
-        h_dummy_down.GetYaxis().SetTitle("#frac{Data}{Sim.}")
-        h_dummy_down.SetFillColor(0)
-        h_dummy_down.SetMarkerSize(0)
-        h_dummy_down.SetMarkerStyle(0)
-        h_dummy_down.SetLineColor(ROOT.kWhite)
-        h_dummy_down.Draw("axis")
-
-        g1_x = [-9000, 9000]
-        g1_y = [1, 1]
-        g1 = ROOT.TGraph(2, array("d", g1_x ), array("d", g1_y ))
-        g1.Draw("same")
-
-        h_dummy_up, h_dummy_down = canvas_margin.hist_axis(h_dummy_up, h_dummy_down)
-
-        if self.DoDebug:
-          print '[DEBUG] Canvas is ready'
 
         ## Loop over samples
         ## For Legend, save 
@@ -484,7 +423,7 @@ class Plotter:
         ##==>End Systematic loop
 
         ## Blind mode
-        if not Region.DrawData:
+        if not Region.UnblindData:
           h_Data = h_Bkgd.Clone(h_Data.GetName())
           h_Data.SetMarkerStyle(20)
           h_Data.SetMarkerSize(1.2)
@@ -537,7 +476,10 @@ class Plotter:
           lg = ROOT.TLegend(0.55, 0.45, 0.92, 0.90)
         ## With Signal
         else:
-          lg = ROOT.TLegend(0.55, 0.46, 0.92, 0.90)
+          if Region.DrawRatio:
+            lg = ROOT.TLegend(0.55, 0.46, 0.92, 0.90)
+          else:
+            lg = ROOT.TLegend(0.50, 0.56, 0.92, 0.90)
         lg.SetBorderSize(0)
         lg.SetFillStyle(0)
 
@@ -552,15 +494,98 @@ class Plotter:
         if Variable.Name=="WRCand_Mass":
           dataLegendGOption="lpe"
         if Region.DrawData:
-          lg.AddEntry(gr_Data_dummy, "Data", dataLegendGOption)
-        else:
-          lg.AddEntry(gr_Data_dummy, "Total background", dataLegendGOption)
+          if Region.UnblindData:
+            lg.AddEntry(gr_Data_dummy, "Data", dataLegendGOption)
+          else:
+            lg.AddEntry(gr_Data_dummy, "Total background", dataLegendGOption)
         for i_lg in range(0,len(HistsForLegend)):
           h_lg = HistsForLegend[ len(HistsForLegend)-1-i_lg ][0]
           tlatexaliax = HistsForLegend[ len(HistsForLegend)-1-i_lg ][1]
           lg.AddEntry(h_lg,tlatexaliax,"f")
-        c1_up.cd()
-        lg.Draw()
+
+        ## Prepare canvas
+
+        if self.DoDebug:
+          print '[DEBUG] Preparing canvas..'
+
+        c1 = ROOT.TCanvas('c1', '', 800, 800)
+
+        c1_up = ROOT.TPad("c1_up", "", 0, 0.25, 1, 1)
+        c1_down = ROOT.TPad("c1_down", "", 0, 0, 1, 0.25)
+        if Region.DrawRatio:
+          c1, c1_up, c1_down = canvas_margin.canvas_margin(c1, c1_up, c1_down)
+          c1.Draw()
+          c1_up.Draw()
+          c1_down.Draw()
+
+          c1_up.cd()
+          if Region.Logy>0:
+            c1_up.SetLogy(True)
+
+        else:
+          c1_up = ROOT.TPad("c1_up", "", 0, 0, 1, 1)
+          c1_up.SetTopMargin( 0.052 )
+          c1_up.SetBottomMargin( 0.13 )
+          c1_up.SetRightMargin( 0.032 )
+          c1_up.SetLeftMargin( 0.15 )
+          c1.Draw()
+          c1_up.Draw()
+          c1_up.cd()
+
+          if Region.Logy>0:
+            c1_up.SetLogy(True)
+
+        c1.cd()
+
+        latex_CMSPriliminary = ROOT.TLatex()
+        latex_Lumi = ROOT.TLatex()
+
+        latex_CMSPriliminary.SetNDC()
+        latex_Lumi.SetNDC()
+        latex_CMSPriliminary.SetTextSize(0.035)
+        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}")
+
+        latex_Lumi.SetTextSize(0.035)
+        latex_Lumi.SetTextFont(42)
+        latex_Lumi.DrawLatex(0.73, 0.96, mylib.TotalLumi(float(self.DataYear))+" fb^{-1} (13 TeV)")
+
+        #### axis histograms
+
+        h_dummy_up = ROOT.TH1D('h_dumy_up', '', nBin, xBins)
+        h_dummy_up.GetXaxis().SetRangeUser(xMin, xMax)
+        if nRebin>0:
+          binsize = h_dummy_up.GetXaxis().GetBinUpEdge(1)-h_dummy_up.GetXaxis().GetBinLowEdge(1)
+          str_binsize = '%d'%(binsize)
+          if binsize!=int(binsize):
+            str_binsize = '%1.2f'%(binsize)
+          h_dummy_up.GetYaxis().SetTitle('Events / '+str_binsize+' '+Variable.Unit)
+        else:
+          h_dummy_up.GetYaxis().SetTitle('Events / bin')
+        if Variable.Name=='WRCand_Mass':
+          h_dummy_up.GetYaxis().SetTitle('Events / bin')
+
+        h_dummy_down = ROOT.TH1D('h_dumy_down', '', nBin, xBins)
+        h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
+        h_dummy_down.SetNdivisions(504,"Y")
+        h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)
+        h_dummy_down.GetXaxis().SetTitle(xtitle)
+        h_dummy_down.GetYaxis().SetRangeUser(0.5,1.6)
+        h_dummy_down.GetYaxis().SetTitle("#frac{Data}{Sim.}")
+        h_dummy_down.SetFillColor(0)
+        h_dummy_down.SetMarkerSize(0)
+        h_dummy_down.SetMarkerStyle(0)
+        h_dummy_down.SetLineColor(ROOT.kWhite)
+
+        if Region.DrawRatio:
+          h_dummy_up, h_dummy_down = canvas_margin.hist_axis(h_dummy_up, h_dummy_down)
+        else:
+          h_dummy_up.SetTitle("")
+          h_dummy_up.GetYaxis().SetLabelSize(0.04)
+          h_dummy_up.GetYaxis().SetTitleSize(0.054)
+          h_dummy_up.GetYaxis().SetTitleOffset(1.30)
+          h_dummy_up.GetXaxis().SetLabelSize(0.035)
+          h_dummy_up.GetXaxis().SetTitleSize(0.055)
+          h_dummy_up.GetXaxis().SetTitle(xtitle)
 
         ## Get Y maximum
         yMax = max( yMax, mylib.GetMaximum(gr_Data) )
@@ -578,16 +603,22 @@ class Plotter:
             h_dummy_up.GetYaxis().SetRangeUser( 1E-1, yMaxScale*yMax )
           else:
             h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )
-        if (Variable.Name=="ZCand_Mass") and ("_DYCR" in Region.Name):
+        if (Variable.Name=="ZCand_Mass" or Variable.Name=="DiJet_Mass") and ("_DYCR" in Region.Name):
           h_dummy_up.GetYaxis().SetRangeUser(10, 2E8)
-        if (Variable.Name=="ZCand_Pt") and ("_DYCR" in Region.Name):
+        if (Variable.Name=="ZCand_Pt" or Variable.Name=="DiJet_Pt") and ("_DYCR" in Region.Name):
           if ("Resolved" in Region.Name):
             h_dummy_up.GetYaxis().SetRangeUser(10, 5E6)
           else:
             h_dummy_up.GetYaxis().SetRangeUser(10, 2E5)
 
+        if self.DoDebug:
+          print '[DEBUG] Canvas is ready'
+
         ## Draw up
+
         c1_up.cd()
+
+        h_dummy_up.Draw("histsame")
         stack_Bkgd.Draw("histsame")
 
         gr_Bkgd_TotErr.SetMarkerColor(0)
@@ -601,8 +632,9 @@ class Plotter:
         gr_Data.SetMarkerSize(0.)
         gr_Data.SetMarkerColor(ROOT.kBlack)
         gr_Data.SetLineColor(ROOT.kBlack)
-        h_Data.Draw("phistsame")
-        gr_Data.Draw("p0same")
+        if Region.DrawData:
+          h_Data.Draw("phistsame")
+          gr_Data.Draw("p0same")
 
         ## Signal
         LeptonChannel = "EE" if ("Electron" in Region.Name) else "MuMu"
@@ -632,15 +664,17 @@ class Plotter:
           ## legend
           lg.AddEntry(h_Sig, Sig.TLatexAlias, 'l')
 
-          c1_up.cd()
-
           ## Draw
           h_Sig.Draw("histsame")
 
         h_dummy_up.Draw("axissame")
 
+        ## Legend
+        lg.Draw()
+
         ## Draw down
         c1_down.cd()
+        h_dummy_down.Draw("histsame")
 
         ## values must be set later
         h_Data_Ratio = h_Data.Clone('h_Data_Ratio')
@@ -738,6 +772,12 @@ class Plotter:
         h_Data_Ratio.Draw("p9histsame")
         gr_Data_Ratio.Draw("p0same")
 
+        ## y=1 graph
+        g1_x = [-9000, 9000]
+        g1_y = [1, 1]
+        g1 = ROOT.TGraph(2, array("d", g1_x ), array("d", g1_y ))
+        g1.Draw("same")
+
         ## TLatex
         c1.cd()
         channelname = ROOT.TLatex()
@@ -751,14 +791,15 @@ class Plotter:
         ## Save
         c1.SaveAs(Outdir+Variable.Name+'_'+Region.Name+'.pdf')
         print Variable.Name+'_'+Region.Name+'.pdf ==> Saved'
-      
 
         c1.Close()
-        del h_dummy_up
-        del h_dummy_down
-        del HistsToDraw
-
 
       ##==>End Variable loop
 
+      if self.DoDebug:
+        print '[DEBUG] All variables are done for this region, closing data TFile'
       f_Data.Close()
+
+    ##==>End Region loop
+    if self.DoDebug:
+      print '[DEBUG] All regions are done.'

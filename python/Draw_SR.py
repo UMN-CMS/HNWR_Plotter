@@ -19,7 +19,7 @@ parser.add_argument('--ApplyZPtRwg', action='store_true')
 args = parser.parse_args()
 
 ## Blind mode
-drawData = not args.blind
+UnblindData = not args.blind
 
 ## Enviroment
 WORKING_DIR = os.environ['PLOTTER_WORKING_DIR']
@@ -33,7 +33,7 @@ if args.Category==1:
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
 LRSMSignalInfoToDraw.Style = 5
-LRSMSignalInfoToDraw.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+LRSMSignalInfoToDraw.xsec = 30. * mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
 LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
 
 
@@ -129,13 +129,13 @@ m.PrintSamples()
 #### Define reiongs
 if args.Category==0:
   m.RegionsToDraw = [
-    Region('HNWR_SingleElectron_Resolved_SR', 'SingleElectron', DrawData=drawData, Logy=1, TLatexAlias='#splitline{ee}{Resolved SR}'),
-    Region('HNWR_SingleMuon_Resolved_SR', 'SingleMuon', DrawData=drawData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved SR}'),
+    Region('HNWR_SingleElectron_Resolved_SR', 'SingleElectron', UnblindData=UnblindData, Logy=1, TLatexAlias='#splitline{ee}{Resolved SR}'),
+    Region('HNWR_SingleMuon_Resolved_SR', 'SingleMuon', UnblindData=UnblindData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved SR}'),
   ]
 elif args.Category==1:
   m.RegionsToDraw = [
-    Region('HNWR_SingleElectron_Boosted_SR', 'SingleElectron', DrawData=drawData, Logy=1, TLatexAlias='#splitline{ee}{Boosted SR}'),
-    Region('HNWR_SingleMuon_Boosted_SR', 'SingleMuon', DrawData=drawData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted SR}'),
+    Region('HNWR_SingleElectron_Boosted_SR', 'SingleElectron', UnblindData=UnblindData, Logy=1, TLatexAlias='#splitline{ee}{Boosted SR}'),
+    Region('HNWR_SingleMuon_Boosted_SR', 'SingleMuon', UnblindData=UnblindData, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted SR}'),
   ]
 m.PrintRegions()
 
@@ -144,6 +144,12 @@ m.VariablesToDraw = [
   Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
   Variable('ZCand_Mass', 'm_{ll} (GeV)', 'GeV'),
   Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+  Variable('Lepton_0_Pt', 'p_{T} of the leading lepton', 'GeV'),
+  Variable('Lepton_0_Eta', '#eta of the leading lepton', ''),
+  Variable('Lepton_1_Pt', 'p_{T} of the subleading lepton', 'GeV'),
+  Variable('Lepton_1_Eta', '#eta of the subleading lepton', ''),
+  Variable('HNFatJet_Eta', '#eta of the AK8 jet', ''),
+  Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
 ]
 m.PrintVariables()
 

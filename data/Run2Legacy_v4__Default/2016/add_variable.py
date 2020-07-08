@@ -1,11 +1,15 @@
 import os
 
-filenames=['SR_rebins.txt', 'SR_xaxis.txt'] 
-#filenames=['CR_rebins.txt', 'CR_xaxis.txt']
+#filenames=['SR_rebins.txt', 'SR_xaxis.txt'] 
+filenames=['CR_rebins.txt', 'CR_xaxis.txt']
 #filenames=['CR2_rebins.txt', 'CR2_xaxis.txt']
 
-var_last = "LSFFatJet_Size"
-NewVars = ["Lepton_Size", "OFLepton_Size"]
+var_last = "DiJet_Mass"
+
+## name rebin xmin xmax
+NewVarSets = [
+["dRj1j2", 1, 0, 6],
+]
 
 for filename in filenames:
 
@@ -21,13 +25,19 @@ for filename in filenames:
     words = line.split()
     if words[1] == var_last:
 
-      for NewVar in NewVars:
+      for NewVarSet in NewVarSets:
+
+        NewVar = NewVarSet[0]
+        Rebin = NewVarSet[1]
+        XMin = NewVarSet[2]
+        XMax = NewVarSet[3]
+
         newline = line.replace(var_last, NewVar)
 
         if "rebins" in filename:
-          newline = words[0]+'\t'+NewVar+'\t1\n'
+          newline = words[0]+'\t'+NewVar+'\t'+str(Rebin)+'\n'
         if "xaxis" in filename:
-          newline = words[0]+'\t'+NewVar+'\t0\t5\n'
+          newline = words[0]+'\t'+NewVar+'\t'+str(XMin)+'\t'+str(XMax)+'\n'
 
         tempfile.write(newline)
 

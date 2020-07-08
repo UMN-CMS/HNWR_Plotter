@@ -27,6 +27,27 @@ elif [[ $HOSTNAME == *"lxplus"* ]]; then
   alias pl='rsync -auv --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
   alias plforce='rsync -auv -I --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
 
+elif [[ $HOSTNAME == *"tamsa1"* ]] || [[ $HOSTNAME == *"tamsa2"* ]] ; then
+
+  #### use cvmfs for root ####
+  export CMS_PATH=/cvmfs/cms.cern.ch
+  source $CMS_PATH/cmsset_default.sh
+  export SCRAM_ARCH=slc7_amd64_gcc900
+  export cmsswrel='cmssw-patch/CMSSW_10_4_0_patch1'
+  export cmsswrel='cmssw/CMSSW_11_1_0_pre6'
+  cd /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/$cmsswrel/src
+  echo "@@@@ SCRAM_ARCH = "$SCRAM_ARCH
+  echo "@@@@ cmsswrel = "$cmsswrel
+  echo "@@@@ scram..."
+  eval `scramv1 runtime -sh`
+  cd -
+  source /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/$cmsswrel/external/$SCRAM_ARCH/bin/thisroot.sh
+
+  export PLOT_PATH=$PLOTTER_WORKING_DIR/output/
+  export WWW_PLOT_PATH=/eos/user/j/jskim/www/HNWR_13TeV/
+  alias pl='rsync -auv --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
+  alias plforce='rsync -auv -I --delete-excluded output/'$CATANVERSION' '$WWW_PLOT_PATH
+
 elif [[ $HOSTNAME == *"cms1"* ]] || [[ $HOSTNAME == *"cms2"* ]] ; then
 
   #### use cvmfs for root ####
@@ -34,6 +55,7 @@ elif [[ $HOSTNAME == *"cms1"* ]] || [[ $HOSTNAME == *"cms2"* ]] ; then
   source $CMS_PATH/cmsset_default.sh
   export SCRAM_ARCH=slc6_amd64_gcc700
   export cmsswrel='cmssw-patch/CMSSW_10_4_0_patch1'
+  #export cmsswrel='cmssw/CMSSW_10_5_0'
   cd /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/$cmsswrel/src
   echo "@@@@ SCRAM_ARCH = "$SCRAM_ARCH
   echo "@@@@ cmsswrel = "$cmsswrel

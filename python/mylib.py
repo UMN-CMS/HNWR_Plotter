@@ -2,6 +2,22 @@ import os,ROOT
 import math
 from array import array
 
+def AddHistograms(h_original, h_toAdd, option):
+  if option=="L":
+    for ix in range(0, h_original.GetXaxis().GetNbins()):
+      y_original = h_original.GetBinContent(ix+1)
+      e_original = h_original.GetBinError(ix+1)
+      y_toAdd = h_toAdd.GetBinContent(ix+1)
+      e_toAdd = h_toAdd.GetBinError(ix+1)
+
+      h_original.SetBinContent(ix+1, y_original+y_toAdd)
+      h_original.SetBinError(ix+1, y_toAdd+e_toAdd)
+
+      return h_original
+  else:
+    h_original.Add(h_toAdd)
+    return h_original
+
 def TotalLumi(DataYear):
 
   if DataYear==2016:
@@ -103,6 +119,12 @@ def RebinWRMass(hist, region, DataYear):
   if "Boosted" in region:
     vec_bins = [800, 1000, 1200, 1500, 1800, 8000]
 
+  if ('LowWR' in region) or ('DYCR' in region):
+    tmp_vec_bins = [0, 200, 300, 400, 500, 600, 700, 800]
+    for b in vec_bins:
+      tmp_vec_bins.append(b)
+    vec_bins = tmp_vec_bins
+
   n_bin = len(vec_bins)-1
   hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )
   return hist
@@ -192,8 +214,8 @@ def GetDYNormSF(DataYear, channel):
         DYNorm = 0.964614
         DYNorm_err = 0.020369
       elif int_region==1:
-        DYNorm = 0.838429
-        DYNorm_err = 0.0247198
+        DYNorm = 0.756272
+        DYNorm_err = 0.0237321
       else:
         print "Wrong DY Norm"
         exit()
@@ -216,8 +238,8 @@ def GetDYNormSF(DataYear, channel):
         DYNorm = 1.07024
         DYNorm_err = 0.0225204
       elif int_region==1:
-        DYNorm = 0.96038
-        DYNorm_err = 0.028569
+        DYNorm = 0.885756
+        DYNorm_err = 0.0279709
       else:
         print "Wrong DY Norm"
         exit()
@@ -240,8 +262,8 @@ def GetDYNormSF(DataYear, channel):
         DYNorm = 1.01396
         DYNorm_err = 0.0212596
       elif int_region==1:
-        DYNorm = 0.853835
-        DYNorm_err = 0.0235278
+        DYNorm = 0.787331
+        DYNorm_err = 0.022761
       else:
         print "Wrong DY Norm"
         exit()
@@ -249,7 +271,13 @@ def GetDYNormSF(DataYear, channel):
       print "Wrong DY Norm"
       exit()
 
-  return DYNorm, DYNorm_err
+  #return DYNorm, DYNorm_err
+
+  if 'DYCR' in channel:
+    return DYNorm, DYNorm_err
+    #return DYNorm, 0.30*DYNorm
+  else:
+    return DYNorm, 0.30*DYNorm
 
 def GetSignalXsec(filepath, mWR, mN):
 

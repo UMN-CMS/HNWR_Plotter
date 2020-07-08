@@ -12,7 +12,7 @@ HNWR_SingleElectron_Resolved_SR	Jet_0_Pt	0	1000
 HNWR_SingleElectron_Resolved_SR	Jet_0_Eta	-999	-999
 HNWR_SingleElectron_Resolved_SR	Jet_1_Pt	0	1000
 HNWR_SingleElectron_Resolved_SR	Jet_1_Eta	-999	-999
-HNWR_SingleElectron_Resolved_SR	HNFatJet_Pt	200	1000
+HNWR_SingleElectron_Resolved_SR	HNFatJet_Pt	200	2000
 HNWR_SingleElectron_Resolved_SR	HNFatJet_Eta	-999	-999
 HNWR_SingleElectron_Resolved_SR	HNFatJet_Mass	0	1000
 HNWR_SingleElectron_Resolved_SR	HNFatJet_SDMass	0	1000
@@ -45,7 +45,7 @@ HNWR_SingleElectron_Boosted_SR	Jet_0_Pt	0	1000
 HNWR_SingleElectron_Boosted_SR	Jet_0_Eta	-999	-999
 HNWR_SingleElectron_Boosted_SR	Jet_1_Pt	0	1000
 HNWR_SingleElectron_Boosted_SR	Jet_1_Eta	-999	-999
-HNWR_SingleElectron_Boosted_SR	HNFatJet_Pt	200	1000
+HNWR_SingleElectron_Boosted_SR	HNFatJet_Pt	200	2000
 HNWR_SingleElectron_Boosted_SR	HNFatJet_Eta	-999	-999
 HNWR_SingleElectron_Boosted_SR	HNFatJet_Mass	0	1000
 HNWR_SingleElectron_Boosted_SR	HNFatJet_SDMass	0	1000
@@ -78,7 +78,7 @@ HNWR_SingleMuon_Resolved_SR	Jet_0_Pt	0	1000
 HNWR_SingleMuon_Resolved_SR	Jet_0_Eta	-999	-999
 HNWR_SingleMuon_Resolved_SR	Jet_1_Pt	0	1000
 HNWR_SingleMuon_Resolved_SR	Jet_1_Eta	-999	-999
-HNWR_SingleMuon_Resolved_SR	HNFatJet_Pt	200	1000
+HNWR_SingleMuon_Resolved_SR	HNFatJet_Pt	200	2000
 HNWR_SingleMuon_Resolved_SR	HNFatJet_Eta	-999	-999
 HNWR_SingleMuon_Resolved_SR	HNFatJet_Mass	0	1000
 HNWR_SingleMuon_Resolved_SR	HNFatJet_SDMass	0	1000
@@ -111,7 +111,7 @@ HNWR_SingleMuon_Boosted_SR	Jet_0_Pt	0	1000
 HNWR_SingleMuon_Boosted_SR	Jet_0_Eta	-999	-999
 HNWR_SingleMuon_Boosted_SR	Jet_1_Pt	0	1000
 HNWR_SingleMuon_Boosted_SR	Jet_1_Eta	-999	-999
-HNWR_SingleMuon_Boosted_SR	HNFatJet_Pt	200	1000
+HNWR_SingleMuon_Boosted_SR	HNFatJet_Pt	200	2000
 HNWR_SingleMuon_Boosted_SR	HNFatJet_Eta	-999	-999
 HNWR_SingleMuon_Boosted_SR	HNFatJet_Mass	0	1000
 HNWR_SingleMuon_Boosted_SR	HNFatJet_SDMass	0	1000

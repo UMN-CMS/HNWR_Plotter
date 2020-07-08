@@ -36,9 +36,14 @@ m.DataDirectory = str_Year
 m.Filename_prefix = "HNWRAnalyzer"
 m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
+
 m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/"
 if args.ApplyZPtRwg:
   m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg/"
+
+#m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR_TESTLSF/"+str_Year+"/"
+#if args.ApplyZPtRwg:
+#  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR_TESTLSF/"+str_Year+"/ApplyZPtRwg/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -116,10 +121,10 @@ if args.Category==0:
 
   #### Define reiongs
   m.RegionsToDraw = [
-    Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),
-    Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR}'),
-    Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR}'),
-    Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR}'),
+    Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR}'),
   ]
   m.PrintRegions()
 
@@ -144,23 +149,23 @@ if args.Category==1:
   #### Define reiongs
   m.RegionsToDraw = [
     ## Resolved EMu
-    Region('HNWR_EMu_Resolved_SR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor CR}'),
+    Region('HNWR_EMu_Resolved_SR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor CR}'),
     ## Boosted EMu
-    Region('HNWR_SingleElectron_EMu_Boosted_CR', 'SingleElectron', DrawData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor CR}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleElectron_EMu_Boosted_CR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted flavor CR}'),
     ## Resolved EMu, but DYCR. This is dominated by ttbar, so it is here..
     ## This region is not important
-    Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', DrawData=True, Logy=1, TLatexAlias='#splitline{e#mi}{Resolved DY CR}'),
+    Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mi}{Resolved DY CR}'),
     ## LowWRCR emu regions
-    Region('HNWR_EMu_Resolved_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{e#mu}{Resolved low-mass CR}'),
-    Region('HNWR_SingleElectron_EMu_Boosted_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted low-mass CR}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted low-mass CR}'),
+    Region('HNWR_EMu_Resolved_LowWRCR', 'SingleMuon', UnblindData=True, Logy=-1, TLatexAlias='#splitline{e#mu}{Resolved low-mass CR}'),
+    Region('HNWR_SingleElectron_EMu_Boosted_LowWRCR', 'SingleElectron', UnblindData=True, Logy=-1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted low-mass CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_LowWRCR', 'SingleMuon', UnblindData=True, Logy=-1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted low-mass CR}'),
     ## Resolved LowWRCR for validation
-    Region('HNWR_SingleElectron_Resolved_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{ee}{Resolved low-mass CR}'),
-    Region('HNWR_SingleMuon_Resolved_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Resolved low-mass CR}'),
+    Region('HNWR_SingleElectron_Resolved_LowWRCR', 'SingleElectron', UnblindData=True, Logy=-1, TLatexAlias='#splitline{ee}{Resolved low-mass CR}'),
+    Region('HNWR_SingleMuon_Resolved_LowWRCR', 'SingleMuon', UnblindData=True, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Resolved low-mass CR}'),
     ## Boosted LowWRCR for validation
-    Region('HNWR_SingleElectron_Boosted_LowWRCR', 'SingleElectron', DrawData=True, Logy=-1, TLatexAlias='#splitline{ee}{Boosted low-mass CR}'),
-    Region('HNWR_SingleMuon_Boosted_LowWRCR', 'SingleMuon', DrawData=True, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Boosted low-mass CR}'),
+    Region('HNWR_SingleElectron_Boosted_LowWRCR', 'SingleElectron', UnblindData=True, Logy=-1, TLatexAlias='#splitline{ee}{Boosted low-mass CR}'),
+    Region('HNWR_SingleMuon_Boosted_LowWRCR', 'SingleMuon', UnblindData=True, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Boosted low-mass CR}'),
   ]
   m.PrintRegions()
 
@@ -169,7 +174,23 @@ m.VariablesToDraw = [
   Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
   Variable('ZCand_Mass', 'm_{ll} (GeV)', 'GeV'),
   Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+  Variable('Lepton_0_Pt', 'p_{T} of the leading lepton', 'GeV'),
+  Variable('Lepton_0_Eta', '#eta of the leading lepton', ''),
+  Variable('Lepton_1_Pt', 'p_{T} of the subleading lepton', 'GeV'),
+  Variable('Lepton_1_Eta', '#eta of the subleading lepton', ''),
+  Variable('HNFatJet_Eta', '#eta of the AK8 jet', ''),
+  Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
+  Variable('Jet_0_Pt', 'p_{T} of the leading jet', 'GeV'),
+  Variable('Jet_1_Pt', 'p_{T} of the subleading jet', 'GeV'),
+  Variable('DiJet_Pt', 'p_{T} of the dijet', 'GeV'),
+  Variable('DiJet_Mass', 'm(jj)', 'GeV'),
+  Variable('Jet_0_Eta', '#eta of the leading jet', 'GeV'),
+  Variable('Jet_1_Eta', '#eta of the subleading jet', 'GeV'),
+  Variable('dRj1j2', '#Delta R(j1,j2)', ''),
 ]
+#m.VariablesToDraw = [
+#  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+#]
 m.PrintVariables()
 
 #### Draw

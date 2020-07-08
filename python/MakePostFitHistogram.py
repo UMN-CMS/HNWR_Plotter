@@ -6,7 +6,11 @@ dataset = os.environ['CATANVERSION']
 FILE_PATH = os.environ['FILE_PATH']
 PLOT_PATH = os.environ['PLOT_PATH']
 
-PreORPost = "Pre"
+#PreORPost = "Pre"
+PreORPost = "Post"
+
+Mass_Resolved = "WR5000_N3000"
+Mass_Boosted = "WR5000_N100"
 
 basedir = FILE_PATH+'/'+dataset+'/FitDiagnostics/'
 outdirBase = FILE_PATH+'/'+dataset+'/'+PreORPost+'Fit/'
@@ -51,12 +55,9 @@ for Sample in Samples:
 
     for Channel in Channels:
 
-      f = ROOT.TFile(basedir+'/fitDiagnostics_YearCombined_card_CRAdded_'+Channel+'_Combined_WR4000_N3000.root')
-
       shapedirName = 'shapes_fit_b'
       if PreORPost=='Pre':
         shapedirName = 'shapes_prefit'
-      dir_shapes_fit_b = f.Get(shapedirName)
 
       PD = 'SingleElectron'
       if Channel=='MuMu':
@@ -65,6 +66,10 @@ for Sample in Samples:
       print '- Channel = '+Channel
 
       for Region in Regions:
+
+        Mass = Mass_Resolved if ('Resolved' in Region) else Mass_Boosted
+        f = ROOT.TFile(basedir+'/fitDiagnostics_YearCombined_card_CRAdded_'+Channel+'_Combined_'+Mass+'.root')
+        dir_shapes_fit_b = f.Get(shapedirName)
 
         print '  - Region = '+Region
 
@@ -111,8 +116,8 @@ for Sample in Samples:
         out.cd()
 
 
-      #### Closing fitDiag file
-      f.Close()
+        #### Closing fitDiag file
+        f.Close()
 
     #### Closing output file
     out.Close()

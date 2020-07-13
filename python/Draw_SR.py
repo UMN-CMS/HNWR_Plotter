@@ -33,7 +33,7 @@ if args.Category==1:
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
 LRSMSignalInfoToDraw.Style = 5
-LRSMSignalInfoToDraw.xsec = 30. * mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+LRSMSignalInfoToDraw.xsec = 1. * mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
 LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
 
 

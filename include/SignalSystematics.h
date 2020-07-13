@@ -402,6 +402,8 @@ public:
     }
 
     hist_axis(hist_PDFError);
+    hist_PDFError->GetYaxis()->SetTitle("Acc. #times Eff. / bin");
+    hist_PDFError->GetXaxis()->SetTitle("m(W_{RECO}) (GeV)");
     hist_PDFError->SetLineColor(kBlack);
     hist_PDFError->SetLineWidth(1);
     hist_PDFError->GetYaxis()->SetRangeUser(0., 1.2*y_max);

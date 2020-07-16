@@ -84,6 +84,9 @@ void Make_ShapeForLimit(int Year=2016){
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
 
+  //=== DY shape rootfile
+  TFile *f_DYShape = new TFile(ENV_PLOT_PATH+"/"+dataset+"/CompareDY/"+TString::Itoa(Year,10)+"/shapes_DY.root");
+
   //==== bkgds
 
   map< TString, vector<TString> > map_sample_string_to_list;
@@ -256,20 +259,55 @@ void Make_ShapeForLimit(int Year=2016){
           if(dir_sample){
             TH1D *hist_bkgd = (TH1D *)dir_sample->Get(histname);
 
-            //==== DY Norm
-            if(sample.Contains("DYJets_")){
-              hist_bkgd->Scale( GetDYNormSF(Year, PD+"_"+region) );
-            }
-
             if(hist_bkgd){
 
-              if(sample.Contains("DYJets") || sample.Contains("EMuMethod")){
+              if(sample.Contains("EMuMethod")){
                 //==== these are already rebinned
                 if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
               }
               else{
                 if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
                 else               hist_bkgd->Rebin(n_rebin);
+              }
+
+              //==== DY Norm and shape
+              if(sample.Contains("DYJets_")){
+                hist_bkgd->Scale( GetDYNormSF(Year, PD+"_"+region) );
+                //=== now shape
+                TString hname_DYShape = Suffix+"_Resolved_DYCR";
+                if(region.Contains("Boosted")) hname_DYShape = Suffix+"_Boosted_DYCR";
+                //==== first bin of this shape is [0,800]
+                TH1D *h_DYShape = (TH1D *)f_DYShape->Get(hname_DYShape);
+
+                TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_DYShapeUp");
+                TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_DYShapeDown");
+
+                for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
+                  double x_l_bkgd = hist_bkgd->GetXaxis()->GetBinLowEdge(z);
+                  double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z);
+                  if(x_l_bkgd!=x_l_shape) cout << "x_l_bkgd = " << x_l_bkgd << ", x_l_shape = " << x_l_shape << endl;
+
+                  double this_rewg = h_DYShape->GetBinContent(z+1);
+                  double this_corr = this_rewg-1.;
+
+                  double this_y = hist_bkgd->GetBinContent(z);
+                  double this_staterr = hist_bkgd->GetBinError(z);
+
+                  hist_bkgd->SetBinContent(z, this_y * this_rewg);
+                  hist_bkgd->SetBinError(z, this_staterr * this_rewg);
+
+                  //==== double the reweigthing
+                  hist_DYShapeUp->SetBinContent(z, this_y * (this_rewg + this_corr) );
+                  //==== before reweighting
+                  hist_DYShapeDown->SetBinContent(z, this_y);
+                }
+
+                if(syst=="Central"){
+                  out_bkgd->cd();
+                  hist_DYShapeUp->Write();
+                  hist_DYShapeDown->Write();
+                }
+
               }
 
               //==== remove negative bins
@@ -427,10 +465,10 @@ void Make_ShapeForLimit(int Year=2016){
                 if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year, true);
                 else               hist_sig->Rebin(n_rebin);
 
-								//==== negative or zero bins
-								for(int ix=1; ix<=hist_sig->GetXaxis()->GetNbins(); ix++){
-									hist_sig->SetBinContent(ix, max(0.000001, hist_sig->GetBinContent(ix)) );
-								}
+                //==== negative or zero bins
+                for(int ix=1; ix<=hist_sig->GetXaxis()->GetNbins(); ix++){
+                  hist_sig->SetBinContent(ix, max(0.000001/signal_scale, hist_sig->GetBinContent(ix)) );
+                }
 
                 if(syst=="Central"){
                   hist_sig->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix);
@@ -481,6 +519,7 @@ void Make_ShapeForLimit(int Year=2016){
 
                   TH1D *hist_sig_SignalFlavour = (TH1D *)file_sig->Get("SignalFlavour");
 
+/*
                   m.ChannelFrac = 1./hist_sig_SignalFlavour->GetEntries();
                   if(channel=="EE") m.ChannelFrac *= hist_sig_SignalFlavour->GetBinContent(2);
                   else if(channel=="MuMu") m.ChannelFrac *= hist_sig_SignalFlavour->GetBinContent(3);
@@ -488,6 +527,9 @@ void Make_ShapeForLimit(int Year=2016){
                     cout << "WTF?? channel = " << channel << endl;
                     return;
                   }
+*/
+
+                  m.ChannelFrac = 1.;
 
                   m.region = dirname;
                   m.UseCustomRebin = UseCustomRebin;
@@ -510,6 +552,18 @@ void Make_ShapeForLimit(int Year=2016){
                   m.hist_ScaleDn->Write();
                   m.hist_ScaleIntegral->Write();
 
+/*
+                  //==== DEBUG TODO CHECK
+                  TH1D *tmp_hist_PDFErrorUp = (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
+                  TH1D *tmp_hist_PDFErrorDn = (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorDown");
+                  double tmp_sig_pdferr = 0.10;
+                  for(int z=1; z<=hist_sig->GetXaxis()->GetNbins(); z++){
+                    tmp_hist_PDFErrorUp->SetBinContent(z, hist_sig->GetBinContent(z) * (1.+tmp_sig_pdferr));
+                    tmp_hist_PDFErrorDn->SetBinContent(z, hist_sig->GetBinContent(z) * (1.-tmp_sig_pdferr));
+                  }
+                  tmp_hist_PDFErrorUp->Write();
+                  tmp_hist_PDFErrorDn->Write();
+*/
                   m.hist_PDFErrorUp->Write();
                   m.hist_PDFErrorDn->Write();
 
@@ -543,6 +597,8 @@ void Make_ShapeForLimit(int Year=2016){
     } // END Loop channel
 
   }
+
+  f_DYShape->Close();
 
 }
 

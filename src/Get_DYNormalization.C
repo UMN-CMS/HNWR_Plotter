@@ -212,8 +212,8 @@ void Get_DYNormalization(int xxx=0){
       double SF_StarErr = sqrt(RelStatError_DATA*RelStatError_DATA+RelStatError_MC*RelStatError_MC) * SF;
       double SF_Syst = RelSystError_MC * SF;
 
-      //cout << leptonFlavour << "\t" << region << "\t" << SF << "\t" << sqrt(  SF_StarErr*SF_StarErr + SF_Syst*SF_Syst ) << endl;
-      printf("%s %s %1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", leptonFlavour.Data(), region.Data(), SF, SF_StarErr, SF_Syst);
+      cout << leptonFlavour << "\t" << region << "\t" << SF << "\t" << sqrt(  SF_StarErr*SF_StarErr + SF_Syst*SF_Syst ) << endl;
+      //printf("%s %s %1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", leptonFlavour.Data(), region.Data(), SF, SF_StarErr, SF_Syst);
 
     }
 

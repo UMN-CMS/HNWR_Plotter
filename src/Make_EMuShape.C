@@ -251,11 +251,6 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
         if(dir_sample){
           TH1D *hist_bkgd = (TH1D *)dir_sample->Get(histname);
 
-          //==== DY Norm
-          if(sample.Contains("DYJets_")){
-            hist_bkgd->Scale( GetDYNormSF(Year, PD+"_"+region) );
-          }
-
           if(hist_bkgd){
 
             if(sample.Contains("DYJets") || sample.Contains("EMuMethod")){
@@ -422,7 +417,7 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
 
               //==== CR contains many negative or zero bins
               for(int ix=1; ix<=hist_sig->GetXaxis()->GetNbins(); ix++){
-                hist_sig->SetBinContent(ix, max(0.000001, hist_sig->GetBinContent(ix)) );
+                hist_sig->SetBinContent(ix, max(0.000001/signal_scale, hist_sig->GetBinContent(ix)) );
               }
 
               if(syst=="Central"){
@@ -474,6 +469,7 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
 
                 TH1D *hist_sig_SignalFlavour = (TH1D *)file_sig->Get("SignalFlavour");
 
+/*
                 m.ChannelFrac = 1./hist_sig_SignalFlavour->GetEntries();
                 if(channel=="EE") m.ChannelFrac *= hist_sig_SignalFlavour->GetBinContent(2);
                 else if(channel=="MuMu") m.ChannelFrac *= hist_sig_SignalFlavour->GetBinContent(3);
@@ -481,6 +477,8 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
                   cout << "WTF?? channel = " << channel << endl;
                   return;
                 }
+*/
+                m.ChannelFrac = 1.;
 
                 m.region = dirname;
                 m.UseCustomRebin = UseCustomRebin;
@@ -503,6 +501,18 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
                 m.hist_ScaleDn->Write();
                 m.hist_ScaleIntegral->Write();
 
+/*
+                //==== DEBUG TODO CHECK
+                TH1D *tmp_hist_PDFErrorUp = (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
+                TH1D *tmp_hist_PDFErrorDn = (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorDown");
+                double tmp_sig_pdferr = 0.10;
+                for(int z=1; z<=hist_sig->GetXaxis()->GetNbins(); z++){
+                  tmp_hist_PDFErrorUp->SetBinContent(z, hist_sig->GetBinContent(z) * (1.+tmp_sig_pdferr));
+                  tmp_hist_PDFErrorDn->SetBinContent(z, hist_sig->GetBinContent(z) * (1.-tmp_sig_pdferr));
+                }
+                tmp_hist_PDFErrorUp->Write();
+                tmp_hist_PDFErrorDn->Write();
+*/
                 m.hist_PDFErrorUp->Write();
                 m.hist_PDFErrorDn->Write();
 

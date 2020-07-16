@@ -550,11 +550,11 @@ void Draw_Limit(int Year, TString dirname=""){
     } // END Loop region
 
     gr_atlas->Draw("lsame");
-    gr_atlas_boosted->Draw("lsame");
+    //gr_atlas_boosted->Draw("lsame");
     gr_EXO17011->Draw("lsame");
 
     lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
-    lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
+    //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
     lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");

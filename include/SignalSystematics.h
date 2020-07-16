@@ -508,7 +508,7 @@ public:
       double central_efF_value = hist_Central_Num->GetBinContent(i);
 
       //==== sometimes central_efF_value=1E-20.. and gives wrong result
-      if(central_efF_value>1E-7){
+      if(central_efF_value>0.000001){
 
         hist_ScaleUp->SetBinContent( i, central_value * hist_ScaleUp->GetBinContent(i) / central_efF_value );
         hist_ScaleDn->SetBinContent( i, central_value * hist_ScaleDn->GetBinContent(i) / central_efF_value );
@@ -531,14 +531,14 @@ public:
       }
       else{
 
-        hist_ScaleUp->SetBinContent( i, 0. );
-        hist_ScaleDn->SetBinContent( i, 0. );
+        hist_ScaleUp->SetBinContent( i, 0.000001 );
+        hist_ScaleDn->SetBinContent( i, 0.000001 );
 
-        hist_PDFErrorUp->SetBinContent( i, 0. );
-        hist_PDFErrorDn->SetBinContent( i, 0. );
+        hist_PDFErrorUp->SetBinContent( i, 0.000001 );
+        hist_PDFErrorDn->SetBinContent( i, 0.000001 );
 
-        hist_AlphaSUp->SetBinContent( i, 0. );
-        hist_AlphaSDn->SetBinContent( i, 0. );
+        hist_AlphaSUp->SetBinContent( i, 0.000001 );
+        hist_AlphaSDn->SetBinContent( i, 0.000001 );
 
       }
 

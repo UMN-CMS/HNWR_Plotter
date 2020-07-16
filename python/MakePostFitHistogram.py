@@ -27,10 +27,12 @@ Channels = [
 ]
 
 Regions = [
-"Resolved_CR",
-"Boosted_CR",
+"Resolved_emuCR",
+"Boosted_emuCR",
 "Resolved_SR",
 "Boosted_SR",
+"Resolved_DYCR",
+"Boosted_DYCR",
 ]
 
 Samples = [
@@ -79,14 +81,14 @@ for Sample in Samples:
 
         dirName = 'HNWR_'+PD+'_'+Region
         #### Exception for CRs
-        if Region=="Resolved_CR":
+        if Region=="Resolved_emuCR":
           if Channel=="EE":
             dirName = "HNWR_EMu_Resolved_SR"
             #continue
           else:
             dirName = "HNWR_EMu_Resolved_SR"
             continue
-        if Region=="Boosted_CR":
+        if Region=="Boosted_emuCR":
           if Channel=="EE":
             dirName = "HNWR_SingleMuon_EMu_Boosted_CR"
           if Channel=="MuMu":
@@ -100,15 +102,23 @@ for Sample in Samples:
         hist_binned = dir_fitDiag_thisShapes.Get(Sample)
 
         hist_massbinned = ROOT.TH1D('WRCand_Mass_'+dirName, '', len(massbins)-1, array('d', massbins))
-        for i in range(0, hist_massbinned.GetXaxis().GetNbins()):
-          ix = i+1
-          if ix==1:
-            hist_massbinned.SetBinContent( ix, 0 )
-            hist_massbinned.SetBinError( ix, 0 )
-          else:
-            hist_massbinned.SetBinContent( ix, hist_binned.GetBinContent(ix-1) )
-            hist_massbinned.SetBinError( ix, hist_binned.GetBinError(ix-1) )
-          #print hist_binned.GetBinContent(ix)
+        if "DY" in Region:
+        #if 0:
+          for i in range(0, hist_massbinned.GetXaxis().GetNbins()):
+            ix = i+1
+            hist_massbinned.SetBinContent( ix, hist_binned.GetBinContent(ix) )
+            hist_massbinned.SetBinError( ix, hist_binned.GetBinError(ix) )
+            #print hist_binned.GetBinContent(ix)
+        else:
+          for i in range(0, hist_massbinned.GetXaxis().GetNbins()):
+            ix = i+1
+            if ix==1:
+              hist_massbinned.SetBinContent( ix, 0 )
+              hist_massbinned.SetBinError( ix, 0 )
+            else:
+              hist_massbinned.SetBinContent( ix, hist_binned.GetBinContent(ix-1) )
+              hist_massbinned.SetBinError( ix, hist_binned.GetBinError(ix-1) )
+            #print hist_binned.GetBinContent(ix)
 
         out.mkdir(dirName)
         out.cd(dirName)

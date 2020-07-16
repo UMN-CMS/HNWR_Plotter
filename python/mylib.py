@@ -2,18 +2,22 @@ import os,ROOT
 import math
 from array import array
 
-def AddHistograms(h_original, h_toAdd, option):
+def AddHistograms(h_original, h_toAdd, option=''):
   if option=="L":
+
+    h_out = h_original.Clone()
     for ix in range(0, h_original.GetXaxis().GetNbins()):
       y_original = h_original.GetBinContent(ix+1)
       e_original = h_original.GetBinError(ix+1)
+
       y_toAdd = h_toAdd.GetBinContent(ix+1)
       e_toAdd = h_toAdd.GetBinError(ix+1)
 
-      h_original.SetBinContent(ix+1, y_original+y_toAdd)
-      h_original.SetBinError(ix+1, y_toAdd+e_toAdd)
+      h_out.SetBinContent(ix+1, y_original+y_toAdd)
+      h_out.SetBinError(ix+1, e_original+e_toAdd)
 
-      return h_original
+    return h_out
+
   else:
     h_original.Add(h_toAdd)
     return h_original
@@ -119,8 +123,14 @@ def RebinWRMass(hist, region, DataYear):
   if "Boosted" in region:
     vec_bins = [800, 1000, 1200, 1500, 1800, 8000]
 
-  if ('LowWR' in region) or ('DYCR' in region):
+  #if ('LowWR' in region) or ('DYCR' in region):
+  if ('LowWR' in region):
     tmp_vec_bins = [0, 200, 300, 400, 500, 600, 700, 800]
+    for b in vec_bins:
+      tmp_vec_bins.append(b)
+    vec_bins = tmp_vec_bins
+  if ('DYCR' in region):
+    tmp_vec_bins = [0]
     for b in vec_bins:
       tmp_vec_bins.append(b)
     vec_bins = tmp_vec_bins
@@ -271,13 +281,13 @@ def GetDYNormSF(DataYear, channel):
       print "Wrong DY Norm"
       exit()
 
-  #return DYNorm, DYNorm_err
+  return DYNorm, DYNorm_err
 
-  if 'DYCR' in channel:
-    return DYNorm, DYNorm_err
-    #return DYNorm, 0.30*DYNorm
-  else:
-    return DYNorm, 0.30*DYNorm
+  #if 'DYCR' in channel:
+  #  return DYNorm, DYNorm_err
+  #  return DYNorm, 0.30*DYNorm
+  #else:
+  #  return DYNorm, 0.30*DYNorm
 
 def GetSignalXsec(filepath, mWR, mN):
 

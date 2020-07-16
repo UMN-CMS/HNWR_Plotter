@@ -111,6 +111,8 @@ class Plotter:
 
     self.ExtraLines = ""
 
+    self.AddErrorLinear = False
+
   def PrintBorder(self):
     print '--------------------------------------------------------------------------'
   def PrintSamples(self):
@@ -354,14 +356,19 @@ class Plotter:
                   y_new = y * ( MCSF + float(Syst.Direction)*MCSFerr ) / MCSF
                   h_Sample.SetBinContent(ix+1, y_new)
 
+              ## AddError option
+              AddErrorOption = ''
+              if self.AddErrorLinear:
+                AddErrorOption = 'L'
+
               ## If central, add to h_Bkgd
               if Syst.Name=="Central":
 
-                stack_Bkgd.Add(h_Sample)
+                stack_Bkgd.Add( h_Sample )
                 if not h_Bkgd:
                   h_Bkgd = h_Sample.Clone()
                 else:
-                  h_Bkgd.Add(h_Sample)
+                  h_Bkgd = mylib.AddHistograms( h_Bkgd, h_Sample, AddErrorOption)
 
                 HistsToDraw[Sample] = h_Sample.Clone()
                 if (not LegendAdded) and (SampleGroup.TLatexAlias not in AliasForLegend):
@@ -374,7 +381,7 @@ class Plotter:
                 if not h_Bkgd_ForSyst:
                   h_Bkgd_ForSyst = h_Sample.Clone()
                 else:
-                  h_Bkgd_ForSyst.Add(h_Sample)
+                  h_Bkgd_ForSyst = mylib.AddHistograms(h_Bkgd_ForSyst, h_Sample, AddErrorOption)
 
               ## Close file
               f_Sample.Close()

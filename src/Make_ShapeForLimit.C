@@ -284,22 +284,28 @@ void Make_ShapeForLimit(int Year=2016){
 
                 for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
                   double x_l_bkgd = hist_bkgd->GetXaxis()->GetBinLowEdge(z);
-                  double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z);
+                  double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z+1);
                   if(x_l_bkgd!=x_l_shape) cout << "x_l_bkgd = " << x_l_bkgd << ", x_l_shape = " << x_l_shape << endl;
 
                   double this_rewg = h_DYShape->GetBinContent(z+1);
+                  double this_rewg_relerr = h_DYShape->GetBinError(z+1)/this_rewg; // e.g., 0.20 if 20%
                   double this_corr = this_rewg-1.;
 
                   double this_y = hist_bkgd->GetBinContent(z);
-                  double this_staterr = hist_bkgd->GetBinError(z);
+                  double this_relstaterr = hist_bkgd->GetBinError(z)/this_y; // e.g., 0.05 if 5%
+                  double this_relnewstaterr = sqrt( this_rewg_relerr*this_rewg_relerr + this_relstaterr*this_relstaterr );
 
                   hist_bkgd->SetBinContent(z, this_y * this_rewg);
-                  hist_bkgd->SetBinError(z, this_staterr * this_rewg);
+                  hist_bkgd->SetBinError(z, this_y * this_rewg * this_relnewstaterr);
+
+                  if(syst=="Central")
+                  cout << "this_rewg_relerr = " << this_rewg_relerr << ", this_relstaterr = " << this_relstaterr << " -> this_relnewstaterr = " << this_relnewstaterr << " -> " << hist_bkgd->GetBinContent(z) << " +- " << hist_bkgd->GetBinError(z) << endl; 
 
                   //==== double the reweigthing
                   hist_DYShapeUp->SetBinContent(z, this_y * (this_rewg + this_corr) );
                   //==== before reweighting
                   hist_DYShapeDown->SetBinContent(z, this_y);
+
                 }
 
                 if(syst=="Central"){

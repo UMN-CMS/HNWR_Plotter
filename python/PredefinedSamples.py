@@ -128,3 +128,35 @@ SampleGroup_WJets_2018 = SampleGroup(
   TLatexAlias='W+Jets',
   LatexAlias='WJets_MG_HT'
 )
+
+## Error from shape
+SampleGroup_total_background_2016 = SampleGroup(
+  Name='total_background',
+  Type='Bkgd',
+  Samples=['total_background'],
+  Year = 2016,
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='total_background'
+)
+SampleGroup_total_background_2017 = SampleGroup(
+  Name='total_background',
+  Type='Bkgd',
+  Samples=['total_background'],
+  Year = 2017,
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='total_background'
+)
+SampleGroup_total_background_2018 = SampleGroup(
+  Name='total_background',
+  Type='Bkgd',
+  Samples=['total_background'],
+  Year = 2018,
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='total_background'
+)

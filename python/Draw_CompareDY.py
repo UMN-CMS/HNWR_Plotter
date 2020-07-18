@@ -2,6 +2,11 @@ import os,ROOT,math
 import CMS_lumi, tdrstyle, mylib, canvas_margin
 from array import array
 
+Syst = 'Central'
+Prefix = ''
+if Syst!='Central':
+  Prefix = 'Syst_'+Syst+'_'
+
 def Rebin(hist, region, var, nRebin, Year):
   if var=='WRCand_Mass':
     return mylib.RebinWRMass(hist, region, Year)
@@ -53,6 +58,8 @@ for Year in Years:
   f_LORwg = ROOT.TFile(basedir+'/HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_MG_HT_Reweighted.root')
 
   for Region in Regions:
+
+    Region = Prefix+Region
 
     for VariableSet in VariableSets:
 
@@ -131,7 +138,7 @@ for Year in Years:
       h_dummy_down.SetNdivisions(504,"Y")
       h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)
       h_dummy_down.GetXaxis().SetTitle(xtitle)
-      h_dummy_down.GetYaxis().SetRangeUser(0.5,1.6)
+      h_dummy_down.GetYaxis().SetRangeUser(0,1.2)
       h_dummy_down.GetYaxis().SetTitle("#frac{NLO}{LO}")
       h_dummy_down.SetFillColor(0)
       h_dummy_down.SetMarkerSize(0)
@@ -178,9 +185,12 @@ for Year in Years:
         h_ratio_LORwg.SetBinContent(ix+1, ratio_LORwg)
         h_ratio_LORwg.SetBinError(ix+1, rele_ratio_LORwg * ratio_LORwg)
 
+        if Variable=="WRCand_Mass":
+          print 'rele_NLO = %f, rele_LORwg = %f -> ratio_LORwg = %f, rele_ratio_LORwg = %f, ratio_LORwg = %f, rele_ratio_LORwg * ratio_LORwg = %f'%(rele_NLO,rele_LORwg,ratio_LORwg,rele_ratio_LORwg,ratio_LORwg,rele_ratio_LORwg * ratio_LORwg)
+
       h_dummy_down.Draw("axis")
-      h_ratio_LO.Draw("histsame")
-      h_ratio_LORwg.Draw("histsame")
+      #h_ratio_LO.Draw("histsame")
+      h_ratio_LORwg.Draw("histe1same")
 
       g1_x = [-9000, 9000]
       g1_y = [1, 1]

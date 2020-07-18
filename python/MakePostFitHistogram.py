@@ -38,7 +38,8 @@ Regions = [
 Samples = [
 'TTLX_powheg',
 'DYJets_MG_HT_Reweighted',
-"Others",
+'Others',
+'total_background',
 ]
 
 for Sample in Samples:

@@ -111,6 +111,7 @@ class Plotter:
 
     self.ExtraLines = ""
 
+    self.ErrorFromShape = False
     self.AddErrorLinear = False
 
   def PrintBorder(self):
@@ -270,6 +271,8 @@ class Plotter:
         ## Save systematic
         SystematicUps = dict()
         SystematicDowns = dict()
+        ## If we take errors fro shapes
+        h_TotalBackgroundFromShape = 0
 
         ## Loop over systematics
         for Syst in self.Systematics:
@@ -362,7 +365,14 @@ class Plotter:
                 AddErrorOption = 'L'
 
               ## If central, add to h_Bkgd
-              if Syst.Name=="Central":
+              if Syst.Name=="Central" and Sample=='total_background':
+                if not h_TotalBackgroundFromShape:
+                  h_TotalBackgroundFromShape = h_Sample.Clone()
+                else:
+                  h_TotalBackgroundFromShape = mylib.AddHistograms( h_TotalBackgroundFromShape, h_Sample, AddErrorOption )
+                HistsToDraw[Sample] = h_Sample.Clone()
+
+              elif Syst.Name=="Central":
 
                 stack_Bkgd.Add( h_Sample )
                 if not h_Bkgd:
@@ -440,6 +450,17 @@ class Plotter:
         ## hist => gr
         gr_Bkgd_TotErr = mylib.GetAsymmError(h_Bkgd_TotErr_Max,h_Bkgd_TotErr_Min)
         gr_Data = ROOT.TGraphAsymmErrors(h_Data)
+
+        ## Error from shape
+        if self.ErrorFromShape:
+          if self.DoDebug:
+            print 'Total background :'
+            for z in range(0,h_TotalBackgroundFromShape.GetXaxis().GetNbins()):
+              x_l = h_TotalBackgroundFromShape.GetXaxis().GetBinLowEdge(z+1)
+              x_r = h_TotalBackgroundFromShape.GetXaxis().GetBinUpEdge(z+1)
+              y = h_TotalBackgroundFromShape.GetBinContent(z+1)
+              print '[%f,%f] : %f'%(x_l,x_r,y)
+          gr_Bkgd_TotErr = ROOT.TGraphAsymmErrors(h_TotalBackgroundFromShape)
 
         err_up_tmp = []
         err_down_tmp = []

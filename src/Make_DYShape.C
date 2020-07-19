@@ -3,7 +3,7 @@
 #include "SignalSystematics.h"
 #include "mylib.h"
 
-void Make_ShapeForLimit(int Year=2016){
+void Make_DYShape(int Year=2016){
 
   TString str_Year = TString::Itoa(Year,10);
 
@@ -144,8 +144,8 @@ void Make_ShapeForLimit(int Year=2016){
   }
 
   vector<TString> regions = {
-      "Resolved_SR",
-      "Boosted_SR",
+      "Resolved_DYCR",
+      "Boosted_DYCR",
   };
   vector<TString> bkgds = {
 //"Multiboson", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
@@ -184,7 +184,6 @@ void Make_ShapeForLimit(int Year=2016){
       if(channel=="MuMu") PD = "SingleMuon";
 
       TFile *out_bkgd = new TFile(base_plotpath+"/"+channel+"_"+region+".root","RECREATE");
-      //TFile *out_sig = new TFile(base_plotpath+"/"+channel+"_"+region+"_Signal.root","RECREATE");
 
       //==== DATA
 
@@ -193,7 +192,7 @@ void Make_ShapeForLimit(int Year=2016){
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
-      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year, true);
+      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year, false);
       else               hist_DATA->Rebin(n_rebin);
 
       //==== temporary lumi scaling; scale content, sqrt() sqruare stat
@@ -263,10 +262,10 @@ void Make_ShapeForLimit(int Year=2016){
 
               if(sample.Contains("EMuMethod")){
                 //==== these are already rebinned
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, false);
               }
               else{
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, false);
                 else               hist_bkgd->Rebin(n_rebin);
               }
 
@@ -372,11 +371,11 @@ void Make_ShapeForLimit(int Year=2016){
 
                     for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
                       double x_l_bkgd = hist_bkgd->GetXaxis()->GetBinLowEdge(z);
-                      double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z+1);
+                      double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z);
                       if(x_l_bkgd!=x_l_shape) cout << "x_l_bkgd = " << x_l_bkgd << ", x_l_shape = " << x_l_shape << endl;
 
                       double this_y = hist_bkgd->GetBinContent(z);
-                      double this_rewg = h_DYShape->GetBinContent(z+1);
+                      double this_rewg = h_DYShape->GetBinContent(z);
 
                       //==== Up : NLO, Down : LO
                       hist_DYShapeUp->SetBinContent(z, this_y * this_rewg);
@@ -455,7 +454,7 @@ void Make_ShapeForLimit(int Year=2016){
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
 
               if(hist_sig){
-                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year, true);
+                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year, false);
                 else               hist_sig->Rebin(n_rebin);
 
                 //==== negative or zero bins
@@ -567,6 +566,41 @@ void Make_ShapeForLimit(int Year=2016){
                 } // END if central
 
 
+              }
+
+            }
+            else{
+
+              //==== write a empty histogram
+              TH1D *hist_Sig_Central = new TH1D("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix, "", 800, 0., 8000.);
+              if(UseCustomRebin) hist_Sig_Central = RebinWRMass(hist_Sig_Central, region, Year, false);
+              else               hist_Sig_Central->Rebin(n_rebin);
+              for(int ix=1; ix<=hist_Sig_Central->GetXaxis()->GetNbins(); ix++){
+                hist_Sig_Central->SetBinContent(ix,0.000001);
+              }
+              out_bkgd->cd();
+              hist_Sig_Central->Write();
+
+              if(syst=="Central"){
+
+                out_bkgd->cd();
+
+                hist_Sig_Central->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");
+                hist_Sig_Central->Write();
+                hist_Sig_Central->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleDown");
+                hist_Sig_Central->Write();
+
+                TH1D *hist_Sig_ScaleIntegral = new TH1D("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleIntegralSyst", "", 1, 0., 1.);
+                hist_Sig_ScaleIntegral->SetBinContent(1, 1);
+
+                hist_Sig_Central->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
+                hist_Sig_Central->Write();
+                hist_Sig_Central->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorDown");
+                hist_Sig_Central->Write();
+                hist_Sig_Central->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSUp");
+                hist_Sig_Central->Write();
+                hist_Sig_Central->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSDown");
+                hist_Sig_Central->Write();
               }
 
             }

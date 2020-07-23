@@ -6,112 +6,121 @@ dataset = os.environ['CATANVERSION']
 FILE_PATH = os.environ['FILE_PATH']
 PLOT_PATH = os.environ['PLOT_PATH']
 
-#PreORPost = "Pre"
-PreORPost = "Post"
-
-Mass_Resolved = "WR5000_N3000"
-Mass_Boosted = "WR5000_N100"
-
-basedir = FILE_PATH+'/'+dataset+'/FitDiagnostics/'
-outdirBase = FILE_PATH+'/'+dataset+'/'+PreORPost+'Fit/'
-
-Years = [
-"2016",
-"2017",
-"2018",
+PreORPosts = [
+"Pre",
+"Post",
+"CROnlyPre",
+"CROnlyPost",
 ]
 
-Channels = [
-"EE",
-"MuMu",
-]
+for PreORPost in PreORPosts:
 
-Regions = [
-"Resolved_emuCR",
-"Boosted_emuCR",
-"Resolved_SR",
-"Boosted_SR",
-"Resolved_DYCR",
-"Boosted_DYCR",
-]
+  Mass_Resolved = "WR5000_N3000"
+  Mass_Boosted = "WR5000_N100"
 
-Samples = [
-'TTLX_powheg',
-'DYJets_MG_HT_Reweighted',
-'Others',
-'total_background',
-]
+  basedir = FILE_PATH+'/'+dataset+'/FitDiagnostics/'
+  outdirBase = FILE_PATH+'/'+dataset+'/'+PreORPost+'Fit/'
 
-for Sample in Samples:
+  Years = [
+  "2016",
+  "2017",
+  "2018",
+  ]
 
-  for Year in Years:
+  Channels = [
+  "EE",
+  "MuMu",
+  ]
 
-    print '-------------------------------------------'
-    print 'Making '+Sample+' for '+Year+'...'
-    this_filename = 'HNWRAnalyzer_SkimTree_LRSMHighPt_'+Sample+'.root'
-    print '- filename = '+this_filename
+  Regions = [
+  "ResolvedEMuCR",
+  "BoostedEMuCR",
+  "Resolved_SR",
+  "Boosted_SR",
+  "ResolvedDYCR",
+  "BoostedDYCR",
+  ]
 
-    this_outdirBase = outdirBase+'/'+Year+'/'
-    os.system('mkdir -p '+this_outdirBase)
+  Samples = [
+  'TTLX_powheg',
+  'DYJets_MG_HT_Reweighted',
+  'Others',
+  'total_background',
+  ]
 
-    out = ROOT.TFile(this_outdirBase+this_filename,'RECREATE')
+  for Sample in Samples:
 
-    for Channel in Channels:
+    for Year in Years:
 
-      shapedirName = 'shapes_fit_b'
-      if PreORPost=='Pre':
-        shapedirName = 'shapes_prefit'
+      print '-------------------------------------------'
+      print 'Making '+Sample+' for '+Year+'...'
+      this_filename = 'HNWRAnalyzer_SkimTree_LRSMHighPt_'+Sample+'.root'
+      print '- filename = '+this_filename
 
-      PD = 'SingleElectron'
-      if Channel=='MuMu':
-        PD = 'SingleMuon'
+      this_outdirBase = outdirBase+'/'+Year+'/'
+      os.system('mkdir -p '+this_outdirBase)
 
-      print '- Channel = '+Channel
+      out = ROOT.TFile(this_outdirBase+this_filename,'RECREATE')
 
-      for Region in Regions:
+      for Channel in Channels:
 
-        Mass = Mass_Resolved if ('Resolved' in Region) else Mass_Boosted
-        f = ROOT.TFile(basedir+'/fitDiagnostics_YearCombined_card_CRAdded_'+Channel+'_Combined_'+Mass+'.root')
-        dir_shapes_fit_b = f.Get(shapedirName)
+        shapedirName = 'shapes_fit_b'
+        if 'Pre' in PreORPost:
+          shapedirName = 'shapes_prefit'
 
-        print '  - Region = '+Region
+        PD = 'SingleElectron'
+        if Channel=='MuMu':
+          PD = 'SingleMuon'
 
-        massbins = [0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000]
-        if "Boosted" in Region:
-          massbins = [0, 800, 1000, 1200, 1500, 1800, 8000]
+        print '- Channel = '+Channel
 
-        dirName = 'HNWR_'+PD+'_'+Region
-        #### Exception for CRs
-        if Region=="Resolved_emuCR":
-          if Channel=="EE":
-            dirName = "HNWR_EMu_Resolved_SR"
-            #continue
-          else:
-            dirName = "HNWR_EMu_Resolved_SR"
-            continue
-        if Region=="Boosted_emuCR":
-          if Channel=="EE":
-            dirName = "HNWR_SingleMuon_EMu_Boosted_CR"
-          if Channel=="MuMu":
-            dirName = "HNWR_SingleElectron_EMu_Boosted_CR"
+        for Region in Regions:
 
-        print '    - mass bin =',
-        print massbins
+          Mass = Mass_Resolved if ('Resolved' in Region) else Mass_Boosted
+          shapefilename = 'fitDiagnostics_YearCombined_card_CRAdded_'+Channel+'_Combined_'+Mass+'.root'
+          if 'CROnly' in PreORPost:
+            shapefilename = 'fitDiagnostics_CROnlyFit_YearCombined_card_CRAdded_'+Channel+'_Combined_'+Mass+'.root'
 
-        dir_fitDiag_thisShapes = dir_shapes_fit_b.Get('Run'+Year+'_'+Channel+'_'+Region)
-        ## hist_binned starts from 800 GeV
-        hist_binned = dir_fitDiag_thisShapes.Get(Sample)
+          f = ROOT.TFile(basedir+'/'+shapefilename)
+          dir_shapes_fit_b = f.Get(shapedirName)
 
-        hist_massbinned = ROOT.TH1D('WRCand_Mass_'+dirName, '', len(massbins)-1, array('d', massbins))
-        if "DY" in Region:
-        #if 0:
+          print '  - Region = '+Region
+
+          massbins = [0, 800, 1000, 1200, 1400, 1600, 2000, 2400, 2800, 3200, 8000]
+          if "Boosted" in Region:
+            massbins = [0, 800, 1000, 1200, 1500, 1800, 8000]
+
+          dirName = 'HNWR_'+PD+'_'+Region
+          #### Exception for CRs
+          if Region=="ResolvedEMuCR":
+            if Channel=="EE":
+              dirName = "HNWR_EMu_Resolved_SR"
+              #continue
+            else:
+              dirName = "HNWR_EMu_Resolved_SR"
+              continue
+          elif Region=="BoostedEMuCR":
+            if Channel=="EE":
+              dirName = "HNWR_SingleMuon_EMu_Boosted_CR"
+            if Channel=="MuMu":
+              dirName = "HNWR_SingleElectron_EMu_Boosted_CR"
+          elif 'DYCR' in Region:
+            dirName = dirName.replace('DYCR','_DYCR')
+
+          print '    - mass bin =',
+          print massbins
+
+          thisShapeDirName = 'Run'+Year+'_'+Channel+Region
+          if "SR" in Region:
+            thisShapeDirName = 'Run'+Year+'_'+Channel+'_'+Region
+          print thisShapeDirName
+          dir_fitDiag_thisShapes = dir_shapes_fit_b.Get(thisShapeDirName)
+          ## hist_binned starts from 800 GeV
+          hist_binned = dir_fitDiag_thisShapes.Get(Sample)
+
+          hist_massbinned = ROOT.TH1D('WRCand_Mass_'+dirName, '', len(massbins)-1, array('d', massbins))
           for i in range(0, hist_massbinned.GetXaxis().GetNbins()):
-            ix = i+1
-            hist_massbinned.SetBinContent( ix, hist_binned.GetBinContent(ix) )
-            hist_massbinned.SetBinError( ix, hist_binned.GetBinError(ix) )
-            #print hist_binned.GetBinContent(ix)
-        else:
-          for i in range(0, hist_massbinned.GetXaxis().GetNbins()):
+            ## hist_binned starts from 800 GeV
             ix = i+1
             if ix==1:
               hist_massbinned.SetBinContent( ix, 0 )
@@ -121,14 +130,14 @@ for Sample in Samples:
               hist_massbinned.SetBinError( ix, hist_binned.GetBinError(ix-1) )
             #print hist_binned.GetBinContent(ix)
 
-        out.mkdir(dirName)
-        out.cd(dirName)
-        hist_massbinned.Write()
-        out.cd()
+          out.mkdir(dirName)
+          out.cd(dirName)
+          hist_massbinned.Write()
+          out.cd()
 
 
-        #### Closing fitDiag file
-        f.Close()
+          #### Closing fitDiag file
+          f.Close()
 
-    #### Closing output file
-    out.Close()
+      #### Closing output file
+      out.Close()

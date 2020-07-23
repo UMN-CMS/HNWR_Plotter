@@ -407,6 +407,8 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
           TFile *file_sig = new TFile(temp_base_filepath+"/Signal_"+channel+"/"+this_filename);
           TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
+          //==== forcing no signal in emu CRs
+          dir_sig = NULL;
           if(dir_sig){
 
             TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);

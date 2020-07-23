@@ -192,7 +192,7 @@ void Make_DYShape(int Year=2016){
       TH1D *hist_DATA = (TH1D *)dir_DATA->Get(histname);
       hist_DATA->SetName("data_obs");
 
-      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year, false);
+      if(UseCustomRebin) hist_DATA = RebinWRMass(hist_DATA, Suffix+"_"+region, Year, true);
       else               hist_DATA->Rebin(n_rebin);
 
       //==== temporary lumi scaling; scale content, sqrt() sqruare stat
@@ -262,10 +262,10 @@ void Make_DYShape(int Year=2016){
 
               if(sample.Contains("EMuMethod")){
                 //==== these are already rebinned
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, false);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
               }
               else{
-                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, false);
+                if(UseCustomRebin) hist_bkgd = RebinWRMass(hist_bkgd, Suffix+"_"+region, Year, true);
                 else               hist_bkgd->Rebin(n_rebin);
               }
 
@@ -362,12 +362,16 @@ void Make_DYShape(int Year=2016){
                   else if(sample.Contains("DYJets_")){
 
                     TString hname_DYShape = Suffix+"_Resolved_DYCR";
-                    if(region.Contains("Boosted")) hname_DYShape = Suffix+"_Boosted_DYCR";
+                    TString ResolvedORBoosted = "Resolved";
+                    if(region.Contains("Boosted")){
+                      hname_DYShape = Suffix+"_Boosted_DYCR";
+                      ResolvedORBoosted = "Boosted";
+                    }
                     //==== first bin of this shape is [0,800]
                     TH1D *h_DYShape = (TH1D *)f_DYShape->Get(hname_DYShape);
 
-                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_DYShapeUp");
-                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_DYShapeDown");
+                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeUp");
+                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeDown");
 
                     for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
                       double x_l_bkgd = hist_bkgd->GetXaxis()->GetBinLowEdge(z);
@@ -449,12 +453,14 @@ void Make_DYShape(int Year=2016){
             TFile *file_sig = new TFile("/data6/Users/jskim/SKFlatOutput/Run2Legacy_v4/HNWRAnalyzer/"+str_Year+"/RunSyst__Signal__RunXsecSyst__RunNewPDF__NNPDF23_lo_as_0130_qed__/"+this_filename);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 */
+            //==== forcing no signal in emu CRs
+            dir_sig = NULL;
             if(dir_sig){
 
               TH1D *hist_sig = (TH1D *)dir_sig->Get(histname);
 
               if(hist_sig){
-                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year, false);
+                if(UseCustomRebin) hist_sig = RebinWRMass(hist_sig, Suffix+"_"+region, Year, true);
                 else               hist_sig->Rebin(n_rebin);
 
                 //==== negative or zero bins
@@ -573,7 +579,7 @@ void Make_DYShape(int Year=2016){
 
               //==== write a empty histogram
               TH1D *hist_Sig_Central = new TH1D("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+shapehistname_suffix, "", 800, 0., 8000.);
-              if(UseCustomRebin) hist_Sig_Central = RebinWRMass(hist_Sig_Central, region, Year, false);
+              if(UseCustomRebin) hist_Sig_Central = RebinWRMass(hist_Sig_Central, region, Year, true);
               else               hist_Sig_Central->Rebin(n_rebin);
               for(int ix=1; ix<=hist_Sig_Central->GetXaxis()->GetNbins(); ix++){
                 hist_Sig_Central->SetBinContent(ix,0.000001);

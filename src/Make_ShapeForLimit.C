@@ -363,20 +363,24 @@ void Make_ShapeForLimit(int Year=2016){
                   else if(sample.Contains("DYJets_")){
 
                     TString hname_DYShape = Suffix+"_Resolved_DYCR";
-                    if(region.Contains("Boosted")) hname_DYShape = Suffix+"_Boosted_DYCR";
-                    //==== first bin of this shape is [0,800]
+                    TString ResolvedORBoosted = "Resolved";
+                    if(region.Contains("Boosted")){
+                      hname_DYShape = Suffix+"_Boosted_DYCR";
+                      ResolvedORBoosted = "Boosted";
+                    }
+                    //==== first bin of this shape is [800,1000]
                     TH1D *h_DYShape = (TH1D *)f_DYShape->Get(hname_DYShape);
 
-                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_DYShapeUp");
-                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_DYShapeDown");
+                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeUp");
+                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeDown");
 
                     for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
                       double x_l_bkgd = hist_bkgd->GetXaxis()->GetBinLowEdge(z);
-                      double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z+1);
+                      double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z);
                       if(x_l_bkgd!=x_l_shape) cout << "x_l_bkgd = " << x_l_bkgd << ", x_l_shape = " << x_l_shape << endl;
 
                       double this_y = hist_bkgd->GetBinContent(z);
-                      double this_rewg = h_DYShape->GetBinContent(z+1);
+                      double this_rewg = h_DYShape->GetBinContent(z);
 
                       //==== Up : NLO, Down : LO
                       hist_DYShapeUp->SetBinContent(z, this_y * this_rewg);
@@ -581,7 +585,6 @@ void Make_ShapeForLimit(int Year=2016){
       } // END Loop Systematic source
 
       out_bkgd->Close();
-      //out_sig->Close();
 
       file_DATA->Close();
       delete file_DATA;

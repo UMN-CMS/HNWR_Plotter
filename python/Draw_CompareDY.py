@@ -41,7 +41,7 @@ Regions = [
 
 VariableSets = [
 ['ZCand_Pt', 100, 0., 1000., 'p_{T}(ll) (GeV)'],
-['WRCand_Mass', -1, 0., 8000., 'm(W_{WR}) (GeV)'],
+['WRCand_Mass', -1, 800., 8000., 'm(W_{WR}) (GeV)'],
 ['Jet_0_Pt', 20, 0., 1000., 'p_{T} of the leading jet (GeV)'],
 ]
 

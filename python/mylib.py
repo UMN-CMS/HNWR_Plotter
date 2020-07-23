@@ -129,11 +129,6 @@ def RebinWRMass(hist, region, DataYear):
     for b in vec_bins:
       tmp_vec_bins.append(b)
     vec_bins = tmp_vec_bins
-  if ('DYCR' in region):
-    tmp_vec_bins = [0]
-    for b in vec_bins:
-      tmp_vec_bins.append(b)
-    vec_bins = tmp_vec_bins
 
   n_bin = len(vec_bins)-1
   hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )
@@ -211,21 +206,21 @@ def GetDYNormSF(DataYear, channel):
   if DataYear==2016:
     if int_channel==0:
       if int_region==0:
-        DYNorm = 0.948615
-        DYNorm_err = 0.0203336
+        DYNorm = 0.9885
+        DYNorm_err = 0.0232365
       elif int_region==1:
-        DYNorm = 0.869791
-        DYNorm_err = 0.0247752
+        DYNorm = 0.786894
+        DYNorm_err = 0.0335847
       else:
         print "Wrong DY Norm"
         exit()
     elif int_channel==1:
       if int_region==0:
-        DYNorm = 0.964614
-        DYNorm_err = 0.020369
+        DYNorm = 0.983116
+        DYNorm_err = 0.0221691
       elif int_region==1:
-        DYNorm = 0.756272
-        DYNorm_err = 0.0237321
+        DYNorm = 0.650332
+        DYNorm_err = 0.0302755
       else:
         print "Wrong DY Norm"
         exit()
@@ -235,21 +230,21 @@ def GetDYNormSF(DataYear, channel):
   elif DataYear==2017:
     if int_channel==0:
       if int_region==0:
-        DYNorm = 1.03096
-        DYNorm_err = 0.0218684
+        DYNorm = 1.04708
+        DYNorm_err = 0.024024
       elif int_region==1:
-        DYNorm = 0.97541
-        DYNorm_err = 0.0290485
+        DYNorm = 1.02889
+        DYNorm_err = 0.0427265
       else:
         print "Wrong DY Norm"
         exit()
     elif int_channel==1:
       if int_region==0:
-        DYNorm = 1.07024
-        DYNorm_err = 0.0225204
+        DYNorm = 1.05824
+        DYNorm_err = 0.0235158
       elif int_region==1:
-        DYNorm = 0.885756
-        DYNorm_err = 0.0279709
+        DYNorm = 0.930729
+        DYNorm_err = 0.0395311
       else:
         print "Wrong DY Norm"
         exit()
@@ -259,21 +254,21 @@ def GetDYNormSF(DataYear, channel):
   elif DataYear==2018:
     if int_channel==0:
       if int_region==0:
-        DYNorm = 0.97836
-        DYNorm_err = 0.0206463
+        DYNorm = 0.974142
+        DYNorm_err = 0.0217522
       elif int_region==1:
-        DYNorm = 0.870466
-        DYNorm_err = 0.0237168
+        DYNorm = 0.905253
+        DYNorm_err = 0.0331565
       else:
         print "Wrong DY Norm"
         exit()
     elif int_channel==1:
       if int_region==0:
-        DYNorm = 1.01396
-        DYNorm_err = 0.0212596
+        DYNorm = 1.00625
+        DYNorm_err = 0.0219334
       elif int_region==1:
-        DYNorm = 0.787331
-        DYNorm_err = 0.022761
+        DYNorm = 0.793592
+        DYNorm_err = 0.0308831
       else:
         print "Wrong DY Norm"
         exit()

@@ -348,8 +348,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(800., 5400.);
-    hist_dummy->GetYaxis()->SetRangeUser(100., 5400.);
+    hist_dummy->GetXaxis()->SetRangeUser(800., 5500.);
+    hist_dummy->GetYaxis()->SetRangeUser(100., 5500.);
     hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 

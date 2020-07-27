@@ -14,6 +14,7 @@ parser.add_argument('-y', dest='Year', type=int)
 parser.add_argument('--debug',action='store_true')
 parser.add_argument('--ScaleMC', action='store_true')
 parser.add_argument('--ApplyZPtRwg', action='store_true')
+parser.add_argument('--ApplyDYReshape', action='store_true')
 args = parser.parse_args()
 
 ## Enviroment
@@ -40,6 +41,8 @@ m.Filename_skim = "_SkimTree_LRSMHighPt"
 m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/"
 if args.ApplyZPtRwg:
   m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg/"
+if args.ApplyDYReshape:
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
 
 #m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR_TESTLSF/"+str_Year+"/"
 #if args.ApplyZPtRwg:
@@ -68,6 +71,8 @@ tmp_Systematics = [
   "ZPtRw",
   "Prefire",
   "DYNorm",
+  "DYReshapeSyst",
+  "DYReshapeEEMM",
 ]
 #tmp_Systematics = ["Lumi"]
 
@@ -100,6 +105,10 @@ if args.ApplyZPtRwg:
   SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
+if args.ApplyDYReshape:
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
 
 ###############
 #### DY CR ####
@@ -121,10 +130,21 @@ if args.Category==0:
 
   #### Define reiongs
   m.RegionsToDraw = [
+    ## 60<mll<150
     Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),
     Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR}'),
     Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR}'),
     Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR}'),
+    ## 60<mll<100
+    Region('HNWR_SingleElectron_Resolved_DYCR1', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR1}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR1', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR1}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR1', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR1}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR1', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR1}'),
+    ## 100<mll<150
+    Region('HNWR_SingleElectron_Resolved_DYCR2', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR2}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR2', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR2}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR2', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR2}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR2', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR2}'),
   ]
   m.PrintRegions()
 

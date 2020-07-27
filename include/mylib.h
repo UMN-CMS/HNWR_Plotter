@@ -716,7 +716,45 @@ double IntegrateFunction(TF1 *func, double xmin, double xmax, int ndx){
 
 }
 
-double GetKFactor(int mWR, int mN){
+double GetKFactor(int mWR, int mN, int Year=2016, int lepch=0){
+
+  //==== lepch : 0=ee, 1=mm
+
+  TString WORKING_DIR = getenv("PLOTTER_WORKING_DIR");
+  TString dataset = getenv("CATANVERSION");
+  TString ENV_PLOT_PATH = getenv("PLOT_PATH");
+
+  TString massstring = "WR"+TString::Itoa(mWR,10)+"_N"+TString::Itoa(mN,10);
+
+  //==== get averaged kfactor
+  string kfactor_line;
+  ifstream kfactor_in(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/AveragedKFactor.txt");
+  double this_avg_kfactor = -1.;
+  while(getline(kfactor_in,kfactor_line)){
+    std::istringstream is( kfactor_line );
+
+    TString this_mass;
+    double avg_k_ee, avg_k_mm;
+    is >> this_mass;
+    is >> avg_k_ee;
+    is >> avg_k_mm;
+
+    if(massstring==this_mass){
+      if(lepch==0) this_avg_kfactor = avg_k_ee;
+      else if(lepch==1) this_avg_kfactor = avg_k_mm;
+      else{
+        cout << "[mylib.h][GetKFactor] Wrong lepch = " << lepch << endl;
+      }
+      break;
+    }
+  }
+  if(this_avg_kfactor<0){
+    cout << "[mylib.h][GetKFactor] this_avg_kfactor = " << this_avg_kfactor << endl;
+  }
+  return this_avg_kfactor;
+
+
+/*
   if(mWR==200){
     if(mN < mWR/2.) return 1.13;
     else return 1.13;
@@ -861,6 +899,8 @@ double GetKFactor(int mWR, int mN){
     cout << "[GetKFactor] Wrong mWR and mN : " << mWR << "\t" << mN << endl;
     return 1.;
   }
+*/
+
 }
 
 bool IsCorrelated(TString syst){
@@ -872,6 +912,7 @@ bool IsCorrelated(TString syst){
   if(syst.Contains("LSFSF")) return false;
 
   if(syst.Contains("ShapeUnct")) return false;
+  if(syst.Contains("DYReshape")) return false;
 
   return true;
 

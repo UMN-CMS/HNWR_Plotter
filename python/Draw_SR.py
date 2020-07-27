@@ -16,6 +16,7 @@ parser.add_argument('--debug',action='store_true')
 parser.add_argument('--blind',action='store_true')
 parser.add_argument('--ScaleMC', action='store_true')
 parser.add_argument('--ApplyZPtRwg', action='store_true')
+parser.add_argument('--ApplyDYReshape', action='store_true')
 args = parser.parse_args()
 
 ## Blind mode
@@ -54,6 +55,8 @@ m.Filename_skim = "_SkimTree_LRSMHighPt"
 m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/"
 if args.ApplyZPtRwg:
   m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwg/"
+if args.ApplyDYReshape:
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -78,6 +81,8 @@ tmp_Systematics = [
   "ZPtRw",
   "Prefire",
   "DYNorm",
+  "DYReshapeSyst",
+  "DYReshapeEEMM",
 ]
 #tmp_Systematics = ["Lumi"]
 
@@ -110,6 +115,10 @@ if args.ApplyZPtRwg:
   SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
+if args.ApplyDYReshape:
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
 
 #### Define Samples
 if args.Year>0:

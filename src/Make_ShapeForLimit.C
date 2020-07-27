@@ -57,6 +57,8 @@ void Make_ShapeForLimit(int Year=2016){
     "LSFSFUp", "LSFSFDown",
     "PUUp", "PUDown",
     "ZPtRwUp", "ZPtRwDown",
+    "DYReshapeSystUp", "DYReshapeSystDown",
+    "DYReshapeEEMMUp", "DYReshapeEEMMDown",
   };
   if(Year<=2017){
     systs.push_back( "PrefireUp" );
@@ -91,66 +93,18 @@ void Make_ShapeForLimit(int Year=2016){
 
   map< TString, vector<TString> > map_sample_string_to_list;
 
-  if(Year==2016){
-
-    map_sample_string_to_list["Multiboson"] = {"Multiboson"};
-    map_sample_string_to_list["ttX"] = {"ttX"};
-    map_sample_string_to_list["SingleTop"] = {"SingleTop"};
-    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-
-    //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
-    //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
-
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
-    map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
-
-    map_sample_string_to_list["Others"] = {"Others"};
-
-  }
-  else if(Year==2017){
-
-    map_sample_string_to_list["Multiboson"] = {"Multiboson"};
-    map_sample_string_to_list["ttX"] = {"ttX"};
-    map_sample_string_to_list["SingleTop"] = {"SingleTop"};
-    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-
-    //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
-    //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
-
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
-    map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
-
-    map_sample_string_to_list["Others"] = {"Others"};
-
-  }
-  else if(Year==2018){
-
-    map_sample_string_to_list["Multiboson"] = {"Multiboson"};
-    map_sample_string_to_list["ttX"] = {"ttX"};
-    map_sample_string_to_list["SingleTop"] = {"SingleTop"};
-    map_sample_string_to_list["WJets_MG_HT"] = {"WJets_MG_HT"};
-
-    //map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"FromFit_DYJets_MG_HT_Reweighted"};
-    //map_sample_string_to_list["EMuMethod"] = {"FromFit_EMuMethod_TTLX_powheg"};
-
-    map_sample_string_to_list["ZJets_MG_HT_Reweighted"] = {"DYJets_MG_HT_Reweighted"};
-    map_sample_string_to_list["EMuMethod"] = {"EMuMethod_TTLX_powheg"};
-    map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
-
-    map_sample_string_to_list["Others"] = {"Others"};
-
-  }
+  map_sample_string_to_list["Others"] = {"Others"};
+  map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
+  map_sample_string_to_list["DY"] = {"DYJets_MG_HT_Reweighted_Reshaped"};
+  vector<TString> bkgds = {
+    "Others",
+    "ttbar",
+    "DY",
+  };
 
   vector<TString> regions = {
       "Resolved_SR",
       "Boosted_SR",
-  };
-  vector<TString> bkgds = {
-//"Multiboson", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "EMuMethod"
-//"Multiboson", "ttX", "SingleTop", "WJets_MG_HT", "ZJets_MG_HT_Reweighted", "ttbar"
-"Others", "ZJets_MG_HT_Reweighted", "ttbar",
   };
 
   vector<TString> channels = {

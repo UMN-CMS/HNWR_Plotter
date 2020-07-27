@@ -9,8 +9,8 @@ PLOT_PATH = os.environ['PLOT_PATH']
 PreORPosts = [
 "Pre",
 "Post",
-"CROnlyPre",
-"CROnlyPost",
+#"CROnlyPre",
+#"CROnlyPost",
 ]
 
 for PreORPost in PreORPosts:
@@ -43,7 +43,7 @@ for PreORPost in PreORPosts:
 
   Samples = [
   'TTLX_powheg',
-  'DYJets_MG_HT_Reweighted',
+  'DYJets_MG_HT_Reweighted_Reshaped',
   'Others',
   'total_background',
   ]
@@ -105,7 +105,7 @@ for PreORPost in PreORPosts:
             if Channel=="MuMu":
               dirName = "HNWR_SingleElectron_EMu_Boosted_CR"
           elif 'DYCR' in Region:
-            dirName = dirName.replace('DYCR','_DYCR')
+            dirName = dirName.replace('DYCR','_DYCR1')
 
           print '    - mass bin =',
           print massbins

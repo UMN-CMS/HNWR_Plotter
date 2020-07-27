@@ -293,216 +293,37 @@ def GetSignalXsec(filepath, mWR, mN):
       return float(words[2])
   print 'Xsec not found for mWR=%d, mN=%d'%(mWR,mN)
 
-def GetKFactor(mWR, mN):
-  if mWR==200:
-    if mN < mWR/2.:
-      return 1.13
-    else:
-      return 1.13
-  
-  elif mWR==400:
-    if mN < mWR/2.:
-      return 1.15
-    else:
-      return 1.16
-  
-  elif mWR==600:
-    if mN < mWR/2.:
-      return 1.17
-    else:
-      return 1.17
-  
-  elif mWR==800:
-    if mN < mWR/2.:
-      return 1.19
-    else:
-      return 1.20
-  
-  elif mWR==1000:
-    if mN < mWR/2.:
-      return 1.21
-    else:
-      return 1.21
-  
-  elif mWR==1200:
-    if mN < mWR/2.:
-      return 1.23
-    else:
-      return 1.24
-  
-  elif mWR==1400:
-    if mN < mWR/2.:
-      return 1.24
-    else:
-      return 1.25
-  
-  elif mWR==1600:
-    if mN < mWR/2.:
-      return 1.24
-    else:
-      return 1.26
-  
-  elif mWR==1800:
-    if mN < mWR/2.:
-      return 1.25
-    else:
-      return 1.28
-  
-  elif mWR==2000:
-    if mN < mWR/2.:
-      return 1.27
-    else:
-      return 1.28
-  
-  elif mWR==2200:
-    if mN < mWR/2.:
-      return 1.29
-    else:
-      return 1.30
-  
-  elif mWR==2400:
-    if mN < mWR/2.:
-      return 1.30
-    else:
-      return 1.31
-  
-  elif mWR==2600:
-    if mN < mWR/2.:
-      return 1.30
-    else:
-      return 1.33
-  
-  elif mWR==2800:
-    if mN < mWR/2.:
-      return 1.31
-    else:
-      return 1.34
-  
-  elif mWR==3000:
-    if mN < mWR/2.:
-      return 1.33
-    else:
-      return 1.36
-  
-  elif mWR==3200:
-    if mN < mWR/2.:
-      return 1.35
-    else:
-      return 1.37
-  
-  elif mWR==3400:
-    if mN < mWR/2.:
-      return 1.35
-    else:
-      return 1.38
-  
-  elif mWR==3600:
-    if mN < mWR/2.:
-      return 1.35
-    else:
-      return 1.39
-  
-  elif mWR==3800:
-    if mN < mWR/2.:
-      return 1.36
-    else:
-      return 1.40
-  
-  elif mWR==4000:
-    if mN < mWR/2.:
-      return 1.35
-    else:
-      return 1.40
-  
-  elif mWR==4200:
-    if mN < mWR/2.:
-      return 1.34
-    else:
-      return 1.40
-  
-  elif mWR==4400:
-    if mN < mWR/2.:
-      return 1.33
-    else:
-      return 1.40
-  
-  elif mWR==4600:
-    if mN < mWR/2.:
-      return 1.32
-    else:
-      return 1.40
-  
-  elif mWR==4800:
-    if mN < mWR/2.:
-      return 1.30
-    else:
-      return 1.40
-  
-  elif mWR==5000:
-    if mN < mWR/2.:
-      return 1.30
-    else:
-      return 1.40
-  
-  elif mWR==5200:
-    if mN < mWR/2.:
-      return 1.30
-    else:
-      return 1.40
-  
-  elif mWR==5400:
-    if mN < mWR/2.:
-      return 1.29
-    else:
-      return 1.41
-  
-  elif mWR==5600:
-    if mN < mWR/2.:
-      return 1.27
-    else:
-      return 1.41
-  
-  elif mWR==5800:
-    if mN < mWR/2.:
-      return 1.26
-    else:
-      return 1.42
-  
-  elif mWR==6000:
-    if mN < mWR/2.:
-      return 1.26
-    else:
-      return 1.43
-  
-  elif mWR==6200:
-    if mN < mWR/2.:
-      return 1.26
-    else:
-      return 1.44
-  
-  elif mWR==6400:
-    if mN < mWR/2.:
-      return 1.26
-    else:
-      return 1.46
-  
-  elif mWR==6600:
-    if mN < mWR/2.:
-      return 1.25
-    else:
-      return 1.48
-  
-  elif mWR==6800:
-    if mN < mWR/2.:
-      return 1.25
-    else:
-      return 1.50
-  
-  elif mWR==7000:
-    if mN < mWR/2.:
-      return 1.25
-    else:
-      return 1.51
+def GetKFactor(mWR, mN, Year=2016, lepch=0):
 
-  print 'No kfactor found for mWR=%d, mN=%s'%(mWR,mN)
-  return 1.
+  ##==== lepch : 0=ee, 1=mm
+
+  WORKING_DIR = os.environ["PLOTTER_WORKING_DIR"]
+  dataset =  os.environ["CATANVERSION"]
+  ENV_PLOT_PATH =  os.environ["PLOT_PATH"]
+
+  massstring = "WR"+str(mWR)+"_N"+str(mN)
+
+  ##==== get averaged kfactor
+  lines = open(WORKING_DIR+"/data/"+dataset+"/"+str(Year)+"/AveragedKFactor.txt").readlines()
+  this_avg_kfactor = -1.;
+  for line in lines:
+    words = line.strip('\n').split()
+    this_mass = words[0]
+    avg_k_ee = float(words[1])
+    avg_k_mm = float(words[2])
+
+    if massstring==this_mass:
+      if lepch==0:
+        this_avg_kfactor = avg_k_ee;
+      elif lepch==1:
+        this_avg_kfactor = avg_k_mm;
+      else:
+        print "[mylib.py][GetKFactor] Wrong lepch = "+str(lepch)
+      break
+
+  if this_avg_kfactor<0:
+    print "[mylib.h][GetKFactor] this_avg_kfactor = "+str(this_avg_kfactor)
+
+  return this_avg_kfactor
+
+

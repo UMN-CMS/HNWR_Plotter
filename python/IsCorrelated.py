@@ -11,5 +11,7 @@ def IsCorrelated(syst):
     return False
   if "Lumi" in syst:
     return False
+  if "DYReshape" in syst:
+    return False
 
   return True

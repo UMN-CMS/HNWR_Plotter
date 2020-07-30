@@ -148,10 +148,10 @@ elif args.Category==3:
     ]
   #### Define reiongs
   m.RegionsToDraw = [
-    Region('HNWR_SingleElectron_Resolved_DYCR1', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR1}'),
-    Region('HNWR_SingleMuon_Resolved_DYCR1', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR1}'),
-    Region('HNWR_SingleElectron_Boosted_DYCR1', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR1}'),
-    Region('HNWR_SingleMuon_Boosted_DYCR1', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR1}'),
+    Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR}'),
   ]
   m.SignalsToDraw = []
   #### Binning infos

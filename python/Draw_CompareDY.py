@@ -7,9 +7,21 @@ Prefix = ''
 if Syst!='Central':
   Prefix = 'Syst_'+Syst+'_'
 
+def RebinWRMass2(hist, region, DataYear):
+
+  lastbin = hist.GetXaxis().GetNbins()
+  vec_bins = [0, 200, 400, 600, 800, 1000, 2000, 4000]
+
+  n_bin = len(vec_bins)-1
+  hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )
+  return hist
+
 def Rebin(hist, region, var, nRebin, Year):
   if var=='WRCand_Mass':
+    #return RebinWRMass2(hist, region, Year)
     return mylib.RebinWRMass(hist, region, Year)
+  elif var=="DiJet_Mass":
+    return RebinWRMass2(hist, region, Year)
   else:
     if nRebin>0:
       hist.Rebin(nRebin)
@@ -37,6 +49,11 @@ Regions = [
 'HNWR_SingleMuon_Resolved_DYCR',
 'HNWR_SingleElectron_Boosted_DYCR',
 'HNWR_SingleMuon_Boosted_DYCR',
+
+'HNWR_SingleElectron_Resolved_SR',
+'HNWR_SingleMuon_Resolved_SR',
+'HNWR_SingleElectron_Boosted_SR',
+'HNWR_SingleMuon_Boosted_SR',
 ]
 
 VariableSets = [
@@ -53,7 +70,7 @@ for Year in Years:
 
   f_out = ROOT.TFile(outDir+'/shapes_DY.root','RECREATE')
 
-  f_NLO = ROOT.TFile(basedir+'/HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets.root')
+  f_NLO = ROOT.TFile(basedir+'/HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_Pt.root')
   f_LO = ROOT.TFile(basedir+'/HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_MG_HT.root')
   f_LORwg = ROOT.TFile(basedir+'/HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_MG_HT_Reweighted.root')
 
@@ -90,6 +107,12 @@ for Year in Years:
       h_NLO.GetXaxis().SetRangeUser(xMin,xMax)
       h_NLO = mylib.MakeOverflowBin(h_NLO)
 
+      h_LO.GetXaxis().SetRangeUser(xMin,xMax)
+      h_LO = mylib.MakeOverflowBin(h_LO)
+
+      h_LORwg.GetXaxis().SetRangeUser(xMin,xMax)
+      h_LORwg = mylib.MakeOverflowBin(h_LORwg)
+
       ## Rebin
       h_NLO = Rebin(h_NLO, Region, Variable, nRebin, Year)
       h_LO = Rebin(h_LO, Region, Variable, nRebin, Year)
@@ -99,6 +122,10 @@ for Year in Years:
       h_NLO.Scale(1./h_NLO.Integral())
       h_LO.Scale(1./h_LO.Integral())
       h_LORwg.Scale(1./h_LORwg.Integral())
+
+      h_NLO.SetMarkerSize(0)
+      h_LO.SetMarkerSize(0)
+      h_LORwg.SetMarkerSize(0)
 
       h_NLO.SetLineColor(ROOT.kBlack)
       h_LO.SetLineColor(ROOT.kBlue)
@@ -199,8 +226,40 @@ for Year in Years:
 
       if Variable=="WRCand_Mass":
         f_out.cd()
-        h_ratio_LORwg.SetName(Region)
+        h_ratio_LORwg.SetName('Ratio_'+Region)
+
         h_ratio_LORwg.Write()
+
+        h_NLO.Write('NLO_'+Region)
+        h_LORwg.Write('LO_'+Region)
+
+      ## TLatex
+      c1.cd()
+      channelname = ROOT.TLatex()
+      channelname.SetNDC()
+      channelname.SetTextSize(0.037)
+      str_channelname = ''
+      if 'Electron' in Region:
+        str_channelname = 'ee '
+      else:
+        str_channelname = '#mu#mu '
+      if 'SR' in Region:
+        str_channelname = str_channelname+'SR'
+      else:
+        str_channelname = str_channelname+'DY CR'
+      channelname.DrawLatex(0.2, 0.88, str_channelname)
+
+      latex_CMSPriliminary = ROOT.TLatex()
+      latex_Lumi = ROOT.TLatex()
+
+      latex_CMSPriliminary.SetNDC()
+      latex_Lumi.SetNDC()
+      latex_CMSPriliminary.SetTextSize(0.035)
+      latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}")
+
+      latex_Lumi.SetTextSize(0.035)
+      latex_Lumi.SetTextFont(42)
+      latex_Lumi.DrawLatex(0.73, 0.96, mylib.TotalLumi(float(Year))+" fb^{-1} (13 TeV)")
 
       ## Save
 

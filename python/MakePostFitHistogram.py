@@ -105,7 +105,7 @@ for PreORPost in PreORPosts:
             if Channel=="MuMu":
               dirName = "HNWR_SingleElectron_EMu_Boosted_CR"
           elif 'DYCR' in Region:
-            dirName = dirName.replace('DYCR','_DYCR1')
+            dirName = dirName.replace('DYCR','_DYCR')
 
           print '    - mass bin =',
           print massbins

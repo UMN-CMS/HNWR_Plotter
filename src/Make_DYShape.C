@@ -103,8 +103,8 @@ void Make_DYShape(int Year=2016){
   };
 
   vector<TString> regions = {
-      "Resolved_DYCR1",
-      "Boosted_DYCR1",
+      "Resolved_DYCR",
+      "Boosted_DYCR",
   };
 
   vector<TString> channels = {
@@ -348,7 +348,14 @@ void Make_DYShape(int Year=2016){
                 } // END if Central
                 else{
 
-                  hist_bkgd->SetName(sample+shapehistname_suffix);
+                  //==== channel depedent nuisances for this systmeatic
+                  if(syst.Contains("DYReshapeEEMM")){
+                    hist_bkgd->SetName(sample+"_"+channel+shapehistname_suffix);
+                  }
+                  else{
+                    hist_bkgd->SetName(sample+shapehistname_suffix);
+                  }
+
 
                 }
 
@@ -370,7 +377,14 @@ void Make_DYShape(int Year=2016){
               hist_empty->SetName(sample+shapehistname_suffix);
             }
             else{
-              hist_empty->SetName(sample+shapehistname_suffix);
+
+              if(syst.Contains("DYReshapeEEMM")){
+                hist_empty->SetName(sample+"_"+channel+shapehistname_suffix);
+              }
+              else{
+                hist_empty->SetName(sample+shapehistname_suffix);
+              }
+
             }
 
             EmptyHistogram(hist_empty);

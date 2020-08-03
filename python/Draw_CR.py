@@ -44,10 +44,6 @@ if args.ApplyZPtRwg:
 if args.ApplyDYReshape:
   m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
 
-#m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR_TESTLSF/"+str_Year+"/"
-#if args.ApplyZPtRwg:
-#  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR_TESTLSF/"+str_Year+"/ApplyZPtRwg/"
-
 #### Category
 m.ScaleMC = args.ScaleMC
 
@@ -145,6 +141,11 @@ if args.Category==0:
     Region('HNWR_SingleMuon_Resolved_DYCR2', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR2}'),
     Region('HNWR_SingleElectron_Boosted_DYCR2', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR2}'),
     Region('HNWR_SingleMuon_Boosted_DYCR2', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR2}'),
+    ## 200<mll<400
+    Region('HNWR_SingleElectron_Resolved_DYCR3', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR3}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR3', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR3}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR3', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR3}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR3', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR3}'),
   ]
   m.PrintRegions()
 

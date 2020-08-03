@@ -4,12 +4,12 @@
 
 void Draw_Limit(int Year, TString dirname=""){
 
-  TString ATLASexpORobs = "exp";
+  TString ATLASexpORobs = "obs";
 
   //==== TODO
   //==== Change result to obs (Both CMS and ATALS previoud result)
 
-  bool DrawObs = false;
+  bool DrawObs = true;
 
   gErrorIgnoreLevel = kFatal;
 
@@ -348,8 +348,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(800., 5500.);
-    hist_dummy->GetYaxis()->SetRangeUser(100., 5500.);
+    hist_dummy->GetXaxis()->SetRangeUser(800., 5400.);
+    hist_dummy->GetYaxis()->SetRangeUser(100., 5400.);
     hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 
@@ -523,7 +523,7 @@ void Draw_Limit(int Year, TString dirname=""){
       double conts[] = {1.};  
       hist2d_limit_exp_ratio->SetContour(1,conts);
       hist2d_limit_exp_ratio->SetLineWidth(2);
-      hist2d_limit_exp_ratio->SetLineStyle(1);
+      hist2d_limit_exp_ratio->SetLineStyle(3);
       hist2d_limit_exp_ratio->SetLineColor(colors.at(it_region));
       hist2d_limit_exp_ratio->Draw("cont3same");
 

@@ -597,7 +597,7 @@ class Plotter:
         h_dummy_down.SetNdivisions(504,"Y")
         h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)
         h_dummy_down.GetXaxis().SetTitle(xtitle)
-        h_dummy_down.GetYaxis().SetRangeUser(0.5,1.6)
+        h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
         h_dummy_down.GetYaxis().SetTitle("#frac{Data}{Sim.}")
         h_dummy_down.SetFillColor(0)
         h_dummy_down.SetMarkerSize(0)

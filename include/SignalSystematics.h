@@ -358,6 +358,20 @@ public:
         values.push_back( hist->GetBinContent(x) );
       }
 
+      bool IsOkay = true;
+      if( i!= 0 ){
+        double y_Nominal = PDFErrorSetToBinValues[0].at( PDFErrorSetToBinValues[0].size() - 1 );
+        double y_PDFError = values.at( values.size() - 1 );
+        if( fabs(y_Nominal-y_PDFError)/y_Nominal > 1.0 ) IsOkay = false;
+      }
+
+      if(!IsOkay){
+        values.clear();
+        for(unsigned int z=0; z<PDFErrorSetToBinValues[0].size(); z++){
+          values.push_back( PDFErrorSetToBinValues[0].at(z) );
+        }
+      }
+
       PDFErrorSetToBinValues[i] = values;
 
     } // END Loop PDFError set

@@ -322,7 +322,7 @@ void Make_DYShape(int Year=2016){
                       ResolvedORBoosted = "Boosted";
                     }
                     //==== first bin of this shape is [0,800]
-                    TH1D *h_DYShape = (TH1D *)f_DYShape->Get(hname_DYShape);
+                    TH1D *h_DYShape = (TH1D *)f_DYShape->Get("Ratio_"+hname_DYShape);
 
                     TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeUp");
                     TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeDown");

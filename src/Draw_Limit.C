@@ -11,7 +11,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
   bool DrawObs = true;
 
-  gErrorIgnoreLevel = kFatal;
+  //gErrorIgnoreLevel = kFatal;
 
   bool Usekfactor = true;
 
@@ -149,7 +149,7 @@ void Draw_Limit(int Year, TString dirname=""){
     mN_atlas[N_atlas+1] = atlas_mN.at(0);
 
     TGraph *gr_atlas = new TGraph(N_atlas + 2, mZp_atlas, mN_atlas);
-    gr_atlas-> SetLineStyle(8);
+    gr_atlas-> SetLineStyle(1);
     gr_atlas->SetLineWidth(3);
     gr_atlas->SetLineColor(kGray);
 
@@ -209,7 +209,7 @@ void Draw_Limit(int Year, TString dirname=""){
     }
 
     TGraph *gr_EXO17011 = new TGraph(N_EXO17011, mZp_EXO17011, mN_EXO17011);
-    gr_EXO17011-> SetLineStyle(8);
+    gr_EXO17011-> SetLineStyle(1);
     gr_EXO17011->SetLineWidth(3);
     gr_EXO17011->SetLineColor(kMagenta);
 
@@ -219,11 +219,14 @@ void Draw_Limit(int Year, TString dirname=""){
     for(map< double, vector<double> >::iterator it=tmp_lrsminfo.maps_WR_to_N.begin(); it!=tmp_lrsminfo.maps_WR_to_N.end(); it++){
 
       double m_WR = it->first;
+      //cout << "Working on m_WR = " << m_WR << endl;
       vector<double> this_m_Ns = it->second;
 
       for(int it_N=0; it_N<this_m_Ns.size(); it_N++){
 
         double m_N = this_m_Ns.at(it_N);
+        //cout << "  m_N = " << m_N << endl;
+
 
         LRSMSignalInfo lrsminfo;
         lrsminfo.prod_channel="SchWR";
@@ -265,6 +268,7 @@ void Draw_Limit(int Year, TString dirname=""){
         string line_limit;
         ifstream in_limit(filepath_result);
         bool limit_found = false;
+        //cout << "  Looking for (channel, m_WR, m_N)" << "("<<channel<<", "<<m_WR<<", "<<m_N<<")"<<endl;
         while(getline(in_limit,line_limit)){
           std::istringstream is( line_limit );
 
@@ -275,6 +279,11 @@ void Draw_Limit(int Year, TString dirname=""){
           is >> region_;
           is >> mwr;
           is >> mn;
+
+          //cout << ch_ << ", " << region_ << ", " << mwr << ", " << mn << endl;
+          //cout << "ch_==channel : " << (ch_==channel) << endl;
+          //cout << "int(m_WR)==int(mwr) : " << (int(m_WR)==int(mwr)) << endl;
+          //cout << "int(m_N)==int(mn) : " << (int(m_N)==int(mn)) << endl;
 
           if(ch_==channel && int(m_WR)==int(mwr) && int(m_N)==int(mn)){
             LimitResult m;
@@ -348,14 +357,16 @@ void Draw_Limit(int Year, TString dirname=""){
 
     hist_dummy->Draw("hist");
     hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(800., 5400.);
-    hist_dummy->GetYaxis()->SetRangeUser(100., 5400.);
+    hist_dummy->GetXaxis()->SetRangeUser(800., 5700.);
+    hist_dummy->GetYaxis()->SetRangeUser(100., 5700.);
     hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 
     for(unsigned int it_region=0; it_region<regions.size(); it_region++){
 
       TString region = regions.at(it_region);
+
+      //cout << "Region = " << region << endl;
 
       vector<double> vec_wr, vec_n;
       vector<double> vec_xsec;
@@ -370,6 +381,8 @@ void Draw_Limit(int Year, TString dirname=""){
         for(unsigned int l=0; l<m.LimitResults.size(); l++){;
 
           if(m.LimitResults.at(l).region == region){
+
+            //cout << m.mass_WR << "\t" << m.mass_N << endl;
 
             vec_wr.push_back( m.mass_WR );
             vec_n.push_back( m.mass_N );
@@ -395,10 +408,15 @@ void Draw_Limit(int Year, TString dirname=""){
       double arr_limit_obs[n_mass];
       double arr_limit_obs_ratio[n_mass];
 
+      //cout << "n_mass = " << n_mass << endl;
+
       for(unsigned int r=0;r<n_mass;r++){
+
+        //cout << "  r = " << r << endl;
 
         arr_wr[r] = vec_wr.at(r);
         arr_n[r] = vec_n.at(r);
+        //cout << "  --> mWR = " << vec_wr.at(r) << ", mN = " << vec_n.at(r) << endl;
         arr_xsec[r] = vec_xsec.at(r);
         arr_limit_exp[r]       = vec_limit_exp.at(r);
         arr_limit_exp_1sdUp[r] = vec_limit_exp_1sdUp.at(r);
@@ -414,6 +432,7 @@ void Draw_Limit(int Year, TString dirname=""){
         arr_limit_exp_2sdDn_ratio[r] = arr_xsec[r]/vec_limit_exp_2sdDn.at(r);
         arr_limit_obs_ratio[r]       = arr_xsec[r]/vec_limit_obs.at(r);
 
+        //cout << "  --> Done" << endl;
 
       }
 
@@ -521,6 +540,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
       //==== Draw exclusion curves
       double conts[] = {1.};  
+
+      if(region=="Combined"){
       hist2d_limit_exp_ratio->SetContour(1,conts);
       hist2d_limit_exp_ratio->SetLineWidth(2);
       hist2d_limit_exp_ratio->SetLineStyle(3);
@@ -529,23 +550,27 @@ void Draw_Limit(int Year, TString dirname=""){
 
       hist2d_limit_exp_1sdUp_ratio->SetContour(1,conts);
       hist2d_limit_exp_1sdUp_ratio->SetLineWidth(2);
-      hist2d_limit_exp_1sdUp_ratio->SetLineStyle(3);
+      hist2d_limit_exp_1sdUp_ratio->SetLineStyle(5);
       hist2d_limit_exp_1sdUp_ratio->SetLineColor(colors.at(it_region));
-      //hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
+      hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
 
       hist2d_limit_exp_1sdDn_ratio->SetContour(1,conts);
       hist2d_limit_exp_1sdDn_ratio->SetLineWidth(2);
-      hist2d_limit_exp_1sdDn_ratio->SetLineStyle(3);
+      hist2d_limit_exp_1sdDn_ratio->SetLineStyle(5);
       hist2d_limit_exp_1sdDn_ratio->SetLineColor(colors.at(it_region));
-      //hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
+      hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
 
+      lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region)+" (exp.)", "l");
+
+      }
+     
       hist2d_limit_obs_ratio->SetContour(1,conts);
       hist2d_limit_obs_ratio->SetLineWidth(2);
       hist2d_limit_obs_ratio->SetLineStyle(1);
       hist2d_limit_obs_ratio->SetLineColor(colors.at(it_region));
       if(DrawObs) hist2d_limit_obs_ratio->Draw("cont2same");
 
-      lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region), "l");
+      lg->AddEntry( hist2d_limit_obs_ratio, aliases.at(it_region)+" (obs.)", "l");
 
     } // END Loop region
 
@@ -574,7 +599,6 @@ void Draw_Limit(int Year, TString dirname=""){
     else if(channel=="MuMu") latex_ch.DrawLatex(0.20, 0.5, "#mu#mu channel");
 
     c_2D->SaveAs(plotpath+"/2D_"+channel+".pdf");
-    c_2D->SaveAs(plotpath+"/2D_"+channel+".C");
     c_2D->Close();
 
     //==== 1D : Limit vs N, for each WR
@@ -639,6 +663,12 @@ void Draw_Limit(int Year, TString dirname=""){
           y_xsec[it_N] = this_lrsm.xsec/2.;
           y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec/2.;
           y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec/2.;
+
+          if(m_WR==4400 && m_N==1200 && channel=="MuMu" && region == "Boosted"){
+            cout << "@@@@@@@@@@@@@@@@@@@ HERE @@@@@@@@@@@@@@@@@@" << endl;
+            cout << "y_exp[it_N] = " << y_exp[it_N] << endl;
+            cout << "y_obs[it_N] = " << y_obs[it_N] << endl;
+          }
 
         } // END Loop over N
 
@@ -720,7 +750,6 @@ void Draw_Limit(int Year, TString dirname=""){
         latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.pdf");
-        c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.C");
         c_1D_vsN->Close();
 
       } // END Loop over regions
@@ -905,7 +934,6 @@ void Draw_Limit(int Year, TString dirname=""){
         }
 
         c_1D_vsN->SaveAs(plotpath+"/"+outname+".pdf");
-        c_1D_vsN->SaveAs(plotpath+"/"+outname+".C");
         c_1D_vsN->Close();
 
       }

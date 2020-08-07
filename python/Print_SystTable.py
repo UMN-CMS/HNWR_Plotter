@@ -65,14 +65,17 @@ ToRuns = [
       ["ElectronTriggerSF","Electron trigger"],
       ["LSFSF","LSF scale factor"],
       ["PU","Pileup modeling"],
+      ["Prefire", "Prefire reweighting"],
     ],
   ],
 
   [ 
-    'DYJets_MG_HT_Reweighted',
+    'DYJets_MG_HT_Reweighted_Reshaped',
     '\\DYJ',
     [ 
       ["ZPtRw","\\PZ \\pt"],
+      ["DYReshapeSyst","DY ratio (flavor independent)"],
+      ["DYReshapeEEMM", "DY ratio (flavor dependent)"],
     ],
   ],
 
@@ -104,7 +107,7 @@ for ToRun in ToRuns:
 
         #### Exception A
         # 1) ZPtRw only for bkgd
-        if SystAlias=="ZPtRw" and i_sample==1:
+        if ( (SystAlias=="ZPtRw") or ("DYReshape" in SystAlias) ) and i_sample==1:
           out += '& \\NA'
           continue
 
@@ -206,8 +209,7 @@ for ToRun in ToRuns:
     print out+' \\\\'
 
 #print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
-
-print '''DY normalizaion & \DYJ & Correlated & 30 (30) & \NA & 30 (30) & \NA \\\\'''
+#print '''DY normalizaion & \DYJ & Correlated & 30 (30) & \NA & 30 (30) & \NA \\\\'''
 
 #### PDF uncertainty for signal
 

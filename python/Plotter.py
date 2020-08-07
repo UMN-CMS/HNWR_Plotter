@@ -594,10 +594,16 @@ class Plotter:
 
         h_dummy_down = ROOT.TH1D('h_dumy_down', '', nBin, xBins)
         h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
+
+        if (self.ErrorFromShape):
+          if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
+            h_dummy_down.GetYaxis().SetRangeUser(0.89,1.11)
+          else:
+            h_dummy_down.GetYaxis().SetRangeUser(0.,3.4)
+
         h_dummy_down.SetNdivisions(504,"Y")
         h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)
         h_dummy_down.GetXaxis().SetTitle(xtitle)
-        h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
         h_dummy_down.GetYaxis().SetTitle("#frac{Data}{Sim.}")
         h_dummy_down.SetFillColor(0)
         h_dummy_down.SetMarkerSize(0)

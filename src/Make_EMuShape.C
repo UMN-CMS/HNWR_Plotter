@@ -355,6 +355,8 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
 
       } // END Loop over bkgd samples
 
+      if(0){
+
       //==== Signal
 
       for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
@@ -537,6 +539,7 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
 
       } // END Loop WR
 
+      } // END comment out signal
 
     } // END Loop Systematic source
 

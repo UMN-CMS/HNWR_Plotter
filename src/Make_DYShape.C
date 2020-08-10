@@ -398,6 +398,8 @@ void Make_DYShape(int Year=2016){
         } // END Loop over bkgd samples
 
 
+        if(0){
+
         //==== Signals
 
         for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
@@ -585,6 +587,8 @@ void Make_DYShape(int Year=2016){
           } // END Loop over N
 
         } // END Loop WR
+
+        } // END comment out signal
 
       } // END Loop Systematic source
 

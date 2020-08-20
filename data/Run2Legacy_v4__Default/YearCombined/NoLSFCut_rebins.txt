@@ -1,2 +1,0 @@
-HNWR_SingleElectron_Boosted_SR	HNFatJet_LSF	5
-HNWR_SingleMuon_Boosted_SR	HNFatJet_LSF	5

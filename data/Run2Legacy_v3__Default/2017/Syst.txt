@@ -1,1 +1,0 @@
-FakeLooseID	0.30

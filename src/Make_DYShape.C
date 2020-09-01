@@ -81,10 +81,10 @@ void Make_DYShape(int Year=2016){
   //ScaleLumi *= 137.19/35.92;
   //base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/ScaledToFullRun2/";
 
-  gSystem->mkdir(base_plotpath,kTRUE);
-
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
+
+  gSystem->mkdir(base_plotpath,kTRUE);
 
   //=== DY shape rootfile
   TFile *f_DYShape = new TFile(ENV_PLOT_PATH+"/"+dataset+"/CompareDY/"+TString::Itoa(Year,10)+"/shapes_DY.root");

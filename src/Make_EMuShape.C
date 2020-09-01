@@ -84,10 +84,10 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
   //ScaleLumi *= 137.19/35.92;
   //base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/ScaledToFullRun2/";
 
-  gSystem->mkdir(base_plotpath,kTRUE);
-
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
+
+  gSystem->mkdir(base_plotpath,kTRUE);
 
   //==== bkgds
 

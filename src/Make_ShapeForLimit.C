@@ -18,9 +18,6 @@ void Make_ShapeForLimit(int Year=2016){
   TString ShapeVarName = "WRCand_Mass";
   int n_rebin = 40;
 
-  double signal_scale = 0.001; // r value in fb
-  signal_scale *= 0.1; // r value will be multiplied by 1/0.1 = 10
-
   double ScaleLumi = 1.;
 
   TString filename_prefix = "HNWRAnalyzer_SkimTree_LRSMHighPt_";
@@ -77,14 +74,10 @@ void Make_ShapeForLimit(int Year=2016){
   TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+TString::Itoa(Year,10)+"/";
   TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/"+TString::Itoa(Year,10)+"/";
 
-  //==== FIXME test, scaling to 137.19
-  //ScaleLumi *= 137.19/35.92;
-  //base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ShapeForLimit/ScaledToFullRun2/";
-
-  gSystem->mkdir(base_plotpath,kTRUE);
-
   LRSMSignalInfo lrsminfo;
   lrsminfo.GetMassMaps();
+
+  gSystem->mkdir(base_plotpath,kTRUE);
 
   //=== DY shape rootfile
   TFile *f_DYShape = new TFile(ENV_PLOT_PATH+"/"+dataset+"/CompareDY/"+TString::Itoa(Year,10)+"/shapes_DY.root");
@@ -409,6 +402,11 @@ void Make_ShapeForLimit(int Year=2016){
 
             double m_N = this_m_Ns.at(it_N);
 
+            double signal_scale = 0.001; // r value in fb
+            if(m_WR < 800 + 1) signal_scale *= 10.; // to decrease r, because r is too high for this mass point
+            else if(m_WR < 1200 +1) signal_scale *= 1.;
+            else signal_scale *= 0.1;
+
             TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
 
 
@@ -505,6 +503,49 @@ void Make_ShapeForLimit(int Year=2016){
                   m.hist_ScaleUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");
                   m.hist_ScaleDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleDown");
                   m.hist_ScaleIntegral->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleIntegralSyst");
+
+
+                  //=========================
+                  //==== EXCEPTION
+                  //=========================
+
+                  //==== 2017, mumu, boosted
+                  if( (Year==2017) && (channel=="MuMu") && (region=="Boosted_SR") ){
+
+                    double ErrRescale = 1.;
+                    if( (m_WR==5200) && (m_N==2600) ) ErrRescale = 0.109934;
+                    if( (m_WR==5800) && (m_N==1600) ) ErrRescale = 0.398046;
+                    if( (m_WR==5800) && (m_N==2000) ) ErrRescale = 0.279369;
+                    if( (m_WR==5800) && (m_N==3000) ) ErrRescale = 0.195867;
+                    if( (m_WR==5800) && (m_N==3400) ) ErrRescale = 0.116162;
+
+                    for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                      double y_Central = hist_sig->GetBinContent(ix);
+                      double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                      double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                      double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                      double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                      m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                      m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                    }
+                  }
+                  //==== 2018, ee, boosted
+                  if( (Year==2018) && (channel=="EE") && (region=="Boosted_SR") ){
+
+                    double ErrRescale = 1.;
+                    if( (m_WR==5000) && (m_N==2400) ) ErrRescale = 0.117460;
+
+                    for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                      double y_Central = hist_sig->GetBinContent(ix);
+                      double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                      double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                      double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                      double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                      m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                      m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                    }
+                  }
+
                   m.hist_PDFErrorUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
                   m.hist_PDFErrorDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorDown");
                   m.hist_AlphaSUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_AlphaSUp");

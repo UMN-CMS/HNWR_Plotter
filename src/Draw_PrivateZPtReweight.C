@@ -1,7 +1,7 @@
 #include "canvas_margin.h"
 #include "mylib.h"
 
-void Draw_ZPtReweight(int xxx=0){
+void Draw_PrivateZPtReweight(int xxx=0){
 
   TString Year = "2016";
   TString TotalLumi = "35.92 fb^{-1} (13 TeV)";
@@ -26,19 +26,19 @@ void Draw_ZPtReweight(int xxx=0){
   TString dataset = getenv("CATANVERSION");
   TString ENV_PLOT_PATH = getenv("PLOT_PATH");
 
-  TString base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/OfficialZPtReweight/";
-  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/OfficialZPtReweight/";
+  TString base_filepath = ENV_PLOT_PATH+"/"+dataset+"/ZPtReweight/"+Year+"/";
+  TString base_plotpath = ENV_PLOT_PATH+"/"+dataset+"/ZPtReweight/"+Year+"/";
   gSystem->mkdir(base_plotpath, kTRUE);
 
   //==== file
 
-  TFile *file = new TFile(base_filepath+"/Zpt_weights_"+Year+".root");
+  TFile *file = new TFile(base_filepath+"/Ratio.root");
 
   //==== 2D eff hists
   //==== x : mass
   //==== y : pt
 
-  TH2D *hist_Reweight = (TH2D *)file->Get("zptmass_weights");
+  TH2D *hist_Reweight = (TH2D *)file->Get("Ratio");
 
   //==== Draw 2D
 
@@ -63,10 +63,13 @@ void Draw_ZPtReweight(int xxx=0){
   hist_Reweight->GetXaxis()->SetTitle("Z boson mass (GeV)");
   hist_Reweight->GetYaxis()->SetTitle("Z boson p_{T} (GeV)");
 
-  hist_Reweight->GetXaxis()->SetRangeUser(20.,250.);
-  hist_Reweight->GetYaxis()->SetRangeUser(0.,250.);
+  hist_Reweight->GetXaxis()->SetRangeUser(50.,1000.);
+  hist_Reweight->GetYaxis()->SetRangeUser(10.,1000.);
+  c_2D->SetLogy();
+  c_2D->SetLogy();
 
-  hist_Reweight->Draw("colz");
+  gStyle->SetPaintTextFormat("1.3f");
+  hist_Reweight->Draw("textcolz");
   c_2D->SaveAs(base_plotpath+"/Reweights_"+Year+"_2D.pdf");
   c_2D->Close();
 
@@ -106,11 +109,10 @@ void Draw_ZPtReweight(int xxx=0){
   c1->cd();
   //c1->SetLogx();
 
-  TH1D *hist_dummy = new TH1D("hist_dummy", "", n_MassBin, MassBins);
+  TH1D *hist_dummy = new TH1D("hist_dummy", "", n_PtBin, PtBins);
   hist_axis(hist_dummy);
-  hist_dummy->Draw("axis");
+  hist_dummy->Draw("hist");
   hist_dummy->GetYaxis()->SetRangeUser(0.3, 3.2);
-  hist_dummy->GetXaxis()->SetRangeUser(0., 1000.);
   hist_dummy->GetXaxis()->SetTitle("Z boson p_{T} (GeV)");
   hist_dummy->GetYaxis()->SetTitle("Reweight");
 
@@ -119,10 +121,13 @@ void Draw_ZPtReweight(int xxx=0){
   double y_max = -1;
   double y_min = 9999;
   vector<Color_t> colors = {
-    kRed-1, kRed, kRed+1, kOrange-1, kOrange, kOrange+1, kYellow-1, kYellow, kYellow+1, kGreen-1, kGreen, kGreen+1, kBlue-1, kBlue, kBlue+1, kViolet-1, kViolet, kViolet+1, kGray, kBlack,
+    //kRed+1, kRed, kOrange, kGreen, kBlue, kMagenta, kViolet, kBlack,
+
+    kRed, kRed+1, kOrange-1, kOrange, kOrange+1, kYellow-1, kYellow, kYellow+1, kGreen-1, kGreen, kGreen+1, kBlue-2, kBlue, kBlue+2, kViolet-2, kBlack,
     kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,
     kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,
     kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,kBlack,
+ 
   };
   TLegend *lg = new TLegend(0.45, 0.7, 0.90, 0.92);
   lg->SetBorderSize(0);
@@ -130,18 +135,22 @@ void Draw_ZPtReweight(int xxx=0){
   lg->SetNColumns(3);
   for(int i_massbin=0; i_massbin<n_MassBin; i_massbin++){
 
-    if(i_massbin>=colors.size()) break;
+    //if(i_massbin>=colors.size()) break;
 
     double mass_l = MassBins[i_massbin];
     double mass_r = MassBins[i_massbin+1];
+
+    if(mass_l>=1000) continue;
+    //if(mass_l>=400) continue;
 
     cout << "@@@@ mass [" << mass_l << ", " << mass_r << "]" << endl;
 
     TH1D *hist_this = new TH1D("hist_"+TString::Itoa(i_massbin,10), "", n_PtBin, PtBins);
     for(int i_ptbin=0; i_ptbin<n_PtBin; i_ptbin++){
       double this_value = hist_Reweight->GetBinContent(i_massbin+1, i_ptbin+1);
+      double this_error = hist_Reweight->GetBinError(i_massbin+1, i_ptbin+1);
       hist_this->SetBinContent(i_ptbin+1, this_value);
-      hist_this->SetBinError(i_ptbin+1, 0.);
+      hist_this->SetBinError(i_ptbin+1, this_error);
     }
     hist_this->SetLineWidth(2);
 
@@ -149,6 +158,7 @@ void Draw_ZPtReweight(int xxx=0){
     Style_t this_style = 1+2*(i_massbin%3);
     hist_this->SetLineColor(this_color);
     hist_this->SetLineStyle(this_style);
+    hist_this->SetMarkerSize(0);
 
     std::stringstream alias;
     alias << "[" << mass_l << ", " << mass_r << "] GeV";
@@ -162,8 +172,9 @@ void Draw_ZPtReweight(int xxx=0){
 
   c1->cd();
   lg->Draw();
+  hist_dummy->Draw("axissame");
   //hist_dummy->GetYaxis()->SetRangeUser(y_min-0.2, y_max+0.2);
-  //hist_dummy->GetXaxis()->SetRangeUser(20, 250);
+  hist_dummy->GetXaxis()->SetRangeUser(0, 1000);
 
   c1->SaveAs(base_plotpath+"/Reweights_"+Year+".pdf");
   c1->Close();

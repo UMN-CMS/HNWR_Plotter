@@ -160,3 +160,13 @@ SampleGroup_total_background_2018 = SampleGroup(
   TLatexAlias='W+Jets',
   LatexAlias='total_background'
 )
+SampleGroup_total_background_YearCombined = SampleGroup(
+  Name='total_background',
+  Type='Bkgd',
+  Samples=['total_background'],
+  Year = 'YearCombined',
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='W+Jets',
+  LatexAlias='total_background'
+)

@@ -100,7 +100,7 @@ else:
     SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
     SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
     ## dummy total background
-    SampleGroup_total_background_2016, SampleGroup_total_background_2017, SampleGroup_total_background_2018,
+    SampleGroup_total_background_YearCombined,
   ]
 #### Signal
 m.SignalsToDraw = [LRSMSignalInfoToDraw]
@@ -144,7 +144,7 @@ elif args.Category==3:
       SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
       SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
       ## dummy total background
-      SampleGroup_total_background_2016, SampleGroup_total_background_2017, SampleGroup_total_background_2018,
+      SampleGroup_total_background_YearCombined,
     ]
   #### Define reiongs
   m.RegionsToDraw = [

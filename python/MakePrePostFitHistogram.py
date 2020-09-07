@@ -9,8 +9,6 @@ PLOT_PATH = os.environ['PLOT_PATH']
 PreORPosts = [
 "Pre",
 "Post",
-#"CROnlyPre",
-#"CROnlyPost",
 ]
 
 for PreORPost in PreORPosts:
@@ -47,6 +45,18 @@ for PreORPost in PreORPosts:
   'Others',
   'total_background',
   ]
+
+  #### TEST
+  '''
+  Samples = [
+  'TT_TW',
+  'DYJets_MG_HT_Reweighted_Reshaped',
+  'WJets_MG_HT',
+  'Others',
+  'total_background',
+  ]
+  '''
+
 
   for Sample in Samples:
 

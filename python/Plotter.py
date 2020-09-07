@@ -459,7 +459,7 @@ class Plotter:
               x_l = h_TotalBackgroundFromShape.GetXaxis().GetBinLowEdge(z+1)
               x_r = h_TotalBackgroundFromShape.GetXaxis().GetBinUpEdge(z+1)
               y = h_TotalBackgroundFromShape.GetBinContent(z+1)
-              print '[%f,%f] : %f'%(x_l,x_r,y)
+              print '[%f,%f] : %f +- %f'%(x_l,x_r,y,h_TotalBackgroundFromShape.GetBinError(z+1))
           gr_Bkgd_TotErr = ROOT.TGraphAsymmErrors(h_TotalBackgroundFromShape)
 
         err_up_tmp = []
@@ -470,6 +470,8 @@ class Plotter:
 
           L = 0.                                          if (N==0.) else (ROOT.Math.gamma_quantile(alpha/2.,N,1.))
           U = ( ROOT.Math.gamma_quantile_c(alpha,N+1,1) ) if (N==0.) else (ROOT.Math.gamma_quantile_c(alpha/2.,N+1.,1.))
+
+          #print '%d - %f + %f'%(N, N-L, U-N)
 
           if N!=0:
             gr_Data.SetPointEYlow(i, N-L )
@@ -596,10 +598,11 @@ class Plotter:
         h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
 
         if (self.ErrorFromShape):
-          if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
-            h_dummy_down.GetYaxis().SetRangeUser(0.89,1.11)
+          #if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
+          if ('DYCR' in Region.Name):
+            h_dummy_down.GetYaxis().SetRangeUser(0.70,1.30)
           else:
-            h_dummy_down.GetYaxis().SetRangeUser(0.,3.4)
+            h_dummy_down.GetYaxis().SetRangeUser(0.,2.8)
 
         h_dummy_down.SetNdivisions(504,"Y")
         h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)

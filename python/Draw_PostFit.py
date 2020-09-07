@@ -91,6 +91,16 @@ SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
 SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
 SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
 
+#### TEST
+'''
+SampleGroup_ttbar_2016.Samples=['TT_TW']
+SampleGroup_ttbar_2017.Samples=['TT_TW']
+SampleGroup_ttbar_2018.Samples=['TT_TW']
+SampleGroup_ttbar_2016.TLatexAlias='t#bar{t}+tW'
+SampleGroup_ttbar_2017.TLatexAlias='t#bar{t}+tW'
+SampleGroup_ttbar_2018.TLatexAlias='t#bar{t}+tW'
+'''
+
 #### Define Samples
 if args.Year>0:
   exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_DY_%s, SampleGroup_ttbar_%s, SampleGroup_total_background_%s]'%(args.Year,args.Year,args.Year,args.Year))
@@ -100,8 +110,24 @@ else:
     SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
     SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
     ## dummy total background
-    SampleGroup_total_background_2016, SampleGroup_total_background_2017, SampleGroup_total_background_2018,
+    SampleGroup_total_background_YearCombined,
   ]
+
+#### TEST
+'''
+if args.Year>0:
+  exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_WJets_%s, SampleGroup_DY_%s, SampleGroup_ttbar_%s, SampleGroup_total_background_%s]'%(args.Year,args.Year,args.Year,args.Year,args.Year))
+else:
+  m.SampleGroups = [
+    SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,
+    SampleGroup_WJets_2016, SampleGroup_WJets_2017, SampleGroup_WJets_2018,
+    SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
+    SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
+    ## dummy total background
+    SampleGroup_total_background_YearCombined,
+  ]
+'''
+
 #### Signal
 m.SignalsToDraw = [LRSMSignalInfoToDraw]
 
@@ -144,8 +170,25 @@ elif args.Category==3:
       SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
       SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
       ## dummy total background
-      SampleGroup_total_background_2016, SampleGroup_total_background_2017, SampleGroup_total_background_2018,
+      SampleGroup_total_background_YearCombined,
     ]
+
+  #### TEST
+  '''
+  if args.Year>0:
+    exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_WJets_%s, SampleGroup_ttbar_%s, SampleGroup_DY_%s, SampleGroup_total_background_%s]'%(args.Year,args.Year,args.Year,args.Year,args.Year))
+  else:
+    m.SampleGroups = [
+      SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,
+      SampleGroup_WJets_2016, SampleGroup_WJets_2017, SampleGroup_WJets_2018,
+      SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
+      SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
+      ## dummy total background
+      SampleGroup_total_background_YearCombined,
+    ]
+  '''
+
+
   #### Define reiongs
   m.RegionsToDraw = [
     Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),

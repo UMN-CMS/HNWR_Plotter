@@ -67,7 +67,7 @@ for mWR in mWRsToDraw:
     tmp_xsec = tmp_xsec / 2. ## ee+mm -> ee
     if int(mWR)==int(tmp_mWR):
      ## k-factor
-     kfactor = mylib.GetKFactor(int(mWR), tmp_mN)
+     kfactor = mylib.GetKFactor(int(mWR), int(tmp_mN))
 
      this_mNs.append( tmp_mN )
      this_xsecs.append( tmp_xsec*kfactor )

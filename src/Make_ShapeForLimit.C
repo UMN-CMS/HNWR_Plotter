@@ -54,8 +54,8 @@ void Make_ShapeForLimit(int Year=2016){
     "LSFSFUp", "LSFSFDown",
     "PUUp", "PUDown",
     "ZPtRwUp", "ZPtRwDown",
-    "DYReshapeSystUp", "DYReshapeSystDown",
-    "DYReshapeEEMMUp", "DYReshapeEEMMDown",
+    //"DYReshapeSystUp", "DYReshapeSystDown",
+    //"DYReshapeEEMMUp", "DYReshapeEEMMDown",
   };
   if(Year<=2017){
     systs.push_back( "PrefireUp" );
@@ -78,9 +78,6 @@ void Make_ShapeForLimit(int Year=2016){
   lrsminfo.GetMassMaps();
 
   gSystem->mkdir(base_plotpath,kTRUE);
-
-  //=== DY shape rootfile
-  TFile *f_DYShape = new TFile(ENV_PLOT_PATH+"/"+dataset+"/CompareDY/"+TString::Itoa(Year,10)+"/shapes_DY.root");
 
   //==== bkgds
 
@@ -309,36 +306,41 @@ void Make_ShapeForLimit(int Year=2016){
                   }
                   else if(sample.Contains("DYJets_")){
 
-                    TString hname_DYShape = Suffix+"_Resolved_DYCR";
+                    //==== making DYReshapeSyst shapes
+
                     TString ResolvedORBoosted = "Resolved";
                     if(region.Contains("Boosted")){
-                      hname_DYShape = Suffix+"_Boosted_DYCR";
                       ResolvedORBoosted = "Boosted";
                     }
-                    //==== first bin of this shape is [800,1000]
-                    TH1D *h_DYShape = (TH1D *)f_DYShape->Get("Ratio_"+hname_DYShape);
 
-                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeUp");
-                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYShapeDown");
+                    TH1D *hist_DYReshapeSystUp = (TH1D *)file_sample->Get("Syst_DYReshapeSystUp_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystUp_"+dirname);
+                    hist_DYReshapeSystUp = RebinWRMass(hist_DYReshapeSystUp, Suffix+"_"+region, Year, true);
+                    hist_DYReshapeSystUp->Scale( GetDYNormSF(Year, PD+"_"+region) );
+
+                    TH1D *hist_DYReshapeSystDown = (TH1D *)file_sample->Get("Syst_DYReshapeSystDown_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystDown_"+dirname);
+                    hist_DYReshapeSystDown = RebinWRMass(hist_DYReshapeSystDown, Suffix+"_"+region, Year, true);
+                    hist_DYReshapeSystDown->Scale( GetDYNormSF(Year, PD+"_"+region) );
 
                     for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
-                      double x_l_bkgd = hist_bkgd->GetXaxis()->GetBinLowEdge(z);
-                      double x_l_shape = h_DYShape->GetXaxis()->GetBinLowEdge(z);
-                      if(x_l_bkgd!=x_l_shape) cout << "x_l_bkgd = " << x_l_bkgd << ", x_l_shape = " << x_l_shape << endl;
 
-                      double this_y = hist_bkgd->GetBinContent(z);
-                      double this_rewg = h_DYShape->GetBinContent(z);
+                      double this_nominal = hist_bkgd->GetBinContent(z);
+                      double this_Up = hist_DYReshapeSystUp->GetBinContent(z);
+                      double this_Down = hist_DYReshapeSystDown->GetBinContent(z);
 
-                      //==== Up : NLO, Down : LO
-                      hist_DYShapeUp->SetBinContent(z, this_y * this_rewg);
-                      hist_DYShapeDown->SetBinContent(z, this_y);
+                      TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Up");
+                      TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Down");
+
+                      hist_DYShapeUp->SetBinContent(z, this_Up);
+                      hist_DYShapeDown->SetBinContent(z, this_Down);
+
+                      hist_DYShapeUp->Write();
+                      hist_DYShapeDown->Write();
 
                     }
 
                     out_bkgd->cd();
-                    hist_DYShapeUp->Write();
-                    hist_DYShapeDown->Write();
-                  }
+                  } // END if DYJets
+
                 } // END if Central
                 else{
 
@@ -359,7 +361,7 @@ void Make_ShapeForLimit(int Year=2016){
 
             }
 
-          }
+          } // No hist case
           else{
             //==== If no histogram
             //==== e.g., SingleTop_sch_Lep has one entry, and with JetEnUp, that event is gone, so no histogram is filled
@@ -601,8 +603,6 @@ void Make_ShapeForLimit(int Year=2016){
     } // END Loop channel
 
   }
-
-  f_DYShape->Close();
 
 }
 

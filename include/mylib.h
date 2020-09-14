@@ -390,13 +390,14 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   double DYNorm = 1.;
   double DYNorm_err = 0.;
 
-  int int_channel(-1); // 0 : ee, 1 : mm
-  if(channel.Contains("Electron")) int_channel = 0;
-  else if(channel.Contains("Muon")) int_channel = 1;
-  else if(channel.Contains("_EMu_")){
+  if(channel.Contains("_EMu_")){
     if(geterror) return 0.;
     else return 1.;
   }
+
+  int int_channel(-1); // 0 : ee, 1 : mm
+  if(channel.Contains("Electron")) int_channel = 0;
+  else if(channel.Contains("Muon")) int_channel = 1;
   else{
     cout << "(mylib.h) [GetDYNormSF()] : Wrong channel name; " << channel << endl;
     exit(EXIT_FAILURE);

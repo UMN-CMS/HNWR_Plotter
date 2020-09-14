@@ -181,13 +181,14 @@ def GetDYNormSF(DataYear, channel):
   DYNorm = 1.
   DYNorm_err = 0.
 
+  if "_EMu_" in channel:
+    return 1., 0.
+
   int_channel = -1 ## 0 : ee, 1 : mm
   if "Electron" in channel:
     int_channel = 0
   elif "Muon" in channel:
     int_channel = 1
-  elif "_EMu_" in channel:
-    return 1., 0.
   else:
     print 'Wrong channel name '+channel
     exit()

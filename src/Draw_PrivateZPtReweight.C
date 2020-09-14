@@ -70,6 +70,9 @@ void Draw_PrivateZPtReweight(int xxx=0){
 
   gStyle->SetPaintTextFormat("1.3f");
   hist_Reweight->Draw("textcolz");
+
+  latex_Lumi.DrawLatex(0.83, 0.96, "Run"+Year);
+
   c_2D->SaveAs(base_plotpath+"/Reweights_"+Year+"_2D.pdf");
   c_2D->Close();
 
@@ -169,6 +172,8 @@ void Draw_PrivateZPtReweight(int xxx=0){
     y_max = max( y_max, GetMaximum(hist_this) );
     y_min = min( y_min, GetMinimum(hist_this) );
   }
+
+  latex_Lumi.DrawLatex(0.83, 0.96, "Run"+Year);
 
   c1->cd();
   lg->Draw();

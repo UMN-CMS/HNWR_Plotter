@@ -359,12 +359,36 @@ public:
       }
 
       bool IsOkay = true;
+      if(i==38) IsOkay = false;
+      if(i!=0){
+
+        double iBinMax = values.size() - 1;
+        double tmp_ymax = -9999;
+        for(int i=0; i<values.size(); i++){
+          if(values.at(i) > tmp_ymax){
+            iBinMax = i;
+            tmp_ymax = values.at(i);
+          }
+        }
+
+        double y_Nominal = PDFErrorSetToBinValues[0].at( iBinMax );
+        double y_PDFError = values.at( iBinMax );
+        if(y_PDFError<0) IsOkay = false;
+        if( fabs(y_Nominal-y_PDFError)/y_Nominal > 1.0 ) IsOkay = false;
+
+      }
+/*
       if( i!= 0 ){
         double y_Nominal = PDFErrorSetToBinValues[0].at( PDFErrorSetToBinValues[0].size() - 1 );
         double y_PDFError = values.at( values.size() - 1 );
-        if( fabs(y_Nominal-y_PDFError)/y_Nominal > 1.0 ) IsOkay = false;
-      }
+        //if( fabs(y_Nominal-y_PDFError)/y_Nominal > 1.0 ) IsOkay = false;
 
+        double xsec_Nominal = DenValues_PDFError[0];
+        double xsec_PDFError = DenValues_PDFError[i];
+        if( fabs(y_Nominal-y_PDFError)/y_Nominal > 0.5 ) IsOkay = false;
+
+      }
+*/
       if(!IsOkay){
         values.clear();
         for(unsigned int z=0; z<PDFErrorSetToBinValues[0].size(); z++){

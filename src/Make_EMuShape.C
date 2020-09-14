@@ -302,9 +302,45 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
                   hist_tt_ShapeUp->Write();
                   hist_tt_ShapeDown->Write();
                 }
+                else if(sample.Contains("DYJets_")){
+
+                  //==== making DYReshapeSyst shapes
+
+                  TString ResolvedORBoosted = "Resolved";
+                  if(region.Contains("Boosted")){
+                    ResolvedORBoosted = "Boosted";
+                  }
+
+                  TH1D *hist_DYReshapeSystUp = (TH1D *)file_sample->Get("Syst_DYReshapeSystUp_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystUp_"+dirname);
+                  hist_DYReshapeSystUp = RebinWRMass(hist_DYReshapeSystUp, region, Year, true);
+                  hist_DYReshapeSystUp->Scale( GetDYNormSF(Year, PD+"_"+region) );
+
+                  TH1D *hist_DYReshapeSystDown = (TH1D *)file_sample->Get("Syst_DYReshapeSystDown_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystDown_"+dirname);
+                  hist_DYReshapeSystDown = RebinWRMass(hist_DYReshapeSystDown, region, Year, true);
+                  hist_DYReshapeSystDown->Scale( GetDYNormSF(Year, PD+"_"+region) );
+
+                  for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
+
+                    double this_nominal = hist_bkgd->GetBinContent(z);
+                    double this_Up = hist_DYReshapeSystUp->GetBinContent(z);
+                    double this_Down = hist_DYReshapeSystDown->GetBinContent(z);
+
+                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Up");
+                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Down");
+
+                    hist_DYShapeUp->SetBinContent(z, this_Up);
+                    hist_DYShapeDown->SetBinContent(z, this_Down);
+
+                    hist_DYShapeUp->Write();
+                    hist_DYShapeDown->Write();
+
+                  }
+
+                  out_bkgd->cd();
+                } // END if DYJets
 
 
-              }
+              } // END if Central
               else{
 
                 if(syst.Contains("DYReshapeEEMM")){

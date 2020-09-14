@@ -193,8 +193,8 @@ void Draw_SignalEfficiency(int Year){
             int N_gen_EE = hist_SignalFlavour->GetBinContent(2);
             int N_gen_MM = hist_SignalFlavour->GetBinContent(3);
             double this_FlavorFrac = 0.5;
-            if( Suffix.Contains("SingleElectron") ) this_FlavorFrac = N_gen_EE/hist_SignalFlavour->GetEntries();
-            else this_FlavorFrac = N_gen_MM/hist_SignalFlavour->GetEntries();
+            if( Suffix.Contains("SingleElectron") ) this_FlavorFrac = N_gen_EE/hist_SignalFlavour->Integral();
+            else this_FlavorFrac = N_gen_MM/hist_SignalFlavour->Integral();
 
             TString dirname = Config+"_"+Suffix+"_"+region;
             TH1D *hist = (TH1D *)file->Get(dirname+"/NEvent_"+dirname);

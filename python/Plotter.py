@@ -634,12 +634,21 @@ class Plotter:
           yMaxScale = 10
           yMin = Region.Logy
         h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )
+
         ## Exception control
+
         if (Variable.Name=="WRCand_Mass") and ("_SR" in Region.Name) and ("EMu" not in Region.Name):
           if ("Resolved" in Region.Name):
             h_dummy_up.GetYaxis().SetRangeUser( 1E-1, yMaxScale*yMax )
           else:
             h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )
+
+        if (Variable.Name=="WRCand_Mass") and ("_DYCR" in Region.Name):
+          if ("Resolved" in Region.Name):
+            h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )
+          else:
+            h_dummy_up.GetYaxis().SetRangeUser( yMin, 50*yMax )
+
         if (Variable.Name=="ZCand_Mass" or Variable.Name=="DiJet_Mass") and ("_DYCR" in Region.Name):
           h_dummy_up.GetYaxis().SetRangeUser(10, 2E8)
         if (Variable.Name=="ZCand_Pt" or Variable.Name=="DiJet_Pt") and ("_DYCR" in Region.Name):

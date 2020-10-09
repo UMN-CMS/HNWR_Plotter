@@ -4,7 +4,7 @@
 
 void Draw_FastVSFull(){
 
-  TString Year = "2016";
+  TString Year = "2017";
 
   gStyle->SetOptStat(0);
 
@@ -32,25 +32,13 @@ void Draw_FastVSFull(){
   };
 
   vector<TString> samples = {
-"WRtoNLtoLLJJ_WR1000_N100",
-//"WRtoNLtoLLJJ_WR1000_N500",
 "WRtoNLtoLLJJ_WR4000_N100",
-//"WRtoNLtoLLJJ_WR4000_N500",
-"WRtoNLtoLLJJ_WR4000_N1000",
   };
   vector<Color_t> colors = {
     kRed,
-    //kBlue,
-    kGreen,
-    //kGray,
-    kBlack,
   };
   vector<TString> samplealiases = {
-    "WR=1000, N=100",
-    //"WR=1000, N=500",
     "WR=4000, N=100",
-    //"WR=4000, N=500",
-    "WR=4000, N=1000",
   };
 
   vector<TString> vars = {
@@ -230,21 +218,20 @@ void Draw_FastVSFull(){
         TString samplealias = samplealiases.at(it_sample);
         Color_t color = colors.at(it_sample);
 
-        //cout << "    sample = " << sample << endl;
-
         TFile *file_Fast = new TFile(base_filepath+"/HNWRSignalStudy_"+sample+".root");
         TH1D *hist_NoCut_Fast = (TH1D *)file_Fast->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Fast = (TH1D *)file_Fast->Get(channel+"/GenStudy__"+var+"_"+channel);
+        if(!hist_Fast) continue;
         hist_Fast->Rebin(rebin);
-        hist_Fast->Scale(1./hist_NoCut_Fast->GetEntries());
+        hist_Fast->Scale(1./hist_NoCut_Fast->GetBinContent(1));
         hist_Fast->SetLineColor(color);
         hist_Fast->SetLineWidth(3);
 
-        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSim_Private_"+sample+"_MG.root");
+        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_Official_FullSim_"+sample+".root");
         TH1D *hist_NoCut_Full = (TH1D *)file_Full->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Full = (TH1D *)file_Full->Get(channel+"/GenStudy__"+var+"_"+channel);
         hist_Full->Rebin(rebin);
-        hist_Full->Scale(1./hist_NoCut_Full->GetEntries());
+        hist_Full->Scale(1./hist_NoCut_Full->GetBinContent(1));
         hist_Full->SetLineColor(color);
         hist_Full->SetLineWidth(2);
 
@@ -264,9 +251,9 @@ void Draw_FastVSFull(){
         hist_Full->Draw("histsame");
 
         if(var=="fatjet_matched_gen_N__LSF"){
-          int int_Start = hist_Fast->FindBin(0.7);
+          int int_Start = hist_Fast->FindBin(0.75);
           //cout << "    --> LSF Eff = " << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999)  << endl;
-          cout << samplealias << "--> LSF Eff = " << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999) << endl;
+          cout << samplealias << "--> LSF Eff = " << hist_Fast->Integral(int_Start,999)/hist_Fast->Integral(0,999) << "\t" << hist_Full->Integral(int_Start,999)/hist_Full->Integral(0,999) << endl;
         }
 
         lg->AddEntry(hist_Fast, "(Fast) "+samplealias, "l");
@@ -280,6 +267,8 @@ void Draw_FastVSFull(){
         y_max = max( y_max, GetMaximum(hist_Full,0) );
 
       } // END sample loop
+
+      if(!hist_dummy) continue;
 
       if(var.Contains("FatJet_LSF") && var.Contains("Size")) y_max = 1.0/1.2;
       hist_dummy->GetYaxis()->SetRangeUser(0., 1.2*y_max);

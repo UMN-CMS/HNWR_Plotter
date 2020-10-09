@@ -189,6 +189,11 @@ void LRSMSignalInfo::GetMassMaps(){
 
     maps_WR_to_N[m_WR].push_back( m_N );
     maps_N_to_WR[m_N].push_back( m_WR );
+
+    if(m_WR == 2. * m_N){
+      maps_N_to_WR[-1].push_back( m_WR );
+    }
+
     NTotalMass++;
 
   }

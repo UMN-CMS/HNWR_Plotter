@@ -74,8 +74,8 @@ ToRuns = [
     '\\DYJ',
     [ 
       ["ZPtRw","\\PZ \\pt"],
-      ["DYReshapeSyst","DY ratio (flavor independent)"],
-      ["DYReshapeEEMM", "DY ratio (flavor dependent)"],
+      ["DYReshapeSyst","DY reshape"],
+      #["DYReshapeEEMM", "DY ratio (flavor dependent)"],
     ],
   ],
 

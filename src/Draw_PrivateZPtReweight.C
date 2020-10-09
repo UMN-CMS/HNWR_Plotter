@@ -68,7 +68,8 @@ void Draw_PrivateZPtReweight(int xxx=0){
   c_2D->SetLogy();
   c_2D->SetLogy();
 
-  gStyle->SetPaintTextFormat("1.3f");
+  gStyle->SetPaintTextFormat("1.2f");
+  hist_Reweight->GetZaxis()->SetRangeUser(0.,2.0);
   hist_Reweight->Draw("textcolz");
 
   latex_Lumi.DrawLatex(0.83, 0.96, "Run"+Year);

@@ -4,7 +4,7 @@
 
 void Draw_SignalDistribution(int xxx=0){
 
-  TString bkgdsample_prompt = "DYJets_MG_HT_Reweighted";
+  TString bkgdsample_prompt = "DYJets_MG_HT_Reweighted_Reshaped";
   TString bkgdsample_fake = "TTLX_powheg";
 
   TString Year = "2016";
@@ -248,8 +248,8 @@ void Draw_SignalDistribution(int xxx=0){
 
       bool XAxisLog = false;
       if(var.Contains("Pt")){
-        hist_dummy->GetXaxis()->SetRangeUser(10., x_max);
-        c1->SetLogx();
+        //hist_dummy->GetXaxis()->SetRangeUser(10., x_max);
+        //c1->SetLogx();
       }
 /*
       bool YAxisLog = false;
@@ -354,7 +354,7 @@ void Draw_SignalDistribution(int xxx=0){
           this_lrsminfo.SetNames();
 
           TString filename = this_lrsminfo.GetFileName();
-          TFile *file = new TFile(base_filepath+"/Signal/HNWRAnalyzer_"+filename+".root");
+          TFile *file = new TFile(base_filepath+"/Signal_"+channel+"/HNWRAnalyzer_"+filename+".root");
           TH1D *hist = (TH1D *)file->Get(histname);
 
           if(!hist){
@@ -399,6 +399,13 @@ void Draw_SignalDistribution(int xxx=0){
       double y_max_scale = 1.2;
       //if(YAxisLog) y_max_scale = 2.;
       hist_dummy->GetYaxis()->SetRangeUser(0.001, y_max_scale*this_ymax); //FIXME use getymin?
+
+      if(var.Contains("Pt")){
+        hist_dummy->GetYaxis()->SetRangeUser(0., 0.41);
+        //c1->SetLogx();
+      }
+
+
 
       c1->SaveAs(this_plotpath+"/HN"+channel+"_"+var+".pdf");
 

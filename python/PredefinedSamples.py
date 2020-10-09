@@ -129,6 +129,38 @@ SampleGroup_WJets_2018 = SampleGroup(
   LatexAlias='WJets_MG_HT'
 )
 
+## NonPrompt
+SampleGroup_NonPrompt_2016 = SampleGroup(
+  Name='NonPrompt',
+  Type='Bkgd',
+  Samples=['NonPrompt'],
+  Year = 2016,
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='Nonprompt',
+  LatexAlias='NonPrompt'
+)
+SampleGroup_NonPrompt_2017 = SampleGroup(
+  Name='NonPrompt',
+  Type='Bkgd',
+  Samples=['NonPrompt'],
+  Year = 2017,
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='Nonprompt',
+  LatexAlias='NonPrompt'
+)
+SampleGroup_NonPrompt_2018 = SampleGroup(
+  Name='NonPrompt',
+  Type='Bkgd',
+  Samples=['NonPrompt'],
+  Year = 2018,
+  Color=ROOT.kGreen+1,
+  Style=1,
+  TLatexAlias='Nonprompt',
+  LatexAlias='NonPrompt'
+)
+
 ## Error from shape
 SampleGroup_total_background_2016 = SampleGroup(
   Name='total_background',

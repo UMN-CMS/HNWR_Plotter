@@ -15,8 +15,6 @@ void Draw_Limit(int Year, TString dirname=""){
 
   bool Usekfactor = true;
 
-  double signal_scale = 0.1;
-
   TString inputfile = "";
   TString TotalLumi = "";
   TString str_Year = TString::Itoa(Year,10);
@@ -297,6 +295,11 @@ void Draw_Limit(int Year, TString dirname=""){
             is >> m.limit_exp_2sdDn;
             is >> m.limit_obs;
 
+            double signal_scale = 1.; // r value in fb
+            if(m_WR < 800 + 1) signal_scale *= 10.; // to decrease r, because r is too high for this mass point
+            else if(m_WR < 1200 +1) signal_scale *= 1.;
+            else signal_scale *= 0.1;
+
             m.limit_exp *= signal_scale;
             m.limit_exp_1sdUp *= signal_scale;
             m.limit_exp_1sdDn *= signal_scale;
@@ -563,7 +566,7 @@ void Draw_Limit(int Year, TString dirname=""){
       lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region)+" (exp.)", "l");
 
       }
-     
+
       hist2d_limit_obs_ratio->SetContour(1,conts);
       hist2d_limit_obs_ratio->SetLineWidth(2);
       hist2d_limit_obs_ratio->SetLineStyle(1);
@@ -759,7 +762,7 @@ void Draw_Limit(int Year, TString dirname=""){
     //==== 1D : Limit vs WR, for each N
     //==== negative N means N=WR/2
 
-    vector<double> test_Ns = {-500, 100, 200, 400};
+    vector<double> test_Ns = {-500, 100, 200, 400, 600, 800};
 
     for(int z=0; z<test_Ns.size(); z++){
 

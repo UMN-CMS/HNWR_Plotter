@@ -1,0 +1,25 @@
+#!/bin/bash
+python run.py -i json/impacts_2016_card_CRAdded_EE_Boosted_WR3000_N1600.json &> log_impacts_2016_card_CRAdded_EE_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_CRAdded_EE_Resolved_WR3000_N1600.json &> log_impacts_2016_card_CRAdded_EE_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_CRAdded_MuMu_Boosted_WR3000_N1600.json &> log_impacts_2016_card_CRAdded_MuMu_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_CRAdded_MuMu_Resolved_WR3000_N1600.json &> log_impacts_2016_card_CRAdded_MuMu_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_EE_Boosted_WR3000_N1600.json &> log_impacts_2016_card_EE_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_EE_Resolved_WR3000_N1600.json &> log_impacts_2016_card_EE_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_MuMu_Boosted_WR3000_N1600.json &> log_impacts_2016_card_MuMu_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2016_card_MuMu_Resolved_WR3000_N1600.json &> log_impacts_2016_card_MuMu_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_CRAdded_EE_Boosted_WR3000_N1600.json &> log_impacts_2017_card_CRAdded_EE_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_CRAdded_EE_Resolved_WR3000_N1600.json &> log_impacts_2017_card_CRAdded_EE_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_CRAdded_MuMu_Boosted_WR3000_N1600.json &> log_impacts_2017_card_CRAdded_MuMu_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_CRAdded_MuMu_Resolved_WR3000_N1600.json &> log_impacts_2017_card_CRAdded_MuMu_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_EE_Boosted_WR3000_N1600.json &> log_impacts_2017_card_EE_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_EE_Resolved_WR3000_N1600.json &> log_impacts_2017_card_EE_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_MuMu_Boosted_WR3000_N1600.json &> log_impacts_2017_card_MuMu_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2017_card_MuMu_Resolved_WR3000_N1600.json &> log_impacts_2017_card_MuMu_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_CRAdded_EE_Boosted_WR3000_N1600.json &> log_impacts_2018_card_CRAdded_EE_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_CRAdded_EE_Resolved_WR3000_N1600.json &> log_impacts_2018_card_CRAdded_EE_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_CRAdded_MuMu_Boosted_WR3000_N1600.json &> log_impacts_2018_card_CRAdded_MuMu_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_CRAdded_MuMu_Resolved_WR3000_N1600.json &> log_impacts_2018_card_CRAdded_MuMu_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_EE_Boosted_WR3000_N1600.json &> log_impacts_2018_card_EE_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_EE_Resolved_WR3000_N1600.json &> log_impacts_2018_card_EE_Resolved_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_MuMu_Boosted_WR3000_N1600.json &> log_impacts_2018_card_MuMu_Boosted_WR3000_N1600.log
+python run.py -i json/impacts_2018_card_MuMu_Resolved_WR3000_N1600.json &> log_impacts_2018_card_MuMu_Resolved_WR3000_N1600.log

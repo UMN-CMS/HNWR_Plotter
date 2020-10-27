@@ -1,0 +1,12 @@
+     R_Boosted_EE_2016    1.0372e+00 +/-  1.44e-01
+    R_Resolved_EE_2016    9.3065e-01 +/-  5.44e-02
+   R_Boosted_MuMu_2016    9.2421e-01 +/-  1.29e-01
+  R_Resolved_MuMu_2016    9.3619e-01 +/-  5.29e-02
+     R_Boosted_EE_2017    1.1939e+00 +/-  1.70e-01
+    R_Resolved_EE_2017    1.0165e+00 +/-  5.98e-02
+   R_Boosted_MuMu_2017    1.0613e+00 +/-  1.42e-01
+  R_Resolved_MuMu_2017    9.8476e-01 +/-  5.20e-02
+     R_Boosted_EE_2018    1.1524e+00 +/-  1.52e-01
+    R_Resolved_EE_2018    9.4827e-01 +/-  4.95e-02
+   R_Boosted_MuMu_2018    1.0076e+00 +/-  1.33e-01
+  R_Resolved_MuMu_2018    9.4906e-01 +/-  4.89e-02

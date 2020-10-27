@@ -1,0 +1,759 @@
+
+Processing run.C(5000,100)...
+[SignalSystematics] Getting denominator values
+[SignalSystematics] @@@@ Scale 
+[SignalSystematics] i = 0 : 1
+[SignalSystematics] i = 1 : 1
+[SignalSystematics] i = 2 : 1
+[SignalSystematics] i = 3 : 0.937437
+[SignalSystematics] i = 4 : 0.937437
+[SignalSystematics] i = 5 : 1.07251
+[SignalSystematics] i = 6 : 1.07251
+[SignalSystematics] @@@@ PDF Error
+[SignalSystematics] i = 0 : 1	tmp2 = 0
+[SignalSystematics] i = 1 : 1.02385	tmp2 = 0.000569047
+[SignalSystematics] i = 2 : 0.979911	tmp2 = 0.000972609
+[SignalSystematics] i = 3 : 0.991531	tmp2 = 0.00104433
+[SignalSystematics] i = 4 : 0.970708	tmp2 = 0.00190236
+[SignalSystematics] i = 5 : 1.01067	tmp2 = 0.00201631
+[SignalSystematics] i = 6 : 0.972502	tmp2 = 0.00277242
+[SignalSystematics] i = 7 : 0.995251	tmp2 = 0.00279497
+[SignalSystematics] i = 8 : 0.971064	tmp2 = 0.00363225
+[SignalSystematics] i = 9 : 0.976213	tmp2 = 0.00419808
+[SignalSystematics] i = 10 : 1.00279	tmp2 = 0.00420586
+[SignalSystematics] i = 11 : 0.994919	tmp2 = 0.00423168
+[SignalSystematics] i = 12 : 0.987486	tmp2 = 0.00438827
+[SignalSystematics] i = 13 : 1.02085	tmp2 = 0.00482301
+[SignalSystematics] i = 14 : 0.976989	tmp2 = 0.00535251
+[SignalSystematics] i = 15 : 1.02885	tmp2 = 0.00618487
+[SignalSystematics] i = 16 : 0.995531	tmp2 = 0.00620484
+[SignalSystematics] i = 17 : 0.990815	tmp2 = 0.0062892
+[SignalSystematics] i = 18 : 0.993554	tmp2 = 0.00633075
+[SignalSystematics] i = 19 : 0.989005	tmp2 = 0.00645165
+[SignalSystematics] i = 20 : 1.02341	tmp2 = 0.00699976
+[SignalSystematics] i = 21 : 1.00799	tmp2 = 0.00706365
+[SignalSystematics] i = 22 : 0.987278	tmp2 = 0.00722551
+[SignalSystematics] i = 23 : 1.00479	tmp2 = 0.00724846
+[SignalSystematics] i = 24 : 0.986406	tmp2 = 0.00743325
+[SignalSystematics] i = 25 : 1.03741	tmp2 = 0.00883241
+[SignalSystematics] i = 26 : 0.983005	tmp2 = 0.00912124
+[SignalSystematics] i = 27 : 0.950238	tmp2 = 0.0115975
+[SignalSystematics] i = 28 : 1.00406	tmp2 = 0.011614
+[SignalSystematics] i = 29 : 0.993374	tmp2 = 0.0116579
+[SignalSystematics] i = 30 : 0.959503	tmp2 = 0.0132979
+[SignalSystematics] i = 31 : 1.07839	tmp2 = 0.0194436
+[SignalSystematics] i = 32 : 1.11786	tmp2 = 0.0333352
+[SignalSystematics] i = 33 : 0.818625	tmp2 = 0.0662323
+[SignalSystematics] i = 34 : 1.01197	tmp2 = 0.0663755
+[SignalSystematics] i = 35 : 0.946582	tmp2 = 0.0692291
+[SignalSystematics] i = 36 : 1.05318	tmp2 = 0.0720576
+[SignalSystematics] i = 37 : 0.870149	tmp2 = 0.0889188
+[SignalSystematics] i = 38 : 0.793954	tmp2 = 0.131374
+[SignalSystematics] i = 39 : 0.950368	tmp2 = 0.133837
+[SignalSystematics] i = 40 : 1.00955	tmp2 = 0.133928
+[SignalSystematics] i = 41 : 0.972891	tmp2 = 0.134663
+[SignalSystematics] i = 42 : 0.940519	tmp2 = 0.138201
+[SignalSystematics] i = 43 : 0.986076	tmp2 = 0.138395
+[SignalSystematics] i = 44 : 0.998893	tmp2 = 0.138396
+[SignalSystematics] i = 45 : 0.958742	tmp2 = 0.140098
+[SignalSystematics] i = 46 : 1.03789	tmp2 = 0.141534
+[SignalSystematics] i = 47 : 1.04007	tmp2 = 0.143139
+[SignalSystematics] i = 48 : 1.10734	tmp2 = 0.154662
+[SignalSystematics] i = 49 : 1.05861	tmp2 = 0.158097
+[SignalSystematics] i = 50 : 0.994707	tmp2 = 0.158125
+[SignalSystematics] i = 51 : 0.979889	tmp2 = 0.158529
+[SignalSystematics] i = 52 : 1.03686	tmp2 = 0.159888
+[SignalSystematics] i = 53 : 1.01263	tmp2 = 0.160047
+[SignalSystematics] i = 54 : 0.976879	tmp2 = 0.160582
+[SignalSystematics] i = 55 : 1.00806	tmp2 = 0.160647
+[SignalSystematics] i = 56 : 0.956975	tmp2 = 0.162498
+[SignalSystematics] i = 57 : 1.02735	tmp2 = 0.163246
+[SignalSystematics] i = 58 : 0.981125	tmp2 = 0.163602
+[SignalSystematics] i = 59 : 0.978428	tmp2 = 0.164067
+[SignalSystematics] i = 60 : 0.982516	tmp2 = 0.164373
+[SignalSystematics] i = 61 : 1.01214	tmp2 = 0.16452
+[SignalSystematics] i = 62 : 0.982179	tmp2 = 0.164838
+[SignalSystematics] i = 63 : 0.985383	tmp2 = 0.165052
+[SignalSystematics] i = 64 : 1.02173	tmp2 = 0.165524
+[SignalSystematics] i = 65 : 1.03337	tmp2 = 0.166637
+[SignalSystematics] i = 66 : 0.939854	tmp2 = 0.170255
+[SignalSystematics] i = 67 : 0.996171	tmp2 = 0.170269
+[SignalSystematics] i = 68 : 0.98525	tmp2 = 0.170487
+[SignalSystematics] i = 69 : 0.985067	tmp2 = 0.17071
+[SignalSystematics] i = 70 : 0.990378	tmp2 = 0.170802
+[SignalSystematics] i = 71 : 1.01875	tmp2 = 0.171154
+[SignalSystematics] i = 72 : 0.993446	tmp2 = 0.171197
+[SignalSystematics] i = 73 : 0.978364	tmp2 = 0.171665
+[SignalSystematics] i = 74 : 0.994137	tmp2 = 0.1717
+[SignalSystematics] i = 75 : 0.991025	tmp2 = 0.17178
+[SignalSystematics] i = 76 : 1.00018	tmp2 = 0.17178
+[SignalSystematics] i = 77 : 0.975932	tmp2 = 0.172359
+[SignalSystematics] i = 78 : 1.00808	tmp2 = 0.172425
+[SignalSystematics] i = 79 : 1.01322	tmp2 = 0.172599
+[SignalSystematics] i = 80 : 0.996239	tmp2 = 0.172614
+[SignalSystematics] i = 81 : 0.991742	tmp2 = 0.172682
+[SignalSystematics] i = 82 : 0.999985	tmp2 = 0.172682
+[SignalSystematics] i = 83 : 1.00902	tmp2 = 0.172763
+[SignalSystematics] i = 84 : 0.9766	tmp2 = 0.173311
+[SignalSystematics] i = 85 : 1.01033	tmp2 = 0.173417
+[SignalSystematics] i = 86 : 1.02968	tmp2 = 0.174298
+[SignalSystematics] i = 87 : 0.970453	tmp2 = 0.175171
+[SignalSystematics] i = 88 : 1.00841	tmp2 = 0.175242
+[SignalSystematics] i = 89 : 0.990973	tmp2 = 0.175323
+[SignalSystematics] i = 90 : 1.00255	tmp2 = 0.17533
+[SignalSystematics] i = 91 : 0.98904	tmp2 = 0.17545
+[SignalSystematics] i = 92 : 1.01138	tmp2 = 0.17558
+[SignalSystematics] i = 93 : 0.974889	tmp2 = 0.17621
+[SignalSystematics] i = 94 : 1.00686	tmp2 = 0.176257
+[SignalSystematics] i = 95 : 1.00054	tmp2 = 0.176258
+[SignalSystematics] i = 96 : 1.01234	tmp2 = 0.17641
+[SignalSystematics] i = 97 : 0.982846	tmp2 = 0.176704
+[SignalSystematics] i = 98 : 1.00262	tmp2 = 0.176711
+[SignalSystematics] i = 99 : 1.00116	tmp2 = 0.176712
+[SignalSystematics] i = 100 : 0.999702	tmp2 = 0.176712
+[SignalSystematics] ----> Error = 0.420372
+[SignalSystematics] @@@@ AlphaS
+[SignalSystematics] i = 0 : 0.973679
+[SignalSystematics] i = 1 : 0.990507
+[SignalSystematics] ----> Error = 0.00841411
+[SignalSystematics] Getting eff values
+[SignalSystematics] @@@@ Scale 
+[SignalSystematics] hist->Integral() = 0.399969
+[SignalSystematics] hist->Integral() = 0.399969
+[SignalSystematics] hist->Integral() = 0.38894
+[SignalSystematics] hist->Integral() = 0.38894
+[SignalSystematics] hist->Integral() = 0.411746
+[SignalSystematics] hist->Integral() = 0.411746
+@@@@ Scale Integral : 0.399969	0.411746	0.38894
+@@@@ Scale Up = 0.0294436
+@@@@ Scale Dn = 0.0275743
+@@@@ Scale integral syst = 0.0294436
+Info in <TCanvas::Print>: pdf file /data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v3__Default/temp/190918_QuickSignalSyst//Scale_HNWR_SingleMuon_Boosted_SR.pdf has been created
+[SignalSystematics] @@@@ PDF Error
+bin 1 : central = 0
+  PDFSet 0 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 1 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 2 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 3 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 4 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 5 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 6 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 7 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 8 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 9 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 10 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 11 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 12 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 13 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 14 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 15 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 16 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 17 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 18 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 19 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 20 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 21 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 22 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 23 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 24 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 25 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 26 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 27 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 28 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 29 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 30 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 31 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 32 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 33 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 34 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 35 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 36 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 37 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 38 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 39 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 40 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 41 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 42 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 43 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 44 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 45 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 46 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 47 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 48 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 49 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 50 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 51 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 52 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 53 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 54 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 55 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 56 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 57 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 58 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 59 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 60 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 61 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 62 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 63 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 64 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 65 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 66 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 67 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 68 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 69 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 70 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 71 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 72 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 73 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 74 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 75 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 76 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 77 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 78 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 79 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 80 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 81 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 82 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 83 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 84 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 85 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 86 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 87 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 88 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 89 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 90 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 91 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 92 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 93 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 94 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 95 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 96 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 97 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 98 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 99 : 0 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 100 : 0 -> diff = 0 -> curretn sum diff2 = 0
+[SignalSystematics] bin 1 : 0, error = 0
+bin 2 : central = 0.0114985
+  PDFSet 0 : 0.0114985 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 1 : 0.0112244 -> diff = -0.000274053 -> curretn sum diff2 = 0
+  PDFSet 2 : 0.0117409 -> diff = 0.000242351 -> curretn sum diff2 = 7.51052e-08
+  PDFSet 3 : 0.011593 -> diff = 9.45352e-05 -> curretn sum diff2 = 1.33839e-07
+  PDFSet 4 : 0.0118579 -> diff = 0.000359393 -> curretn sum diff2 = 1.42776e-07
+  PDFSet 5 : 0.0113893 -> diff = -0.000109248 -> curretn sum diff2 = 2.7194e-07
+  PDFSet 6 : 0.0118228 -> diff = 0.000324286 -> curretn sum diff2 = 2.83875e-07
+  PDFSet 7 : 0.0115647 -> diff = 6.62178e-05 -> curretn sum diff2 = 3.89036e-07
+  PDFSet 8 : 0.0118536 -> diff = 0.000355137 -> curretn sum diff2 = 3.93421e-07
+  PDFSet 9 : 0.011828 -> diff = 0.000329533 -> curretn sum diff2 = 5.19543e-07
+  PDFSet 10 : 0.0114402 -> diff = -5.82643e-05 -> curretn sum diff2 = 6.28135e-07
+  PDFSet 11 : 0.0115372 -> diff = 3.87037e-05 -> curretn sum diff2 = 6.3153e-07
+  PDFSet 12 : 0.0116617 -> diff = 0.000163162 -> curretn sum diff2 = 6.33028e-07
+  PDFSet 13 : 0.0112385 -> diff = -0.000260015 -> curretn sum diff2 = 6.5965e-07
+  PDFSet 14 : 0.0118193 -> diff = 0.000320836 -> curretn sum diff2 = 7.27258e-07
+  PDFSet 15 : 0.0111806 -> diff = -0.000317947 -> curretn sum diff2 = 8.30193e-07
+  PDFSet 16 : 0.0116011 -> diff = 0.000102629 -> curretn sum diff2 = 9.31284e-07
+  PDFSet 17 : 0.0115823 -> diff = 8.37677e-05 -> curretn sum diff2 = 9.41816e-07
+  PDFSet 18 : 0.0115361 -> diff = 3.75596e-05 -> curretn sum diff2 = 9.48833e-07
+  PDFSet 19 : 0.0116437 -> diff = 0.000145248 -> curretn sum diff2 = 9.50244e-07
+  PDFSet 20 : 0.0112284 -> diff = -0.000270054 -> curretn sum diff2 = 9.71341e-07
+  PDFSet 21 : 0.0114503 -> diff = -4.82296e-05 -> curretn sum diff2 = 1.04427e-06
+  PDFSet 22 : 0.0116596 -> diff = 0.000161098 -> curretn sum diff2 = 1.0466e-06
+  PDFSet 23 : 0.0113841 -> diff = -0.000114374 -> curretn sum diff2 = 1.07255e-06
+  PDFSet 24 : 0.0116437 -> diff = 0.000145225 -> curretn sum diff2 = 1.08563e-06
+  PDFSet 25 : 0.0110925 -> diff = -0.00040605 -> curretn sum diff2 = 1.10672e-06
+  PDFSet 26 : 0.0116158 -> diff = 0.00011733 -> curretn sum diff2 = 1.2716e-06
+  PDFSet 27 : 0.0121009 -> diff = 0.000602425 -> curretn sum diff2 = 1.28536e-06
+  PDFSet 28 : 0.0114778 -> diff = -2.07098e-05 -> curretn sum diff2 = 1.64828e-06
+  PDFSet 29 : 0.0115289 -> diff = 3.04215e-05 -> curretn sum diff2 = 1.64871e-06
+  PDFSet 30 : 0.011908 -> diff = 0.000409526 -> curretn sum diff2 = 1.64963e-06
+  PDFSet 31 : 0.0107099 -> diff = -0.000788582 -> curretn sum diff2 = 1.81734e-06
+  PDFSet 32 : 0.0103225 -> diff = -0.00117598 -> curretn sum diff2 = 2.43921e-06
+  PDFSet 33 : 0.0140531 -> diff = 0.0025546 -> curretn sum diff2 = 3.82214e-06
+  PDFSet 34 : 0.011342 -> diff = -0.000156461 -> curretn sum diff2 = 1.03481e-05
+  PDFSet 35 : 0.012249 -> diff = 0.000750535 -> curretn sum diff2 = 1.03726e-05
+  PDFSet 36 : 0.0109434 -> diff = -0.000555127 -> curretn sum diff2 = 1.09359e-05
+  PDFSet 37 : 0.0131136 -> diff = 0.00161511 -> curretn sum diff2 = 1.12441e-05
+  PDFSet 38 : 0.0145043 -> diff = 0.00300582 -> curretn sum diff2 = 1.38526e-05
+  PDFSet 39 : 0.0120761 -> diff = 0.000577554 -> curretn sum diff2 = 2.28876e-05
+  PDFSet 40 : 0.0113945 -> diff = -0.000104046 -> curretn sum diff2 = 2.32212e-05
+  PDFSet 41 : 0.01182 -> diff = 0.000321522 -> curretn sum diff2 = 2.3232e-05
+  PDFSet 42 : 0.0122486 -> diff = 0.00075014 -> curretn sum diff2 = 2.33354e-05
+  PDFSet 43 : 0.0116393 -> diff = 0.000140794 -> curretn sum diff2 = 2.38981e-05
+  PDFSet 44 : 0.011531 -> diff = 3.24845e-05 -> curretn sum diff2 = 2.39179e-05
+  PDFSet 45 : 0.0119482 -> diff = 0.000449653 -> curretn sum diff2 = 2.39189e-05
+  PDFSet 46 : 0.0110897 -> diff = -0.000408804 -> curretn sum diff2 = 2.41211e-05
+  PDFSet 47 : 0.0110637 -> diff = -0.000434843 -> curretn sum diff2 = 2.42883e-05
+  PDFSet 48 : 0.010438 -> diff = -0.00106053 -> curretn sum diff2 = 2.44773e-05
+  PDFSet 49 : 0.0109006 -> diff = -0.000597937 -> curretn sum diff2 = 2.56021e-05
+  PDFSet 50 : 0.0115602 -> diff = 6.17133e-05 -> curretn sum diff2 = 2.59596e-05
+  PDFSet 51 : 0.0117433 -> diff = 0.000244815 -> curretn sum diff2 = 2.59634e-05
+  PDFSet 52 : 0.011086 -> diff = -0.000412529 -> curretn sum diff2 = 2.60233e-05
+  PDFSet 53 : 0.0113554 -> diff = -0.000143118 -> curretn sum diff2 = 2.61935e-05
+  PDFSet 54 : 0.0117763 -> diff = 0.000277795 -> curretn sum diff2 = 2.6214e-05
+  PDFSet 55 : 0.0114071 -> diff = -9.14123e-05 -> curretn sum diff2 = 2.62912e-05
+  PDFSet 56 : 0.0120155 -> diff = 0.000516949 -> curretn sum diff2 = 2.62995e-05
+  PDFSet 57 : 0.0111953 -> diff = -0.000303199 -> curretn sum diff2 = 2.65668e-05
+  PDFSet 58 : 0.0117383 -> diff = 0.000239831 -> curretn sum diff2 = 2.66587e-05
+  PDFSet 59 : 0.0117373 -> diff = 0.000238788 -> curretn sum diff2 = 2.67162e-05
+  PDFSet 60 : 0.0116863 -> diff = 0.00018776 -> curretn sum diff2 = 2.67732e-05
+  PDFSet 61 : 0.0113533 -> diff = -0.000145184 -> curretn sum diff2 = 2.68085e-05
+  PDFSet 62 : 0.0116965 -> diff = 0.000198045 -> curretn sum diff2 = 2.68296e-05
+  PDFSet 63 : 0.0116584 -> diff = 0.000159893 -> curretn sum diff2 = 2.68688e-05
+  PDFSet 64 : 0.0112434 -> diff = -0.000255072 -> curretn sum diff2 = 2.68944e-05
+  PDFSet 65 : 0.0111441 -> diff = -0.000354428 -> curretn sum diff2 = 2.69594e-05
+  PDFSet 66 : 0.0122208 -> diff = 0.000722306 -> curretn sum diff2 = 2.7085e-05
+  PDFSet 67 : 0.0115384 -> diff = 3.98676e-05 -> curretn sum diff2 = 2.76068e-05
+  PDFSet 68 : 0.0116731 -> diff = 0.000174556 -> curretn sum diff2 = 2.76084e-05
+  PDFSet 69 : 0.0116593 -> diff = 0.000160768 -> curretn sum diff2 = 2.76388e-05
+  PDFSet 70 : 0.0116174 -> diff = 0.000118935 -> curretn sum diff2 = 2.76647e-05
+  PDFSet 71 : 0.0112873 -> diff = -0.000211193 -> curretn sum diff2 = 2.76788e-05
+  PDFSet 72 : 0.0115858 -> diff = 8.73395e-05 -> curretn sum diff2 = 2.77234e-05
+  PDFSet 73 : 0.0117594 -> diff = 0.000260888 -> curretn sum diff2 = 2.7731e-05
+  PDFSet 74 : 0.0115593 -> diff = 6.0833e-05 -> curretn sum diff2 = 2.77991e-05
+  PDFSet 75 : 0.0115964 -> diff = 9.78809e-05 -> curretn sum diff2 = 2.78028e-05
+  PDFSet 76 : 0.0115001 -> diff = 1.54855e-06 -> curretn sum diff2 = 2.78124e-05
+  PDFSet 77 : 0.011781 -> diff = 0.000282465 -> curretn sum diff2 = 2.78124e-05
+  PDFSet 78 : 0.0114056 -> diff = -9.28527e-05 -> curretn sum diff2 = 2.78922e-05
+  PDFSet 79 : 0.0113449 -> diff = -0.000153615 -> curretn sum diff2 = 2.79008e-05
+  PDFSet 80 : 0.0115343 -> diff = 3.58371e-05 -> curretn sum diff2 = 2.79244e-05
+  PDFSet 81 : 0.0115959 -> diff = 9.74289e-05 -> curretn sum diff2 = 2.79257e-05
+  PDFSet 82 : 0.0114966 -> diff = -1.86314e-06 -> curretn sum diff2 = 2.79352e-05
+  PDFSet 83 : 0.0113975 -> diff = -0.000101027 -> curretn sum diff2 = 2.79352e-05
+  PDFSet 84 : 0.0117809 -> diff = 0.000282447 -> curretn sum diff2 = 2.79454e-05
+  PDFSet 85 : 0.0113679 -> diff = -0.000130563 -> curretn sum diff2 = 2.80252e-05
+  PDFSet 86 : 0.0111626 -> diff = -0.000335912 -> curretn sum diff2 = 2.80422e-05
+  PDFSet 87 : 0.0118444 -> diff = 0.000345857 -> curretn sum diff2 = 2.8155e-05
+  PDFSet 88 : 0.0114093 -> diff = -8.92042e-05 -> curretn sum diff2 = 2.82747e-05
+  PDFSet 89 : 0.0116021 -> diff = 0.000103633 -> curretn sum diff2 = 2.82826e-05
+  PDFSet 90 : 0.0114647 -> diff = -3.3825e-05 -> curretn sum diff2 = 2.82934e-05
+  PDFSet 91 : 0.0116275 -> diff = 0.000128972 -> curretn sum diff2 = 2.82945e-05
+  PDFSet 92 : 0.0113759 -> diff = -0.0001226 -> curretn sum diff2 = 2.83111e-05
+  PDFSet 93 : 0.0117835 -> diff = 0.000285022 -> curretn sum diff2 = 2.83262e-05
+  PDFSet 94 : 0.0114244 -> diff = -7.4078e-05 -> curretn sum diff2 = 2.84074e-05
+  PDFSet 95 : 0.0114917 -> diff = -6.83333e-06 -> curretn sum diff2 = 2.84129e-05
+  PDFSet 96 : 0.011359 -> diff = -0.000139455 -> curretn sum diff2 = 2.84129e-05
+  PDFSet 97 : 0.0117022 -> diff = 0.000203705 -> curretn sum diff2 = 2.84324e-05
+  PDFSet 98 : 0.0114622 -> diff = -3.6333e-05 -> curretn sum diff2 = 2.84739e-05
+  PDFSet 99 : 0.0114872 -> diff = -1.12778e-05 -> curretn sum diff2 = 2.84752e-05
+  PDFSet 100 : 0.0115058 -> diff = 7.3036e-06 -> curretn sum diff2 = 2.84753e-05
+[SignalSystematics] bin 2 : 0.022872, error = 0.0106144
+bin 3 : central = 0.0116152
+  PDFSet 0 : 0.0116152 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 1 : 0.0113341 -> diff = -0.000281177 -> curretn sum diff2 = 0
+  PDFSet 2 : 0.0118727 -> diff = 0.000257482 -> curretn sum diff2 = 7.90606e-08
+  PDFSet 3 : 0.0117177 -> diff = 0.00010245 -> curretn sum diff2 = 1.45358e-07
+  PDFSet 4 : 0.0119738 -> diff = 0.000358552 -> curretn sum diff2 = 1.55854e-07
+  PDFSet 5 : 0.0115054 -> diff = -0.000109821 -> curretn sum diff2 = 2.84413e-07
+  PDFSet 6 : 0.0119577 -> diff = 0.000342483 -> curretn sum diff2 = 2.96474e-07
+  PDFSet 7 : 0.0116822 -> diff = 6.69904e-05 -> curretn sum diff2 = 4.13768e-07
+  PDFSet 8 : 0.0119891 -> diff = 0.000373897 -> curretn sum diff2 = 4.18256e-07
+  PDFSet 9 : 0.0119506 -> diff = 0.000335332 -> curretn sum diff2 = 5.58055e-07
+  PDFSet 10 : 0.011563 -> diff = -5.22534e-05 -> curretn sum diff2 = 6.70502e-07
+  PDFSet 11 : 0.0116581 -> diff = 4.28819e-05 -> curretn sum diff2 = 6.73233e-07
+  PDFSet 12 : 0.0117751 -> diff = 0.000159838 -> curretn sum diff2 = 6.75072e-07
+  PDFSet 13 : 0.0113493 -> diff = -0.000265974 -> curretn sum diff2 = 7.0062e-07
+  PDFSet 14 : 0.0119435 -> diff = 0.000328226 -> curretn sum diff2 = 7.71362e-07
+  PDFSet 15 : 0.0112827 -> diff = -0.000332564 -> curretn sum diff2 = 8.79094e-07
+  PDFSet 16 : 0.0117181 -> diff = 0.000102854 -> curretn sum diff2 = 9.89693e-07
+  PDFSet 17 : 0.0117056 -> diff = 9.03694e-05 -> curretn sum diff2 = 1.00027e-06
+  PDFSet 18 : 0.011652 -> diff = 3.67898e-05 -> curretn sum diff2 = 1.00844e-06
+  PDFSet 19 : 0.0117675 -> diff = 0.000152257 -> curretn sum diff2 = 1.00979e-06
+  PDFSet 20 : 0.0113364 -> diff = -0.000278814 -> curretn sum diff2 = 1.03297e-06
+  PDFSet 21 : 0.0115662 -> diff = -4.89918e-05 -> curretn sum diff2 = 1.11071e-06
+  PDFSet 22 : 0.0117752 -> diff = 0.000159936 -> curretn sum diff2 = 1.11311e-06
+  PDFSet 23 : 0.011498 -> diff = -0.000117276 -> curretn sum diff2 = 1.13869e-06
+  PDFSet 24 : 0.0117596 -> diff = 0.000144364 -> curretn sum diff2 = 1.15244e-06
+  PDFSet 25 : 0.0112013 -> diff = -0.000413982 -> curretn sum diff2 = 1.17329e-06
+  PDFSet 26 : 0.0117283 -> diff = 0.000113079 -> curretn sum diff2 = 1.34467e-06
+  PDFSet 27 : 0.0122294 -> diff = 0.00061416 -> curretn sum diff2 = 1.35745e-06
+  PDFSet 28 : 0.0116005 -> diff = -1.47519e-05 -> curretn sum diff2 = 1.73465e-06
+  PDFSet 29 : 0.0116263 -> diff = 1.10238e-05 -> curretn sum diff2 = 1.73486e-06
+  PDFSet 30 : 0.0120204 -> diff = 0.000405146 -> curretn sum diff2 = 1.73498e-06
+  PDFSet 31 : 0.0108117 -> diff = -0.000803537 -> curretn sum diff2 = 1.89913e-06
+  PDFSet 32 : 0.0104184 -> diff = -0.00119684 -> curretn sum diff2 = 2.5448e-06
+  PDFSet 33 : 0.0142096 -> diff = 0.00259438 -> curretn sum diff2 = 3.97724e-06
+  PDFSet 34 : 0.0114528 -> diff = -0.000162428 -> curretn sum diff2 = 1.07081e-05
+  PDFSet 35 : 0.0123866 -> diff = 0.000771355 -> curretn sum diff2 = 1.07344e-05
+  PDFSet 36 : 0.0110568 -> diff = -0.000558397 -> curretn sum diff2 = 1.13294e-05
+  PDFSet 37 : 0.0132579 -> diff = 0.00164263 -> curretn sum diff2 = 1.16412e-05
+  PDFSet 38 : 0.0146831 -> diff = 0.00306786 -> curretn sum diff2 = 1.43395e-05
+  PDFSet 39 : 0.0121995 -> diff = 0.000584213 -> curretn sum diff2 = 2.37512e-05
+  PDFSet 40 : 0.011509 -> diff = -0.000106209 -> curretn sum diff2 = 2.40925e-05
+  PDFSet 41 : 0.0119367 -> diff = 0.000321471 -> curretn sum diff2 = 2.41038e-05
+  PDFSet 42 : 0.0123855 -> diff = 0.000770302 -> curretn sum diff2 = 2.42072e-05
+  PDFSet 43 : 0.0117632 -> diff = 0.000147931 -> curretn sum diff2 = 2.48005e-05
+  PDFSet 44 : 0.0116518 -> diff = 3.65759e-05 -> curretn sum diff2 = 2.48224e-05
+  PDFSet 45 : 0.0120707 -> diff = 0.000455511 -> curretn sum diff2 = 2.48238e-05
+  PDFSet 46 : 0.0111897 -> diff = -0.000425499 -> curretn sum diff2 = 2.50312e-05
+  PDFSet 47 : 0.0111599 -> diff = -0.000455378 -> curretn sum diff2 = 2.52123e-05
+  PDFSet 48 : 0.0105275 -> diff = -0.00108779 -> curretn sum diff2 = 2.54197e-05
+  PDFSet 49 : 0.0109974 -> diff = -0.000617882 -> curretn sum diff2 = 2.66029e-05
+  PDFSet 50 : 0.011684 -> diff = 6.87869e-05 -> curretn sum diff2 = 2.69847e-05
+  PDFSet 51 : 0.0118784 -> diff = 0.000263187 -> curretn sum diff2 = 2.69895e-05
+  PDFSet 52 : 0.0111863 -> diff = -0.000428967 -> curretn sum diff2 = 2.70587e-05
+  PDFSet 53 : 0.0114736 -> diff = -0.000141656 -> curretn sum diff2 = 2.72427e-05
+  PDFSet 54 : 0.0119027 -> diff = 0.000287508 -> curretn sum diff2 = 2.72628e-05
+  PDFSet 55 : 0.0115382 -> diff = -7.7023e-05 -> curretn sum diff2 = 2.73455e-05
+  PDFSet 56 : 0.0121481 -> diff = 0.000532879 -> curretn sum diff2 = 2.73514e-05
+  PDFSet 57 : 0.0112947 -> diff = -0.000320559 -> curretn sum diff2 = 2.76354e-05
+  PDFSet 58 : 0.0118587 -> diff = 0.000243434 -> curretn sum diff2 = 2.77381e-05
+  PDFSet 59 : 0.0118509 -> diff = 0.000235649 -> curretn sum diff2 = 2.77974e-05
+  PDFSet 60 : 0.0117943 -> diff = 0.000179057 -> curretn sum diff2 = 2.78529e-05
+  PDFSet 61 : 0.0114596 -> diff = -0.000155593 -> curretn sum diff2 = 2.7885e-05
+  PDFSet 62 : 0.0118293 -> diff = 0.000214067 -> curretn sum diff2 = 2.79092e-05
+  PDFSet 63 : 0.0117897 -> diff = 0.000174467 -> curretn sum diff2 = 2.7955e-05
+  PDFSet 64 : 0.011343 -> diff = -0.000272229 -> curretn sum diff2 = 2.79854e-05
+  PDFSet 65 : 0.0112574 -> diff = -0.000357861 -> curretn sum diff2 = 2.80596e-05
+  PDFSet 66 : 0.0123428 -> diff = 0.00072754 -> curretn sum diff2 = 2.81876e-05
+  PDFSet 67 : 0.0116565 -> diff = 4.13064e-05 -> curretn sum diff2 = 2.87169e-05
+  PDFSet 68 : 0.0117981 -> diff = 0.00018288 -> curretn sum diff2 = 2.87186e-05
+  PDFSet 69 : 0.0117825 -> diff = 0.000167287 -> curretn sum diff2 = 2.87521e-05
+  PDFSet 70 : 0.0117371 -> diff = 0.000121876 -> curretn sum diff2 = 2.87801e-05
+  PDFSet 71 : 0.0114095 -> diff = -0.000205783 -> curretn sum diff2 = 2.87949e-05
+  PDFSet 72 : 0.0117043 -> diff = 8.90917e-05 -> curretn sum diff2 = 2.88373e-05
+  PDFSet 73 : 0.011881 -> diff = 0.000265715 -> curretn sum diff2 = 2.88452e-05
+  PDFSet 74 : 0.0116736 -> diff = 5.83527e-05 -> curretn sum diff2 = 2.89158e-05
+  PDFSet 75 : 0.0117216 -> diff = 0.000106318 -> curretn sum diff2 = 2.89192e-05
+  PDFSet 76 : 0.0116217 -> diff = 6.48188e-06 -> curretn sum diff2 = 2.89305e-05
+  PDFSet 77 : 0.0118961 -> diff = 0.000280851 -> curretn sum diff2 = 2.89306e-05
+  PDFSet 78 : 0.0115249 -> diff = -9.03748e-05 -> curretn sum diff2 = 2.90094e-05
+  PDFSet 79 : 0.0114599 -> diff = -0.000155357 -> curretn sum diff2 = 2.90176e-05
+  PDFSet 80 : 0.011652 -> diff = 3.67559e-05 -> curretn sum diff2 = 2.90417e-05
+  PDFSet 81 : 0.0117073 -> diff = 9.20344e-05 -> curretn sum diff2 = 2.90431e-05
+  PDFSet 82 : 0.0116142 -> diff = -1.01125e-06 -> curretn sum diff2 = 2.90516e-05
+  PDFSet 83 : 0.0115154 -> diff = -9.98286e-05 -> curretn sum diff2 = 2.90516e-05
+  PDFSet 84 : 0.0119006 -> diff = 0.000285365 -> curretn sum diff2 = 2.90615e-05
+  PDFSet 85 : 0.0114876 -> diff = -0.000127685 -> curretn sum diff2 = 2.9143e-05
+  PDFSet 86 : 0.011272 -> diff = -0.000343271 -> curretn sum diff2 = 2.91593e-05
+  PDFSet 87 : 0.0119637 -> diff = 0.000348492 -> curretn sum diff2 = 2.92771e-05
+  PDFSet 88 : 0.011523 -> diff = -9.22488e-05 -> curretn sum diff2 = 2.93985e-05
+  PDFSet 89 : 0.0117267 -> diff = 0.000111443 -> curretn sum diff2 = 2.94071e-05
+  PDFSet 90 : 0.0115816 -> diff = -3.36699e-05 -> curretn sum diff2 = 2.94195e-05
+  PDFSet 91 : 0.0117448 -> diff = 0.000129531 -> curretn sum diff2 = 2.94206e-05
+  PDFSet 92 : 0.0114923 -> diff = -0.000122897 -> curretn sum diff2 = 2.94374e-05
+  PDFSet 93 : 0.0119039 -> diff = 0.000288645 -> curretn sum diff2 = 2.94525e-05
+  PDFSet 94 : 0.0115437 -> diff = -7.15841e-05 -> curretn sum diff2 = 2.95358e-05
+  PDFSet 95 : 0.0116076 -> diff = -7.64065e-06 -> curretn sum diff2 = 2.95409e-05
+  PDFSet 96 : 0.0114741 -> diff = -0.000141153 -> curretn sum diff2 = 2.9541e-05
+  PDFSet 97 : 0.0118245 -> diff = 0.000209241 -> curretn sum diff2 = 2.95609e-05
+  PDFSet 98 : 0.0115741 -> diff = -4.10983e-05 -> curretn sum diff2 = 2.96047e-05
+  PDFSet 99 : 0.0116014 -> diff = -1.38717e-05 -> curretn sum diff2 = 2.96064e-05
+  PDFSet 100 : 0.0116176 -> diff = 2.36782e-06 -> curretn sum diff2 = 2.96066e-05
+[SignalSystematics] bin 3 : 0.0231042, error = 0.0108232
+bin 4 : central = 0.0168684
+  PDFSet 0 : 0.0168684 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 1 : 0.0164635 -> diff = -0.000404864 -> curretn sum diff2 = 0
+  PDFSet 2 : 0.0172579 -> diff = 0.00038949 -> curretn sum diff2 = 1.63915e-07
+  PDFSet 3 : 0.0170211 -> diff = 0.00015273 -> curretn sum diff2 = 3.15617e-07
+  PDFSet 4 : 0.0173677 -> diff = 0.00049936 -> curretn sum diff2 = 3.38944e-07
+  PDFSet 5 : 0.0167109 -> diff = -0.000157425 -> curretn sum diff2 = 5.88304e-07
+  PDFSet 6 : 0.0173745 -> diff = 0.000506154 -> curretn sum diff2 = 6.13087e-07
+  PDFSet 7 : 0.0169685 -> diff = 0.000100097 -> curretn sum diff2 = 8.69278e-07
+  PDFSet 8 : 0.0174161 -> diff = 0.000547696 -> curretn sum diff2 = 8.79298e-07
+  PDFSet 9 : 0.017352 -> diff = 0.00048366 -> curretn sum diff2 = 1.17927e-06
+  PDFSet 10 : 0.0168037 -> diff = -6.46523e-05 -> curretn sum diff2 = 1.4132e-06
+  PDFSet 11 : 0.0169361 -> diff = 6.77091e-05 -> curretn sum diff2 = 1.41738e-06
+  PDFSet 12 : 0.0170855 -> diff = 0.000217154 -> curretn sum diff2 = 1.42196e-06
+  PDFSet 13 : 0.0164864 -> diff = -0.000381925 -> curretn sum diff2 = 1.46912e-06
+  PDFSet 14 : 0.0173445 -> diff = 0.000476137 -> curretn sum diff2 = 1.61498e-06
+  PDFSet 15 : 0.0163735 -> diff = -0.000494899 -> curretn sum diff2 = 1.84169e-06
+  PDFSet 16 : 0.0170138 -> diff = 0.000145456 -> curretn sum diff2 = 2.08661e-06
+  PDFSet 17 : 0.0170097 -> diff = 0.000141356 -> curretn sum diff2 = 2.10777e-06
+  PDFSet 18 : 0.0169144 -> diff = 4.59899e-05 -> curretn sum diff2 = 2.12775e-06
+  PDFSet 19 : 0.0170965 -> diff = 0.000228189 -> curretn sum diff2 = 2.12987e-06
+  PDFSet 20 : 0.016466 -> diff = -0.000402335 -> curretn sum diff2 = 2.18194e-06
+  PDFSet 21 : 0.0167964 -> diff = -7.19241e-05 -> curretn sum diff2 = 2.34381e-06
+  PDFSet 22 : 0.0170949 -> diff = 0.000226491 -> curretn sum diff2 = 2.34899e-06
+  PDFSet 23 : 0.0166954 -> diff = -0.000172992 -> curretn sum diff2 = 2.40028e-06
+  PDFSet 24 : 0.0170708 -> diff = 0.000202434 -> curretn sum diff2 = 2.43021e-06
+  PDFSet 25 : 0.0162707 -> diff = -0.00059768 -> curretn sum diff2 = 2.47119e-06
+  PDFSet 26 : 0.0170197 -> diff = 0.000151335 -> curretn sum diff2 = 2.82841e-06
+  PDFSet 27 : 0.0177481 -> diff = 0.000879716 -> curretn sum diff2 = 2.85131e-06
+  PDFSet 28 : 0.0168503 -> diff = -1.80309e-05 -> curretn sum diff2 = 3.62521e-06
+  PDFSet 29 : 0.0168702 -> diff = 1.7939e-06 -> curretn sum diff2 = 3.62554e-06
+  PDFSet 30 : 0.0174691 -> diff = 0.000600729 -> curretn sum diff2 = 3.62554e-06
+  PDFSet 31 : 0.0157132 -> diff = -0.00115514 -> curretn sum diff2 = 3.98642e-06
+  PDFSet 32 : 0.0151514 -> diff = -0.00171698 -> curretn sum diff2 = 5.32077e-06
+  PDFSet 33 : 0.0205774 -> diff = 0.00370899 -> curretn sum diff2 = 8.26881e-06
+  PDFSet 34 : 0.0166304 -> diff = -0.000237978 -> curretn sum diff2 = 2.20254e-05
+  PDFSet 35 : 0.0179822 -> diff = 0.00111386 -> curretn sum diff2 = 2.20821e-05
+  PDFSet 36 : 0.0160714 -> diff = -0.000796922 -> curretn sum diff2 = 2.33228e-05
+  PDFSet 37 : 0.0192102 -> diff = 0.00234181 -> curretn sum diff2 = 2.39578e-05
+  PDFSet 38 : 0.0212454 -> diff = 0.00437706 -> curretn sum diff2 = 2.94419e-05
+  PDFSet 39 : 0.0177025 -> diff = 0.000834145 -> curretn sum diff2 = 4.86006e-05
+  PDFSet 40 : 0.016713 -> diff = -0.000155325 -> curretn sum diff2 = 4.92964e-05
+  PDFSet 41 : 0.0173311 -> diff = 0.00046269 -> curretn sum diff2 = 4.93205e-05
+  PDFSet 42 : 0.0179782 -> diff = 0.00110983 -> curretn sum diff2 = 4.95346e-05
+  PDFSet 43 : 0.0170777 -> diff = 0.000209378 -> curretn sum diff2 = 5.07663e-05
+  PDFSet 44 : 0.0169203 -> diff = 5.19306e-05 -> curretn sum diff2 = 5.08101e-05
+  PDFSet 45 : 0.0175142 -> diff = 0.000645868 -> curretn sum diff2 = 5.08128e-05
+  PDFSet 46 : 0.0162589 -> diff = -0.000609504 -> curretn sum diff2 = 5.123e-05
+  PDFSet 47 : 0.0162174 -> diff = -0.00065095 -> curretn sum diff2 = 5.16015e-05
+  PDFSet 48 : 0.0153242 -> diff = -0.00154416 -> curretn sum diff2 = 5.20252e-05
+  PDFSet 49 : 0.0159804 -> diff = -0.000887978 -> curretn sum diff2 = 5.44096e-05
+  PDFSet 50 : 0.0169563 -> diff = 8.79261e-05 -> curretn sum diff2 = 5.51981e-05
+  PDFSet 51 : 0.0172381 -> diff = 0.000369764 -> curretn sum diff2 = 5.52059e-05
+  PDFSet 52 : 0.0162539 -> diff = -0.000614412 -> curretn sum diff2 = 5.53426e-05
+  PDFSet 53 : 0.0166715 -> diff = -0.00019688 -> curretn sum diff2 = 5.57201e-05
+  PDFSet 54 : 0.0172771 -> diff = 0.000408696 -> curretn sum diff2 = 5.57589e-05
+  PDFSet 55 : 0.0167777 -> diff = -9.06986e-05 -> curretn sum diff2 = 5.59259e-05
+  PDFSet 56 : 0.0176556 -> diff = 0.000787236 -> curretn sum diff2 = 5.59341e-05
+  PDFSet 57 : 0.0164009 -> diff = -0.000467479 -> curretn sum diff2 = 5.65539e-05
+  PDFSet 58 : 0.0172176 -> diff = 0.000349196 -> curretn sum diff2 = 5.67724e-05
+  PDFSet 59 : 0.0172022 -> diff = 0.000333813 -> curretn sum diff2 = 5.68943e-05
+  PDFSet 60 : 0.0171188 -> diff = 0.000250419 -> curretn sum diff2 = 5.70058e-05
+  PDFSet 61 : 0.0166263 -> diff = -0.000242045 -> curretn sum diff2 = 5.70685e-05
+  PDFSet 62 : 0.0171897 -> diff = 0.000321343 -> curretn sum diff2 = 5.71271e-05
+  PDFSet 63 : 0.0171299 -> diff = 0.000261551 -> curretn sum diff2 = 5.72303e-05
+  PDFSet 64 : 0.0164744 -> diff = -0.000393998 -> curretn sum diff2 = 5.72987e-05
+  PDFSet 65 : 0.0163695 -> diff = -0.000498856 -> curretn sum diff2 = 5.7454e-05
+  PDFSet 66 : 0.0178881 -> diff = 0.00101971 -> curretn sum diff2 = 5.77028e-05
+  PDFSet 67 : 0.0169231 -> diff = 5.46959e-05 -> curretn sum diff2 = 5.87426e-05
+  PDFSet 68 : 0.0171258 -> diff = 0.000257483 -> curretn sum diff2 = 5.87456e-05
+  PDFSet 69 : 0.0171008 -> diff = 0.000232393 -> curretn sum diff2 = 5.88119e-05
+  PDFSet 70 : 0.0170437 -> diff = 0.00017537 -> curretn sum diff2 = 5.88659e-05
+  PDFSet 71 : 0.0165986 -> diff = -0.000269786 -> curretn sum diff2 = 5.88967e-05
+  PDFSet 72 : 0.0170192 -> diff = 0.000150816 -> curretn sum diff2 = 5.89695e-05
+  PDFSet 73 : 0.0172378 -> diff = 0.000369408 -> curretn sum diff2 = 5.89922e-05
+  PDFSet 74 : 0.0169291 -> diff = 6.07627e-05 -> curretn sum diff2 = 5.91287e-05
+  PDFSet 75 : 0.0170125 -> diff = 0.000144146 -> curretn sum diff2 = 5.91324e-05
+  PDFSet 76 : 0.0168995 -> diff = 3.10989e-05 -> curretn sum diff2 = 5.91531e-05
+  PDFSet 77 : 0.0172914 -> diff = 0.000423019 -> curretn sum diff2 = 5.91541e-05
+  PDFSet 78 : 0.0167489 -> diff = -0.000119444 -> curretn sum diff2 = 5.9333e-05
+  PDFSet 79 : 0.0166648 -> diff = -0.000203583 -> curretn sum diff2 = 5.93473e-05
+  PDFSet 80 : 0.0169179 -> diff = 4.95268e-05 -> curretn sum diff2 = 5.93888e-05
+  PDFSet 81 : 0.0169922 -> diff = 0.000123824 -> curretn sum diff2 = 5.93912e-05
+  PDFSet 82 : 0.016865 -> diff = -3.34461e-06 -> curretn sum diff2 = 5.94065e-05
+  PDFSet 83 : 0.0167271 -> diff = -0.000141219 -> curretn sum diff2 = 5.94066e-05
+  PDFSet 84 : 0.0172887 -> diff = 0.000420335 -> curretn sum diff2 = 5.94265e-05
+  PDFSet 85 : 0.0166659 -> diff = -0.000202437 -> curretn sum diff2 = 5.96032e-05
+  PDFSet 86 : 0.0163835 -> diff = -0.000484881 -> curretn sum diff2 = 5.96442e-05
+  PDFSet 87 : 0.0173637 -> diff = 0.000495325 -> curretn sum diff2 = 5.98793e-05
+  PDFSet 88 : 0.0167456 -> diff = -0.000122745 -> curretn sum diff2 = 6.01246e-05
+  PDFSet 89 : 0.0170173 -> diff = 0.000148986 -> curretn sum diff2 = 6.01397e-05
+  PDFSet 90 : 0.0168118 -> diff = -5.65789e-05 -> curretn sum diff2 = 6.01619e-05
+  PDFSet 91 : 0.0170547 -> diff = 0.000186387 -> curretn sum diff2 = 6.01651e-05
+  PDFSet 92 : 0.0167052 -> diff = -0.000163123 -> curretn sum diff2 = 6.01998e-05
+  PDFSet 93 : 0.0172719 -> diff = 0.000403499 -> curretn sum diff2 = 6.02264e-05
+  PDFSet 94 : 0.0167766 -> diff = -9.18086e-05 -> curretn sum diff2 = 6.03892e-05
+  PDFSet 95 : 0.0168703 -> diff = 1.96905e-06 -> curretn sum diff2 = 6.03977e-05
+  PDFSet 96 : 0.016669 -> diff = -0.000199348 -> curretn sum diff2 = 6.03977e-05
+  PDFSet 97 : 0.0171848 -> diff = 0.00031641 -> curretn sum diff2 = 6.04374e-05
+  PDFSet 98 : 0.0167976 -> diff = -7.07407e-05 -> curretn sum diff2 = 6.05375e-05
+  PDFSet 99 : 0.0168554 -> diff = -1.29329e-05 -> curretn sum diff2 = 6.05425e-05
+  PDFSet 100 : 0.0168652 -> diff = -3.15559e-06 -> curretn sum diff2 = 6.05427e-05
+[SignalSystematics] bin 4 : 0.0335533, error = 0.0154772
+bin 5 : central = 0.0151951
+  PDFSet 0 : 0.0151951 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 1 : 0.0148391 -> diff = -0.000356084 -> curretn sum diff2 = 0
+  PDFSet 2 : 0.0155387 -> diff = 0.000343519 -> curretn sum diff2 = 1.26796e-07
+  PDFSet 3 : 0.0153323 -> diff = 0.000137148 -> curretn sum diff2 = 2.44801e-07
+  PDFSet 4 : 0.0156305 -> diff = 0.000435377 -> curretn sum diff2 = 2.63611e-07
+  PDFSet 5 : 0.0150536 -> diff = -0.000141513 -> curretn sum diff2 = 4.53164e-07
+  PDFSet 6 : 0.0156578 -> diff = 0.000462625 -> curretn sum diff2 = 4.73189e-07
+  PDFSet 7 : 0.0152922 -> diff = 9.70288e-05 -> curretn sum diff2 = 6.87212e-07
+  PDFSet 8 : 0.0156977 -> diff = 0.000502519 -> curretn sum diff2 = 6.96626e-07
+  PDFSet 9 : 0.0156205 -> diff = 0.000425372 -> curretn sum diff2 = 9.49152e-07
+  PDFSet 10 : 0.015148 -> diff = -4.71703e-05 -> curretn sum diff2 = 1.13009e-06
+  PDFSet 11 : 0.0152623 -> diff = 6.71316e-05 -> curretn sum diff2 = 1.13232e-06
+  PDFSet 12 : 0.0153832 -> diff = 0.000188068 -> curretn sum diff2 = 1.13683e-06
+  PDFSet 13 : 0.0148548 -> diff = -0.000340372 -> curretn sum diff2 = 1.17219e-06
+  PDFSet 14 : 0.0156161 -> diff = 0.000420975 -> curretn sum diff2 = 1.28805e-06
+  PDFSet 15 : 0.0147473 -> diff = -0.000447828 -> curretn sum diff2 = 1.46527e-06
+  PDFSet 16 : 0.0153165 -> diff = 0.000121387 -> curretn sum diff2 = 1.66582e-06
+  PDFSet 17 : 0.0153282 -> diff = 0.000133063 -> curretn sum diff2 = 1.68055e-06
+  PDFSet 18 : 0.0152317 -> diff = 3.65643e-05 -> curretn sum diff2 = 1.69826e-06
+  PDFSet 19 : 0.0154065 -> diff = 0.000211396 -> curretn sum diff2 = 1.6996e-06
+  PDFSet 20 : 0.0148364 -> diff = -0.000358747 -> curretn sum diff2 = 1.74428e-06
+  PDFSet 21 : 0.0151309 -> diff = -6.42341e-05 -> curretn sum diff2 = 1.87298e-06
+  PDFSet 22 : 0.0154004 -> diff = 0.00020526 -> curretn sum diff2 = 1.87711e-06
+  PDFSet 23 : 0.0150376 -> diff = -0.000157572 -> curretn sum diff2 = 1.91924e-06
+  PDFSet 24 : 0.0153664 -> diff = 0.000171251 -> curretn sum diff2 = 1.94407e-06
+  PDFSet 25 : 0.0146634 -> diff = -0.000531748 -> curretn sum diff2 = 1.9734e-06
+  PDFSet 26 : 0.0153153 -> diff = 0.00012018 -> curretn sum diff2 = 2.25615e-06
+  PDFSet 27 : 0.0159699 -> diff = 0.000774764 -> curretn sum diff2 = 2.2706e-06
+  PDFSet 28 : 0.0151817 -> diff = -1.34853e-05 -> curretn sum diff2 = 2.87086e-06
+  PDFSet 29 : 0.0151942 -> diff = -9.84622e-07 -> curretn sum diff2 = 2.87104e-06
+  PDFSet 30 : 0.0157274 -> diff = 0.000532279 -> curretn sum diff2 = 2.87104e-06
+  PDFSet 31 : 0.0141725 -> diff = -0.00102267 -> curretn sum diff2 = 3.15436e-06
+  PDFSet 32 : 0.0136725 -> diff = -0.00152262 -> curretn sum diff2 = 4.20022e-06
+  PDFSet 33 : 0.0184795 -> diff = 0.00328436 -> curretn sum diff2 = 6.5186e-06
+  PDFSet 34 : 0.0149823 -> diff = -0.000212847 -> curretn sum diff2 = 1.73056e-05
+  PDFSet 35 : 0.0161924 -> diff = 0.000997285 -> curretn sum diff2 = 1.73509e-05
+  PDFSet 36 : 0.014493 -> diff = -0.00070211 -> curretn sum diff2 = 1.83455e-05
+  PDFSet 37 : 0.0172684 -> diff = 0.00207322 -> curretn sum diff2 = 1.88385e-05
+  PDFSet 38 : 0.0190989 -> diff = 0.00390373 -> curretn sum diff2 = 2.31367e-05
+  PDFSet 39 : 0.0159397 -> diff = 0.000744592 -> curretn sum diff2 = 3.83758e-05
+  PDFSet 40 : 0.0150589 -> diff = -0.000136251 -> curretn sum diff2 = 3.89302e-05
+  PDFSet 41 : 0.0156075 -> diff = 0.000412316 -> curretn sum diff2 = 3.89488e-05
+  PDFSet 42 : 0.0161956 -> diff = 0.0010005 -> curretn sum diff2 = 3.91188e-05
+  PDFSet 43 : 0.015374 -> diff = 0.000178891 -> curretn sum diff2 = 4.01198e-05
+  PDFSet 44 : 0.0152498 -> diff = 5.46782e-05 -> curretn sum diff2 = 4.01518e-05
+  PDFSet 45 : 0.0157489 -> diff = 0.000553768 -> curretn sum diff2 = 4.01548e-05
+  PDFSet 46 : 0.0146682 -> diff = -0.000526985 -> curretn sum diff2 = 4.04615e-05
+  PDFSet 47 : 0.0146297 -> diff = -0.00056548 -> curretn sum diff2 = 4.07392e-05
+  PDFSet 48 : 0.0138503 -> diff = -0.00134482 -> curretn sum diff2 = 4.10589e-05
+  PDFSet 49 : 0.0144234 -> diff = -0.000771728 -> curretn sum diff2 = 4.28675e-05
+  PDFSet 50 : 0.0152658 -> diff = 7.06664e-05 -> curretn sum diff2 = 4.3463e-05
+  PDFSet 51 : 0.0155284 -> diff = 0.000333234 -> curretn sum diff2 = 4.3468e-05
+  PDFSet 52 : 0.0146584 -> diff = -0.000536745 -> curretn sum diff2 = 4.35791e-05
+  PDFSet 53 : 0.0150238 -> diff = -0.00017138 -> curretn sum diff2 = 4.38672e-05
+  PDFSet 54 : 0.0155586 -> diff = 0.000363442 -> curretn sum diff2 = 4.38965e-05
+  PDFSet 55 : 0.0151209 -> diff = -7.42859e-05 -> curretn sum diff2 = 4.40286e-05
+  PDFSet 56 : 0.0159059 -> diff = 0.000710768 -> curretn sum diff2 = 4.40342e-05
+  PDFSet 57 : 0.0147733 -> diff = -0.000421877 -> curretn sum diff2 = 4.45393e-05
+  PDFSet 58 : 0.015487 -> diff = 0.000291834 -> curretn sum diff2 = 4.47173e-05
+  PDFSet 59 : 0.0154777 -> diff = 0.000282598 -> curretn sum diff2 = 4.48025e-05
+  PDFSet 60 : 0.0154073 -> diff = 0.000212196 -> curretn sum diff2 = 4.48824e-05
+  PDFSet 61 : 0.0149664 -> diff = -0.000228778 -> curretn sum diff2 = 4.49274e-05
+  PDFSet 62 : 0.0154788 -> diff = 0.000283629 -> curretn sum diff2 = 4.49797e-05
+  PDFSet 63 : 0.0154419 -> diff = 0.000246763 -> curretn sum diff2 = 4.50602e-05
+  PDFSet 64 : 0.0148287 -> diff = -0.000366399 -> curretn sum diff2 = 4.51211e-05
+  PDFSet 65 : 0.0147463 -> diff = -0.000448841 -> curretn sum diff2 = 4.52553e-05
+  PDFSet 66 : 0.0161153 -> diff = 0.00092011 -> curretn sum diff2 = 4.54568e-05
+  PDFSet 67 : 0.0152482 -> diff = 5.30382e-05 -> curretn sum diff2 = 4.63034e-05
+  PDFSet 68 : 0.0154464 -> diff = 0.000251274 -> curretn sum diff2 = 4.63062e-05
+  PDFSet 69 : 0.0153973 -> diff = 0.000202118 -> curretn sum diff2 = 4.63693e-05
+  PDFSet 70 : 0.015372 -> diff = 0.000176861 -> curretn sum diff2 = 4.64102e-05
+  PDFSet 71 : 0.0149702 -> diff = -0.000224964 -> curretn sum diff2 = 4.64414e-05
+  PDFSet 72 : 0.0153378 -> diff = 0.000142678 -> curretn sum diff2 = 4.64921e-05
+  PDFSet 73 : 0.0155297 -> diff = 0.000334579 -> curretn sum diff2 = 4.65124e-05
+  PDFSet 74 : 0.0152389 -> diff = 4.37202e-05 -> curretn sum diff2 = 4.66244e-05
+  PDFSet 75 : 0.0153467 -> diff = 0.000151559 -> curretn sum diff2 = 4.66263e-05
+  PDFSet 76 : 0.0152422 -> diff = 4.70633e-05 -> curretn sum diff2 = 4.66492e-05
+  PDFSet 77 : 0.0155537 -> diff = 0.000358553 -> curretn sum diff2 = 4.66515e-05
+  PDFSet 78 : 0.0150918 -> diff = -0.000103356 -> curretn sum diff2 = 4.678e-05
+  PDFSet 79 : 0.0150066 -> diff = -0.000188564 -> curretn sum diff2 = 4.67907e-05
+  PDFSet 80 : 0.0152344 -> diff = 3.92556e-05 -> curretn sum diff2 = 4.68263e-05
+  PDFSet 81 : 0.0152912 -> diff = 9.60494e-05 -> curretn sum diff2 = 4.68278e-05
+  PDFSet 82 : 0.0151903 -> diff = -4.81954e-06 -> curretn sum diff2 = 4.6837e-05
+  PDFSet 83 : 0.0150715 -> diff = -0.000123611 -> curretn sum diff2 = 4.6837e-05
+  PDFSet 84 : 0.0155824 -> diff = 0.000387245 -> curretn sum diff2 = 4.68523e-05
+  PDFSet 85 : 0.0150122 -> diff = -0.000182903 -> curretn sum diff2 = 4.70023e-05
+  PDFSet 86 : 0.014752 -> diff = -0.000443146 -> curretn sum diff2 = 4.70357e-05
+  PDFSet 87 : 0.0156441 -> diff = 0.000448932 -> curretn sum diff2 = 4.72321e-05
+  PDFSet 88 : 0.015081 -> diff = -0.000114171 -> curretn sum diff2 = 4.74337e-05
+  PDFSet 89 : 0.0153347 -> diff = 0.000139515 -> curretn sum diff2 = 4.74467e-05
+  PDFSet 90 : 0.015142 -> diff = -5.31571e-05 -> curretn sum diff2 = 4.74662e-05
+  PDFSet 91 : 0.0153701 -> diff = 0.000174932 -> curretn sum diff2 = 4.7469e-05
+  PDFSet 92 : 0.0150552 -> diff = -0.000139911 -> curretn sum diff2 = 4.74996e-05
+  PDFSet 93 : 0.0155511 -> diff = 0.000356004 -> curretn sum diff2 = 4.75192e-05
+  PDFSet 94 : 0.015122 -> diff = -7.31058e-05 -> curretn sum diff2 = 4.76459e-05
+  PDFSet 95 : 0.0151932 -> diff = -1.94613e-06 -> curretn sum diff2 = 4.76512e-05
+  PDFSet 96 : 0.0150113 -> diff = -0.000183817 -> curretn sum diff2 = 4.76512e-05
+  PDFSet 97 : 0.0154796 -> diff = 0.000284467 -> curretn sum diff2 = 4.7685e-05
+  PDFSet 98 : 0.0151261 -> diff = -6.90213e-05 -> curretn sum diff2 = 4.7766e-05
+  PDFSet 99 : 0.0151832 -> diff = -1.19261e-05 -> curretn sum diff2 = 4.77707e-05
+  PDFSet 100 : 0.01518 -> diff = -1.51073e-05 -> curretn sum diff2 = 4.77709e-05
+[SignalSystematics] bin 5 : 0.0302251, error = 0.0137482
+bin 6 : central = 0.145901
+  PDFSet 0 : 0.145901 -> diff = 0 -> curretn sum diff2 = 0
+  PDFSet 1 : 0.148665 -> diff = 0.00276466 -> curretn sum diff2 = 0
+  PDFSet 2 : 0.143513 -> diff = -0.0023881 -> curretn sum diff2 = 7.64337e-06
+  PDFSet 3 : 0.145552 -> diff = -0.000349113 -> curretn sum diff2 = 1.33464e-05
+  PDFSet 4 : 0.142214 -> diff = -0.00368649 -> curretn sum diff2 = 1.34683e-05
+  PDFSet 5 : 0.146819 -> diff = 0.000918214 -> curretn sum diff2 = 2.70585e-05
+  PDFSet 6 : 0.143437 -> diff = -0.00246315 -> curretn sum diff2 = 2.79016e-05
+  PDFSet 7 : 0.14491 -> diff = -0.000990612 -> curretn sum diff2 = 3.39687e-05
+  PDFSet 8 : 0.142725 -> diff = -0.00317518 -> curretn sum diff2 = 3.495e-05
+  PDFSet 9 : 0.142245 -> diff = -0.00365593 -> curretn sum diff2 = 4.50318e-05
+  PDFSet 10 : 0.146508 -> diff = 0.000607791 -> curretn sum diff2 = 5.83976e-05
+  PDFSet 11 : 0.145728 -> diff = -0.000172363 -> curretn sum diff2 = 5.8767e-05
+  PDFSet 12 : 0.144072 -> diff = -0.0018288 -> curretn sum diff2 = 5.87967e-05
+  PDFSet 13 : 0.148631 -> diff = 0.00273025 -> curretn sum diff2 = 6.21413e-05
+  PDFSet 14 : 0.143319 -> diff = -0.00258192 -> curretn sum diff2 = 6.95955e-05
+  PDFSet 15 : 0.149033 -> diff = 0.00313221 -> curretn sum diff2 = 7.62619e-05
+  PDFSet 16 : 0.145187 -> diff = -0.000713143 -> curretn sum diff2 = 8.60726e-05
+  PDFSet 17 : 0.145619 -> diff = -0.000281807 -> curretn sum diff2 = 8.65812e-05
+  PDFSet 18 : 0.145276 -> diff = -0.000624128 -> curretn sum diff2 = 8.66606e-05
+  PDFSet 19 : 0.144623 -> diff = -0.00127728 -> curretn sum diff2 = 8.70501e-05
+  PDFSet 20 : 0.148647 -> diff = 0.00274681 -> curretn sum diff2 = 8.86816e-05
+  PDFSet 21 : 0.146392 -> diff = 0.000491702 -> curretn sum diff2 = 9.62265e-05
+  PDFSet 22 : 0.144417 -> diff = -0.00148347 -> curretn sum diff2 = 9.64683e-05
+  PDFSet 23 : 0.14719 -> diff = 0.00128926 -> curretn sum diff2 = 9.8669e-05
+  PDFSet 24 : 0.143981 -> diff = -0.00191974 -> curretn sum diff2 = 0.000100331
+  PDFSet 25 : 0.149908 -> diff = 0.00400779 -> curretn sum diff2 = 0.000104017
+  PDFSet 26 : 0.144323 -> diff = -0.00157792 -> curretn sum diff2 = 0.000120079
+  PDFSet 27 : 0.139765 -> diff = -0.0061357 -> curretn sum diff2 = 0.000122569
+  PDFSet 28 : 0.147298 -> diff = 0.00139775 -> curretn sum diff2 = 0.000160216
+  PDFSet 29 : 0.143799 -> diff = -0.00210127 -> curretn sum diff2 = 0.000162169
+  PDFSet 30 : 0.139744 -> diff = -0.00615712 -> curretn sum diff2 = 0.000166585
+  PDFSet 31 : 0.154747 -> diff = 0.00884687 -> curretn sum diff2 = 0.000204495
+  PDFSet 32 : 0.159298 -> diff = 0.0133974 -> curretn sum diff2 = 0.000282762
+  PDFSet 33 : 0.115885 -> diff = -0.0300157 -> curretn sum diff2 = 0.000462253
+  PDFSet 34 : 0.149572 -> diff = 0.00367186 -> curretn sum diff2 = 0.0013632
+  PDFSet 35 : 0.134742 -> diff = -0.0111587 -> curretn sum diff2 = 0.00137668
+  PDFSet 36 : 0.149961 -> diff = 0.00406082 -> curretn sum diff2 = 0.0015012
+  PDFSet 37 : 0.130511 -> diff = -0.0153895 -> curretn sum diff2 = 0.00151769
+  PDFSet 38 : 0.124547 -> diff = -0.0213532 -> curretn sum diff2 = 0.00175452
+  PDFSet 39 : 0.140846 -> diff = -0.00505433 -> curretn sum diff2 = 0.00221048
+  PDFSet 40 : 0.147112 -> diff = 0.00121107 -> curretn sum diff2 = 0.00223603
+  PDFSet 41 : 0.141762 -> diff = -0.00413902 -> curretn sum diff2 = 0.00223749
+  PDFSet 42 : 0.139684 -> diff = -0.00621637 -> curretn sum diff2 = 0.00225462
+  PDFSet 43 : 0.143933 -> diff = -0.00196736 -> curretn sum diff2 = 0.00229327
+  PDFSet 44 : 0.145991 -> diff = 9.03996e-05 -> curretn sum diff2 = 0.00229714
+  PDFSet 45 : 0.141493 -> diff = -0.0044075 -> curretn sum diff2 = 0.00229715
+  PDFSet 46 : 0.148917 -> diff = 0.00301639 -> curretn sum diff2 = 0.00231657
+  PDFSet 47 : 0.149052 -> diff = 0.00315171 -> curretn sum diff2 = 0.00232567
+  PDFSet 48 : 0.154652 -> diff = 0.00875114 -> curretn sum diff2 = 0.0023356
+  PDFSet 49 : 0.150547 -> diff = 0.0046461 -> curretn sum diff2 = 0.00241219
+  PDFSet 50 : 0.146309 -> diff = 0.000408071 -> curretn sum diff2 = 0.00243377
+  PDFSet 51 : 0.144245 -> diff = -0.00165525 -> curretn sum diff2 = 0.00243394
+  PDFSet 52 : 0.149264 -> diff = 0.00336315 -> curretn sum diff2 = 0.00243668
+  PDFSet 53 : 0.147726 -> diff = 0.0018251 -> curretn sum diff2 = 0.00244799
+  PDFSet 54 : 0.143763 -> diff = -0.00213728 -> curretn sum diff2 = 0.00245132
+  PDFSet 55 : 0.147747 -> diff = 0.00184618 -> curretn sum diff2 = 0.00245589
+  PDFSet 56 : 0.142561 -> diff = -0.00333965 -> curretn sum diff2 = 0.0024593
+  PDFSet 57 : 0.148602 -> diff = 0.00270177 -> curretn sum diff2 = 0.00247045
+  PDFSet 58 : 0.143918 -> diff = -0.0019824 -> curretn sum diff2 = 0.00247775
+  PDFSet 59 : 0.144295 -> diff = -0.0016053 -> curretn sum diff2 = 0.00248168
+  PDFSet 60 : 0.14452 -> diff = -0.00138054 -> curretn sum diff2 = 0.00248426
+  PDFSet 61 : 0.146576 -> diff = 0.000675639 -> curretn sum diff2 = 0.00248616
+  PDFSet 62 : 0.144483 -> diff = -0.00141741 -> curretn sum diff2 = 0.00248662
+  PDFSet 63 : 0.145019 -> diff = -0.000882079 -> curretn sum diff2 = 0.00248863
+  PDFSet 64 : 0.148025 -> diff = 0.00212459 -> curretn sum diff2 = 0.00248941
+  PDFSet 65 : 0.14936 -> diff = 0.00345912 -> curretn sum diff2 = 0.00249392
+  PDFSet 66 : 0.139297 -> diff = -0.00660339 -> curretn sum diff2 = 0.00250589
+  PDFSet 67 : 0.145312 -> diff = -0.000588739 -> curretn sum diff2 = 0.00254949
+  PDFSet 68 : 0.145008 -> diff = -0.000892728 -> curretn sum diff2 = 0.00254984
+  PDFSet 69 : 0.143712 -> diff = -0.00218862 -> curretn sum diff2 = 0.00255063
+  PDFSet 70 : 0.14574 -> diff = -0.000160204 -> curretn sum diff2 = 0.00255542
+  PDFSet 71 : 0.148591 -> diff = 0.00269013 -> curretn sum diff2 = 0.00255545
+  PDFSet 72 : 0.145486 -> diff = -0.000414675 -> curretn sum diff2 = 0.00256269
+  PDFSet 73 : 0.143256 -> diff = -0.00264446 -> curretn sum diff2 = 0.00256286
+  PDFSet 74 : 0.145031 -> diff = -0.000869461 -> curretn sum diff2 = 0.00256985
+  PDFSet 75 : 0.146042 -> diff = 0.000141819 -> curretn sum diff2 = 0.00257061
+  PDFSet 76 : 0.146013 -> diff = 0.000112387 -> curretn sum diff2 = 0.00257063
+  PDFSet 77 : 0.142208 -> diff = -0.00369273 -> curretn sum diff2 = 0.00257064
+  PDFSet 78 : 0.146559 -> diff = 0.000657944 -> curretn sum diff2 = 0.00258428
+  PDFSet 79 : 0.146832 -> diff = 0.000931179 -> curretn sum diff2 = 0.00258471
+  PDFSet 80 : 0.145643 -> diff = -0.000257846 -> curretn sum diff2 = 0.00258558
+  PDFSet 81 : 0.144863 -> diff = -0.00103809 -> curretn sum diff2 = 0.00258564
+  PDFSet 82 : 0.146126 -> diff = 0.000225083 -> curretn sum diff2 = 0.00258672
+  PDFSet 83 : 0.146743 -> diff = 0.000842793 -> curretn sum diff2 = 0.00258677
+  PDFSet 84 : 0.142752 -> diff = -0.0031483 -> curretn sum diff2 = 0.00258748
+  PDFSet 85 : 0.147511 -> diff = 0.00161046 -> curretn sum diff2 = 0.00259739
+  PDFSet 86 : 0.14865 -> diff = 0.00274901 -> curretn sum diff2 = 0.00259999
+  PDFSet 87 : 0.142378 -> diff = -0.00352285 -> curretn sum diff2 = 0.00260754
+  PDFSet 88 : 0.146666 -> diff = 0.000765832 -> curretn sum diff2 = 0.00261995
+  PDFSet 89 : 0.145586 -> diff = -0.000314752 -> curretn sum diff2 = 0.00262054
+  PDFSet 90 : 0.145905 -> diff = 4.18604e-06 -> curretn sum diff2 = 0.00262064
+  PDFSet 91 : 0.145145 -> diff = -0.000755412 -> curretn sum diff2 = 0.00262064
+  PDFSet 92 : 0.147139 -> diff = 0.00123804 -> curretn sum diff2 = 0.00262121
+  PDFSet 93 : 0.143313 -> diff = -0.00258809 -> curretn sum diff2 = 0.00262274
+  PDFSet 94 : 0.146671 -> diff = 0.000770283 -> curretn sum diff2 = 0.00262944
+  PDFSet 95 : 0.145664 -> diff = -0.000236498 -> curretn sum diff2 = 0.00263004
+  PDFSet 96 : 0.146924 -> diff = 0.00102348 -> curretn sum diff2 = 0.00263009
+  PDFSet 97 : 0.143848 -> diff = -0.0020529 -> curretn sum diff2 = 0.00263114
+  PDFSet 98 : 0.145937 -> diff = 3.63915e-05 -> curretn sum diff2 = 0.00263535
+  PDFSet 99 : 0.146027 -> diff = 0.000126506 -> curretn sum diff2 = 0.00263535
+  PDFSet 100 : 0.145666 -> diff = -0.000234518 -> curretn sum diff2 = 0.00263537
+[SignalSystematics] bin 6 : 0.290215, error = 0.102115
+Info in <TCanvas::Print>: pdf file /data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v3__Default/temp/190918_QuickSignalSyst//PDFError_HNWR_SingleMuon_Boosted_SR.pdf has been created
+[SignalSystematics] @@@@ PDF AlphaS
+[SignalSystematics] bin 1 : 0	0 --> 0	0
+[SignalSystematics] bin 2 : 0.023541	0.0230269 --> 0.022872	0.000257063
+[SignalSystematics] bin 3 : 0.0238089	0.0232326 --> 0.0231042	0.000288119
+[SignalSystematics] bin 4 : 0.0345875	0.0337214 --> 0.0335533	0.000433067
+[SignalSystematics] bin 5 : 0.0311987	0.0302809 --> 0.0302251	0.000458907
+[SignalSystematics] bin 6 : 0.283101	0.287083 --> 0.290215	0.00199095
+Info in <TCanvas::Print>: pdf file /data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v3__Default/temp/190918_QuickSignalSyst//AlphaS_HNWR_SingleMuon_Boosted_SR.pdf has been created

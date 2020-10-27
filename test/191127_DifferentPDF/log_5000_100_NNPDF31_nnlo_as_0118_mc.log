@@ -1,0 +1,1278 @@
+
+Processing run.C(5000,100,"NNPDF31_nnlo_as_0118_mc")...
+[SignalSystematics] Getting denominator values
+[SignalSystematics] @@@@ Scale 
+[SignalSystematics] i = 0 : 1
+[SignalSystematics] i = 1 : 1
+[SignalSystematics] i = 2 : 1
+[SignalSystematics] i = 3 : 0.936898
+[SignalSystematics] i = 4 : 0.936898
+[SignalSystematics] i = 5 : 1.0732
+[SignalSystematics] i = 6 : 1.0732
+[SignalSystematics] @@@@ PDF Error
+[SignalSystematics] i = 1 : 0.521728	tmp2 = 0.0969214
+[SignalSystematics] i = 2 : 0.666551	tmp2 = 0.124643
+[SignalSystematics] i = 3 : 0.638733	tmp2 = 0.162402
+[SignalSystematics] i = 4 : 0.577757	tmp2 = 0.227576
+[SignalSystematics] i = 5 : 1.01851	tmp2 = 0.261973
+[SignalSystematics] i = 6 : 0.99938	tmp2 = 0.289639
+[SignalSystematics] i = 7 : 1.10669	tmp2 = 0.364519
+[SignalSystematics] i = 8 : 1.28609	tmp2 = 0.569766
+[SignalSystematics] i = 9 : 0.413668	tmp2 = 0.745647
+[SignalSystematics] i = 10 : 0.909135	tmp2 = 0.751436
+[SignalSystematics] i = 11 : 0.894348	tmp2 = 0.755193
+[SignalSystematics] i = 12 : 0.486472	tmp2 = 0.87531
+[SignalSystematics] i = 13 : 1.13895	tmp2 = 0.968884
+[SignalSystematics] i = 14 : 1.03184	tmp2 = 1.0084
+[SignalSystematics] i = 15 : 0.945434	tmp2 = 1.02103
+[SignalSystematics] i = 16 : 0.555559	tmp2 = 1.09803
+[SignalSystematics] i = 17 : 1.37229	tmp2 = 1.38881
+[SignalSystematics] i = 18 : 0.4987	tmp2 = 1.5006
+[SignalSystematics] i = 19 : 1.18031	tmp2 = 1.62119
+[SignalSystematics] i = 20 : 1.10459	tmp2 = 1.69493
+[SignalSystematics] i = 21 : 0.22768	tmp2 = 2.0614
+[SignalSystematics] i = 22 : 0.121559	tmp2 = 2.56762
+[SignalSystematics] i = 23 : 0.873741	tmp2 = 2.56927
+[SignalSystematics] i = 24 : 0.880186	tmp2 = 2.5715
+[SignalSystematics] i = 25 : 1.40408	tmp2 = 2.89757
+[SignalSystematics] i = 26 : 0.684069	tmp2 = 2.91976
+[SignalSystematics] i = 27 : 0.410727	tmp2 = 3.09812
+[SignalSystematics] i = 28 : 0.929098	tmp2 = 3.10734
+[SignalSystematics] i = 29 : 1.24979	tmp2 = 3.28101
+[SignalSystematics] i = 30 : 1.62517	tmp2 = 3.90847
+[SignalSystematics] i = 31 : 0.73352	tmp2 = 3.91838
+[SignalSystematics] i = 32 : 1.01618	tmp2 = 3.95192
+[SignalSystematics] i = 33 : 0.71752	tmp2 = 3.96526
+[SignalSystematics] i = 34 : 1.09773	tmp2 = 4.03532
+[SignalSystematics] i = 35 : 0.549135	tmp2 = 4.11593
+[SignalSystematics] i = 36 : 0.685658	tmp2 = 4.13765
+[SignalSystematics] i = 37 : 1.34296	tmp2 = 4.39766
+[SignalSystematics] i = 38 : 0.901721	tmp2 = 4.40238
+[SignalSystematics] i = 39 : 0.662997	tmp2 = 4.4313
+[SignalSystematics] i = 40 : 1.0171	tmp2 = 4.46517
+[SignalSystematics] i = 41 : 0.812249	tmp2 = 4.4656
+[SignalSystematics] i = 42 : 0.808085	tmp2 = 4.46623
+[SignalSystematics] i = 43 : 0.954421	tmp2 = 4.48096
+[SignalSystematics] i = 44 : 1.21468	tmp2 = 4.6266
+[SignalSystematics] i = 45 : 1.18055	tmp2 = 4.74736
+[SignalSystematics] i = 46 : 0.900542	tmp2 = 4.75191
+[SignalSystematics] i = 47 : 0.877829	tmp2 = 4.75392
+[SignalSystematics] i = 48 : 0.201834	tmp2 = 5.15235
+[SignalSystematics] i = 49 : 0.986435	tmp2 = 5.17588
+[SignalSystematics] i = 50 : 0.467974	tmp2 = 5.30916
+[SignalSystematics] i = 51 : -0.0486004	tmp2 = 6.08647
+[SignalSystematics] i = 52 : 0.779754	tmp2 = 6.08931
+[SignalSystematics] i = 53 : 0.773318	tmp2 = 6.09287
+[SignalSystematics] i = 54 : -0.425	tmp2 = 7.67556
+[SignalSystematics] i = 55 : 0.811979	tmp2 = 7.67601
+[SignalSystematics] i = 56 : 0.706717	tmp2 = 7.69197
+[SignalSystematics] i = 57 : 1.47161	tmp2 = 8.09972
+[SignalSystematics] i = 58 : 0.64748	tmp2 = 8.13416
+[SignalSystematics] i = 59 : 0.665306	tmp2 = 8.16229
+[SignalSystematics] i = 60 : 0.281666	tmp2 = 8.46632
+[SignalSystematics] i = 61 : 0.742939	tmp2 = 8.47444
+[SignalSystematics] i = 62 : 0.826425	tmp2 = 8.47448
+[SignalSystematics] i = 63 : 1.16572	tmp2 = 8.58515
+[SignalSystematics] i = 64 : 0.65189	tmp2 = 8.61797
+[SignalSystematics] i = 65 : 0.123512	tmp2 = 9.12141
+[SignalSystematics] i = 66 : 0.794698	tmp2 = 9.12288
+[SignalSystematics] i = 67 : 1.08047	tmp2 = 9.1841
+[SignalSystematics] i = 68 : 0.967952	tmp2 = 9.2023
+[SignalSystematics] i = 69 : 1.24981	tmp2 = 9.37598
+[SignalSystematics] i = 70 : 0.992239	tmp2 = 9.40133
+[SignalSystematics] i = 71 : 0.525621	tmp2 = 9.49584
+[SignalSystematics] i = 72 : 0.73163	tmp2 = 9.50612
+[SignalSystematics] i = 73 : 0.720496	tmp2 = 9.51879
+[SignalSystematics] i = 74 : 0.782489	tmp2 = 9.52135
+[SignalSystematics] i = 75 : 1.07352	tmp2 = 9.57917
+[SignalSystematics] i = 76 : 0.686001	tmp2 = 9.6008
+[SignalSystematics] i = 77 : 0.689498	tmp2 = 9.6214
+[SignalSystematics] i = 78 : 1.1897	tmp2 = 9.7486
+[SignalSystematics] i = 79 : 0.555206	tmp2 = 9.8258
+[SignalSystematics] i = 80 : 0.847006	tmp2 = 9.826
+[SignalSystematics] i = 81 : 0.991252	tmp2 = 9.85102
+[SignalSystematics] i = 82 : 0.555559	tmp2 = 9.92803
+[SignalSystematics] i = 83 : 0.818289	tmp2 = 9.92824
+[SignalSystematics] i = 84 : 1.21063	tmp2 = 10.0708
+[SignalSystematics] i = 85 : 1.21409	tmp2 = 10.216
+[SignalSystematics] i = 86 : 0.844945	tmp2 = 10.2161
+[SignalSystematics] i = 87 : 0.660853	tmp2 = 10.2458
+[SignalSystematics] i = 88 : 1.77419	tmp2 = 11.1315
+[SignalSystematics] i = 89 : 0.283579	tmp2 = 11.4335
+[SignalSystematics] i = 90 : 1.11967	tmp2 = 11.5156
+[SignalSystematics] i = 91 : 1.15285	tmp2 = 11.6179
+[SignalSystematics] i = 92 : 0.97818	tmp2 = 11.6389
+[SignalSystematics] i = 93 : 0.585709	tmp2 = 11.7001
+[SignalSystematics] i = 94 : 0.516524	tmp2 = 11.8003
+[SignalSystematics] i = 95 : 1.11203	tmp2 = 11.8781
+[SignalSystematics] i = 96 : 0.800175	tmp2 = 11.8792
+[SignalSystematics] i = 97 : 0.834925	tmp2 = 11.8792
+[SignalSystematics] i = 98 : 1.13873	tmp2 = 11.9727
+[SignalSystematics] i = 99 : 0.74376	tmp2 = 11.9806
+[SignalSystematics] i = 100 : 0.847581	tmp2 = 11.9809
+[SignalSystematics] ----> Error = 0.346134
+[SignalSystematics] @@@@ AlphaS
+[SignalSystematics] i = 0 : 0.975368
+[SignalSystematics] i = 1 : 0.990821
+[SignalSystematics] ----> Error = 0.00772637
+[SignalSystematics] Getting eff values
+[SignalSystematics] @@@@ Scale 
+[SignalSystematics] hist->Integral() = 0.0216081
+[SignalSystematics] hist->Integral() = 0.0216081
+[SignalSystematics] hist->Integral() = 0.0218582
+[SignalSystematics] hist->Integral() = 0.0218582
+[SignalSystematics] hist->Integral() = 0.0213024
+[SignalSystematics] hist->Integral() = 0.0213024
+@@@@ Scale Integral : 0.0216081	0.0218582	0.0213024
+@@@@ Scale Up = 0.0115738
+@@@@ Scale Dn = 0.014148
+@@@@ Scale integral syst = 0.014148
+Info in <TCanvas::Print>: pdf file /data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v3__Default/temp/190918_QuickSignalSyst//Scale_HNWR_SingleMuon_Resolved_SR.pdf has been created
+[SignalSystematics] @@@@ PDF Error
+bin 1 : central = -nan
+  PDFSet 0 : -nan -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 2 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 3 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 4 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 5 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 6 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 7 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 8 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 9 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 10 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 11 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 12 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 13 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 14 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 15 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 16 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 17 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 18 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 19 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 20 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 21 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 22 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 23 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 24 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 25 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 26 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 27 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 28 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 29 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 30 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 31 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 32 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 33 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 34 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 35 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 36 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 37 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 38 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 39 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 40 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 41 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 42 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 43 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 44 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 45 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 46 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 47 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 48 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 49 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 50 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 51 : -0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 52 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 53 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 54 : -0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 55 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 56 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 57 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 58 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 59 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 60 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 61 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 62 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 63 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 64 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 65 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 66 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 67 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 68 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 69 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 70 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 71 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 72 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 73 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 74 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 75 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 76 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 77 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 78 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 79 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 80 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 81 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 82 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 83 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 84 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 85 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 86 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 87 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 88 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 89 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 90 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 91 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 92 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 93 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 94 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 95 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 96 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 97 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 98 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 99 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+  PDFSet 100 : 0 -> diff = -nan -> curretn sum diff2 = -nan
+[SignalSystematics] bin 1 : -nan, error = -nan
+bin 2 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00372235 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00291928 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.00304271 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.00337062 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.00191068 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00194579 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.00175776 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.00151286 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00472071 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.00213378 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.00216921 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.00400248 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00170308 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.0018923 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.00205639 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.00351389 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.00141414 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.00388766 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.0016491 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.00175922 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.0085678 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.0160082 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.00221504 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.00220699 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.00138546 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.002826 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00473637 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.00209619 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.00154869 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.0011889 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00265807 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.00191568 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.00271584 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.00176821 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00356285 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.00284055 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.00144021 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.00215937 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00292738 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00191173 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00239302 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00241007 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.00203486 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.00160256 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.00164354 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.00215693 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.00221197 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00964526 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.0019732 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00415542 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0400439 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00248979 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.00251359 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00457599 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.00239614 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.00275325 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.00132022 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00300493 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00291806 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00689508 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00261375 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00235197 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.00166732 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.00297803 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.0157536 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.00244404 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.00179841 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.00200867 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.00155405 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.00196029 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00369805 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.00265932 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.00270024 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00248407 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.00181013 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00283408 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.00281916 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.00163433 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00350034 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.00229446 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.00196058 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.00349736 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.00237609 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.00160638 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.00160036 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.00229974 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00294131 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.00109575 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00685787 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.00173622 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.00168585 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.00198782 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.00331757 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00376567 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.00174855 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.00242985 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.00232851 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.00170709 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00261361 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.00229345 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 2 : inf, error = -nan
+bin 3 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00346814 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00271928 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.00283423 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.00314051 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.0017802 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00181263 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.00163906 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.00141038 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00439852 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.00198779 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.0020217 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.0037286 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00158592 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.00176175 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.00191466 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.00327306 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.00131762 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.00361963 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.00153691 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.00163833 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.00798353 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.0149049 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.00206428 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.00205519 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.00129055 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.00263144 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00440756 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.00195229 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.00144591 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.00110833 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00247793 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.00178729 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.00252733 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.00164668 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00332343 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.00264854 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.00134082 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.0020129 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00272683 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00178186 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00222971 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00224533 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.0018936 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.00149324 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.00152946 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.00200962 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.00206015 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00900042 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.00184054 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00387187 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0373186 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00232055 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.00234162 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00426255 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.0022337 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.00256561 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.00122935 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00279816 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00271645 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00641171 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00243323 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00219096 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.00155358 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.00277346 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.0146691 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.00227749 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.00167488 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.00187108 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.00144748 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.00182715 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00344749 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.0024788 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.00251523 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00231362 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.00168759 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00264201 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.00262742 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.00152304 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00326169 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.00213736 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.00182561 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.00325736 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.00221385 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.00149734 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.00149021 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.00214282 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00274025 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.00102088 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00638865 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.00161651 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.0015706 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.00185198 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.00309166 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00350831 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.00162885 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.00226375 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.00216907 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.00159072 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00243542 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.0021361 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 3 : inf, error = -nan
+bin 4 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00318119 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00249685 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.00260056 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.0028788 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.00163321 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00166411 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.00150381 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.00129527 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00403484 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.00182467 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.00185529 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.00341913 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00145446 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.00161621 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.00175533 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.00300254 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.0012091 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.00332026 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.00141068 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.00150207 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.0073235 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.0136725 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.00189274 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.00188471 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.00118303 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.00241232 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00404398 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.00179121 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.0013261 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.00101777 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00227172 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.00163845 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.00232354 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.00150905 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00305594 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.00242994 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.00122942 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.00184695 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00250262 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00163435 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00204648 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00206194 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.00173825 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.0013698 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.00140293 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.00184486 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.00189112 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00826602 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.00168794 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00354915 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0342311 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00212819 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.0021494 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00391198 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.00205011 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.00235487 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.0011282 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00257037 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00249287 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00588527 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00223231 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00201138 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.00142639 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.00254426 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.0134738 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.00208702 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.00153727 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.00171767 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.00132777 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.00167669 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00316718 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.00227414 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.00230773 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00212045 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.00154873 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00242598 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.00240896 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.00139726 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00299163 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.00196023 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.0016742 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.00298977 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.00203131 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.00137428 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.00136686 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.0019655 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00251375 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.000937039 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00586133 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.00148291 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.00144144 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.00170024 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.00283445 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00321939 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.00149439 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.00207675 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.001991 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.0014578 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00223434 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.00195943 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 4 : inf, error = -nan
+bin 5 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00238789 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00186801 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.00194828 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.00216402 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.00122495 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00124628 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.00112919 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.000970457 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00303248 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.00136564 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.0013924 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.00256757 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00109074 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.00120911 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.00131671 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.00225051 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.000906638 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.00249032 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.00105841 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.00112781 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.0054967 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.0102422 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.00142375 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.0014115 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.000887125 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.00180997 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00302358 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.00134326 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.00100037 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000763337 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00170706 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.00123328 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.00173539 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.00113196 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00229042 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.00182428 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.00092013 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.00138918 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00187685 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00122595 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.0015364 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00154815 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.00130008 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.00102853 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.00105003 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.00138169 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.00141729 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.0061782 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.00126708 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00265282 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0255787 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00159558 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.00160766 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00292762 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.00153237 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.0017657 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.000845897 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00192456 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00186602 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00441506 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00167523 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00150615 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.00106777 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.0019083 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.0100776 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.00156887 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.00115198 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.00128707 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.000996031 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.00125783 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00237049 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.00170558 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.00173622 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00159259 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.00116133 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00181777 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.0018094 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.00104757 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00224189 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.00146992 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.0012559 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.0022404 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.001522 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.00103007 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.00102593 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.00147362 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00188445 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.000702915 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00439768 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.00111314 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.00108038 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.00127504 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.00212528 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00241296 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.00112012 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.00155711 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.00149131 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.00109533 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00167453 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.00146996 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 5 : inf, error = -nan
+bin 6 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00271616 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00210984 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.00221006 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.00243869 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.00138778 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00141304 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.00127996 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.00109878 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.003417 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.00155236 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.00158012 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.00290323 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00123842 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.0013707 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.00149624 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.0025492 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.00102851 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.00281438 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.00120001 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.00127995 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.00623014 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.0116181 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.0016106 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.00159751 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.00100927 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.00204096 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00341724 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.00152572 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.00112797 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000862678 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00194815 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.00141444 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.00193107 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.00129461 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00256883 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.002063 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.00103375 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.00158867 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00213099 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00139214 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00173527 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00175648 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.00146669 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.0011657 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.00118358 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.0015789 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.00161962 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00711599 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.00144222 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00301156 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0289955 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00181889 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.00182808 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00330998 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.00174694 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.00200535 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.000959001 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00217382 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00211166 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00498991 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00189124 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00171744 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.00122061 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.00216062 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.0114316 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.00177433 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.00130432 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.00146521 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.00112817 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.00142956 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00270249 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.00193939 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.0019617 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00179799 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.00131698 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00206394 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.00204378 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.00118749 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00254617 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.00166286 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.00142365 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.00254145 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.00172732 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.00116866 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.00116046 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.00167583 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00213084 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.000796683 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00497597 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.00125951 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.00122246 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.00144783 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.00240401 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00274245 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.00127244 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.00176909 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.00168858 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.00124004 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00190141 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.00166167 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 6 : inf, error = -nan
+bin 7 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00162531 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00127008 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.0013265 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.00146792 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.000832804 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.000848061 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.000768246 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.00066004 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00205448 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.000929542 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.000947714 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.0017437 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.000743004 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.000822542 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.000896498 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.00153055 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.000617519 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.00169312 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.000719121 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.000767492 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.00373825 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.00696432 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.000967788 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.000958127 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.000603805 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.00122994 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00205184 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.000915757 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.000678485 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000516583 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00116702 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.000845001 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.00116282 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.000772733 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00154309 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.00123941 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.000623218 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.000947625 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00127541 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.000834183 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00104098 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00105282 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.000883207 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.000699357 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.000712613 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.000939642 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.000961748 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00422246 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.000862019 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00180631 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0174045 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00108684 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.00109535 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00198972 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.00104547 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.00119934 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.00057485 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00130343 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00126496 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00299322 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00113549 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00102512 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.000725643 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.0012973 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.00685617 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.00106294 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.000782282 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.000875897 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.000675976 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.00085729 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00162017 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.0011609 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.00117876 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00107987 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.000790914 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00123715 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.00122727 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.000712151 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00151958 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.000999975 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.000853928 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.0015242 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.00103447 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.000700332 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.000696752 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.00100154 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00127939 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.000479124 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00299267 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.000757156 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.000735845 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.000867043 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.0014445 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00163881 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.000760653 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.0010582 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.0010147 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.000745132 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00113706 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.000999813 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 7 : inf, error = -nan
+bin 8 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.000862132 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.000673739 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.000704564 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.000771372 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.000440996 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00044951 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.000404692 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.000348768 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00108262 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.000493692 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.000501501 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.000919301 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.000395207 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.000436665 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.000475217 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.000810689 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.000327283 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.000895115 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.000380202 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.000407542 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.00197839 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.00368854 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.000511261 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.000507785 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.000321381 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.000648219 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00108612 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.000487668 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.000351394 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000270317 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.000623394 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.000454096 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.000595338 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.000413024 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.000801544 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.000655868 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.000326478 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.000498049 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.000672466 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00044239 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.000546813 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.000554015 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.000466872 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.000370259 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.000376516 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.000498538 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.000511412 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00225548 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.000457184 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.000965654 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.00927107 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00057633 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.000583023 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00105533 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.000558912 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.0006368 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.000304789 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.000692413 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.000671883 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00158321 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.000599854 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.00054382 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.000385674 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.000687345 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.00366239 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.000557033 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.000413842 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.000462551 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.000357405 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.000452403 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.000861548 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.000615656 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.000619011 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00056997 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.000418359 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.000656315 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.000648271 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.0003779 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.000809648 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.000530038 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.00045119 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.00080814 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.000548128 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.000369517 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.000369112 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.000531756 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.000673614 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.00025388 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00158453 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.000399802 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.000389523 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.000460795 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.000763237 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.000871402 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.000403861 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.000560513 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.000537933 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.000392752 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.000603193 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.00052909 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 8 : inf, error = -nan
+bin 9 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.000544997 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.000422593 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.000444087 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.000482346 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.000277485 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.000283697 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.00025498 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.000218938 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00067538 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.000312921 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.000315837 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.000575553 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00024934 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.00027439 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.000299982 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.000509498 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.000206616 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.000562953 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.000239095 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.000257703 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.0012461 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.00232034 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.000322662 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.000319133 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.000203168 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.000408585 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00068045 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.000307989 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.000219722 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000169477 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.000395797 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.000289879 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.000362543 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.000262765 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.000494074 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.000413649 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.000203157 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.000309362 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.000421728 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.000278159 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.000341877 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.00034783 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.000293494 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.000233148 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.000235908 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.000314709 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.000323235 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00143986 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.000288242 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.000604348 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.00579985 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.000365959 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.000369531 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.000661058 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.000355974 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.000402536 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.000191886 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00042885 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.000420527 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00099594 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.000373798 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.000344446 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.000244533 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.000431679 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.0023193 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.000346764 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.000259341 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.000292795 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.000223099 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.000287042 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.000551006 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.000390723 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.000387022 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.000355086 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.000262778 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.000414618 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.000407355 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.000239085 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.000513298 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.000332892 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.000284255 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.000508802 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.000345575 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.000232825 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.000231571 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.000336639 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.000422911 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.00015959 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00099256 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.000249885 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.000245701 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.000290834 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.000481063 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.000551627 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.000254586 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.000355015 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.000338083 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.000247058 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.000381621 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.000332323 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 9 : inf, error = -nan
+bin 10 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00058306 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.000439103 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.000466372 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.000513984 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.000294886 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.000290174 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.000271567 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.000227214 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00071877 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.000326159 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.000335992 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.000611934 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.000264862 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.000284838 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.000321507 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.000536934 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.000215356 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.000597794 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.000251371 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.000273685 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.00132705 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.00241888 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.000346227 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.000334494 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.000216446 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.000434492 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.000701241 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.000325053 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.000245526 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000182013 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.000426458 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.000319367 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.000370598 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.000272923 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.000533858 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.000448027 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.000203079 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.000305308 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.000442424 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.00029555 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00036528 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.000362495 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.000308346 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.000246353 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.000244267 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.000335168 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.000345307 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00155619 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.000315296 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.000628506 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.00599491 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.000394715 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.000380974 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.000684802 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.000355485 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.000390355 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.000202481 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00045943 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.000430099 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.0010244 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.000403168 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.000365714 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.000254885 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.000465306 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.00241308 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.000363442 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.000274032 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.000301721 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.000241263 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.000297123 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.000575059 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.000408818 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.000414782 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.00037994 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.000268779 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.000431683 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.000444612 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.000251366 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.000545328 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.000350679 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.000303916 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.000535506 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.000366046 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.000247996 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.000243173 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.000361291 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00044624 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.000173073 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00102492 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.000272415 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.000255616 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.000305379 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.000503991 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00057455 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.000266498 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.000379037 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.000358575 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.00026662 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.000398668 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.000359028 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 10 : inf, error = -nan
+bin 11 : central = inf
+  PDFSet 0 : inf -> diff = -nan -> curretn sum diff2 = 0
+  PDFSet 1 : 0.00177801 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 2 : 0.00126744 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 3 : 0.00136091 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 4 : 0.00141354 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 5 : 0.000885611 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 6 : 0.00082741 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 7 : 0.000779839 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 8 : 0.000637937 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 9 : 0.00199051 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 10 : 0.00097509 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 11 : 0.000974552 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 12 : 0.00174918 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 13 : 0.00082214 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 14 : 0.000809024 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 15 : 0.000990128 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 16 : 0.00156919 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 17 : 0.000631392 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 18 : 0.0017412 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 19 : 0.00072572 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 20 : 0.000848412 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 21 : 0.00392284 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 22 : 0.00700871 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 23 : 0.00103144 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 24 : 0.00096626 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 25 : 0.000685761 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 26 : 0.00123694 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 27 : 0.00188471 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 28 : 0.000970252 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 29 : 0.000669014 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 30 : 0.000472816 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 31 : 0.00144634 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 32 : 0.00113802 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 33 : 0.000604208 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 34 : 0.000845528 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 35 : 0.00129795 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 36 : 0.00142921 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 37 : 0.000456509 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 38 : 0.000526604 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 39 : 0.00116238 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 40 : 0.000892084 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 41 : 0.00100192 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 42 : 0.000927737 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 43 : 0.000884685 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 44 : 0.000721924 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 45 : 0.000682367 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 46 : 0.00105516 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 47 : 0.00108626 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 48 : 0.00538317 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 49 : 0.00100489 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 50 : 0.00191585 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 51 : -0.0175728 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 52 : 0.00120944 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 53 : 0.00118399 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 54 : -0.00199722 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 55 : 0.00113252 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 56 : 0.0011719 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 57 : 0.000645344 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 58 : 0.00132751 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 59 : 0.00129624 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 60 : 0.00306665 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 61 : 0.00121727 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 62 : 0.000998339 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 63 : 0.000726252 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 64 : 0.0014407 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 65 : 0.00773508 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 66 : 0.000959181 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 67 : 0.000804417 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 68 : 0.000876256 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 69 : 0.000670012 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 70 : 0.000867955 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 71 : 0.00175333 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 72 : 0.00118964 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 73 : 0.00115261 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 74 : 0.001109 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 75 : 0.000812422 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 76 : 0.00128564 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 77 : 0.00119207 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 78 : 0.000753753 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 79 : 0.00163685 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 80 : 0.00103105 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 81 : 0.000870954 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 82 : 0.00158333 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 83 : 0.00110161 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 84 : 0.000678038 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 85 : 0.000744989 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 86 : 0.00112116 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 87 : 0.00122818 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 88 : 0.000508982 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 89 : 0.00304492 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 90 : 0.000791922 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 91 : 0.000743535 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 92 : 0.000929756 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 93 : 0.00140845 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 94 : 0.00172555 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 95 : 0.0007957 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 96 : 0.00113144 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 97 : 0.00100995 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 98 : 0.000776638 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 99 : 0.00118392 -> diff = -inf -> curretn sum diff2 = -nan
+  PDFSet 100 : 0.00104545 -> diff = -inf -> curretn sum diff2 = -nan
+[SignalSystematics] bin 11 : inf, error = -nan
+Info in <TCanvas::Print>: pdf file /data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v3__Default/temp/190918_QuickSignalSyst//PDFError_HNWR_SingleMuon_Resolved_SR.pdf has been created
+[SignalSystematics] @@@@ PDF AlphaS
+[SignalSystematics] bin 1 : 0	0 --> 0	0
+[SignalSystematics] bin 2 : 0.00397708	0.00391435 --> 0.00387753	3.13651e-05
+[SignalSystematics] bin 3 : 0.00370828	0.00364234 --> 0.0036124	3.29713e-05
+[SignalSystematics] bin 4 : 0.00340607	0.00333688 --> 0.00331413	3.45929e-05
+[SignalSystematics] bin 5 : 0.00255982	0.00249342 --> 0.0024856	3.31998e-05
+[SignalSystematics] bin 6 : 0.00289665	0.00281019 --> 0.00281701	4.32328e-05
+[SignalSystematics] bin 7 : 0.00174153	0.00168604 --> 0.00169021	2.7745e-05
+[SignalSystematics] bin 8 : 0.000916906	0.00089259 --> 0.000894815	1.21582e-05
+[SignalSystematics] bin 9 : 0.000574931	0.00056168 --> 0.000563402	6.62571e-06
+[SignalSystematics] bin 10 : 0.000610974	0.000591781 --> 0.000596544	9.59629e-06
+[SignalSystematics] bin 11 : 0.00165998	0.00174888 --> 0.00175649	4.44487e-05
+Info in <TCanvas::Print>: pdf file /data6/Users/jskim/HNWR_Plotter/output/Run2Legacy_v3__Default/temp/190918_QuickSignalSyst//AlphaS_HNWR_SingleMuon_Resolved_SR.pdf has been created

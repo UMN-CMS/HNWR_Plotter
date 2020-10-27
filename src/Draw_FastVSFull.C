@@ -4,8 +4,9 @@
 
 void Draw_FastVSFull(){
 
-  TString Year = "2017";
+  TString Year = "2016";
 
+  gErrorIgnoreLevel = kError;
   gStyle->SetOptStat(0);
 
   TH1::SetDefaultSumw2(true);
@@ -30,15 +31,26 @@ void Draw_FastVSFull(){
     "EE",
     "MuMu"
   };
-
   vector<TString> samples = {
+"WRtoNLtoLLJJ_WR1000_N100",
+//"WRtoNLtoLLJJ_WR1000_N500",
 "WRtoNLtoLLJJ_WR4000_N100",
+//"WRtoNLtoLLJJ_WR4000_N500",
+"WRtoNLtoLLJJ_WR4000_N1000",
   };
   vector<Color_t> colors = {
     kRed,
+    //kBlue,
+    kGreen,
+    //kGray,
+    kBlack,
   };
   vector<TString> samplealiases = {
+    "WR=1000, N=100",
+    //"WR=1000, N=500",
     "WR=4000, N=100",
+    //"WR=4000, N=500",
+    "WR=4000, N=1000",
   };
 
   vector<TString> vars = {
@@ -227,7 +239,7 @@ void Draw_FastVSFull(){
         hist_Fast->SetLineColor(color);
         hist_Fast->SetLineWidth(3);
 
-        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_Official_FullSim_"+sample+".root");
+        TFile *file_Full = new TFile(base_filepath+"/HNWRSignalStudy_FullSim_"+sample+"_MG.root");
         TH1D *hist_NoCut_Full = (TH1D *)file_Full->Get(channel+"/NoCut_"+channel);
         TH1D *hist_Full = (TH1D *)file_Full->Get(channel+"/GenStudy__"+var+"_"+channel);
         hist_Full->Rebin(rebin);
@@ -253,7 +265,8 @@ void Draw_FastVSFull(){
         if(var=="fatjet_matched_gen_N__LSF"){
           int int_Start = hist_Fast->FindBin(0.75);
           //cout << "    --> LSF Eff = " << hist_Fast->Integral(int_Start,999) << "\t" << hist_Full->Integral(int_Start,999)  << endl;
-          cout << samplealias << "--> LSF Eff = " << hist_Fast->Integral(int_Start,999)/hist_Fast->Integral(0,999) << "\t" << hist_Full->Integral(int_Start,999)/hist_Full->Integral(0,999) << endl;
+          //cout << samplealias << "--> LSF Eff = " << hist_Fast->Integral(int_Start,999)/hist_Fast->Integral(0,999) << "\t" << hist_Full->Integral(int_Start,999)/hist_Full->Integral(0,999) << endl;
+          cout << samplealias << "--> LSF Eff = " << hist_Full->Integral(int_Start,999)/hist_Full->Integral(0,999) << "\t" << hist_Fast->Integral(int_Start,999)/hist_Fast->Integral(0,999) << endl;
         }
 
         lg->AddEntry(hist_Fast, "(Fast) "+samplealias, "l");

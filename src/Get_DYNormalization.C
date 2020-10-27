@@ -23,18 +23,21 @@ void Get_DYNormalization(int xxx=0){
   vector<TString> Systs = {
     "JetRes",
     "JetEn",
+    "MuonRecoSF",
     "MuonEn",
     "MuonIDSF",
+    "MuonISOSF",
     "MuonTriggerSF",
+    "ElectronRecoSF",
     "ElectronRes",
     "ElectronEn",
     "ElectronIDSF",
     "ElectronTriggerSF",
-    "LSFSF",
     "PU",
+    "ZPtRw",
   };
   //==== XXX No syst here
-  Systs.clear();
+  //Systs.clear();
 
   gStyle->SetOptStat(0);
 
@@ -109,6 +112,8 @@ void Get_DYNormalization(int xxx=0){
 
   }
 
+  //samplename_DY50 = "DYJets_MG_HT_Reweighted_2017NLO";
+
   TFile *file_DY10to50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY10to50+".root");
   TFile *file_DY50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY50+".root");
 
@@ -171,6 +176,7 @@ void Get_DYNormalization(int xxx=0){
       double NormSyst_Xsec = sqrt( err_int*err_int + err_pdf*err_pdf + err_scale*err_scale);
       //==== Add
       RelSystError_MC = sqrt( RelSystError_MC*RelSystError_MC + NormSyst_Xsec*NormSyst_Xsec );
+      //RelSystError_MC = 0.;
 
       //==== shape
       for(unsigned it_Syst=0; it_Syst<Systs.size(); it_Syst++){
@@ -212,10 +218,10 @@ void Get_DYNormalization(int xxx=0){
       double SF_StarErr = sqrt(RelStatError_DATA*RelStatError_DATA+RelStatError_MC*RelStatError_MC) * SF;
       double SF_Syst = RelSystError_MC * SF;
 
-      //cout << leptonFlavour << "\t" << region << "\t" << SF << "\t" << sqrt(  SF_StarErr*SF_StarErr + SF_Syst*SF_Syst ) << endl;
+      cout << leptonFlavour << "\t" << region << "\t" << SF << "\t" << sqrt(  SF_StarErr*SF_StarErr + SF_Syst*SF_Syst ) << endl;
       //printf("%s %s %1.3f \\pm %1.3f\\stat \\pm %1.3f\\thy\n", leptonFlavour.Data(), region.Data(), SF, SF_StarErr, SF_Syst);
 
-      printf("%s %s %1.3f \\pm %1.3f\\stat\n", leptonFlavour.Data(), region.Data(), SF, SF_StarErr);
+      //printf("%s %s %1.3f \\pm %1.3f\\stat\n", leptonFlavour.Data(), region.Data(), SF, SF_StarErr);
 
     }
 

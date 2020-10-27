@@ -249,6 +249,8 @@ m.VariablesToDraw = [
 ]
 #m.VariablesToDraw = [
 #  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+#  Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
+#  Variable('NEvent', 'onebin', ''),
 #]
 m.PrintVariables()
 

@@ -57,8 +57,6 @@ void Make_DYShape(int Year=2016){
     "LSFSFUp", "LSFSFDown",
     "PUUp", "PUDown",
     "ZPtRwUp", "ZPtRwDown",
-    "DYReshapeSystUp", "DYReshapeSystDown",
-    "DYReshapeEEMMUp", "DYReshapeEEMMDown",
   };
   if(Year<=2017){
     systs.push_back( "PrefireUp" );
@@ -333,8 +331,8 @@ void Make_DYShape(int Year=2016){
                       double this_Up = hist_DYReshapeSystUp->GetBinContent(z);
                       double this_Down = hist_DYReshapeSystDown->GetBinContent(z);
 
-                      TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Up");
-                      TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_Run"+str_Year+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Down");
+                      TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Up");
+                      TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Down");
 
                       hist_DYShapeUp->SetBinContent(z, this_Up);
                       hist_DYShapeDown->SetBinContent(z, this_Down);

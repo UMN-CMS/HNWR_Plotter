@@ -682,6 +682,20 @@ class Plotter:
           h_Data.Draw("phistsame")
           gr_Data.Draw("p0same")
 
+        #### 2020/10/14 For the ARC comments
+        '''
+        for ix in range(0,h_Data.GetXaxis().GetNbins()):
+          iBin = ix+1
+          x_l = h_Data.GetXaxis().GetBinLowEdge(iBin)
+          x_r = h_Data.GetXaxis().GetBinUpEdge(iBin)
+
+          y_Data = h_Data.GetBinContent(iBin)
+          y_Bkgd = h_Bkgd.GetBinContent(iBin)
+          ratio = y_Data/y_Bkgd
+
+          print '%s\t%d\t%d\t%1.2f\t%1.2f\t%1.2f'%(Region.Name, x_l, x_r, y_Data, y_Bkgd, ratio)
+        '''
+
         ## Signal
         LeptonChannel = "EE" if ("Electron" in Region.Name) else "MuMu"
         h_Sigs = []

@@ -8,6 +8,9 @@ WORKING_DIR = os.environ['PLOTTER_WORKING_DIR']
 dataset = os.environ['CATANVERSION']
 FILE_PATH = os.environ['FILE_PATH']
 
+ResolvedIntegralStart = 2400
+BoostedIntegralStart = 1200
+
 Years = [
 '2016',
 '2017',
@@ -80,13 +83,21 @@ for i_Year in range(0,len(Years)):
         Bkgd = Bkgds[i_Bkgd]
         f_Bkgd = ROOT.TFile(WORKING_DIR+'/rootfiles/'+dataset+'/PostFit/'+Year+'/HNWRAnalyzer_SkimTree_LRSMHighPt_'+Bkgd+'.root')
         h_Bkgd = f_Bkgd.Get(dirName+'/WRCand_Mass_'+dirName)
-        LastBin_Bkgd = h_Bkgd.FindBin(5000)
-        out += ' & $%1.2f \pm %1.2f$'%(h_Bkgd.GetBinContent(LastBin_Bkgd), h_Bkgd.GetBinError(LastBin_Bkgd))
-        SumYields[i_Bkgd][2*i_channel+i_region] += h_Bkgd.GetBinContent(LastBin_Bkgd)
+
+        integral_start = ResolvedIntegralStart if ('Resolved' in region) else BoostedIntegralStart
+        integral_start = h_Bkgd.FindBin(integral_start)
+        this_Bkgd_yield = 0
+        this_Bkgd_err = ROOT.Double()
+        this_Bkgd_yield = h_Bkgd.IntegralAndError(integral_start,9999,this_Bkgd_err)
+
+        out += ' & $%1.2f \pm %1.2f$'%(this_Bkgd_yield, this_Bkgd_err)
+        SumYields[i_Bkgd][2*i_channel+i_region] += this_Bkgd_yield
 
       alpha = 1. - 0.6827
-      LastBin_Data = h_Data.FindBin(5000)
-      N = h_Data.GetBinContent(LastBin_Data)
+
+      integral_start = ResolvedIntegralStart if ('Resolved' in region) else BoostedIntegralStart
+      integral_start = h_Data.FindBin(integral_start)
+      N = h_Data.Integral(integral_start,9999)
       L = 0.                                          if (N==0.) else (ROOT.Math.gamma_quantile(alpha/2.,N,1.))
       U = ( ROOT.Math.gamma_quantile_c(alpha,N+1,1) ) if (N==0.) else (ROOT.Math.gamma_quantile_c(alpha/2.,N+1.,1.))
 
@@ -137,16 +148,25 @@ for i_channel in range(0,len(channels)):
       h_Bkgd = f_Bkgd.Get(dirName+'/WRCand_Mass_'+dirName)
       LastBin_Bkgd = h_Bkgd.FindBin(5000)
 
-      this_rel_err = h_Bkgd.GetBinError(LastBin_Bkgd)/h_Bkgd.GetBinContent(LastBin_Bkgd)
+      integral_start = ResolvedIntegralStart if ('Resolved' in region) else BoostedIntegralStart
+      integral_start = h_Bkgd.FindBin(integral_start)
+      this_Bkgd_yield = 0
+      this_Bkgd_err = ROOT.Double()
+      this_Bkgd_yield = h_Bkgd.IntegralAndError(integral_start,9999,this_Bkgd_err)
+
+      this_rel_err = this_Bkgd_err/this_Bkgd_yield
 
       this_Yield_From_Sum = SumYields[i_Bkgd][2*i_channel+i_region]
       this_err_From_Sum = this_rel_err*this_Yield_From_Sum
 
-      #out += ' & $%1.2f \pm %1.2f$'%(h_Bkgd.GetBinContent(LastBin_Bkgd), h_Bkgd.GetBinError(LastBin_Bkgd))
       out += ' & $%1.2f \pm %1.2f$'%(this_Yield_From_Sum,this_err_From_Sum)
 
     alpha = 1. - 0.6827
-    N = h_Data.GetBinContent(LastBin_Data)
+
+    integral_start = ResolvedIntegralStart if ('Resolved' in region) else BoostedIntegralStart
+    integral_start = h_Data.FindBin(integral_start)
+
+    N = h_Data.Integral(integral_start,9999)
     L = 0.                                          if (N==0.) else (ROOT.Math.gamma_quantile(alpha/2.,N,1.))
     U = ( ROOT.Math.gamma_quantile_c(alpha,N+1,1) ) if (N==0.) else (ROOT.Math.gamma_quantile_c(alpha/2.,N+1.,1.))
 

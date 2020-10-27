@@ -1,19 +1,19 @@
-for year in 2016 2017 2018 -1
-#for year in -1
+#!/bin/bash
+for Year in 2016 2017 2018 -1
+#for Year in -1
+#for Year in 2016 2017 2018
 do
-  for i in 0 1 2
-  #for i in 0
+  for c in 0 1
+  #for c in 0
   do
+    python python/Draw_CR.py -y ${Year} -c ${c}
 
-    ## No DYPtReweight, No MCSF
-    root -l -b -q "src/Draw_CR.C($year, $i, false, false)"
+    python python/Draw_CR.py -y ${Year} --ApplyZPtRwg -c ${c}
+    python python/Draw_CR.py -y ${Year} --ApplyZPtRwg --ScaleMC -c ${c}
+    python python/Draw_CR.py -y ${Year} --ApplyZPtRwg --ScaleMC --ApplyDYReshape -c ${c}
 
-    ## DYPtReweight, No MCSF
-    root -l -b -q "src/Draw_CR.C($year, $i, true, false)"
-
-    ## DYPtReweight, MCSF
-    root -l -b -q "src/Draw_CR.C($year, $i, true, true)"
+    ##python python/Draw_CR.py -y ${Year} --ScaleMC -c ${c}
+    ##python python/Draw_CR.py -y ${Year} --ScaleMC --ApplyDYReshape -c ${c}
 
   done
 done
-

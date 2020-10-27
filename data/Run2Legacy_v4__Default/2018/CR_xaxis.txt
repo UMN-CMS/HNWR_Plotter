@@ -26,7 +26,7 @@ HNWR_SingleElectron_Resolved_DYCR	MT	0	500
 HNWR_SingleElectron_Resolved_DYCR	Jet_Size	-999	-999
 HNWR_SingleElectron_Resolved_DYCR	NBJets	-999	-999
 HNWR_SingleElectron_Resolved_DYCR	NCand_Mass	0	2500
-HNWR_SingleElectron_Resolved_DYCR	WRCand_Mass	0	8000
+HNWR_SingleElectron_Resolved_DYCR	WRCand_Mass	800	8000
 HNWR_SingleElectron_Resolved_DYCR	NCand_Pt	-999	-999
 HNWR_SingleElectron_Resolved_DYCR	WRCand_Pt	-999	-999
 HNWR_SingleElectron_Resolved_DYCR	LSFFatJet_Size	-999	-999
@@ -61,7 +61,7 @@ HNWR_SingleMuon_Resolved_DYCR	MT	0	500
 HNWR_SingleMuon_Resolved_DYCR	Jet_Size	-999	-999
 HNWR_SingleMuon_Resolved_DYCR	NBJets	-999	-999
 HNWR_SingleMuon_Resolved_DYCR	NCand_Mass	0	2500
-HNWR_SingleMuon_Resolved_DYCR	WRCand_Mass	0	8000
+HNWR_SingleMuon_Resolved_DYCR	WRCand_Mass	800	8000
 HNWR_SingleMuon_Resolved_DYCR	NCand_Pt	-999	-999
 HNWR_SingleMuon_Resolved_DYCR	WRCand_Pt	-999	-999
 HNWR_SingleMuon_Resolved_DYCR	LSFFatJet_Size	-999	-999
@@ -96,7 +96,7 @@ HNWR_SingleElectron_Boosted_DYCR	MT	0	500
 HNWR_SingleElectron_Boosted_DYCR	Jet_Size	-999	-999
 HNWR_SingleElectron_Boosted_DYCR	NBJets	-999	-999
 HNWR_SingleElectron_Boosted_DYCR	NCand_Mass	0	2500
-HNWR_SingleElectron_Boosted_DYCR	WRCand_Mass	0	8000
+HNWR_SingleElectron_Boosted_DYCR	WRCand_Mass	800	8000
 HNWR_SingleElectron_Boosted_DYCR	NCand_Pt	-999	-999
 HNWR_SingleElectron_Boosted_DYCR	WRCand_Pt	-999	-999
 HNWR_SingleElectron_Boosted_DYCR	LSFFatJet_Size	-999	-999
@@ -131,7 +131,7 @@ HNWR_SingleMuon_Boosted_DYCR	MT	0	500
 HNWR_SingleMuon_Boosted_DYCR	Jet_Size	-999	-999
 HNWR_SingleMuon_Boosted_DYCR	NBJets	-999	-999
 HNWR_SingleMuon_Boosted_DYCR	NCand_Mass	0	2500
-HNWR_SingleMuon_Boosted_DYCR	WRCand_Mass	0	8000
+HNWR_SingleMuon_Boosted_DYCR	WRCand_Mass	800	8000
 HNWR_SingleMuon_Boosted_DYCR	NCand_Pt	-999	-999
 HNWR_SingleMuon_Boosted_DYCR	WRCand_Pt	-999	-999
 HNWR_SingleMuon_Boosted_DYCR	LSFFatJet_Size	-999	-999
@@ -691,7 +691,7 @@ HNWR_EMu_Resolved_DYCR	MT	0	500
 HNWR_EMu_Resolved_DYCR	Jet_Size	-999	-999
 HNWR_EMu_Resolved_DYCR	NBJets	-999	-999
 HNWR_EMu_Resolved_DYCR	NCand_Mass	0	2500
-HNWR_EMu_Resolved_DYCR	WRCand_Mass	0	8000
+HNWR_EMu_Resolved_DYCR	WRCand_Mass	800	8000
 HNWR_EMu_Resolved_DYCR	NCand_Pt	-999	-999
 HNWR_EMu_Resolved_DYCR	WRCand_Pt	-999	-999
 HNWR_EMu_Resolved_DYCR	LSFFatJet_Size	-999	-999

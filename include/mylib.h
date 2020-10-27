@@ -415,11 +415,11 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     if(int_channel==0){
       if(int_region==0){
         DYNorm = 1.0333;
-        DYNorm_err = 0.0242913;
+        DYNorm_err = 0.0493714;
       }
       else if(int_region==1){
-        DYNorm = 0.841675;
-        DYNorm_err = 0.0359336;
+        DYNorm = 0.84301;
+        DYNorm_err = 0.0417383;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -429,11 +429,11 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     else if(int_channel==1){
       if(int_region==0){
         DYNorm = 1.02541;
-        DYNorm_err = 0.0231241;
+        DYNorm_err = 0.0401646;
       }
       else if(int_region==1){
-        DYNorm = 0.694949;
-        DYNorm_err = 0.0323626;
+        DYNorm = 0.695854;
+        DYNorm_err = 0.0349161;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -449,11 +449,11 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     if(int_channel==0){
       if(int_region==0){
         DYNorm = 1.02718;
-        DYNorm_err = 0.0235673;
+        DYNorm_err = 0.0497519;
       }
       else if(int_region==1){
-        DYNorm = 1.03678;
-        DYNorm_err = 0.0430909;
+        DYNorm = 1.03635;
+        DYNorm_err = 0.0512348;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -463,11 +463,11 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     else if(int_channel==1){
       if(int_region==0){
         DYNorm = 1.03497;
-        DYNorm_err = 0.0229989;
+        DYNorm_err = 0.040131;
       }
       else if(int_region==1){
-        DYNorm = 0.938821;
-        DYNorm_err = 0.0399087;
+        DYNorm = 0.93964;
+        DYNorm_err = 0.0456667;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -483,11 +483,11 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     if(int_channel==0){
       if(int_region==0){
         DYNorm = 0.957582;
-        DYNorm_err = 0.0213853;
+        DYNorm_err = 0.0527974;
       }
       else if(int_region==1){
-        DYNorm = 0.922273;
-        DYNorm_err = 0.033806;
+        DYNorm = 0.92052;
+        DYNorm_err = 0.0403976;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -497,11 +497,11 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     else if(int_channel==1){
       if(int_region==0){
         DYNorm = 0.98157;
-        DYNorm_err = 0.0213979;
+        DYNorm_err = 0.0456876;
       }
       else if(int_region==1){
-        DYNorm = 0.80751;
-        DYNorm_err = 0.0314439;
+        DYNorm = 0.805186;
+        DYNorm_err = 0.0335501;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -913,7 +913,6 @@ bool IsCorrelated(TString syst){
   if(syst.Contains("LSFSF")) return false;
 
   if(syst.Contains("ShapeUnct")) return false;
-  if(syst.Contains("DYReshapeSyst")) return false;
 
   return true;
 

@@ -92,11 +92,13 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
   map< TString, vector<TString> > map_sample_string_to_list;
 
   map_sample_string_to_list["Others"] = {"Others"};
-  map_sample_string_to_list["ttbar"] = {"TTLX_powheg"};
+  map_sample_string_to_list["NonPrompt"] = {"NonPrompt"};
+  map_sample_string_to_list["TT_TW"] = {"TT_TW"};
   map_sample_string_to_list["DY"] = {"DYJets_MG_HT_Reweighted_Reshaped"};
   vector<TString> bkgds = {
     "Others",
-    "ttbar",
+    "NonPrompt",
+    "TT_TW",
     "DY",
   };
 

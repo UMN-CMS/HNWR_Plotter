@@ -17,8 +17,9 @@ Channels = [
 ]
 
 Samples = [
-'TTLX_powheg',
+'TT_TW',
 'DYJets_MG_HT_Reweighted_Reshaped',
+'NonPrompt',
 'Others',
 ]
 

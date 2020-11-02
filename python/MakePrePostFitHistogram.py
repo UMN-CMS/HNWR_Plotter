@@ -40,23 +40,12 @@ for PreORPost in PreORPosts:
   ]
 
   Samples = [
-  'TTLX_powheg',
-  'DYJets_MG_HT_Reweighted_Reshaped',
-  'Others',
-  'total_background',
-  ]
-
-  #### TEST
-  '''
-  Samples = [
   'TT_TW',
   'DYJets_MG_HT_Reweighted_Reshaped',
-  'WJets_MG_HT',
+  'NonPrompt',
   'Others',
   'total_background',
   ]
-  '''
-
 
   for Sample in Samples:
 

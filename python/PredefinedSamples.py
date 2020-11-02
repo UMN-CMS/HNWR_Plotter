@@ -65,6 +65,37 @@ SampleGroup_ttbar_2018 = SampleGroup(
   LatexAlias='ttbar'
 )
 
+SampleGroup_TT_TW_2016 = SampleGroup(
+  Name='TT_TW',
+  Type='Bkgd',
+  Samples=['TT_TW'],
+  Year = 2016,
+  Color=ROOT.kRed,
+  Style=1,
+  TLatexAlias='t#bar{t}+tW',
+  LatexAlias='TT\_TW'
+)
+SampleGroup_TT_TW_2017 = SampleGroup(
+  Name='TT_TW',
+  Type='Bkgd',
+  Samples=['TT_TW'],
+  Year = 2017,
+  Color=ROOT.kRed,
+  Style=1,
+  TLatexAlias='t#bar{t}+tW',
+  LatexAlias='TT_TW'
+)
+SampleGroup_TT_TW_2018 = SampleGroup(
+  Name='TT_TW',
+  Type='Bkgd',
+  Samples=['TT_TW'],
+  Year = 2018,
+  Color=ROOT.kRed,
+  Style=1,
+  TLatexAlias='t#bar{t}+tW',
+  LatexAlias='TT\_TW'
+)
+
 ## others
 SampleGroup_Others_2016 = SampleGroup(
   Name='Others',
@@ -201,4 +232,36 @@ SampleGroup_total_background_YearCombined = SampleGroup(
   Style=1,
   TLatexAlias='W+Jets',
   LatexAlias='total_background'
+)
+
+## TW
+SampleGroup_TW_2016 = SampleGroup(
+  Name='TW',
+  Type='Bkgd',
+  Samples=['SingleTop_tW_antitop_NoFullyHad','SingleTop_tW_top_NoFullyHad'],
+  Year = 2016,
+  Color=ROOT.kGray,
+  Style=1,
+  TLatexAlias='tW',
+  LatexAlias='tW'
+)
+SampleGroup_TW_2017 = SampleGroup(
+  Name='TW',
+  Type='Bkgd',
+  Samples=['SingleTop_tW_antitop_NoFullyHad','SingleTop_tW_top_NoFullyHad'],
+  Year = 2017,
+  Color=ROOT.kGray,
+  Style=1,
+  TLatexAlias='tW',
+  LatexAlias='tW'
+)
+SampleGroup_TW_2018 = SampleGroup(
+  Name='TW',
+  Type='Bkgd',
+  Samples=['SingleTop_tW_antitop_NoFullyHad','SingleTop_tW_top_NoFullyHad'],
+  Year = 2018,
+  Color=ROOT.kGray,
+  Style=1,
+  TLatexAlias='tW',
+  LatexAlias='tW'
 )

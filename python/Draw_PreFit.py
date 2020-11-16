@@ -50,7 +50,7 @@ m.DataDirectory = str_Year
 m.Filename_prefix = "HNWRAnalyzer"
 m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
-m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PreFit_2020_10_28_120803__RecategorizeTest/"+str_Year+"/"
+m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PreFit/"+str_Year+"/"
 
 #### Category
 m.ScaleMC = False

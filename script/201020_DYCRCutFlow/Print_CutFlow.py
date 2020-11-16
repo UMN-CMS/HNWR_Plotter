@@ -19,12 +19,12 @@ Bkgd = 'DYJets_MG_HT_Reweighted'
 #Bkgd = 'DYJets'
 
 Suffixs = [
-#'SingleElectron',
+'SingleElectron',
 'SingleMuon',
 ]
 
 LepChs = [
-#'dielectron',
+'dielectron',
 'dimuon',
 ]
 
@@ -62,7 +62,7 @@ for i_S in range(0,len(Suffixs)):
   'Leading lepton is electron (muon)',
   'Trigger fired',
   '$60 < m(\\ell_{\\mathrm{Tight}}\\ell_{\\mathrm{Loose}}) < 150\\GeV$',
-  'Merged AK8 jet with $\\Delta\\phi>2.0$',
+  'AK8 jet with $\\Delta\\phi>2.0$',
   '$m(\\ell \\Jet) > 800\\GeV$',
     ],
 

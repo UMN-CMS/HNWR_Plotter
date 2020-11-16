@@ -234,6 +234,39 @@ SampleGroup_total_background_YearCombined = SampleGroup(
   LatexAlias='total_background'
 )
 
+## TTLL
+SampleGroup_TTLL_2016 = SampleGroup(
+  Name='TTLL',
+  Type='Bkgd',
+  Samples=['TTLL_powheg'],
+  Year = 2016,
+  Color=ROOT.kRed,
+  Style=1,
+  TLatexAlias='t#bar{t}',
+  LatexAlias='tt'
+)
+SampleGroup_TTLL_2017 = SampleGroup(
+  Name='TTLL',
+  Type='Bkgd',
+  Samples=['TTLL_powheg'],
+  Year = 2017,
+  Color=ROOT.kRed,
+  Style=1,
+  TLatexAlias='t#bar{t}',
+  LatexAlias='tt'
+)
+SampleGroup_TTLL_2018 = SampleGroup(
+  Name='TTLL',
+  Type='Bkgd',
+  Samples=['TTLL_powheg'],
+  Year = 2018,
+  Color=ROOT.kRed,
+  Style=1,
+  TLatexAlias='t#bar{t}',
+  LatexAlias='tt'
+)
+
+
 ## TW
 SampleGroup_TW_2016 = SampleGroup(
   Name='TW',

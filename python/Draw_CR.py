@@ -181,7 +181,7 @@ if args.Category==1:
     Region('HNWR_SingleMuon_EMu_Boosted_CR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted flavor CR}'),
     ## Resolved EMu, but DYCR. This is dominated by ttbar, so it is here..
     ## This region is not important
-    Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mi}{Resolved DY CR}'),
+    Region('HNWR_EMu_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved DY CR}'),
     ## LowWRCR emu regions
     Region('HNWR_EMu_Resolved_LowWRCR', 'SingleMuon', UnblindData=True, Logy=-1, TLatexAlias='#splitline{e#mu}{Resolved low-mass CR}'),
     Region('HNWR_SingleElectron_EMu_Boosted_LowWRCR', 'SingleElectron', UnblindData=True, Logy=-1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted low-mass CR}'),

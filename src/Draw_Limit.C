@@ -93,6 +93,9 @@ void Draw_Limit(int Year, TString dirname=""){
     "MuMu",
   };
 
+  //==== Draw exclusion curves
+  double conts[] = {1.};
+
   //==== y=x line
 
   double x_0[2], y_0[2];
@@ -365,6 +368,12 @@ void Draw_Limit(int Year, TString dirname=""){
     hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
     hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
 
+    //==== To draw again after
+    TH2D *hist2d_limit_exp_ratio_Combined;
+    TH2D *hist2d_limit_exp_1sdUp_ratio_Combined;
+    TH2D *hist2d_limit_exp_1sdDn_ratio_Combined;
+    TH2D *hist2d_limit_obs_ratio_Combined;
+
     for(unsigned int it_region=0; it_region<regions.size(); it_region++){
 
       TString region = regions.at(it_region);
@@ -539,31 +548,38 @@ void Draw_Limit(int Year, TString dirname=""){
         hist2d_limit_exp_ratio_clone->Draw("colzsame");
         hist2d_limit_exp_ratio_clone->Draw("axissame");
 
+        gr_atlas->Draw("lsame");
+        //gr_atlas_boosted->Draw("lsame");
+        gr_EXO17011->Draw("lsame");
+
       }
 
-      //==== Draw exclusion curves
-      double conts[] = {1.};  
-
       if(region=="Combined"){
-      hist2d_limit_exp_ratio->SetContour(1,conts);
-      hist2d_limit_exp_ratio->SetLineWidth(2);
-      hist2d_limit_exp_ratio->SetLineStyle(3);
-      hist2d_limit_exp_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_ratio->Draw("cont3same");
 
-      hist2d_limit_exp_1sdUp_ratio->SetContour(1,conts);
-      hist2d_limit_exp_1sdUp_ratio->SetLineWidth(2);
-      hist2d_limit_exp_1sdUp_ratio->SetLineStyle(5);
-      hist2d_limit_exp_1sdUp_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
+        hist2d_limit_exp_ratio->SetContour(1,conts);
+        hist2d_limit_exp_ratio->SetLineWidth(2);
+        hist2d_limit_exp_ratio->SetLineStyle(3);
+        hist2d_limit_exp_ratio->SetLineColor(colors.at(it_region));
+        hist2d_limit_exp_ratio->Draw("cont3same");
 
-      hist2d_limit_exp_1sdDn_ratio->SetContour(1,conts);
-      hist2d_limit_exp_1sdDn_ratio->SetLineWidth(2);
-      hist2d_limit_exp_1sdDn_ratio->SetLineStyle(5);
-      hist2d_limit_exp_1sdDn_ratio->SetLineColor(colors.at(it_region));
-      hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
+        hist2d_limit_exp_1sdUp_ratio->SetContour(1,conts);
+        hist2d_limit_exp_1sdUp_ratio->SetLineWidth(2);
+        hist2d_limit_exp_1sdUp_ratio->SetLineStyle(5);
+        hist2d_limit_exp_1sdUp_ratio->SetLineColor(colors.at(it_region));
+        hist2d_limit_exp_1sdUp_ratio->Draw("cont3same");
 
-      lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region)+" (exp.)", "l");
+        hist2d_limit_exp_1sdDn_ratio->SetContour(1,conts);
+        hist2d_limit_exp_1sdDn_ratio->SetLineWidth(2);
+        hist2d_limit_exp_1sdDn_ratio->SetLineStyle(5);
+        hist2d_limit_exp_1sdDn_ratio->SetLineColor(colors.at(it_region));
+        hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
+
+        lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region)+" (exp.)", "l");
+
+        hist2d_limit_exp_ratio_Combined = (TH2D *)hist2d_limit_exp_ratio->Clone();
+        hist2d_limit_exp_1sdUp_ratio_Combined = (TH2D *)hist2d_limit_exp_1sdUp_ratio->Clone();
+        hist2d_limit_exp_1sdDn_ratio_Combined = (TH2D *)hist2d_limit_exp_1sdDn_ratio->Clone();
+        hist2d_limit_obs_ratio_Combined = (TH2D *)hist2d_limit_obs_ratio->Clone();
 
       }
 
@@ -577,9 +593,29 @@ void Draw_Limit(int Year, TString dirname=""){
 
     } // END Loop region
 
-    gr_atlas->Draw("lsame");
-    //gr_atlas_boosted->Draw("lsame");
-    gr_EXO17011->Draw("lsame");
+    hist2d_limit_exp_ratio_Combined->SetContour(1,conts);
+    hist2d_limit_exp_ratio_Combined->SetLineWidth(2);
+    hist2d_limit_exp_ratio_Combined->SetLineStyle(3);
+    hist2d_limit_exp_ratio_Combined->SetLineColor(colors.at(0));
+    hist2d_limit_exp_ratio_Combined->Draw("cont3same");
+
+    hist2d_limit_exp_1sdUp_ratio_Combined->SetContour(1,conts);
+    hist2d_limit_exp_1sdUp_ratio_Combined->SetLineWidth(2);
+    hist2d_limit_exp_1sdUp_ratio_Combined->SetLineStyle(5);
+    hist2d_limit_exp_1sdUp_ratio_Combined->SetLineColor(colors.at(0));
+    hist2d_limit_exp_1sdUp_ratio_Combined->Draw("cont3same");
+
+    hist2d_limit_exp_1sdDn_ratio_Combined->SetContour(1,conts);
+    hist2d_limit_exp_1sdDn_ratio_Combined->SetLineWidth(2);
+    hist2d_limit_exp_1sdDn_ratio_Combined->SetLineStyle(5);
+    hist2d_limit_exp_1sdDn_ratio_Combined->SetLineColor(colors.at(0));
+    hist2d_limit_exp_1sdDn_ratio_Combined->Draw("cont3same");
+
+    hist2d_limit_obs_ratio_Combined->SetContour(1,conts);
+    hist2d_limit_obs_ratio_Combined->SetLineWidth(2);
+    hist2d_limit_obs_ratio_Combined->SetLineStyle(1);
+    hist2d_limit_obs_ratio_Combined->SetLineColor(colors.at(0));
+    hist2d_limit_obs_ratio_Combined->Draw("cont3same");
 
     lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
     //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");

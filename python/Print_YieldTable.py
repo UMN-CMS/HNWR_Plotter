@@ -34,7 +34,8 @@ BoostedMasses = [
 
 Bkgds = [
 'DYJets_MG_HT_Reweighted_Reshaped',
-'TTLX_powheg',
+'TT_TW',
+'NonPrompt',
 'Others',
 'total_background',
 ]
@@ -42,7 +43,8 @@ Bkgds = [
 SumYields = [
 # [ee resol, ee boosted, mm resol, mm boosted]
 [0.,0.,0.,0.], ## DY
-[0.,0.,0.,0.], ## TT
+[0.,0.,0.,0.], ## TT_TW
+[0.,0.,0.,0.], ## NonPrompt
 [0.,0.,0.,0.], ## Others
 [0.,0.,0.,0.], ## total
 ]

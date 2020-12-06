@@ -48,7 +48,7 @@ print '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 ToRuns = [
 
   [
-    'AllMCBkgd',
+    'AllNonDYMCBkgd',
     'All bkgd./Signal',
     [
       ["JetRes","Jet energy resolution"],
@@ -156,6 +156,32 @@ for ToRun in ToRuns:
               h_Down = f.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
               y_Down = h_Down.GetBinContent(1)
               diff_Down = abs(y_Down-y_Nom)
+
+              if Sample=='AllNonDYMCBkgd':
+
+                #### We need "AllNonDYMCBkgd" + "DYNorm" X "DY"
+
+                f_DY = ROOT.TFile(basedir+'HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_MG_HT_Reweighted_Reshaped.root')
+
+                #### Get Nominal
+                h_Nom_DY = f_DY.Get(dirName+'/NEvent_'+dirName)
+                y_Nom_DY = h_Nom_DY.GetBinContent(1)
+
+                #### Get Up
+                h_Up_DY = f_DY.Get('Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName)
+                y_Up_DY = h_Up_DY.GetBinContent(1)
+                #### Get Down
+                h_Down_DY = f_DY.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
+                y_Down_DY = h_Down_DY.GetBinContent(1)
+
+                y_Nom += y_Nom_DY
+                y_Up += y_Up_DY
+                y_Down += y_Down_DY
+
+                diff_Up = abs(y_Up-y_Nom)
+                diff_Down = abs(y_Down-y_Nom)
+
+                f_DY.Close()
 
               #### Calculate syst
               this_syst = max( 100.*diff_Up/y_Nom, 100.*diff_Down/y_Nom )

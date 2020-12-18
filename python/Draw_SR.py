@@ -30,8 +30,9 @@ ENV_PLOT_PATH = os.environ['PLOT_PATH']
 ## Signal mass
 mWR, mN = 5000, 3000
 if args.Category==1:
-  mWR, mN = 5000, 100
+  mWR, mN = 5000, 200
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
+LRSMSignalInfoToDraw.useOfficial = True
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
 LRSMSignalInfoToDraw.Style = 5
 LRSMSignalInfoToDraw.xsec = 1. * mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
@@ -82,7 +83,8 @@ tmp_Systematics = [
   "Prefire",
   "DYNorm",
   "DYReshapeSyst",
-  "DYReshapeEEMM",
+  "NonPromptNorm",
+  "OthersNorm",
 ]
 #tmp_Systematics = ["Lumi"]
 
@@ -122,7 +124,7 @@ if args.ApplyDYReshape:
 
 #### Define Samples
 if args.Year>0:
-  exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_NonPrompt_%s, SampleGroup_DY_%s, SampleGroup_TT_TW_%s]'%(args.Year,args.Year,args.Year,args.Yaer))
+  exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_NonPrompt_%s, SampleGroup_DY_%s, SampleGroup_TT_TW_%s]'%(args.Year,args.Year,args.Year,args.Year))
 else:
   m.SampleGroups = [
     SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,

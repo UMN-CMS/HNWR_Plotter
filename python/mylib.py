@@ -305,7 +305,7 @@ def GetKFactor(mWR, mN, Year=2016, lepch=0):
   massstring = "WR"+str(mWR)+"_N"+str(mN)
 
   ##==== get averaged kfactor
-  lines = open(WORKING_DIR+"/data/"+dataset+"/"+str(Year)+"/AveragedKFactor.txt").readlines()
+  lines = open(WORKING_DIR+"/data/"+dataset+"/"+str(Year)+"/AveragedKFactor_WROfficial.txt").readlines()
   this_avg_kfactor = -1.;
   for line in lines:
     words = line.strip('\n').split()

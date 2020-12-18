@@ -68,7 +68,8 @@ tmp_Systematics = [
   "Prefire",
   "DYNorm",
   "DYReshapeSyst",
-  "DYReshapeEEMM",
+  "NonPromptNorm",
+  "OthersNorm",
 ]
 #tmp_Systematics = ["Lumi"]
 
@@ -148,6 +149,13 @@ if args.Category==0:
     Region('HNWR_SingleMuon_Resolved_DYCR3', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR3}'),
     Region('HNWR_SingleElectron_Boosted_DYCR3', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR3}'),
     Region('HNWR_SingleMuon_Boosted_DYCR3', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR3}'),
+  ]
+  m.RegionsToDraw = [
+    ## 60<mll<150
+    Region('HNWR_SingleElectron_Resolved_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Resolved DY CR}'),
+    Region('HNWR_SingleMuon_Resolved_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Resolved DY CR}'),
+    Region('HNWR_SingleElectron_Boosted_DYCR', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{ee}{Boosted DY CR}'),
+    Region('HNWR_SingleMuon_Boosted_DYCR', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu#mu}{Boosted DY CR}'),
   ]
   m.PrintRegions()
 

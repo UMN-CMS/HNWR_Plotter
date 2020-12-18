@@ -38,6 +38,7 @@ class LRSMSignalInfo:
     self.kfactor = 1.
     self.Color = ROOT.kBlack
     self.Style = 3
+    self.useOfficial = False
 
     self.TLatexAlias = "(m_{W_{R}}, m_{N}) = (%d, %d) GeV"%(self.mWR, self.mN)
 
@@ -113,6 +114,8 @@ class Plotter:
 
     self.ErrorFromShape = False
     self.AddErrorLinear = False
+
+    self.NoErrorBand = False
 
   def PrintBorder(self):
     print '--------------------------------------------------------------------------'
@@ -314,9 +317,9 @@ class Plotter:
               elif (Syst.Name=="ZPtRw") and ("Reweighted" not in Sample):
                 tmp_dirName = Region.Name
                 h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
-              ## 2) Lumi, DYNorm
-              ## Use centralm and scale them later
-              elif (Syst.Name in ["Lumi", "DYNorm"]):
+              ## 2) Lumi, MC normalizaion
+              ## Use central and scale them later
+              elif (Syst.Name in ["Lumi", "DYNorm", "NonPromptNorm", "OthersNorm"]):
                 tmp_dirName = Region.Name
                 h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
               ## For all other cases
@@ -352,11 +355,25 @@ class Plotter:
                   y = h_Sample.GetBinContent(ix+1)
                   y_new = y + y*float(Syst.Direction)*lumierr
                   h_Sample.SetBinContent(ix+1, y_new)
-              ## 2) [DYNorm] Correlated, only for DY
-              if (Syst.Name=="DYNorm") and ("DYJets" in Sample):
+              ## 2) [DYNorm] Uncorrelated, only for DY
+              if (Syst.Name=="DYNorm") and ("DYJets" in Sample) and (Syst.Year==SampleGroup.Year):
                 for ix in range(0,h_Sample.GetXaxis().GetNbins()):
-                  y = h_Sample.GetBinContent(ix+1) ## already scaled by MCSF
+                  y = h_Sample.GetBinContent(ix+1) ## h_Sample is already scaled by MCSF above
                   y_new = y * ( MCSF + float(Syst.Direction)*MCSFerr ) / MCSF
+                  h_Sample.SetBinContent(ix+1, y_new)
+              # 3) [NonPromptNorm] Uncorrelated, olny for NonPrompt
+              if (Syst.Name=="NonPromptNorm") and ("NonPrompt" in Sample) and (Syst.Year==SampleGroup.Year):
+                NonPromptNormErr = 1.00
+                for ix in range(0,h_Sample.GetXaxis().GetNbins()):
+                  y = h_Sample.GetBinContent(ix+1)
+                  y_new = y + y*float(Syst.Direction)*NonPromptNormErr
+                  h_Sample.SetBinContent(ix+1, y_new)
+              # 4) [OthersNorm] Correlated, only for Others 
+              if (Syst.Name=="OthersNorm") and ("Others" in Sample):
+                OthersNormErr = 0.50
+                for ix in range(0,h_Sample.GetXaxis().GetNbins()):
+                  y = h_Sample.GetBinContent(ix+1)
+                  y_new = y + y*float(Syst.Direction)*OthersNormErr
                   h_Sample.SetBinContent(ix+1, y_new)
 
               ## AddError option
@@ -513,7 +530,8 @@ class Plotter:
         lg.SetBorderSize(0)
         lg.SetFillStyle(0)
 
-        lg.AddEntry(gr_Bkgd_TotErr, "Stat.+syst. uncert.", "f")
+        if not self.NoErrorBand:
+          lg.AddEntry(gr_Bkgd_TotErr, "Stat.+syst. uncert.", "f")
         ## dummy graph for legend..
         ## this is because h_Data does not have horizontal error bars,
         ## and gr_data does not have points
@@ -597,6 +615,9 @@ class Plotter:
         h_dummy_down = ROOT.TH1D('h_dumy_down', '', nBin, xBins)
         h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
 
+        #if ('DYCR2' in Region.Name):
+        #  h_dummy_down.GetYaxis().SetRangeUser(0.50,1.60)
+
         if (self.ErrorFromShape):
           #if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
           if ('DYCR' in Region.Name):
@@ -637,20 +658,23 @@ class Plotter:
 
         ## Exception control
 
-        if (Variable.Name=="WRCand_Mass") and ("_SR" in Region.Name) and ("EMu" not in Region.Name):
-          if ("Resolved" in Region.Name):
-            h_dummy_up.GetYaxis().SetRangeUser( 1E-1, yMaxScale*yMax )
-          else:
-            h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )
+        if (Variable.Name=="WRCand_Mass"):
 
-        if (Variable.Name=="WRCand_Mass") and ("_DYCR" in Region.Name):
-          if ("Resolved" in Region.Name):
-            h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )
-          else:
-            h_dummy_up.GetYaxis().SetRangeUser( yMin, 50*yMax )
+          if ("_SR" in Region.Name) and ("EMu" not in Region.Name):
+            if ("Resolved" in Region.Name):
+              h_dummy_up.GetYaxis().SetRangeUser( 1E-1, yMaxScale*yMax )
+            else:
+              h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )
+          elif ("_DYCR" in Region.Name):
+            if ("Resolved" in Region.Name):
+              h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )
+            else:
+              h_dummy_up.GetYaxis().SetRangeUser( yMin, 50*yMax )
+          elif ("NoBJet" in Region.Name):
+            h_dummy_up.GetYaxis().SetRangeUser( 1E-3, 4*yMax )
 
         if (Variable.Name=="ZCand_Mass" or Variable.Name=="DiJet_Mass") and ("_DYCR" in Region.Name):
-          h_dummy_up.GetYaxis().SetRangeUser(10, 2E8)
+          h_dummy_up.GetYaxis().SetRangeUser(10, 2E5)
         if (Variable.Name=="ZCand_Pt" or Variable.Name=="DiJet_Pt") and ("_DYCR" in Region.Name):
           if ("Resolved" in Region.Name):
             h_dummy_up.GetYaxis().SetRangeUser(10, 5E6)
@@ -672,7 +696,8 @@ class Plotter:
         gr_Bkgd_TotErr.SetFillStyle(3013)
         gr_Bkgd_TotErr.SetFillColor(ROOT.kBlack)
         gr_Bkgd_TotErr.SetLineColor(0)
-        gr_Bkgd_TotErr.Draw("sameE2")
+        if not self.NoErrorBand:
+          gr_Bkgd_TotErr.Draw("sameE2")
 
         gr_Data.SetLineWidth(2)
         gr_Data.SetMarkerSize(0.)
@@ -683,26 +708,31 @@ class Plotter:
           gr_Data.Draw("p0same")
 
         #### 2020/10/14 For the ARC comments
-        '''
-        for ix in range(0,h_Data.GetXaxis().GetNbins()):
-          iBin = ix+1
-          x_l = h_Data.GetXaxis().GetBinLowEdge(iBin)
-          x_r = h_Data.GetXaxis().GetBinUpEdge(iBin)
-
-          y_Data = h_Data.GetBinContent(iBin)
-          y_Bkgd = h_Bkgd.GetBinContent(iBin)
-          ratio = y_Data/y_Bkgd
-
-          print '%s\t%d\t%d\t%1.2f\t%1.2f\t%1.2f'%(Region.Name, x_l, x_r, y_Data, y_Bkgd, ratio)
-        '''
+        #for ix in range(0,h_Data.GetXaxis().GetNbins()):
+        #  iBin = ix+1
+        #  x_l = h_Data.GetXaxis().GetBinLowEdge(iBin)
+        #  x_r = h_Data.GetXaxis().GetBinUpEdge(iBin)
+        #  y_Data = h_Data.GetBinContent(iBin)
+        #  y_Bkgd = h_Bkgd.GetBinContent(iBin)
+        #  ratio = y_Data/y_Bkgd
+        #  print '%s\t%d\t%d\t%1.2f\t%1.2f\t%1.2f'%(Region.Name, x_l, x_r, y_Data, y_Bkgd, ratio)
 
         ## Signal
         LeptonChannel = "EE" if ("Electron" in Region.Name) else "MuMu"
         h_Sigs = []
         for Sig in self.SignalsToDraw:
-          f_Sig = ROOT.TFile(Indir+'/'+self.DataDirectory+'/Signal_'+LeptonChannel+'/'+self.Filename_prefix+'_WRtoNLtoLLJJ_WR%d_N%d'%(Sig.mWR,Sig.mN)+self.Filename_suffix+'.root')
+
+          fname_Sig = self.Filename_prefix+'_WRtoNLtoLLJJ_WR%d_N%d'%(Sig.mWR,Sig.mN)+self.Filename_suffix+'.root'
+          fpullpath_Sig = Indir+'/'+self.DataDirectory+'/Signal_'+LeptonChannel+'/'+fname_Sig
+          if Sig.useOfficial:
+            fname_Sig = self.Filename_prefix+'_Official_FullSim_WR%d_N%d'%(Sig.mWR,Sig.mN)+self.Filename_suffix+'.root'
+            fpullpath_Sig = Indir+'/'+self.DataDirectory+'/Signal_'+LeptonChannel+'_Official/'+fname_Sig
+
+          f_Sig = ROOT.TFile(fpullpath_Sig)
           h_Sig = f_Sig.Get(Region.Name+'/'+Variable.Name+'_'+Region.Name)
           if not h_Sig:
+            print fpullpath_Sig
+            print Region.Name+'/'+Variable.Name+'_'+Region.Name
             continue
           h_Sigs.append(h_Sig)
 

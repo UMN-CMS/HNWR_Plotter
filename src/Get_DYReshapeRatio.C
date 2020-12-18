@@ -67,7 +67,9 @@ void Get_DYReshapeRatio(int int_Year=2016){
   //==== MCs
 
   vector<TString> bkgds = {
-    "TTLX_powheg", "Others",
+    "TT_TW",
+    "NonPrompt",
+    "Others",
   };
   TString samplename_DY50 = "DYJets_MG_HT_Reweighted";
 

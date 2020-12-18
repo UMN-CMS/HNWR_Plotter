@@ -8,6 +8,9 @@ txtfiles = [
 'yaxis',
 ]
 
+regionFrom = 'HNWR_SingleMuon_EMu_Boosted_CR_BJet'
+regionTo   = 'HNWR_SingleMuon_EMu_Boosted_CR_NoBJet'
+
 for txtfile in txtfiles:
 
   lines = open(Which+'_'+txtfile+'.txt').readlines()
@@ -22,14 +25,14 @@ for txtfile in txtfiles:
 
     region = words[0]
 
-    if 'DYCR2' in words[0]:
+    if regionFrom in words[0]:
       toReplace += lines[i_line]
       newout.write(lines[i_line])
     else:
       if toReplace == '':
         newout.write(lines[i_line])
       else:
-        newout.write(toReplace.replace('DYCR2','DYCR3'))
+        newout.write(toReplace.replace(regionFrom,regionTo))
         newout.write(lines[i_line])
         toReplace = ''
   newout.close()

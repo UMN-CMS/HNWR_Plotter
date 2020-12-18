@@ -9,6 +9,8 @@ void Make_ShapeForLimit(int Year=2016){
 
   bool UseCustomRebin = true;
 
+  bool UseOfficial = true;
+
 /*
   bool UncorrelateSyst = false;
   TString nuisancePrefix = "";
@@ -410,10 +412,12 @@ void Make_ShapeForLimit(int Year=2016){
             else signal_scale *= 0.1;
 
             TString this_filename = "HNWRAnalyzer_WRtoNLtoLLJJ_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
+            if(UseOfficial) this_filename = "HNWRAnalyzer_Official_FullSim_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root";
 
+            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/Signal_"+channel+"/"+this_filename;
+            if(UseOfficial) temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/Signal_"+channel+"_Official/"+this_filename;
 
-            TString temp_base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+str_Year+"/";
-            TFile *file_sig = new TFile(temp_base_filepath+"/Signal_"+channel+"/"+this_filename);
+            TFile *file_sig = new TFile(temp_base_filepath);
             TDirectory *dir_sig = (TDirectory *)file_sig->Get(dirname);
 
 /*
@@ -479,6 +483,7 @@ void Make_ShapeForLimit(int Year=2016){
                   SignalSystematics m;
                   m.DataYear = Year;
                   m.file = file_sig;
+                  m.isOfficial = UseOfficial;
                   //m.DoDebug = true;
 
                   TH1D *hist_sig_SignalFlavour = (TH1D *)file_sig->Get("SignalFlavour");
@@ -499,53 +504,137 @@ void Make_ShapeForLimit(int Year=2016){
                   m.UseCustomRebin = UseCustomRebin;
                   m.n_rebin = n_rebin;
                   m.hist_Central = hist_sig;
+                  //m.DoDebug = true;
                   //m.isReplica = true;//TODO DEBUGGING
                   m.Run();
 
-                  m.hist_ScaleUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");
-                  m.hist_ScaleDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleDown");
-                  m.hist_ScaleIntegral->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleIntegralSyst");
-
-
-                  //=========================
-                  //==== EXCEPTION
-                  //=========================
-
-                  //==== 2017, mumu, boosted
-                  if( (Year==2017) && (channel=="MuMu") && (region=="Boosted_SR") ){
-
-                    double ErrRescale = 1.;
-                    if( (m_WR==5200) && (m_N==2600) ) ErrRescale = 0.109934;
-                    if( (m_WR==5800) && (m_N==1600) ) ErrRescale = 0.398046;
-                    if( (m_WR==5800) && (m_N==2000) ) ErrRescale = 0.279369;
-                    if( (m_WR==5800) && (m_N==3000) ) ErrRescale = 0.195867;
-                    if( (m_WR==5800) && (m_N==3400) ) ErrRescale = 0.116162;
-
-                    for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
-                      double y_Central = hist_sig->GetBinContent(ix);
-                      double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
-                      double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
-                      double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
-                      double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
-                      m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
-                      m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
-                    }
+                  if(!UseOfficial){
+                    m.hist_ScaleUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleUp");
+                    m.hist_ScaleDn->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleDown");
+                    m.hist_ScaleIntegral->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_ScaleIntegralSyst");
                   }
-                  //==== 2018, ee, boosted
-                  if( (Year==2018) && (channel=="EE") && (region=="Boosted_SR") ){
 
-                    double ErrRescale = 1.;
-                    if( (m_WR==5000) && (m_N==2400) ) ErrRescale = 0.117460;
 
-                    for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
-                      double y_Central = hist_sig->GetBinContent(ix);
-                      double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
-                      double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
-                      double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
-                      double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
-                      m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
-                      m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                  //=========================
+                  //==== EXCEPTION (FastSim)
+                  //=========================
+
+                  if(!UseOfficial){
+
+                    //==== 2017, mumu, boosted
+                    if( (Year==2017) && (channel=="MuMu") && (region=="Boosted_SR") ){
+
+                      double ErrRescale = 1.;
+                      if( (m_WR==5200) && (m_N==2600) ) ErrRescale = 0.109934;
+                      if( (m_WR==5800) && (m_N==1600) ) ErrRescale = 0.398046;
+                      if( (m_WR==5800) && (m_N==2000) ) ErrRescale = 0.279369;
+                      if( (m_WR==5800) && (m_N==3000) ) ErrRescale = 0.195867;
+                      if( (m_WR==5800) && (m_N==3400) ) ErrRescale = 0.116162;
+
+                      for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                        double y_Central = hist_sig->GetBinContent(ix);
+                        double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                        double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                        double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                        double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                        m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                        m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                      }
                     }
+                    //==== 2018, ee, boosted
+                    if( (Year==2018) && (channel=="EE") && (region=="Boosted_SR") ){
+
+                      double ErrRescale = 1.;
+                      if( (m_WR==5000) && (m_N==2400) ) ErrRescale = 0.117460;
+
+                      for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                        double y_Central = hist_sig->GetBinContent(ix);
+                        double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                        double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                        double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                        double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                        m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                        m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                      }
+                    }
+
+                  }
+                  else{
+
+/*
+                    //==== 2016, mumu, boosted
+                    if( (Year==2016) && (channel=="MuMu") && (region=="Boosted_SR") ){
+
+                      double ErrRescale = 1.;
+                      if( (m_WR==5200) && (m_N==4000) ) ErrRescale = 0.156071;
+
+                      for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                        double y_Central = hist_sig->GetBinContent(ix);
+                        double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                        double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                        double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                        double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                        m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                        m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                      }
+
+                    }
+
+                    //==== 2017, mumu, resolved
+                    if( (Year==2017) && (channel=="MuMu") && (region=="Resolved_SR") ){
+                      
+                      double ErrRescale = 1.;
+                      if( (m_WR==4200) && (m_N==100) ) ErrRescale = 0.437758;
+                      
+                      for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                        double y_Central = hist_sig->GetBinContent(ix);
+                        double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                        double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                        double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                        double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                        m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                        m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                      }
+
+                    }
+
+                    //==== 2018, ee, boosted
+                    if( (Year==2018) && (channel=="EE") && (region=="Boosted_SR") ){
+
+                      double ErrRescale = 1.;
+                      if( (m_WR==3200) && (m_N==3000) ) ErrRescale = 0.061852;
+
+                      for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                        double y_Central = hist_sig->GetBinContent(ix);
+                        double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                        double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                        double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                        double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                        m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                        m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                      }
+
+                    }
+                    //==== 2018, mumu, Boosted
+                    if( (Year==2018) && (channel=="MuMu") && (region=="Boosted_SR") ){
+
+                      double ErrRescale = 1.;
+                      if( (m_WR==5000) && (m_N==3000) ) ErrRescale = 0.196213;
+
+                      for(int ix=1; ix<=m.hist_PDFErrorUp->GetXaxis()->GetNbins(); ix++){
+                        double y_Central = hist_sig->GetBinContent(ix);
+                        double y_PDFUp = m.hist_PDFErrorUp->GetBinContent(ix);
+                        double y_PDFDown = m.hist_PDFErrorDn->GetBinContent(ix);
+                        double newerr_PDFUp = fabs(y_PDFUp-y_Central) * ErrRescale;
+                        double newerr_PDFDown = fabs(y_Central-y_PDFDown) * ErrRescale;
+                        m.hist_PDFErrorUp->SetBinContent(ix, y_Central+newerr_PDFUp);
+                        m.hist_PDFErrorDn->SetBinContent(ix, y_Central-newerr_PDFDown);
+                      }
+
+                    }
+
+*/
+
                   }
 
                   m.hist_PDFErrorUp->SetName("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_PDFErrorUp");
@@ -555,9 +644,11 @@ void Make_ShapeForLimit(int Year=2016){
 
                   out_bkgd->cd();
 
-                  m.hist_ScaleUp->Write();
-                  m.hist_ScaleDn->Write();
-                  m.hist_ScaleIntegral->Write();
+                  if(!UseOfficial){
+                    m.hist_ScaleUp->Write();
+                    m.hist_ScaleDn->Write();
+                    m.hist_ScaleIntegral->Write();
+                  }
 
 /*
                   //==== DEBUG TODO CHECK

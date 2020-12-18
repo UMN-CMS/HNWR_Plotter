@@ -729,7 +729,7 @@ double GetKFactor(int mWR, int mN, int Year=2016, int lepch=0){
 
   //==== get averaged kfactor
   string kfactor_line;
-  ifstream kfactor_in(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/AveragedKFactor.txt");
+  ifstream kfactor_in(WORKING_DIR+"/data/"+dataset+"/"+TString::Itoa(Year,10)+"/AveragedKFactor_WROfficial.txt");
   double this_avg_kfactor = -1.;
   while(getline(kfactor_in,kfactor_line)){
     std::istringstream is( kfactor_line );

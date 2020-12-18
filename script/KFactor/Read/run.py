@@ -7,8 +7,8 @@ basedir = '/data6/Users/jskim/SKFlatOutput/Run2Legacy_v4/HNWRAnalyzer/'
 
 Years = [
 "2016",
-"2017",
-"2018",
+#"2017",
+#"2018",
 ]
 
 for Year in Years:
@@ -41,6 +41,6 @@ for Year in Years:
 
     out.write(mass+'\t'+str(avg_kfactor_ee)+'\t'+str(avs_kfactor_mm)+'\n')
 
-  out.Close()
+  out.close()
 
   os.system('cp /data6/Users/jskim/SKFlatAnalyzer/data/Run2Legacy_v4/'+Year+'/HNWRKFactor/AveragedKFactor.txt '+PLOTTER_WORKING_DIR+'/data/'+CATANVERSION+'/'+Year+'/')

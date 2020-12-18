@@ -15,6 +15,7 @@ public:
   bool UseCustomRebin;
   bool DoDebug;
   bool isReplica;
+  bool isOfficial;
   TString region;
 
   double ChannelFrac;
@@ -65,6 +66,7 @@ public:
     UseCustomRebin = true;
     DoDebug = false;
     isReplica = false;
+    isOfficial = false;
     region = "";
 
     hist_Central = NULL;
@@ -135,17 +137,21 @@ public:
     };
     for(int i=0; i<7; i++) ScaleIDs[i] = ScaleIDs[i]-1001;
 
-    if(DoDebug) cout << "[SignalSystematics] @@@@ Scale " << endl;
-    for(int i=0; i<7; i++){
-      // PDFWeights_Scale_23
+    if(!isOfficial){
 
-      TString histname = "PDFWeights_Scale_"+TString::Itoa(ScaleIDs[i],10);
-      TH1D *hist = (TH1D *)dir_Den->Get(histname+"_XsecSyst_Den");
-      if(DoDebug) cout << "[SignalSystematics] i = " << i << " : " << hist->GetBinContent(1) << endl;
+      if(DoDebug) cout << "[SignalSystematics] @@@@ Scale " << endl;
+      for(int i=0; i<7; i++){
+        // PDFWeights_Scale_23
 
-      DenValues_Scale[i] = hist->GetBinContent(1);
+        TString histname = "PDFWeights_Scale_"+TString::Itoa(ScaleIDs[i],10);
+        TH1D *hist = (TH1D *)dir_Den->Get(histname+"_XsecSyst_Den");
+        if(DoDebug) cout << "[SignalSystematics] i = " << i << " : " << hist->GetBinContent(1) << endl;
 
-      xsec_ScaleSyst = max( xsec_ScaleSyst, fabs( DenValues_Scale[i] - DenValues_Scale[0] ) );
+        DenValues_Scale[i] = hist->GetBinContent(1);
+
+        xsec_ScaleSyst = max( xsec_ScaleSyst, fabs( DenValues_Scale[i] - DenValues_Scale[0] ) );
+
+      }
 
     }
 
@@ -178,6 +184,7 @@ public:
       tmp += this_diff*this_diff;
 
       DenValues_PDFError[i] = hist->GetBinContent(1);
+      if(isOfficial) DenValues_Scale[0] = DenValues_PDFError[0];
 
       if(DoDebug) cout << "[SignalSystematics] i = " << i << " : " << hist->GetBinContent(1) << "\ttmp2 = " << tmp << endl;
 
@@ -213,120 +220,125 @@ public:
 
     //==== central
 
-    hist_Central_Num = (TH1D *)dir_Num->Get("PDFWeights_Scale_0_XsecSyst_Num_"+region);
+    hist_Central_Num = (TH1D *)dir_Num->Get("PDFWeights_Error_0_XsecSyst_Num_"+region);
     if(UseCustomRebin) hist_Central_Num = RebinWRMass(hist_Central_Num, region, DataYear, true);
     else               hist_Central_Num->Rebin(n_rebin);
     hist_Central_Num->SetLineWidth(2);
     hist_Central_Num->Scale(1./DenValues_Scale[0]);
     hist_Central_Num->Scale(1./ChannelFrac);
 
+    double y_max = GetMaximum(hist_Central_Num);
+
     //============
     //==== Scale
     //============
 
-    if(DoDebug) cout << "[SignalSystematics] @@@@ Scale " << endl;
+    if(!isOfficial){
 
-    TCanvas *c_Scale = new TCanvas("c_Scale", "", 600, 600);
-    canvas_margin(c_Scale);
-    c_Scale->cd();
+      if(DoDebug) cout << "[SignalSystematics] @@@@ Scale " << endl;
 
-    //==== dummy
-    TH1D *hist_dummy = (TH1D *)hist_Central_Num->Clone();
-    hist_dummy->Draw("axis");
-    hist_axis(hist_dummy);
+      TCanvas *c_Scale = new TCanvas("c_Scale", "", 600, 600);
+      canvas_margin(c_Scale);
+      c_Scale->cd();
 
-    hist_Central_Num->SetLineColor(kBlack);
-    hist_Central_Num->Draw("histsame");
+      //==== dummy
+      TH1D *hist_dummy = (TH1D *)hist_Central_Num->Clone();
+      hist_dummy->Draw("axis");
+      hist_axis(hist_dummy);
 
-    hist_ScaleUp = (TH1D *)hist_Central_Num->Clone();
-    hist_ScaleDn = (TH1D *)hist_Central_Num->Clone();
-    const int n_xbin = hist_Central_Num->GetXaxis()->GetNbins();
+      hist_Central_Num->SetLineColor(kBlack);
+      hist_Central_Num->Draw("histsame");
 
-    double y_max = GetMaximum(hist_Central_Num);
-    map< int, vector<double> > ScalesToBinValues;
+      hist_ScaleUp = (TH1D *)hist_Central_Num->Clone();
+      hist_ScaleDn = (TH1D *)hist_Central_Num->Clone();
+      const int n_xbin = hist_Central_Num->GetXaxis()->GetNbins();
 
-    double integral_Central = hist_Central_Num->Integral();
-    double integral_Scale_Max(-1), integral_Scale_Min(99999999);
+      map< int, vector<double> > ScalesToBinValues;
 
-    for(int i=1; i<7; i++){
+      double integral_Central = hist_Central_Num->Integral();
+      double integral_Scale_Max(-1), integral_Scale_Min(99999999);
 
-      TString histname = "PDFWeights_Scale_"+TString::Itoa(ScaleIDs[i],10)+"_XsecSyst_Num_"+region;
-      TH1D *hist = (TH1D *)dir_Num->Get(histname);
-      if(UseCustomRebin) hist = RebinWRMass(hist, region, DataYear, true);
-      else               hist->Rebin(n_rebin);
-      hist->SetLineWidth(2);
-      hist->Scale(1./DenValues_Scale[i]);
-      hist->Scale(1./ChannelFrac);
-      if(DoDebug) cout << "[SignalSystematics] hist->Integral() = " << hist->Integral() << endl;
-
-      y_max = max( y_max, GetMaximum(hist));
-
-      hist->SetLineColor(colors[i]);
-      hist->SetLineWidth(3);
-      hist->SetLineStyle(3);
-      hist->Draw("histsame");
-
-      vector<double> values;
-      for(int x=1; x<=hist->GetXaxis()->GetNbins(); x++){
-        values.push_back( hist->GetBinContent(x) );
-      }
-      ScalesToBinValues[i] = values;
-
-      integral_Scale_Max = max( integral_Scale_Max, hist->Integral() );
-      integral_Scale_Min = min( integral_Scale_Min, hist->Integral() );
-
-    }
-    double integral_Scale_Up = fabs(integral_Central-integral_Scale_Max)/integral_Central;
-    double integral_Scale_Dn = fabs(integral_Central-integral_Scale_Min)/integral_Central;
-    if(DoDebug){
-      cout << "@@@@ Scale Integral : " << integral_Central << "\t" << integral_Scale_Max << "\t" << integral_Scale_Min << endl;
-      cout << "@@@@ Scale Up = " << integral_Scale_Up << endl;
-      cout << "@@@@ Scale Dn = " << integral_Scale_Dn << endl;
-      cout << "@@@@ Scale integral syst = " << max(integral_Scale_Up,integral_Scale_Dn) << endl;
-    }
-    hist_ScaleIntegral = new TH1D("hist_ScaleIntegral", "", 1, 0., 1.);
-    hist_ScaleIntegral->SetBinContent(1, max(integral_Scale_Up,integral_Scale_Dn));
-    for(int x=1; x<=hist_Central_Num->GetXaxis()->GetNbins(); x++){
-
-      //==== x : bincontent
-      //==== y : vector element index
-
-      int y = x-1;
-
-      double bin_central = hist_Central_Num->GetBinContent(x);
-
-      double binmax = bin_central;
-      double binmin = bin_central;
       for(int i=1; i<7; i++){
-        binmax = max( binmax, ScalesToBinValues[i].at(y) );
-        binmin = min( binmin, ScalesToBinValues[i].at(y) );
+
+        TString histname = "PDFWeights_Scale_"+TString::Itoa(ScaleIDs[i],10)+"_XsecSyst_Num_"+region;
+        TH1D *hist = (TH1D *)dir_Num->Get(histname);
+        if(UseCustomRebin) hist = RebinWRMass(hist, region, DataYear, true);
+        else               hist->Rebin(n_rebin);
+        hist->SetLineWidth(2);
+        hist->Scale(1./DenValues_Scale[i]);
+        hist->Scale(1./ChannelFrac);
+        if(DoDebug) cout << "[SignalSystematics] hist->Integral() = " << hist->Integral() << endl;
+
+        y_max = max( y_max, GetMaximum(hist));
+
+        hist->SetLineColor(colors[i]);
+        hist->SetLineWidth(3);
+        hist->SetLineStyle(3);
+        hist->Draw("histsame");
+
+        vector<double> values;
+        for(int x=1; x<=hist->GetXaxis()->GetNbins(); x++){
+          values.push_back( hist->GetBinContent(x) );
+        }
+        ScalesToBinValues[i] = values;
+
+        integral_Scale_Max = max( integral_Scale_Max, hist->Integral() );
+        integral_Scale_Min = min( integral_Scale_Min, hist->Integral() );
+
+      }
+      double integral_Scale_Up = fabs(integral_Central-integral_Scale_Max)/integral_Central;
+      double integral_Scale_Dn = fabs(integral_Central-integral_Scale_Min)/integral_Central;
+      if(DoDebug){
+        cout << "@@@@ Scale Integral : " << integral_Central << "\t" << integral_Scale_Max << "\t" << integral_Scale_Min << endl;
+        cout << "@@@@ Scale Up = " << integral_Scale_Up << endl;
+        cout << "@@@@ Scale Dn = " << integral_Scale_Dn << endl;
+        cout << "@@@@ Scale integral syst = " << max(integral_Scale_Up,integral_Scale_Dn) << endl;
+      }
+      hist_ScaleIntegral = new TH1D("hist_ScaleIntegral", "", 1, 0., 1.);
+      hist_ScaleIntegral->SetBinContent(1, max(integral_Scale_Up,integral_Scale_Dn));
+      for(int x=1; x<=hist_Central_Num->GetXaxis()->GetNbins(); x++){
+
+        //==== x : bincontent
+        //==== y : vector element index
+
+        int y = x-1;
+
+        double bin_central = hist_Central_Num->GetBinContent(x);
+
+        double binmax = bin_central;
+        double binmin = bin_central;
+        for(int i=1; i<7; i++){
+          binmax = max( binmax, ScalesToBinValues[i].at(y) );
+          binmin = min( binmin, ScalesToBinValues[i].at(y) );
+        }
+
+        hist_ScaleUp->SetBinContent(x, binmax);
+        hist_ScaleDn->SetBinContent(x, binmin);
+
       }
 
-      hist_ScaleUp->SetBinContent(x, binmax);
-      hist_ScaleDn->SetBinContent(x, binmin);
+      if(region.Contains("Resolved")) hist_dummy->GetXaxis()->SetTitle("m_{lljj} (GeV)");
+      else hist_dummy->GetXaxis()->SetTitle("m_{lJ} (GeV)");
+
+      hist_dummy->GetYaxis()->SetTitle("Efficiency / 200 GeV");
+      hist_dummy->GetYaxis()->SetRangeUser(0., 1.2*y_max);
+      hist_dummy->Draw("histsameaxis");
+
+      hist_ScaleUp->SetLineWidth(2);
+      hist_ScaleUp->SetLineStyle(1);
+      hist_ScaleUp->SetLineColor(kGray);
+
+      hist_ScaleDn->SetLineWidth(2);
+      hist_ScaleDn->SetLineStyle(1);
+      hist_ScaleDn->SetLineColor(kGray);
+
+      hist_ScaleUp->Draw("histsame");
+      hist_ScaleDn->Draw("histsame");
+
+      if(DrawPlot) c_Scale->SaveAs(outputdir+"/"+histPrefix+"Scale_"+region+".pdf");
+      c_Scale->Close();
 
     }
-
-    if(region.Contains("Resolved")) hist_dummy->GetXaxis()->SetTitle("m_{lljj} (GeV)");
-    else hist_dummy->GetXaxis()->SetTitle("m_{lJ} (GeV)");
-
-    hist_dummy->GetYaxis()->SetTitle("Efficiency / 200 GeV");
-    hist_dummy->GetYaxis()->SetRangeUser(0., 1.2*y_max);
-    hist_dummy->Draw("histsameaxis");
-
-    hist_ScaleUp->SetLineWidth(2);
-    hist_ScaleUp->SetLineStyle(1);
-    hist_ScaleUp->SetLineColor(kGray);
-
-    hist_ScaleDn->SetLineWidth(2);
-    hist_ScaleDn->SetLineStyle(1);
-    hist_ScaleDn->SetLineColor(kGray);
-
-    hist_ScaleUp->Draw("histsame");
-    hist_ScaleDn->Draw("histsame");
-
-    if(DrawPlot) c_Scale->SaveAs(outputdir+"/"+histPrefix+"Scale_"+region+".pdf");
-    c_Scale->Close();
 
     //================
     //==== PDF Error
@@ -548,8 +560,10 @@ public:
       //==== sometimes central_efF_value=1E-20.. and gives wrong result
       if(central_efF_value>0.000001){
 
-        hist_ScaleUp->SetBinContent( i, central_value * hist_ScaleUp->GetBinContent(i) / central_efF_value );
-        hist_ScaleDn->SetBinContent( i, central_value * hist_ScaleDn->GetBinContent(i) / central_efF_value );
+        if(!isOfficial){
+          hist_ScaleUp->SetBinContent( i, central_value * hist_ScaleUp->GetBinContent(i) / central_efF_value );
+          hist_ScaleDn->SetBinContent( i, central_value * hist_ScaleDn->GetBinContent(i) / central_efF_value );
+        }
 
         double this_PDFError = hist_PDFError->GetBinError(i)/hist_PDFError->GetBinContent(i);
         hist_PDFErrorUp->SetBinContent( i, central_value * (1+this_PDFError) );
@@ -569,8 +583,10 @@ public:
       }
       else{
 
-        hist_ScaleUp->SetBinContent( i, 0.000001 );
-        hist_ScaleDn->SetBinContent( i, 0.000001 );
+        if(!isOfficial){
+          hist_ScaleUp->SetBinContent( i, 0.000001 );
+          hist_ScaleDn->SetBinContent( i, 0.000001 );
+        }
 
         hist_PDFErrorUp->SetBinContent( i, 0.000001 );
         hist_PDFErrorDn->SetBinContent( i, 0.000001 );

@@ -30,11 +30,14 @@ ENV_PLOT_PATH = os.environ['PLOT_PATH']
 m = Plotter()
 
 m.DoDebug = args.debug
+m.NoErrorBand = True
 
 #### In/Out
 m.DataYear = args.Year
 str_Year = str(args.Year)
 m.InputDirectory = WORKING_DIR+'/rootfiles/'+dataset+"/NoLSFCut/"
+
+
 if args.Year<0:
   str_Year = 'YearCombined'
 m.DataDirectory = str_Year
@@ -68,7 +71,10 @@ tmp_Systematics = [
   "ZPtRw",
   "Prefire",
   "DYNorm",
+  "NonPromptNorm",
+  "OthersNorm",
 ]
+tmp_Systematics = []
 
 m.Systematics = [ Systematic(Name="Central", Direction=0, Year=-1) ]
 for s in tmp_Systematics:
@@ -100,29 +106,19 @@ if args.ApplyZPtRwg:
   SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
 
-#### Redefine Others
-SampleGroup_Others_2016.Samples=[
-'SingleTop', 'VV', 'VVV', 'ttX',
-]
-SampleGroup_Others_2017.Samples=[
-'SingleTop', 'VV', 'VVV', 'ttX',
-]
-SampleGroup_Others_2018.Samples=[
-'SingleTop', 'VV', 'VVV', 'ttX',
-]
-
 if args.Category==0:
   #### Define Samples
+
   if args.Year>0:
-    exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_DY_%s, SampleGroup_WJets_%s, SampleGroup_ttbar_%s]'%(args.Year,args.Year,args.Year,args.Year))
+    exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_NonPrompt_%s, SampleGroup_DY_%s, SampleGroup_TT_TW_%s]'%(args.Year,args.Year,args.Year,args.Year))
   else:
     m.SampleGroups = [
       SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,
-      SampleGroup_WJets_2016, SampleGroup_WJets_2017, SampleGroup_WJets_2018,
+      SampleGroup_NonPrompt_2016, SampleGroup_NonPrompt_2017, SampleGroup_NonPrompt_2018,
       SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
-      #SampleGroup_WJets_2016, SampleGroup_WJets_2017, SampleGroup_WJets_2018,
-      SampleGroup_ttbar_2016, SampleGroup_ttbar_2017, SampleGroup_ttbar_2018,
+      SampleGroup_TT_TW_2016, SampleGroup_TT_TW_2017, SampleGroup_TT_TW_2018,
     ]
+
   #### Signals
   mWR = 5000
   counter=0
@@ -130,6 +126,7 @@ if args.Category==0:
     LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
     LRSMSignalInfoToDraw.Color = ROOT.kBlack
     LRSMSignalInfoToDraw.Style = counter+2
+    LRSMSignalInfoToDraw.useOfficial = True
     LRSMSignalInfoToDraw.xsec = 30. * mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
     LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
     m.SignalsToDraw.append(LRSMSignalInfoToDraw)

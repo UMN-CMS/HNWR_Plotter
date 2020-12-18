@@ -1,5 +1,6 @@
 import os,ROOT,math
 import CMS_lumi, tdrstyle
+import mylib
 from IsCorrelated import IsCorrelated
 
 def IsCorrelatedToString(syst):
@@ -131,12 +132,12 @@ for ToRun in ToRuns:
             #### filename
             fname = 'HNWRAnalyzer_SkimTree_LRSMHighPt_'+Sample+'.root'
             if i_sample==1:
-              fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
+              fname = 'HNWRAnalyzer_Official_FullSim_'+Sample+'.root'
 
             for Year in Years:
               basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/'
               if i_sample==1:
-                basedir += 'Signal_'+EEorMuMu+'/'
+                basedir += 'Signal_'+EEorMuMu+'_Official/'
 
               #### dirName
               dirName = 'HNWR_'+channel+'_'+region+'_SR'
@@ -163,16 +164,19 @@ for ToRun in ToRuns:
 
                 f_DY = ROOT.TFile(basedir+'HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_MG_HT_Reweighted_Reshaped.root')
 
+                #### Get DYNorm SF
+                DYNormSF, DYNormSFErr = mylib.GetDYNormSF(int(Year), dirName)
+
                 #### Get Nominal
                 h_Nom_DY = f_DY.Get(dirName+'/NEvent_'+dirName)
-                y_Nom_DY = h_Nom_DY.GetBinContent(1)
+                y_Nom_DY = h_Nom_DY.GetBinContent(1) * DYNormSF
 
                 #### Get Up
                 h_Up_DY = f_DY.Get('Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName)
-                y_Up_DY = h_Up_DY.GetBinContent(1)
+                y_Up_DY = h_Up_DY.GetBinContent(1) * DYNormSF
                 #### Get Down
                 h_Down_DY = f_DY.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
-                y_Down_DY = h_Down_DY.GetBinContent(1)
+                y_Down_DY = h_Down_DY.GetBinContent(1) * DYNormSF
 
                 y_Nom += y_Nom_DY
                 y_Up += y_Up_DY
@@ -237,6 +241,11 @@ for ToRun in ToRuns:
 #print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
 #print '''DY normalizaion & \DYJ & Correlated & 30 (30) & \NA & 30 (30) & \NA \\\\'''
 
+
+
+print 'Nonprompt normalizaion & Nonprompt & '+IsCorrelatedToString('NonPromptNorm')+' & 100 (100) & \NA & 100 (100) & \NA  \\\\'
+print 'Rare SM normalizaion & Others & '+IsCorrelatedToString('OthersNorm')+' & 50 (50) & \NA & 50 (50) & \NA  \\\\'
+
 #### PDF uncertainty for signal
 
 PDFErrorSet_out = 'PDF error & Signal & Correlated'
@@ -250,7 +259,6 @@ for channel in channels:
   #### second element : region 1
   PDFErrorSet_systRanges = []
   AlphaS_systRanges = []
-  Scale_systRanges = []
 
   EEorMuMu = "EE"
   if "Muon" in channel:
@@ -270,12 +278,10 @@ for channel in channels:
     PDFErrorSet_syst_Max = -999999999
     AlphaS_syst_Min = 999999999
     AlphaS_syst_Max = -999999999
-    Scale_syst_Min = 999999999
-    Scale_syst_Max = -999999999
     for Sample in Samples:
-      fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
+      fname = 'HNWRAnalyzer_Official_FullSim_'+Sample+'.root'
       for Year in Years:
-        basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/Signal_'+EEorMuMu+'/'
+        basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/Signal_'+EEorMuMu+'_Official/'
 
         #### dirName
         dirName = 'HNWR_'+channel+'_'+region+'_SR'
@@ -327,6 +333,90 @@ for channel in channels:
         AlphaS_syst_Min = min( AlphaS_syst_Min, AlphaS_AccEff_error )
         AlphaS_syst_Max = max( AlphaS_syst_Max, AlphaS_AccEff_error )
 
+    #### Year loop is done for this region
+    #### Append str_syst
+
+    PDFErrorSet_str_syst_Min = '%1.1f'%PDFErrorSet_syst_Min
+    PDFErrorSet_str_syst_Max = '%1.1f'%PDFErrorSet_syst_Max
+    if PDFErrorSet_str_syst_Min=='0.0':
+      PDFErrorSet_str_syst_Min='0'
+    if PDFErrorSet_str_syst_Max=='0.0':
+      PDFErrorSet_str_syst_Max='0'
+    if PDFErrorSet_str_syst_Min==PDFErrorSet_str_syst_Max:
+      PDFErrorSet_systRanges.append( PDFErrorSet_str_syst_Min )
+    else:
+      PDFErrorSet_systRanges.append( PDFErrorSet_str_syst_Min+'--'+PDFErrorSet_str_syst_Max )
+
+    AlphaS_str_syst_Min = '%1.1f'%AlphaS_syst_Min
+    AlphaS_str_syst_Max = '%1.1f'%AlphaS_syst_Max
+    if AlphaS_str_syst_Min=='0.0':
+      AlphaS_str_syst_Min='0'
+    if AlphaS_str_syst_Max=='0.0':
+      AlphaS_str_syst_Max='0'
+    if AlphaS_str_syst_Min==AlphaS_str_syst_Max:
+      AlphaS_systRanges.append( AlphaS_str_syst_Min )
+    else:
+      AlphaS_systRanges.append( AlphaS_str_syst_Min+'--'+AlphaS_str_syst_Max )
+
+  #### region loop is done
+  #### now write A-B (C-D)
+
+  PDFErrorSet_out += ' & \\NA & %s (%s)' % (PDFErrorSet_systRanges[0], PDFErrorSet_systRanges[1])
+  AlphaS_out += ' & \\NA & %s (%s)' % (AlphaS_systRanges[0], AlphaS_systRanges[1])
+
+#### Scale from fastsim
+
+for channel in channels:
+
+  #### 1--2
+  #### first element : region 0
+  #### second element : region 1
+  Scale_systRanges = []
+
+  EEorMuMu = "EE"
+  if "Muon" in channel:
+    EEorMuMu = "MuMu"
+
+  for region in regions:
+
+    Samples = []
+
+    if region=='Resolved':
+      Samples = ResolvedMasses
+    else:
+      Samples = BoostedMasses
+
+    #### Loop over years to get range
+    Scale_syst_Min = 999999999
+    Scale_syst_Max = -999999999
+    for Sample in Samples:
+      fname = 'HNWRAnalyzer_WRtoNLtoLLJJ_'+Sample+'.root'
+      for Year in Years:
+        basedir = FILE_PATH+'/'+dataset+'/Regions/'+Year+'/Signal_'+EEorMuMu+'/'
+
+        #### dirName
+        dirName = 'HNWR_'+channel+'_'+region+'_SR'
+
+        #### Get TFile
+        f = ROOT.TFile(basedir+fname)
+
+        #### SignalFlavour
+        h_SignalFlavour = f.Get('SignalFlavour')
+        LepFlavFrac = h_SignalFlavour.GetBinContent(2)/h_SignalFlavour.GetEntries()
+        if channel=='SingleMuon':
+          LepFlavFrac = h_SignalFlavour.GetBinContent(3)/h_SignalFlavour.GetEntries()
+
+        #### 1) PDF Error set
+        PDFErrorSet_AccEff_Nominal = 0.
+        for i_PDF in range(0,1):
+          #### Denominator
+          h_Den = f.Get('XsecSyst_Den/PDFWeights_Error_'+str(i_PDF)+'_XsecSyst_Den')
+          #### Numerator
+          h_Num = f.Get('XsecSyst_Num_'+dirName+'/PDFWeights_Error_'+str(i_PDF)+'_XsecSyst_Num_'+dirName)
+          #### AccEff
+          AccEff = h_Num.Integral()/(h_Den.GetBinContent(1)*LepFlavFrac)
+          PDFErrorSet_AccEff_Nominal = AccEff
+
         #### 3) Scale
         ScaleIDs = [
         1001, # 1) R=1.0 F = 1.0
@@ -358,28 +448,6 @@ for channel in channels:
     #### Year loop is done for this region
     #### Append str_syst
 
-    PDFErrorSet_str_syst_Min = '%1.1f'%PDFErrorSet_syst_Min
-    PDFErrorSet_str_syst_Max = '%1.1f'%PDFErrorSet_syst_Max
-    if PDFErrorSet_str_syst_Min=='0.0':
-      PDFErrorSet_str_syst_Min='0'
-    if PDFErrorSet_str_syst_Max=='0.0':
-      PDFErrorSet_str_syst_Max='0'
-    if PDFErrorSet_str_syst_Min==PDFErrorSet_str_syst_Max:
-      PDFErrorSet_systRanges.append( PDFErrorSet_str_syst_Min )
-    else:
-      PDFErrorSet_systRanges.append( PDFErrorSet_str_syst_Min+'--'+PDFErrorSet_str_syst_Max )
-
-    AlphaS_str_syst_Min = '%1.1f'%AlphaS_syst_Min
-    AlphaS_str_syst_Max = '%1.1f'%AlphaS_syst_Max
-    if AlphaS_str_syst_Min=='0.0':
-      AlphaS_str_syst_Min='0'
-    if AlphaS_str_syst_Max=='0.0':
-      AlphaS_str_syst_Max='0'
-    if AlphaS_str_syst_Min==AlphaS_str_syst_Max:
-      AlphaS_systRanges.append( AlphaS_str_syst_Min )
-    else:
-      AlphaS_systRanges.append( AlphaS_str_syst_Min+'--'+AlphaS_str_syst_Max )
-
     Scale_str_syst_Min = '%1.1f'%Scale_syst_Min
     Scale_str_syst_Max = '%1.1f'%Scale_syst_Max
     if Scale_str_syst_Min=='0.0':
@@ -395,9 +463,8 @@ for channel in channels:
   #### region loop is done
   #### now write A-B (C-D)
 
-  PDFErrorSet_out += ' & \\NA & %s (%s)' % (PDFErrorSet_systRanges[0], PDFErrorSet_systRanges[1])
-  AlphaS_out += ' & \\NA & %s (%s)' % (AlphaS_systRanges[0], AlphaS_systRanges[1])
   Scale_out += ' & \\NA & %s (%s)' % (Scale_systRanges[0], Scale_systRanges[1])
+
 
 print PDFErrorSet_out+' \\\\'
 print AlphaS_out+' \\\\'

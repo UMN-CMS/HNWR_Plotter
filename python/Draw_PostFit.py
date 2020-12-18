@@ -28,9 +28,10 @@ ENV_PLOT_PATH = os.environ['PLOT_PATH']
 ## Signal mass
 mWR, mN = 5000, 3000
 if args.Category==1:
-  mWR, mN = 5000, 100
+  mWR, mN = 5000, 200
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
+LRSMSignalInfoToDraw.useOfficial = True
 LRSMSignalInfoToDraw.Style = 5
 LRSMSignalInfoToDraw.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
 LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)

@@ -70,6 +70,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
   gSystem->mkdir(plotpath, kTRUE);
 
+  TFile *out_rootfile = new TFile(plotpath+"/output.root","RECREATE");
+
   TString filename_thoery = WORKING_DIR+"/data/"+dataset+"/xsec_190705_GenXsecAN_eeANDmm.txt";
 
   vector<TString> regions = {
@@ -118,7 +120,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
     cout << "@@@@ channel = " << channel << endl;
 
-    TLegend *lg = new TLegend(0.15, 0.62, 0.6, 0.94);
+    TLegend *lg = new TLegend(0.15, 0.62, 0.55, 0.94);
     lg->SetBorderSize(0);
     lg->SetFillStyle(0);
 
@@ -213,6 +215,14 @@ void Draw_Limit(int Year, TString dirname=""){
     gr_EXO17011-> SetLineStyle(1);
     gr_EXO17011->SetLineWidth(3);
     gr_EXO17011->SetLineColor(kMagenta);
+
+    out_rootfile->cd();
+    gr_atlas->SetName(channel+"_Resolved_2D_Obs_ATLAS");
+    gr_atlas_boosted->SetName(channel+"_Boosted_2D_Obs_ATLAS");
+    gr_EXO17011->SetName(channel+"_Resolved_2D_Obs_EXO17011");
+    gr_atlas->Write();
+    gr_atlas_boosted->Write();
+    gr_EXO17011->Write();
 
     //==== Our results
 
@@ -516,6 +526,18 @@ void Draw_Limit(int Year, TString dirname=""){
         }
       }
 
+      out_rootfile->cd();
+
+      hist2d_limit_exp_ratio->SetName(channel+"_"+region+"_2D_Exp_ratio");
+      hist2d_limit_exp_1sdUp_ratio->SetName(channel+"_"+region+"_2D_Exp_ratio_1sdUp");
+      hist2d_limit_exp_1sdDn_ratio->SetName(channel+"_"+region+"_2D_Exp_ratio_1sdDn");
+      hist2d_limit_obs_ratio->SetName(channel+"_"+region+"_2D_Obs_ratio");
+
+      hist2d_limit_exp_ratio->Write();
+      hist2d_limit_exp_1sdUp_ratio->Write();
+      hist2d_limit_exp_1sdDn_ratio->Write();
+      hist2d_limit_obs_ratio->Write();
+
       //==== Draw "colz" for "Combined (Resolved+Boosted)" results
       if(region=="Combined"){
 
@@ -617,6 +639,8 @@ void Draw_Limit(int Year, TString dirname=""){
     hist2d_limit_obs_ratio_Combined->SetLineColor(colors.at(0));
     hist2d_limit_obs_ratio_Combined->Draw("cont3same");
 
+    out_rootfile->cd();
+
     lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
     //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
     lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
@@ -703,12 +727,6 @@ void Draw_Limit(int Year, TString dirname=""){
           y_xsec_err_Up[it_N] = 0. * this_lrsm.xsec/2.;
           y_xsec_err_Dn[it_N] = 0. * this_lrsm.xsec/2.;
 
-          if(m_WR==4400 && m_N==1200 && channel=="MuMu" && region == "Boosted"){
-            cout << "@@@@@@@@@@@@@@@@@@@ HERE @@@@@@@@@@@@@@@@@@" << endl;
-            cout << "y_exp[it_N] = " << y_exp[it_N] << endl;
-            cout << "y_obs[it_N] = " << y_obs[it_N] << endl;
-          }
-
         } // END Loop over N
 
         TGraphAsymmErrors *gr_exp = new TGraphAsymmErrors(n_N,x_N,y_exp,0,0,0,0);
@@ -767,6 +785,21 @@ void Draw_Limit(int Year, TString dirname=""){
         gr_exp_1sd->Draw("3same");
         gr_exp->Draw("lsame");
         if(DrawObs) gr_obs->Draw("lsame");
+
+        out_rootfile->cd();
+        gr_exp_2sd->SetName(channel+"_"+region+"_1D_Exp_WR"+TString::Itoa(m_WR,10)+"_2sd");
+        gr_exp_1sd->SetName(channel+"_"+region+"_1D_Exp_WR"+TString::Itoa(m_WR,10)+"_1sd");
+        gr_exp->SetName(channel+"_"+region+"_1D_Exp_WR"+TString::Itoa(m_WR,10));
+        gr_obs->SetName(channel+"_"+region+"_1D_Obs_WR"+TString::Itoa(m_WR,10));
+        gr_xsec->SetName(channel+"_"+region+"_1D_XSEC_WR"+TString::Itoa(m_WR,10));
+
+        gr_exp_2sd->Write();
+        gr_exp_1sd->Write();
+        gr_exp->Write();
+        gr_obs->Write();
+        gr_xsec->Write();
+        
+
         if(it_region==2){
           gr_exp_Resolved->SetLineColor(kRed);
           //gr_exp_Resolved->Draw("lsame");
@@ -940,6 +973,19 @@ void Draw_Limit(int Year, TString dirname=""){
 
         gr_xsec->Draw("lsame");
 
+        out_rootfile->cd();
+        gr_exp_2sd->SetName(channel+"_"+region+"_1D_Exp_N"+TString::Itoa(testN,10)+"_2sd");
+        gr_exp_1sd->SetName(channel+"_"+region+"_1D_Exp_N"+TString::Itoa(testN,10)+"_1sd");
+        gr_exp->SetName(channel+"_"+region+"_1D_Exp_N"+TString::Itoa(testN,10));
+        gr_obs->SetName(channel+"_"+region+"_1D_Obs_N"+TString::Itoa(testN,10));
+        gr_xsec->SetName(channel+"_"+region+"_1D_XSEC_N"+TString::Itoa(testN,10));
+
+        gr_exp_2sd->Write();
+        gr_exp_1sd->Write();
+        gr_exp->Write();
+        gr_obs->Write();
+        gr_xsec->Write();
+
         hist_dummy->Draw("axissame");
 
         TLatex str_m_WR;
@@ -981,6 +1027,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
   } // END Loop channels
 
+
+  out_rootfile->Close();
 
 }
 

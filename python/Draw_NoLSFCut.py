@@ -30,7 +30,7 @@ ENV_PLOT_PATH = os.environ['PLOT_PATH']
 m = Plotter()
 
 m.DoDebug = args.debug
-m.NoErrorBand = True
+m.NoErrorBand = False
 
 #### In/Out
 m.DataYear = args.Year
@@ -71,10 +71,10 @@ tmp_Systematics = [
   "ZPtRw",
   "Prefire",
   "DYNorm",
-  "NonPromptNorm",
-  "OthersNorm",
+  #"NonPromptNorm",
+  #"OthersNorm",
 ]
-tmp_Systematics = []
+#tmp_Systematics = []
 
 m.Systematics = [ Systematic(Name="Central", Direction=0, Year=-1) ]
 for s in tmp_Systematics:
@@ -127,7 +127,8 @@ if args.Category==0:
     LRSMSignalInfoToDraw.Color = ROOT.kBlack
     LRSMSignalInfoToDraw.Style = counter+2
     LRSMSignalInfoToDraw.useOfficial = True
-    LRSMSignalInfoToDraw.xsec = 30. * mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+    LRSMSignalInfoToDraw.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+    LRSMSignalInfoToDraw.xsecScale = 30
     LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
     m.SignalsToDraw.append(LRSMSignalInfoToDraw)
     counter += 1
@@ -141,8 +142,8 @@ if args.Category==0:
     Region('HNWR_SingleMuon_Boosted_SR', 'SingleMuon', UnblindData=UnblindData, Logy=-1, TLatexAlias='#splitline{#mu#mu}{Boosted SR}'),
   ]
   for iR in m.RegionsToDraw:
-    iR.DrawRatio = False
-    iR.DrawData = False
+    iR.DrawRatio = True
+    iR.DrawData = True
   m.PrintRegions()
 
 #### Define Variables

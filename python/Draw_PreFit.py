@@ -88,9 +88,9 @@ m.SetBinningFilepath(
 
 #### Predef samples
 from PredefinedSamples import *
-SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
-SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
-SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+SampleGroup_DY_2016.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
+SampleGroup_DY_2017.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
+SampleGroup_DY_2018.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
 
 #### Define Samples
 if args.Year>0:
@@ -137,6 +137,31 @@ elif args.Category==2:
     WORKING_DIR+'/data/'+dataset+'/'+str_Year+'/CR_yaxis.txt',
   )
 elif args.Category==3:
+
+  if args.Year>0:
+    exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_TT_TW_%s, SampleGroup_DY_%s, SampleGroup_NonPrompt_%s, SampleGroup_total_background_%s]'%(args.Year,args.Year,args.Year,args.Year,args.Year))
+  else:
+    m.SampleGroups = [
+      SampleGroup_Others_2016, SampleGroup_Others_2017, SampleGroup_Others_2018,
+      SampleGroup_DY_2016, SampleGroup_DY_2017, SampleGroup_DY_2018,
+      SampleGroup_TT_TW_2016, SampleGroup_TT_TW_2017, SampleGroup_TT_TW_2018,
+      SampleGroup_NonPrompt_2016, SampleGroup_NonPrompt_2017, SampleGroup_NonPrompt_2018,
+      ## dummy total background
+      SampleGroup_total_background_YearCombined,
+    ]
+
+  m.RegionsToDraw = [
+    Region('HNWR_SingleElectron_EMu_Boosted_CR_NoBJet', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet w/o b jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_CR_NoBJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet w/o b jet}{Boosted flavor CR}'),
+  ]
+  m.SignalsToDraw = []
+  #### Binning infos
+  m.SetBinningFilepath(
+    WORKING_DIR+'/data/'+dataset+'/'+str_Year+'/CR_rebins.txt',
+    WORKING_DIR+'/data/'+dataset+'/'+str_Year+'/CR_xaxis.txt',
+    WORKING_DIR+'/data/'+dataset+'/'+str_Year+'/CR_yaxis.txt',
+  )
+elif args.Category==4:
   #### Define Samples
   if args.Year>0:
     exec('m.SampleGroups = [SampleGroup_Others_%s, SampleGroup_NonPrompt_%s, SampleGroup_TT_TW_%s, SampleGroup_DY_%s, SampleGroup_total_background_%s]'%(args.Year,args.Year,args.Year,args.Year,args.Year))
@@ -177,7 +202,7 @@ m.PrintVariables()
 m.ExtraLines='''tl = ROOT.TLatex()
 tl.SetNDC()
 tl.SetTextSize(0.037)
-tl.DrawLatex(0.2, 0.815, 'Prefit')
+tl.DrawLatex(0.2, 0.815, '#font[42]{Prefit}')
 '''
 
 #### Draw

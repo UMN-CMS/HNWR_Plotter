@@ -70,6 +70,7 @@ tmp_Systematics = [
   "DYReshapeSyst",
   "NonPromptNorm",
   "OthersNorm",
+  "BTag",
 ]
 #tmp_Systematics = ["Lumi"]
 
@@ -130,10 +131,10 @@ if args.Category==0:
   #### Define reiongs
   m.RegionsToDraw = [
     ## Resolved EMu
-    Region('HNWR_EMu_Resolved_SR_NoBJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor CR}'),
+    Region('HNWR_EMu_Resolved_SR_NoBJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mu w/o b jet}{Resolved flavor CR}'),
     ## Boosted EMu
-    Region('HNWR_SingleElectron_EMu_Boosted_CR_NoBJet', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor CR}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_CR_NoBJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleElectron_EMu_Boosted_CR_NoBJet', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet w/o b jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_CR_NoBJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet w/o b jet}{Boosted flavor CR}'),
   ]
   m.PrintRegions()
 
@@ -156,10 +157,10 @@ if args.Category==1:
   #### Define reiongs
   m.RegionsToDraw = [
     ## Resolved EMu
-    Region('HNWR_EMu_Resolved_SR_BJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mu}{Resolved flavor CR}'),
+    Region('HNWR_EMu_Resolved_SR_BJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{e#mu w/ b jet}{Resolved flavor CR}'),
     ## Boosted EMu
-    Region('HNWR_SingleElectron_EMu_Boosted_CR_BJet', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet}{Boosted flavor CR}'),
-    Region('HNWR_SingleMuon_EMu_Boosted_CR_BJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleElectron_EMu_Boosted_CR_BJet', 'SingleElectron', UnblindData=True, Logy=1, TLatexAlias='#splitline{e+#mu-Jet  w/ b jet}{Boosted flavor CR}'),
+    Region('HNWR_SingleMuon_EMu_Boosted_CR_BJet', 'SingleMuon', UnblindData=True, Logy=1, TLatexAlias='#splitline{#mu+e-Jet w/ b jet}{Boosted flavor CR}'),
   ]
   m.PrintRegions()
 
@@ -182,11 +183,11 @@ m.VariablesToDraw = [
   Variable('Jet_1_Eta', '#eta of the subleading jet', 'GeV'),
   Variable('dRj1j2', '#Delta R(j1,j2)', ''),
 ]
-#m.VariablesToDraw = [
-#  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+m.VariablesToDraw = [
+  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
 #  Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
 #  Variable('NEvent', 'onebin', ''),
-#]
+]
 m.PrintVariables()
 
 #### Draw

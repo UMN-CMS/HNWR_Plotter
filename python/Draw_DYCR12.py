@@ -42,7 +42,8 @@ m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/"
 if args.ApplyZPtRwg:
   m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg/"
 if args.ApplyDYReshape:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
+  #m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshapeJetPt/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -103,9 +104,12 @@ if args.ApplyZPtRwg:
   SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
   SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
 if args.ApplyDYReshape:
-  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_ReshapedDYCR1']
-  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_ReshapedDYCR1']
-  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_ReshapedDYCR1']
+  #SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_ReshapedDYCR1']
+  #SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_ReshapedDYCR1']
+  #SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_ReshapedDYCR1']
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_ReshapedJetPtDYCR1']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_ReshapedJetPtDYCR1']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_ReshapedJetPtDYCR1']
 
 ###############
 #### DY CR ####
@@ -160,11 +164,12 @@ m.VariablesToDraw = [
   Variable('Jet_1_Eta', '#eta of the subleading jet', 'GeV'),
   Variable('dRj1j2', '#Delta R(j1,j2)', ''),
 ]
-#m.VariablesToDraw = [
-#  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
-#  Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
-#  Variable('NEvent', 'onebin', ''),
-#]
+m.VariablesToDraw = [
+  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+  #Variable('Jet_0_Pt', 'p_{T} of the leading jet', 'GeV'),
+  #Variable('Jet_1_Pt', 'p_{T} of the subleading jet', 'GeV'),
+  #Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
+]
 m.PrintVariables()
 
 #### Draw

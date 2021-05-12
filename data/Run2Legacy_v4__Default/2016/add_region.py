@@ -1,6 +1,7 @@
 import os
 
 Which = 'CR'
+Which = 'NoLSFCut'
 
 txtfiles = [
 'rebins',
@@ -8,8 +9,8 @@ txtfiles = [
 'yaxis',
 ]
 
-regionFrom = 'HNWR_SingleMuon_EMu_Boosted_CR_BJet'
-regionTo   = 'HNWR_SingleMuon_EMu_Boosted_CR_NoBJet'
+regionFrom = 'HNWR_SingleElectron_Boosted_SR'
+regionTo   = 'HNWR_SingleMuon_EMu_Boosted_CR'
 
 for txtfile in txtfiles:
 

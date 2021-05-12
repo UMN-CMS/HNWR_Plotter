@@ -1,14 +1,14 @@
 import os
 
-#filenames=['SR_rebins.txt', 'SR_xaxis.txt'] 
-filenames=['CR_rebins.txt', 'CR_xaxis.txt']
+filenames=['SR_rebins.txt', 'SR_xaxis.txt'] 
+#filenames=['CR_rebins.txt', 'CR_xaxis.txt']
 #filenames=['CR2_rebins.txt', 'CR2_xaxis.txt']
 
-var_last = "DiJet_Mass"
+var_last = "OFLepton_Size"
 
 ## name rebin xmin xmax
 NewVarSets = [
-["dRj1j2", 1, 0, 6],
+["ToBeCorrected_Jet_Pt", 20, 0, 2000],
 ]
 
 for filename in filenames:

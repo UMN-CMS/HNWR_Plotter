@@ -414,12 +414,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   if(DataYear==2016){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 1.0333;
-        DYNorm_err = 0.0493714;
+        DYNorm = 0.985967;
+        DYNorm_err = 0.0472367;
       }
       else if(int_region==1){
-        DYNorm = 0.84301;
-        DYNorm_err = 0.0417383;
+        DYNorm = 1.18924;
+        DYNorm_err = 0.0593071;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -428,12 +428,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.02541;
-        DYNorm_err = 0.0401646;
+        DYNorm = 0.971114;
+        DYNorm_err = 0.0382234;
       }
       else if(int_region==1){
-        DYNorm = 0.695854;
-        DYNorm_err = 0.0349161;
+        DYNorm = 1.00351;
+        DYNorm_err = 0.0507593;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -448,12 +448,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2017){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 1.02718;
-        DYNorm_err = 0.0497519;
+        DYNorm = 1.03281;
+        DYNorm_err = 0.0502737;
       }
       else if(int_region==1){
-        DYNorm = 1.03635;
-        DYNorm_err = 0.0512348;
+        DYNorm = 1.30754;
+        DYNorm_err = 0.0653227;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -462,12 +462,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 1.03497;
-        DYNorm_err = 0.040131;
+        DYNorm = 1.03805;
+        DYNorm_err = 0.0405121;
       }
       else if(int_region==1){
-        DYNorm = 0.93964;
-        DYNorm_err = 0.0456667;
+        DYNorm = 1.19954;
+        DYNorm_err = 0.0592457;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -482,12 +482,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
   else if(DataYear==2018){
     if(int_channel==0){
       if(int_region==0){
-        DYNorm = 0.957582;
-        DYNorm_err = 0.0527974;
+        DYNorm = 1.00002;
+        DYNorm_err = 0.05551;
       }
       else if(int_region==1){
-        DYNorm = 0.92052;
-        DYNorm_err = 0.0403976;
+        DYNorm = 1.30778;
+        DYNorm_err = 0.0581163;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -496,12 +496,12 @@ double GetDYNormSF(int DataYear, TString channel, bool geterror=false){
     }
     else if(int_channel==1){
       if(int_region==0){
-        DYNorm = 0.98157;
-        DYNorm_err = 0.0456876;
+        DYNorm = 1.02359;
+        DYNorm_err = 0.0481667;
       }
       else if(int_region==1){
-        DYNorm = 0.805186;
-        DYNorm_err = 0.0335501;
+        DYNorm = 1.16497;
+        DYNorm_err = 0.0496011;
       }
       else{
         cout << "Wrong DY Norm" << endl;
@@ -750,7 +750,7 @@ double GetKFactor(int mWR, int mN, int Year=2016, int lepch=0){
     }
   }
   if(this_avg_kfactor<0){
-    cout << "[mylib.h][GetKFactor] this_avg_kfactor = " << this_avg_kfactor << endl;
+    cout << "[mylib.h][GetKFactor] this_avg_kfactor = " << this_avg_kfactor << " for mWR=" << mWR << ", mN=" << mN << endl;
   }
   return this_avg_kfactor;
 

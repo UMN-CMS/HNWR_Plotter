@@ -41,7 +41,7 @@ for PreORPost in PreORPosts:
 
   Samples = [
   'TT_TW',
-  'DYJets_MG_HT_Reweighted_Reshaped',
+  'DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped',
   'NonPrompt',
   'Others',
   'total_background',

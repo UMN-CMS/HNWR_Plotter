@@ -1,2 +1,4 @@
 HNWR_SingleElectron_Boosted_SR	HNFatJet_LSF	0	1
+HNWR_SingleMuon_EMu_Boosted_CR	HNFatJet_LSF	0	1
+HNWR_SingleElectron_EMu_Boosted_CR	HNFatJet_LSF	0	1
 HNWR_SingleMuon_Boosted_SR	HNFatJet_LSF	0	1

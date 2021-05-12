@@ -3,6 +3,7 @@
 
 void MergeOverFlow(TH1D *hist){
 
+  return;
   int LastBin = hist->GetXaxis()->GetNbins();
   double y_OverFlow = hist->GetBinContent(LastBin+1);
   double y_LastBin = hist->GetBinContent(LastBin);
@@ -147,10 +148,12 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
 
       TFile *file_DATA = new TFile(base_filepath+"/"+filename_prefix+"data_Single"+leptonFlavour+".root");
       TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+var+"_"+dirname);
+      MergeOverFlow(hist_DATA);
 
       for(unsigned int it_bkgd=0; it_bkgd<bkgds.size(); it_bkgd++){
         TFile *file_bkgd = new TFile(base_filepath+"/"+filename_prefix+bkgds.at(it_bkgd)+".root");
         TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+var+"_"+dirname);
+        MergeOverFlow(hist_bkgd);
         if(!hist_bkgd) continue;
 
         if(hist_bkgd->GetBinContent(1)!=hist_bkgd->GetBinContent(1)){
@@ -174,6 +177,7 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
       }
 
       TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
+      MergeOverFlow(hist_DY50);
       //==== Scale DY
       double this_DYNormSF = GetDYNormSF(int_Year, leptonFlavour+"_"+region);
       //hist_DY50->Scale(this_DYNormSF);
@@ -210,11 +214,13 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
 
         TString dirname = "HNWR_Single"+leptonFlavour+"_"+region+"_"+MeasureRegion;
         TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
+        MergeOverFlow(hist_DY50);
 
         TDirectory *dir_Up = (TDirectory *)file_DY50->Get("Syst_"+Syst+"Up_"+dirname);
         TH1D *hist_Up = NULL;
         if(dir_Up){
           hist_Up = (TH1D *)dir_Up->Get( var+"_Syst_"+Syst+"Up_"+dirname );
+          MergeOverFlow(hist_Up);
         }
         else{
           hist_Up = (TH1D *)hist_DY50->Clone();
@@ -224,6 +230,7 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
         TH1D *hist_Down = NULL;
         if(dir_Down){
           hist_Down = (TH1D *)dir_Down->Get( var+"_Syst_"+Syst+"Down_"+dirname );
+          MergeOverFlow(hist_Down);
         }
         else{
           hist_Down = (TH1D *)hist_DY50->Clone();
@@ -291,10 +298,12 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
 
       TFile *file_DATA = new TFile(base_filepath+"/"+filename_prefix+"data_Single"+leptonFlavour+".root");
       TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+var+"_"+dirname);
+      MergeOverFlow(hist_DATA);
 
       for(unsigned int it_bkgd=0; it_bkgd<bkgds.size(); it_bkgd++){
         TFile *file_bkgd = new TFile(base_filepath+"/"+filename_prefix+bkgds.at(it_bkgd)+".root");
         TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+var+"_"+dirname);
+        MergeOverFlow(hist_bkgd);
         if(!hist_bkgd) continue;
 
         if(hist_bkgd->GetBinContent(1)!=hist_bkgd->GetBinContent(1)){
@@ -305,6 +314,7 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
       }
 
       TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
+      MergeOverFlow(hist_DY50);
       //==== Scale DY
       double this_DYNormSF = GetDYNormSF(int_Year, leptonFlavour+"_"+region);
       //hist_DY50->Scale(this_DYNormSF);
@@ -346,10 +356,12 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
 
       TFile *file_DATA = new TFile(base_filepath+"/"+filename_prefix+"data_Single"+leptonFlavour+".root");
       TH1D *hist_DATA = (TH1D *)file_DATA->Get(dirname+"/"+var+"_"+dirname);
+      MergeOverFlow(hist_DATA);
 
       for(unsigned int it_bkgd=0; it_bkgd<bkgds.size(); it_bkgd++){
         TFile *file_bkgd = new TFile(base_filepath+"/"+filename_prefix+bkgds.at(it_bkgd)+".root");
         TH1D *hist_bkgd = (TH1D *)file_bkgd->Get(dirname+"/"+var+"_"+dirname);
+        MergeOverFlow(hist_bkgd);
         if(!hist_bkgd) continue;
 
         if(hist_bkgd->GetBinContent(1)!=hist_bkgd->GetBinContent(1)){
@@ -360,6 +372,7 @@ void Get_DYReshapeRatioJetPt(int int_Year=2016){
       }
 
       TH1D *hist_DY50 = (TH1D *)file_DY50->Get(dirname+"/"+var+"_"+dirname);
+      MergeOverFlow(hist_DY50);
       //==== Scale DY
       double this_DYNormSF = GetDYNormSF(int_Year, leptonFlavour+"_"+region);
       //hist_DY50->Scale(this_DYNormSF);

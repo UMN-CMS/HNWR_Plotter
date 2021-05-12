@@ -121,6 +121,7 @@ void Draw_Limit(int Year, TString dirname=""){
     cout << "@@@@ channel = " << channel << endl;
 
     TLegend *lg = new TLegend(0.15, 0.62, 0.55, 0.94);
+    lg->SetMargin(0.2);
     lg->SetBorderSize(0);
     lg->SetFillStyle(0);
 
@@ -570,7 +571,7 @@ void Draw_Limit(int Year, TString dirname=""){
         hist2d_limit_exp_ratio_clone->Draw("colzsame");
         hist2d_limit_exp_ratio_clone->Draw("axissame");
 
-        gr_atlas->Draw("lsame");
+        //gr_atlas->Draw("lsame");
         //gr_atlas_boosted->Draw("lsame");
         gr_EXO17011->Draw("lsame");
 
@@ -597,6 +598,7 @@ void Draw_Limit(int Year, TString dirname=""){
         hist2d_limit_exp_1sdDn_ratio->Draw("cont3same");
 
         lg->AddEntry( hist2d_limit_exp_ratio, aliases.at(it_region)+" (exp.)", "l");
+        lg->AddEntry( hist2d_limit_exp_1sdDn_ratio, aliases.at(it_region)+" (exp. #pm s.d.)", "l");
 
         hist2d_limit_exp_ratio_Combined = (TH2D *)hist2d_limit_exp_ratio->Clone();
         hist2d_limit_exp_1sdUp_ratio_Combined = (TH2D *)hist2d_limit_exp_1sdUp_ratio->Clone();
@@ -641,7 +643,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
     out_rootfile->cd();
 
-    lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    //lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
     //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
     lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
 
@@ -758,9 +760,10 @@ void Draw_Limit(int Year, TString dirname=""){
         TGraphAsymmErrors *gr_xsec = new TGraphAsymmErrors(n_N, x_N, y_xsec, 0, 0, y_xsec_err_Dn, y_xsec_err_Up);
         gr_xsec->SetLineColor(kRed);
 
-        TLegend *lg = new TLegend(0.2, 0.2, 0.7, 0.35);
+        TLegend *lg = new TLegend(0.2, 0.2, 0.7, 0.40);
         lg->SetBorderSize(0);
         lg->SetFillStyle(0);
+        lg->AddEntry( gr_obs, "Observed limit", "l");
         lg->AddEntry( gr_exp, "Expected limit", "l");
         lg->AddEntry( gr_exp_1sd, "68% expected", "f");
         lg->AddEntry( gr_exp_2sd, "95% expected", "f");
@@ -938,9 +941,10 @@ void Draw_Limit(int Year, TString dirname=""){
         TGraphAsymmErrors *gr_xsec = new TGraphAsymmErrors(n_WR, x_WR, y_xsec, 0, 0, y_xsec_err_Dn, y_xsec_err_Up);
         gr_xsec->SetLineColor(kRed);
 
-        TLegend *lg = new TLegend(0.2, 0.2, 0.7, 0.35);
+        TLegend *lg = new TLegend(0.2, 0.2, 0.7, 0.40);
         lg->SetBorderSize(0);
         lg->SetFillStyle(0);
+        lg->AddEntry( gr_obs, "Observed limit", "l");
         lg->AddEntry( gr_exp, "Expected limit", "l");
         lg->AddEntry( gr_exp_1sd, "68% expected", "f");
         lg->AddEntry( gr_exp_2sd, "95% expected", "f");
@@ -954,7 +958,7 @@ void Draw_Limit(int Year, TString dirname=""){
         TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7000.);
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
-        hist_dummy->GetXaxis()->SetRangeUser(800,6800);
+        hist_dummy->GetXaxis()->SetRangeUser(800,6000);
         hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
         hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarroweeq#bar{q'}) (fb)");
         if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muq#bar{q'}) (fb)");

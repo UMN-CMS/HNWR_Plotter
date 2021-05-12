@@ -8,11 +8,11 @@ HNWR_SingleElectron_Resolved_SR	Lepton_1_Pt	50
 HNWR_SingleElectron_Resolved_SR	Lepton_1_Eta	5
 HNWR_SingleElectron_Resolved_SR	Lepton_1_TrkRelIso	-999
 HNWR_SingleElectron_Resolved_SR	dPhi_ll	-999
-HNWR_SingleElectron_Resolved_SR	Jet_0_Pt	10
+HNWR_SingleElectron_Resolved_SR	Jet_0_Pt	100
 HNWR_SingleElectron_Resolved_SR	Jet_0_Eta	5
 HNWR_SingleElectron_Resolved_SR	Jet_1_Pt	10
 HNWR_SingleElectron_Resolved_SR	Jet_1_Eta	5
-HNWR_SingleElectron_Resolved_SR	HNFatJet_Pt	50
+HNWR_SingleElectron_Resolved_SR	HNFatJet_Pt	100
 HNWR_SingleElectron_Resolved_SR	HNFatJet_Eta	5
 HNWR_SingleElectron_Resolved_SR	HNFatJet_Mass	10
 HNWR_SingleElectron_Resolved_SR	HNFatJet_SDMass	10
@@ -31,6 +31,7 @@ HNWR_SingleElectron_Resolved_SR	WRCand_Pt	10
 HNWR_SingleElectron_Resolved_SR	LSFFatJet_Size	-999
 HNWR_SingleElectron_Resolved_SR	Lepton_Size	1
 HNWR_SingleElectron_Resolved_SR	OFLepton_Size	1
+HNWR_SingleElectron_Resolved_SR	ToBeCorrected_Jet_Pt	20
 HNWR_SingleElectron_Boosted_SR	NEvent	-999
 HNWR_SingleElectron_Boosted_SR	nPileUp	-999
 HNWR_SingleElectron_Boosted_SR	nPV	-999
@@ -41,11 +42,11 @@ HNWR_SingleElectron_Boosted_SR	Lepton_1_Pt	50
 HNWR_SingleElectron_Boosted_SR	Lepton_1_Eta	5
 HNWR_SingleElectron_Boosted_SR	Lepton_1_TrkRelIso	-999
 HNWR_SingleElectron_Boosted_SR	dPhi_ll	-999
-HNWR_SingleElectron_Boosted_SR	Jet_0_Pt	10
+HNWR_SingleElectron_Boosted_SR	Jet_0_Pt	100
 HNWR_SingleElectron_Boosted_SR	Jet_0_Eta	5
 HNWR_SingleElectron_Boosted_SR	Jet_1_Pt	10
 HNWR_SingleElectron_Boosted_SR	Jet_1_Eta	5
-HNWR_SingleElectron_Boosted_SR	HNFatJet_Pt	50
+HNWR_SingleElectron_Boosted_SR	HNFatJet_Pt	100
 HNWR_SingleElectron_Boosted_SR	HNFatJet_Eta	5
 HNWR_SingleElectron_Boosted_SR	HNFatJet_Mass	10
 HNWR_SingleElectron_Boosted_SR	HNFatJet_SDMass	10
@@ -64,6 +65,7 @@ HNWR_SingleElectron_Boosted_SR	WRCand_Pt	10
 HNWR_SingleElectron_Boosted_SR	LSFFatJet_Size	-999
 HNWR_SingleElectron_Boosted_SR	Lepton_Size	1
 HNWR_SingleElectron_Boosted_SR	OFLepton_Size	1
+HNWR_SingleElectron_Boosted_SR	ToBeCorrected_Jet_Pt	20
 HNWR_SingleMuon_Resolved_SR	NEvent	-999
 HNWR_SingleMuon_Resolved_SR	nPileUp	-999
 HNWR_SingleMuon_Resolved_SR	nPV	-999
@@ -74,11 +76,11 @@ HNWR_SingleMuon_Resolved_SR	Lepton_1_Pt	50
 HNWR_SingleMuon_Resolved_SR	Lepton_1_Eta	5
 HNWR_SingleMuon_Resolved_SR	Lepton_1_TrkRelIso	-999
 HNWR_SingleMuon_Resolved_SR	dPhi_ll	-999
-HNWR_SingleMuon_Resolved_SR	Jet_0_Pt	10
+HNWR_SingleMuon_Resolved_SR	Jet_0_Pt	100
 HNWR_SingleMuon_Resolved_SR	Jet_0_Eta	5
 HNWR_SingleMuon_Resolved_SR	Jet_1_Pt	10
 HNWR_SingleMuon_Resolved_SR	Jet_1_Eta	5
-HNWR_SingleMuon_Resolved_SR	HNFatJet_Pt	50
+HNWR_SingleMuon_Resolved_SR	HNFatJet_Pt	100
 HNWR_SingleMuon_Resolved_SR	HNFatJet_Eta	5
 HNWR_SingleMuon_Resolved_SR	HNFatJet_Mass	10
 HNWR_SingleMuon_Resolved_SR	HNFatJet_SDMass	10
@@ -97,6 +99,7 @@ HNWR_SingleMuon_Resolved_SR	WRCand_Pt	10
 HNWR_SingleMuon_Resolved_SR	LSFFatJet_Size	-999
 HNWR_SingleMuon_Resolved_SR	Lepton_Size	1
 HNWR_SingleMuon_Resolved_SR	OFLepton_Size	1
+HNWR_SingleMuon_Resolved_SR	ToBeCorrected_Jet_Pt	20
 HNWR_SingleMuon_Boosted_SR	NEvent	-999
 HNWR_SingleMuon_Boosted_SR	nPileUp	-999
 HNWR_SingleMuon_Boosted_SR	nPV	-999
@@ -107,11 +110,11 @@ HNWR_SingleMuon_Boosted_SR	Lepton_1_Pt	50
 HNWR_SingleMuon_Boosted_SR	Lepton_1_Eta	5
 HNWR_SingleMuon_Boosted_SR	Lepton_1_TrkRelIso	-999
 HNWR_SingleMuon_Boosted_SR	dPhi_ll	-999
-HNWR_SingleMuon_Boosted_SR	Jet_0_Pt	10
+HNWR_SingleMuon_Boosted_SR	Jet_0_Pt	100
 HNWR_SingleMuon_Boosted_SR	Jet_0_Eta	5
 HNWR_SingleMuon_Boosted_SR	Jet_1_Pt	10
 HNWR_SingleMuon_Boosted_SR	Jet_1_Eta	5
-HNWR_SingleMuon_Boosted_SR	HNFatJet_Pt	50
+HNWR_SingleMuon_Boosted_SR	HNFatJet_Pt	100
 HNWR_SingleMuon_Boosted_SR	HNFatJet_Eta	5
 HNWR_SingleMuon_Boosted_SR	HNFatJet_Mass	10
 HNWR_SingleMuon_Boosted_SR	HNFatJet_SDMass	10
@@ -130,3 +133,4 @@ HNWR_SingleMuon_Boosted_SR	WRCand_Pt	10
 HNWR_SingleMuon_Boosted_SR	LSFFatJet_Size	-999
 HNWR_SingleMuon_Boosted_SR	Lepton_Size	1
 HNWR_SingleMuon_Boosted_SR	OFLepton_Size	1
+HNWR_SingleMuon_Boosted_SR	ToBeCorrected_Jet_Pt	20

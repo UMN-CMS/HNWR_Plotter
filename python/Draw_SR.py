@@ -55,9 +55,9 @@ m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
 m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/"
 if args.ApplyZPtRwg:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwg/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwgReweightedQCDErrorEWCorr/"
 if args.ApplyDYReshape:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/SR/"+str_Year+"/ApplyZPtRwgReweightedQCDErrorEWCorr_ApplyDYReshapeJetPt/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -114,13 +114,15 @@ m.SetBinningFilepath(
 #### Predef samples
 from PredefinedSamples import *
 if args.ApplyZPtRwg:
-  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted']
-  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
-  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr']
+
+
 if args.ApplyDYReshape:
-  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
-  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
-  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
 
 #### Define Samples
 if args.Year>0:
@@ -162,7 +164,14 @@ m.VariablesToDraw = [
   Variable('Lepton_1_Eta', '#eta of the subleading lepton', ''),
   Variable('HNFatJet_Eta', '#eta of the AK8 jet', ''),
   Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
+  Variable('ToBeCorrected_Jet_Pt', 'p_{T} of jet(s) (GeV)', 'GeV'),
+  Variable('HNFatJet_SDMass', 'Softdrop mass (GeV)', 'GeV'),
+  Variable('Jet_0_Pt', 'p_{T} of the leading jet', 'GeV'),
+  Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
+  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+
 ]
+
 m.PrintVariables()
 
 #### Draw

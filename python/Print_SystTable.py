@@ -49,32 +49,43 @@ print '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 ToRuns = [
 
   [
-    'AllNonDYMCBkgd',
+    'AllMCBkgd',
     'All bkgd./Signal',
     [
-      ["JetRes","Jet energy resolution"],
-      ["JetEn","Jet energy scale"],
-      ["MuonRecoSF","Muon reconstruction"],
-      ["MuonEn","Muon momentum scale"],
-      ["MuonIDSF","Muon identification"],
-      ["MuonISOSF","Muon isolation"],
-      ["MuonTriggerSF","Muon trigger"],
+
       ["ElectronRecoSF","Electron reconstruction"],
       ["ElectronRes","Electron energy resolution"],
       ["ElectronEn","Electron energy scale"],
       ["ElectronIDSF","Electron identification"],
       ["ElectronTriggerSF","Electron trigger"],
+
+      ["MuonRecoSF","Muon reconstruction"],
+      ["MuonEn","Muon momentum scale"],
+      ["MuonIDSF","Muon identification"],
+      ["MuonISOSF","Muon isolation"],
+      ["MuonTriggerSF","Muon trigger"],
+
+      ["JetEn","Jet energy scale"],
+      ["JetRes","Jet energy resolution"],
+      ["JetMass","Jet mass scale"],
       ["LSFSF","LSF scale factor"],
+
       ["PU","Pileup modeling"],
-      ["Prefire", "Prefire reweighting"],
+      #["Prefire", "Prefire reweighting"],
     ],
   ],
 
   [ 
-    'DYJets_MG_HT_Reweighted_Reshaped',
+    'DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped',
     '\\DYJ',
     [ 
-      ["ZPtRw","\\PZ \\pt"],
+      ["ZPtRw","\\PZ-\\pt correction, MC stat."],
+      ["ZPtRwQCDScale","\\PZ-\\pt correction, QCD scale"],
+      ["ZPtRwQCDPDFError","\\PZ-\\pt correction, QCD PDF error"],
+      ["ZPtRwQCDPDFAlphaS","\\PZ-\\pt correction, QCD PDF \\alpS"],
+      ["ZPtRwEW1","\\PZ-\\pt correction, EW1~\cite{Lindert:2017olm}"],
+      ["ZPtRwEW2","\\PZ-\\pt correction, EW2~\cite{Lindert:2017olm}"],
+      ["ZPtRwEW3","\\PZ-\\pt correction, EW3~\cite{Lindert:2017olm}"],
       ["DYReshapeSyst","DY reshape"],
       #["DYReshapeEEMM", "DY ratio (flavor dependent)"],
     ],
@@ -82,7 +93,8 @@ ToRuns = [
 
 ]
 
-print 'Integrated luminosity & All bkgd./Signal & '+IsCorrelatedToString('Lumi')+' & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'
+#print 'Integrated luminosity & All bkgd./Signal & '+IsCorrelatedToString('Lumi')+' & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) & 2.3--2.5 (2.3--2.5) \\\\'
+print 'Integrated luminosity & All bkgd./Signal & '+IsCorrelatedToString('Lumi')+' & 1.8 (1.8) & 1.8 (1.8) & 1.8 (1.8) & 1.8 (1.8) \\\\'
 
 for ToRun in ToRuns:
 
@@ -108,7 +120,7 @@ for ToRun in ToRuns:
 
         #### Exception A
         # 1) ZPtRw only for bkgd
-        if ( (SystAlias=="ZPtRw") or ("DYReshape" in SystAlias) ) and i_sample==1:
+        if ( ("ZPtRw" in SystAlias) or ("DYReshape" in SystAlias) ) and i_sample==1:
           out += '& \\NA'
           continue
 
@@ -151,41 +163,15 @@ for ToRun in ToRuns:
 
               #### Get Up
               h_Up = f.Get('Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName)
+              if not h_Up:
+                print f.GetName()
+                print 'Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName
               y_Up = h_Up.GetBinContent(1)
               diff_Up = abs(y_Up-y_Nom)
               #### Get Down
               h_Down = f.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
               y_Down = h_Down.GetBinContent(1)
               diff_Down = abs(y_Down-y_Nom)
-
-              if Sample=='AllNonDYMCBkgd':
-
-                #### We need "AllNonDYMCBkgd" + "DYNorm" X "DY"
-
-                f_DY = ROOT.TFile(basedir+'HNWRAnalyzer_SkimTree_LRSMHighPt_DYJets_MG_HT_Reweighted_Reshaped.root')
-
-                #### Get DYNorm SF
-                DYNormSF, DYNormSFErr = mylib.GetDYNormSF(int(Year), dirName)
-
-                #### Get Nominal
-                h_Nom_DY = f_DY.Get(dirName+'/NEvent_'+dirName)
-                y_Nom_DY = h_Nom_DY.GetBinContent(1) * DYNormSF
-
-                #### Get Up
-                h_Up_DY = f_DY.Get('Syst_'+SystAlias+'Up_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Up_'+dirName)
-                y_Up_DY = h_Up_DY.GetBinContent(1) * DYNormSF
-                #### Get Down
-                h_Down_DY = f_DY.Get('Syst_'+SystAlias+'Down_'+dirName+'/NEvent_'+'Syst_'+SystAlias+'Down_'+dirName)
-                y_Down_DY = h_Down_DY.GetBinContent(1) * DYNormSF
-
-                y_Nom += y_Nom_DY
-                y_Up += y_Up_DY
-                y_Down += y_Down_DY
-
-                diff_Up = abs(y_Up-y_Nom)
-                diff_Down = abs(y_Down-y_Nom)
-
-                f_DY.Close()
 
               #### Calculate syst
               this_syst = max( 100.*diff_Up/y_Nom, 100.*diff_Down/y_Nom )
@@ -239,12 +225,12 @@ for ToRun in ToRuns:
     print out+' \\\\'
 
 #print '''Flavor sideband & \\ttbar & 20 (30) & \NA & 20 (30) & \NA \\\\'''
-#print '''DY normalizaion & \DYJ & Correlated & 30 (30) & \NA & 30 (30) & \NA \\\\'''
+#print '''DY normalization & \DYJ & Correlated & 30 (30) & \NA & 30 (30) & \NA \\\\'''
 
 
 
-print 'Nonprompt normalizaion & Nonprompt & '+IsCorrelatedToString('NonPromptNorm')+' & 100 (100) & \NA & 100 (100) & \NA  \\\\'
-print 'Rare SM normalizaion & Others & '+IsCorrelatedToString('OthersNorm')+' & 50 (50) & \NA & 50 (50) & \NA  \\\\'
+print 'Nonprompt background normalization & Nonprompt & '+IsCorrelatedToString('NonPromptNorm')+' & 100 (100) & \NA & 100 (100) & \NA  \\\\'
+print 'Rare SM background normalization & Others & '+IsCorrelatedToString('OthersNorm')+' & 50 (50) & \NA & 50 (50) & \NA  \\\\'
 
 #### PDF uncertainty for signal
 

@@ -40,9 +40,10 @@ m.Filename_skim = "_SkimTree_LRSMHighPt"
 
 m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/"
 if args.ApplyZPtRwg:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwgReweightedQCDErrorEWCorr/"
+
 if args.ApplyDYReshape:
-  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwg_ApplyDYReshape/"
+  m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/CR/"+str_Year+"/ApplyZPtRwgReweightedQCDErrorEWCorr_ApplyDYReshapeJetPt/"
 
 #### Category
 m.ScaleMC = args.ScaleMC
@@ -52,6 +53,7 @@ tmp_Systematics = [
   "Lumi",
   "JetRes",
   "JetEn",
+  "JetMass",
   "MuonRecoSF",
   "MuonEn",
   "MuonIDSF",
@@ -65,11 +67,15 @@ tmp_Systematics = [
   "LSFSF",
   "PU",
   "ZPtRw",
+  "ZPtRwEW1",
+  "ZPtRwEW2",
+  "ZPtRwEW3",
   "Prefire",
   "DYNorm",
   "DYReshapeSyst",
   "NonPromptNorm",
   "OthersNorm",
+  #"BTag",
 ]
 #tmp_Systematics = ["Lumi"]
 
@@ -99,13 +105,15 @@ m.SetBinningFilepath(
 #### Predef samples
 from PredefinedSamples import *
 if args.ApplyZPtRwg:
-  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted']
-  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted']
-  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted']
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr']
+
+
 if args.ApplyDYReshape:
-  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
-  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
-  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_Reweighted_Reshaped']
+  SampleGroup_DY_2016.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
+  SampleGroup_DY_2017.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
+  SampleGroup_DY_2018.Samples=['DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped']
 
 ###############
 #### DY CR ####
@@ -222,11 +230,6 @@ m.VariablesToDraw = [
   Variable('Jet_1_Eta', '#eta of the subleading jet', 'GeV'),
   Variable('dRj1j2', '#Delta R(j1,j2)', ''),
 ]
-#m.VariablesToDraw = [
-#  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
-#  Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
-#  Variable('NEvent', 'onebin', ''),
-#]
 m.PrintVariables()
 
 #### Draw

@@ -36,6 +36,7 @@ class LRSMSignalInfo:
     self.mN = mN
     self.xsec = 1.
     self.kfactor = 1.
+    self.xsecScale = 1.
     self.Color = ROOT.kBlack
     self.Style = 3
     self.useOfficial = False
@@ -44,6 +45,11 @@ class LRSMSignalInfo:
 
   def Print(self):
     print '(%d, %d, %f, %f)'%(self.mWR, self.mN, self.xsec, self.kfactor)
+  def GetTLatexAlias(self):
+    if self.xsecScale!=1.:
+      self.TLatexAlias = "%d #times (m_{W_{R}}, m_{N}) = (%d, %d) GeV"%(self.xsecScale, self.mWR, self.mN)
+
+    return self.TLatexAlias
 
 ## Variable ##
 class Variable:
@@ -173,6 +179,8 @@ class Plotter:
   def Rebin(self, hist, region, var, nRebin):
     if var=='WRCand_Mass':
       return mylib.RebinWRMass(hist, region, self.DataYear)
+    elif var=='ToBeCorrected_Jet_Pt':
+      return mylib.RebinJetPt(hist, region, self.DataYear)
     else:
       if nRebin>0:
         hist.Rebin(nRebin)
@@ -264,6 +272,12 @@ class Plotter:
 
         if self.DoDebug:
           print '[DEBUG] data histogram finished'
+          print 'Data:'
+          for z in range(0,h_Data.GetXaxis().GetNbins()):
+            x_l = h_Data.GetXaxis().GetBinLowEdge(z+1)
+            x_r = h_Data.GetXaxis().GetBinUpEdge(z+1)
+            y = h_Data.GetBinContent(z+1)
+            print '[%f,%f] : %f +- %f'%(x_l,x_r,y,h_Data.GetBinError(z+1))
 
         ## Loop over samples
         ## For Legend, save 
@@ -314,7 +328,7 @@ class Plotter:
               ## Exception control
               ## 1) ZPtRw only for the samples with "Reweighted"
               ## if other samples, we just call nominal shape
-              elif (Syst.Name=="ZPtRw") and ("Reweighted" not in Sample):
+              elif ("ZPtRw" in Syst.Name) and ("Reweighted" not in Sample):
                 tmp_dirName = Region.Name
                 h_Sample = f_Sample.Get(tmp_dirName+'/'+Variable.Name+'_'+tmp_dirName)
               ## 2) Lumi, MC normalizaion
@@ -615,15 +629,19 @@ class Plotter:
         h_dummy_down = ROOT.TH1D('h_dumy_down', '', nBin, xBins)
         h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
 
-        #if ('DYCR2' in Region.Name):
-        #  h_dummy_down.GetYaxis().SetRangeUser(0.50,1.60)
+        if ('DYCR' in Region.Name):
+          h_dummy_down.GetYaxis().SetRangeUser(0.70,1.30)
+        if ('DYCR2' in Region.Name):
+          h_dummy_down.GetYaxis().SetRangeUser(0.50,1.60)
 
         if (self.ErrorFromShape):
           #if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
           if ('DYCR' in Region.Name):
             h_dummy_down.GetYaxis().SetRangeUser(0.70,1.30)
+            #h_dummy_down.GetYaxis().SetRangeUser(0.0,2.0)
           else:
             h_dummy_down.GetYaxis().SetRangeUser(0.,2.8)
+            #h_dummy_down.GetYaxis().SetRangeUser(0.0,2.0)
 
         h_dummy_down.SetNdivisions(504,"Y")
         h_dummy_down.GetXaxis().SetRangeUser(xMin, xMax)
@@ -671,7 +689,7 @@ class Plotter:
             else:
               h_dummy_up.GetYaxis().SetRangeUser( yMin, 50*yMax )
           elif ("NoBJet" in Region.Name):
-            h_dummy_up.GetYaxis().SetRangeUser( 1E-3, 4*yMax )
+            h_dummy_up.GetYaxis().SetRangeUser( 1E-2, 4*yMax )
 
         if (Variable.Name=="ZCand_Mass" or Variable.Name=="DiJet_Mass") and ("_DYCR" in Region.Name):
           h_dummy_up.GetYaxis().SetRangeUser(10, 2E5)
@@ -734,7 +752,6 @@ class Plotter:
             print fpullpath_Sig
             print Region.Name+'/'+Variable.Name+'_'+Region.Name
             continue
-          h_Sigs.append(h_Sig)
 
           ## Make overflow
           h_Sig.GetXaxis().SetRangeUser(xMin,xMax)
@@ -744,15 +761,18 @@ class Plotter:
           h_Sig = self.Rebin(h_Sig, Region.Name, Variable.Name, nRebin)
 
           ## Scale
-          h_Sig.Scale( Sig.xsec * Sig.kfactor )
+          h_Sig.Scale( Sig.xsec * Sig.kfactor * Sig.xsecScale )
 
           ## Att
           h_Sig.SetLineWidth(3)
           h_Sig.SetLineColor(Sig.Color)
           h_Sig.SetLineStyle(Sig.Style)
 
+          ## Save
+          h_Sigs.append(h_Sig)
+
           ## legend
-          lg.AddEntry(h_Sig, Sig.TLatexAlias, 'l')
+          lg.AddEntry(h_Sig, Sig.GetTLatexAlias(), 'l')
 
           ## Draw
           h_Sig.Draw("histsame")
@@ -873,7 +893,7 @@ class Plotter:
         channelname = ROOT.TLatex()
         channelname.SetNDC()
         channelname.SetTextSize(0.037)
-        channelname.DrawLatex(0.2, 0.88, Region.TLatexAlias)
+        channelname.DrawLatex(0.2, 0.88, "#font[42]{"+Region.TLatexAlias+"}")
 
         ## Extra lines
         exec(self.ExtraLines)

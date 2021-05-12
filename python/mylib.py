@@ -38,15 +38,17 @@ def TotalLumi(DataYear):
 
 def LumiError(DataYear):
 
-  if DataYear==2016:
-    return 0.025
-  elif DataYear==2017:
-    return 0.023
-  elif DataYear==2018:
-    return 0.025
-  else:
-    print "[mylib.py, LumiError()] Wrong DataYear : %d"%DataYear
-    return 0.
+  #if DataYear==2016:
+  #  return 0.025
+  #elif DataYear==2017:
+  #  return 0.023
+  #elif DataYear==2018:
+  #  return 0.025
+  #else:
+  #  print "[mylib.py, LumiError()] Wrong DataYear : %d"%DataYear
+  #  return 0.
+
+  return 0.018
 
 def MakeOverflowBin(hist):
 
@@ -134,6 +136,17 @@ def RebinWRMass(hist, region, DataYear):
   hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )
   return hist
 
+def RebinJetPt(hist, region, DataYear):
+
+  lastbin = hist.GetXaxis().GetNbins()
+  vec_bins = [0, 40, 100, 200, 400, 600, 800, 1000, 1500, 2000]
+  if "Boosted" in region:
+    vec_bins = [0, 200, 400, 600, 800, 1000, 2000]
+
+  n_bin = len(vec_bins)-1
+  hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )
+  return hist
+
 def GetMaximum(a, ErrorScale=1.):
 
   NX = a.GetN()
@@ -207,21 +220,21 @@ def GetDYNormSF(DataYear, channel):
   if DataYear==2016:
     if int_channel==0:
       if int_region==0:
-        DYNorm = 1.0333
-        DYNorm_err = 0.0493714
+        DYNorm = 0.985967
+        DYNorm_err = 0.0472367
       elif int_region==1:
-        DYNorm = 0.84301
-        DYNorm_err = 0.0417383
+        DYNorm = 1.18924
+        DYNorm_err = 0.0593071
       else:
         print "Wrong DY Norm"
         exit()
     elif int_channel==1:
       if int_region==0:
-        DYNorm = 1.02541
-        DYNorm_err = 0.0401646
+        DYNorm = 0.971114
+        DYNorm_err = 0.0382234
       elif int_region==1:
-        DYNorm = 0.695854
-        DYNorm_err = 0.0349161
+        DYNorm = 1.00351
+        DYNorm_err = 0.0507593
       else:
         print "Wrong DY Norm"
         exit()
@@ -231,21 +244,21 @@ def GetDYNormSF(DataYear, channel):
   elif DataYear==2017:
     if int_channel==0:
       if int_region==0:
-        DYNorm = 1.02718
-        DYNorm_err = 0.0497519
+        DYNorm = 1.03281
+        DYNorm_err = 0.0502737
       elif int_region==1:
-        DYNorm = 1.03635
-        DYNorm_err = 0.0512348
+        DYNorm = 1.30754
+        DYNorm_err = 0.0653227
       else:
         print "Wrong DY Norm"
         exit()
     elif int_channel==1:
       if int_region==0:
-        DYNorm = 1.03497
-        DYNorm_err = 0.040131
+        DYNorm = 1.03805
+        DYNorm_err = 0.0405121
       elif int_region==1:
-        DYNorm = 0.93964
-        DYNorm_err = 0.0456667
+        DYNorm = 1.19954
+        DYNorm_err = 0.0592457
       else:
         print "Wrong DY Norm"
         exit()
@@ -255,21 +268,21 @@ def GetDYNormSF(DataYear, channel):
   elif DataYear==2018:
     if int_channel==0:
       if int_region==0:
-        DYNorm = 0.957582
-        DYNorm_err = 0.0527974
+        DYNorm = 1.00002
+        DYNorm_err = 0.05551
       elif int_region==1:
-        DYNorm = 0.92052
-        DYNorm_err = 0.0403976
+        DYNorm = 1.30778
+        DYNorm_err = 0.0581163
       else:
         print "Wrong DY Norm"
         exit()
     elif int_channel==1:
       if int_region==0:
-        DYNorm = 0.98157
-        DYNorm_err = 0.0456876
+        DYNorm = 1.02359
+        DYNorm_err = 0.0481667
       elif int_region==1:
-        DYNorm = 0.805186
-        DYNorm_err = 0.0335501
+        DYNorm = 1.16497
+        DYNorm_err = 0.0496011
       else:
         print "Wrong DY Norm"
         exit()

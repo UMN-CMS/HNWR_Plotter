@@ -33,7 +33,7 @@ BoostedMasses = [
 ]
 
 Bkgds = [
-'DYJets_MG_HT_Reweighted_Reshaped',
+"DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped",
 'TT_TW',
 'NonPrompt',
 'Others',

@@ -47,6 +47,7 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
     "Central",
     "JetResUp", "JetResDown",
     "JetEnUp", "JetEnDown",
+    "JetMassUp", "JetMassDown",
     "MuonRecoSFUp", "MuonRecoSFDown",
     "MuonEnUp", "MuonEnDown",
     "MuonIDSFUp", "MuonIDSFDown",
@@ -60,6 +61,12 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
     "LSFSFUp", "LSFSFDown",
     "PUUp", "PUDown",
     "ZPtRwUp", "ZPtRwDown",
+    "ZPtRwQCDScaleUp", "ZPtRwQCDScaleDown",
+    "ZPtRwQCDPDFErrorUp", "ZPtRwQCDPDFErrorDown",
+    "ZPtRwQCDPDFAlphaSUp", "ZPtRwQCDPDFAlphaSDown",
+    "ZPtRwEW1Up", "ZPtRwEW1Down",
+    "ZPtRwEW2Up", "ZPtRwEW2Down",
+    "ZPtRwEW3Up", "ZPtRwEW3Down",
   };
   if(Year<=2017){
     systs.push_back( "PrefireUp" );
@@ -94,7 +101,7 @@ void Make_EMuShape(int Year=2016, int int_ch=0){
   map_sample_string_to_list["Others"] = {"Others"};
   map_sample_string_to_list["NonPrompt"] = {"NonPrompt"};
   map_sample_string_to_list["TT_TW"] = {"TT_TW"};
-  map_sample_string_to_list["DY"] = {"DYJets_MG_HT_Reweighted_Reshaped"};
+  map_sample_string_to_list["DY"] = {"DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped"};
   vector<TString> bkgds = {
     "Others",
     "NonPrompt",

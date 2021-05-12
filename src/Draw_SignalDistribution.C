@@ -2,12 +2,25 @@
 #include "mylib.h"
 #include "LRSMSignalInfo.h"
 
+TH1D *MyRebin(TString varName, int nRebin, TH1D *hist, TString region){
+
+  if(nRebin>0){
+    hist->Rebin(nRebin);
+  }
+  else{
+    hist = RebinWRMass(hist, region, 2016);
+  }
+
+  return hist;
+
+}
+
 void Draw_SignalDistribution(int xxx=0){
 
   TString bkgdsample_prompt = "DYJets_MG_HT_Reweighted_Reshaped";
   TString bkgdsample_fake = "TTLX_powheg";
 
-  TString Year = "2016";
+  TString Year = "2018";
 
   gStyle->SetOptStat(0);
 
@@ -49,7 +62,7 @@ void Draw_SignalDistribution(int xxx=0){
   };
 
   vector<Color_t> colors = {
-    kRed, kRed+2, kOrange, kOrange+2, kGreen, kGreen+2, kBlue, kBlue+2, kViolet, kViolet+2, kBlack, kCyan, kGray,
+    kRed, kRed+2, kOrange, kGreen, kBlue, kViolet, kViolet+2, kBlack, kCyan, kGray,
   };
 
   TFile *file_bkg_prompt = new TFile(base_filepath+"/HNWRAnalyzer_SkimTree_LRSMHighPt_"+bkgdsample_prompt+".root");
@@ -66,7 +79,7 @@ void Draw_SignalDistribution(int xxx=0){
     if(channel=="MuMu") Suffix = "SingleMuon";
 
     vector<TString> vars, xtitles;
-
+/*
     vars = {
       "Lepton_0_Pt", "Lepton_0_Eta", "Lepton_0_RelIso", "Lepton_0_TrkRelIso",
       "Lepton_1_Pt", "Lepton_1_Eta", "Lepton_1_RelIso", "Lepton_1_TrkRelIso",
@@ -88,6 +101,10 @@ void Draw_SignalDistribution(int xxx=0){
       "MET (GeV)",
       "Number of b-tagged jet",
     };
+*/
+
+    vars = {"WRCand_Mass"};
+    xtitles = {"m_{WR} (GeV)"};
 
     for(unsigned int it_var=0; it_var<vars.size(); it_var++){
 
@@ -139,7 +156,7 @@ void Draw_SignalDistribution(int xxx=0){
       }
       if(var.Contains("WRCand_Mass")){
         x_max = 8000.;
-        n_rebin = 10;
+        n_rebin = -1;
       }
       if(var.Contains("ZCand_Mass")){
         x_max = 500.;
@@ -265,7 +282,8 @@ void Draw_SignalDistribution(int xxx=0){
         n_rebin = 1;
       }
 
-      hist_dummy->Rebin(n_rebin);
+      hist_dummy = MyRebin(var, n_rebin, hist_dummy, region);
+      //hist_dummy->Rebin(n_rebin);
       hist_dummy->GetYaxis()->SetTitle("Events");
       hist_dummy->GetXaxis()->SetTitle(xtitles.at(it_var));
 
@@ -325,7 +343,7 @@ void Draw_SignalDistribution(int xxx=0){
         hist_bkg_fake->SetFillColorAlpha(kGray,0.50);
         hist_bkg_fake->SetLineWidth(0);
         hist_bkg_fake->SetLineColor(0);
-        hist_bkg_fake->Draw("histsame");
+        //hist_bkg_fake->Draw("histsame");
         lg->AddEntry(hist_bkg_fake, bkgdsample_fake+" (Fake)", "f");
         this_ymax = max(this_ymax,GetMaximum(hist_bkg_fake));
       }
@@ -354,7 +372,7 @@ void Draw_SignalDistribution(int xxx=0){
           this_lrsminfo.SetNames();
 
           TString filename = this_lrsminfo.GetFileName();
-          TFile *file = new TFile(base_filepath+"/Signal_"+channel+"/HNWRAnalyzer_"+filename+".root");
+          TFile *file = new TFile(base_filepath+"/Signal_"+channel+"_Official/HNWRAnalyzer_Official_FullSim_WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+".root");
           TH1D *hist = (TH1D *)file->Get(histname);
 
           if(!hist){
@@ -362,7 +380,8 @@ void Draw_SignalDistribution(int xxx=0){
             continue;
           }
 
-          hist->Rebin(n_rebin);
+          hist = MyRebin(var, n_rebin, hist, region);
+          //hist->Rebin(n_rebin);
           hist->SetLineColor(colors.at(it_WR));
           hist->SetLineWidth(2);
           hist->SetLineStyle(it_N+1);

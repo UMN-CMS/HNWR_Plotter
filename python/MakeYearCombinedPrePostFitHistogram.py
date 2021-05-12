@@ -18,7 +18,7 @@ Channels = [
 
 Samples = [
 'TT_TW',
-'DYJets_MG_HT_Reweighted_Reshaped',
+'DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped',
 'NonPrompt',
 'Others',
 ]

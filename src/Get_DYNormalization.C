@@ -23,6 +23,7 @@ void Get_DYNormalization(int xxx=0){
   vector<TString> Systs = {
     "JetRes",
     "JetEn",
+    "JetMass",
     "MuonRecoSF",
     "MuonEn",
     "MuonIDSF",
@@ -35,6 +36,12 @@ void Get_DYNormalization(int xxx=0){
     "ElectronTriggerSF",
     "PU",
     "ZPtRw",
+    "ZPtRwQCDScale",
+    "ZPtRwQCDPDFError",
+    "ZPtRwQCDPDFAlphaS",
+    "ZPtRwEW1",
+    "ZPtRwEW2",
+    "ZPtRwEW3",
   };
   //==== XXX No syst here
   //Systs.clear();
@@ -112,7 +119,8 @@ void Get_DYNormalization(int xxx=0){
 
   }
 
-  //samplename_DY50 = "DYJets_MG_HT_Reweighted_2017NLO";
+  samplename_DY10to50 = "DYJets10to50_MG_ReweightedQCDErrorEWCorr_Reshaped";
+  samplename_DY50 = "DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped";
 
   TFile *file_DY10to50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY10to50+".root");
   TFile *file_DY50 = new TFile(base_filepath+"/"+filename_prefix+samplename_DY50+".root");

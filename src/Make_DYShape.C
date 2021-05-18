@@ -229,7 +229,7 @@ void Make_DYShape(int Year=2016){
 
               //==== DY Norm and shape
               if(sample.Contains("DYJets_")){
-                hist_bkgd->Scale( GetDYNormSF(Year, PD+"_"+region) );
+                //hist_bkgd->Scale( GetDYNormSF(Year, PD+"_"+region) );
               }
 
               //==== remove negative bins
@@ -328,11 +328,11 @@ void Make_DYShape(int Year=2016){
 
                     TH1D *hist_DYReshapeSystUp = (TH1D *)file_sample->Get("Syst_DYReshapeSystUp_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystUp_"+dirname);
                     hist_DYReshapeSystUp = RebinWRMass(hist_DYReshapeSystUp, Suffix+"_"+region, Year, true);
-                    hist_DYReshapeSystUp->Scale( GetDYNormSF(Year, PD+"_"+region) );
+                    //hist_DYReshapeSystUp->Scale( GetDYNormSF(Year, PD+"_"+region) );
 
                     TH1D *hist_DYReshapeSystDown = (TH1D *)file_sample->Get("Syst_DYReshapeSystDown_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystDown_"+dirname);
                     hist_DYReshapeSystDown = RebinWRMass(hist_DYReshapeSystDown, Suffix+"_"+region, Year, true);
-                    hist_DYReshapeSystDown->Scale( GetDYNormSF(Year, PD+"_"+region) );
+                    //hist_DYReshapeSystDown->Scale( GetDYNormSF(Year, PD+"_"+region) );
 
                     for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
 
@@ -408,10 +408,11 @@ void Make_DYShape(int Year=2016){
         } // END Loop over bkgd samples
 
 
-        if(0){
+        if(1){
 
         //==== Signals
 
+        lrsminfo.ShortListForCRShape();
         for(map< double, vector<double> >::iterator it=lrsminfo.maps_WR_to_N.begin(); it!=lrsminfo.maps_WR_to_N.end(); it++){
 
           double m_WR = it->first;

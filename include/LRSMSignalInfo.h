@@ -36,6 +36,9 @@ public :
   map< double, vector<double> > maps_WR_to_N;
   map< double, vector<double> > maps_N_to_WR;
 
+  //==== Test
+  void ShortListForCRShape();
+
   bool operator==(LRSMSignalInfo b);
 
 private:
@@ -344,5 +347,20 @@ void LRSMSignalInfo::Print(){
   }
 
 }
+
+void LRSMSignalInfo::ShortListForCRShape(){
+  maps_WR_to_N.clear();
+  maps_N_to_WR.clear();
+
+  maps_WR_to_N[5000].push_back( 200 );
+  maps_WR_to_N[5000].push_back( 3000 );
+
+  maps_N_to_WR[200].push_back( 5000 );
+  maps_N_to_WR[3000].push_back( 5000 );
+
+}
+
+  //==== Test
+  //  void ShortListForCRShape();
 
 #endif

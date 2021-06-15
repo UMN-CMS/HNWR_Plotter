@@ -69,6 +69,14 @@ void Make_DYShape(int Year=2016){
     systs.push_back( "PrefireUp" );
     systs.push_back( "PrefireDown" );
   }
+  vector<TString> binBybinSysts = {
+    "ElectronEn",
+    "MuonEn",
+    "JetMass",
+    "JetEn",
+    "JetRes",
+    "ElectronRes",
+  };
 
   gStyle->SetOptStat(0);
 
@@ -126,6 +134,11 @@ void Make_DYShape(int Year=2016){
 
     TString region = regions.at(it_region);
 
+    TString ResolvedORBoosted = "Resolved";
+    if(region.Contains("Boosted")){
+      ResolvedORBoosted = "Boosted";
+    }
+
     cout << "@@@@ region = " << region << endl;
 
     for(unsigned int it_channel=0; it_channel<channels.size(); it_channel++){
@@ -174,6 +187,9 @@ void Make_DYShape(int Year=2016){
         TString nuisancePrefix = "";
         //==== for uncorrelated
         if( !IsCorrelated(syst) ) nuisancePrefix = "Run"+str_Year+"_";
+
+        //==== bin-by-bin syst will be treated in Central. Safe gaurd
+        //if(UseBinByBin(syst)) continue;
 
         cout << "@@@@     syst = " << syst << endl;
 
@@ -243,136 +259,119 @@ void Make_DYShape(int Year=2016){
 
               }
 
-              //==== If EMu-method
-              if(sample.Contains("EMuMethod") && syst=="Central"){
+              //==== couple of things to do more when Central..
+              if(syst=="Central"){
 
-                cout << "@@@@ EMu : " << region << "\t" << channel << endl;
+                TH1D *hist_bkgdstatup = GetStatUpDown(hist_bkgd,+1);
+                hist_bkgdstatup->SetName(sample+"_StatUp");
+                TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd,-1);
+                hist_bkgdstatdown->SetName(sample+"_StatDown");
+
+                out_bkgd->cd();
+                hist_bkgdstatup->Write();
+                hist_bkgdstatdown->Write();
+
                 hist_bkgd->SetName(sample+shapehistname_suffix);
 
-                double EMuSyst = 0.20;
-                if( region.Contains("Boosted") ) EMuSyst = 0.30;
+                if(sample.Contains("DYJets_")){
 
-                TH1D *hist_bkgdUp = GetScaleUpDown(hist_bkgd,+1.*EMuSyst);
-                hist_bkgdUp->SetName(sample+"_EMuSystUp");
-                TH1D *hist_bkgdDown = GetScaleUpDown(hist_bkgd,-1.*EMuSyst);
-                hist_bkgdDown->SetName(sample+"_EMuSystDown");
+                  //==== making DYReshapeSyst shapes
 
-                TH1D *hist_bkgd_StatUp = GetStatUpDown(hist_bkgd,+1);
-                hist_bkgd_StatUp->SetName(sample+"_StatUp");
-                TH1D *hist_bkgd_StatDown = GetStatUpDown(hist_bkgd,-1);
-                hist_bkgd_StatDown->SetName(sample+"_StatDown");
+                  TH1D *hist_DYReshapeSystUp = (TH1D *)file_sample->Get("Syst_DYReshapeSystUp_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystUp_"+dirname);
+                  hist_DYReshapeSystUp = RebinWRMass(hist_DYReshapeSystUp, Suffix+"_"+region, Year, true);
+                  //hist_DYReshapeSystUp->Scale( GetDYNormSF(Year, PD+"_"+region) );
 
-                out_bkgd->cd();
+                  TH1D *hist_DYReshapeSystDown = (TH1D *)file_sample->Get("Syst_DYReshapeSystDown_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystDown_"+dirname);
+                  hist_DYReshapeSystDown = RebinWRMass(hist_DYReshapeSystDown, Suffix+"_"+region, Year, true);
+                  //hist_DYReshapeSystDown->Scale( GetDYNormSF(Year, PD+"_"+region) );
 
-                hist_bkgd->Write();
-                hist_bkgdUp->Write();
-                hist_bkgdDown->Write();
-                hist_bkgd_StatUp->Write();
-                hist_bkgd_StatDown->Write();
+                  for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
 
-              }
-              else{
+                    double this_nominal = hist_bkgd->GetBinContent(z);
+                    double this_Up = hist_DYReshapeSystUp->GetBinContent(z);
+                    double this_Down = hist_DYReshapeSystDown->GetBinContent(z);
 
-                //==== couple of things to do more when Central..
-                if(syst=="Central"){
+                    TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Up");
+                    TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Down");
 
-                  TH1D *hist_bkgdstatup = GetStatUpDown(hist_bkgd,+1);
-                  hist_bkgdstatup->SetName(sample+"_StatUp");
-                  TH1D *hist_bkgdstatdown = GetStatUpDown(hist_bkgd,-1);
-                  hist_bkgdstatdown->SetName(sample+"_StatDown");
+                    hist_DYShapeUp->SetBinContent(z, this_Up);
+                    hist_DYShapeDown->SetBinContent(z, this_Down);
+
+                    hist_DYShapeUp->Write();
+                    hist_DYShapeDown->Write();
+
+                  }
 
                   out_bkgd->cd();
-                  hist_bkgdstatup->Write();
-                  hist_bkgdstatdown->Write();
+                } // END if DYJets
 
-                  hist_bkgd->SetName(sample+shapehistname_suffix);
+                //==== bin-by-bin
 
-                  //==== TODO test emu shape unct
-                  if(sample=="TTLX_powheg"){
-                    TString shapefilename = "ResolvedShapeUnct";
-                    if(region.Contains("Boosted")){
-                      if(channel=="EE") shapefilename = "BoostedEJetShapeUnct";
-                      else shapefilename = "BoostedMuJetShapeUnct";
-                    }
-                    TFile *f_ttchape = new TFile(ENV_PLOT_PATH+"/"+dataset+"/TTBarShapes/"+TString::Itoa(Year,10)+"/shapes_"+shapefilename+".root");
-                    TH1D *f_ttchape_Up = (TH1D *)f_ttchape->Get(shapefilename+"Up");
-                    TH1D *f_ttchape_Down = (TH1D *)f_ttchape->Get(shapefilename+"Down");
+                for(unsigned int i_bbbs=0; i_bbbs<binBybinSysts.size(); i_bbbs++){
+                  TString binBybinSyst = binBybinSysts.at(i_bbbs);
 
-                    TH1D *hist_tt_ShapeUp = (TH1D *)hist_bkgd->Clone();
-                    hist_tt_ShapeUp->SetName(sample+"_Run"+str_Year+"_"+shapefilename+"Up");
-                    TH1D *hist_tt_ShapeDown = (TH1D *)hist_bkgd->Clone();
-                    hist_tt_ShapeDown->SetName(sample+"_Run"+str_Year+"_"+shapefilename+"Down");
-                    for(int c=1; c<=hist_tt_ShapeUp->GetXaxis()->GetNbins(); c++){
-                      double x_l_1 = hist_tt_ShapeUp->GetXaxis()->GetBinLowEdge(c);
-                      double x_r_1 = hist_tt_ShapeUp->GetXaxis()->GetBinUpEdge(c);
-                      double x_l_2 = f_ttchape_Up->GetXaxis()->GetBinLowEdge(c);
-                      double x_r_2 = f_ttchape_Up->GetXaxis()->GetBinUpEdge(c);
-                      hist_tt_ShapeUp->SetBinContent(c, hist_tt_ShapeUp->GetBinContent(c) * f_ttchape_Up->GetBinContent(c));
-                      hist_tt_ShapeDown->SetBinContent(c, hist_tt_ShapeDown->GetBinContent(c) * f_ttchape_Down->GetBinContent(c));
-                    }
-                    hist_tt_ShapeUp->Scale( hist_bkgd->Integral() / hist_tt_ShapeUp->Integral() );
-                    hist_tt_ShapeDown->Scale( hist_bkgd->Integral() / hist_tt_ShapeDown->Integral() );
+                  //==== for correlated 
+                  TString bbbs_nuisancePrefix = binBybinSyst;
+                  //==== for uncorrelated
+                  if( !IsCorrelated(binBybinSyst) ) bbbs_nuisancePrefix = "Run"+str_Year+"_"+binBybinSyst;
 
-                    out_bkgd->cd();
-                    hist_tt_ShapeUp->Write();
-                    hist_tt_ShapeDown->Write();
-                  }
-                  else if(sample.Contains("DYJets_")){
+                  TH1D *hist_bbbsUp = (TH1D *)file_sample->Get("Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region);
+                  hist_bbbsUp = RebinWRMass(hist_bbbsUp, Suffix+"_"+region, Year, true);
 
-                    //==== making DYReshapeSyst shapes
+                  TH1D *hist_bbbsDown = (TH1D *)file_sample->Get("Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region);
+                  hist_bbbsDown = RebinWRMass(hist_bbbsDown, Suffix+"_"+region, Year, true);
 
-                    TString ResolvedORBoosted = "Resolved";
-                    if(region.Contains("Boosted")){
-                      ResolvedORBoosted = "Boosted";
-                    }
+                  //==== Test1) Normalization
+                  double integral_nominal = hist_bkgd->Integral();
+                  double integral_Up = hist_bbbsUp->Integral();
+                  double integral_Down = hist_bbbsDown->Integral();
 
-                    TH1D *hist_DYReshapeSystUp = (TH1D *)file_sample->Get("Syst_DYReshapeSystUp_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystUp_"+dirname);
-                    hist_DYReshapeSystUp = RebinWRMass(hist_DYReshapeSystUp, Suffix+"_"+region, Year, true);
-                    //hist_DYReshapeSystUp->Scale( GetDYNormSF(Year, PD+"_"+region) );
+                  double this_diff_integral_Up = fabs(integral_nominal-integral_Up);
+                  double this_diff_integral_Down = fabs(integral_nominal-integral_Down);
+                  double this_bbbs_err = sqrt( ( this_diff_integral_Up*this_diff_integral_Up + this_diff_integral_Down*this_diff_integral_Down )/2. );
+                  double this_bbbs_relerr = this_bbbs_err/integral_nominal;
 
-                    TH1D *hist_DYReshapeSystDown = (TH1D *)file_sample->Get("Syst_DYReshapeSystDown_"+dirname+"/WRCand_Mass_Syst_DYReshapeSystDown_"+dirname);
-                    hist_DYReshapeSystDown = RebinWRMass(hist_DYReshapeSystDown, Suffix+"_"+region, Year, true);
-                    //hist_DYReshapeSystDown->Scale( GetDYNormSF(Year, PD+"_"+region) );
+                  for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
 
-                    for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
+                    double this_nominal = hist_bkgd->GetBinContent(z);
+                    double this_Up = hist_bbbsUp->GetBinContent(z);
+                    double this_Down = hist_bbbsDown->GetBinContent(z);
 
-                      double this_nominal = hist_bkgd->GetBinContent(z);
-                      double this_Up = hist_DYReshapeSystUp->GetBinContent(z);
-                      double this_Down = hist_DYReshapeSystDown->GetBinContent(z);
+                    TH1D *hist_bbbsShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Up");
+                    TH1D *hist_bbbsShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Down");
 
-                      TH1D *hist_DYShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Up");
-                      TH1D *hist_DYShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+"DYReshapeSystBin"+TString::Itoa(z-1,10)+"Down");
+/*
+                    hist_bbbsShapeUp->SetBinContent(z, this_Up);
+                    hist_bbbsShapeDown->SetBinContent(z, this_Down);
+*/
 
-                      hist_DYShapeUp->SetBinContent(z, this_Up);
-                      hist_DYShapeDown->SetBinContent(z, this_Down);
+                    hist_bbbsShapeUp->SetBinContent(z, this_nominal * (1.+this_bbbs_relerr) );
+                    hist_bbbsShapeDown->SetBinContent(z, this_nominal * (1.-this_bbbs_relerr) );
 
-                      hist_DYShapeUp->Write();
-                      hist_DYShapeDown->Write();
+                    hist_bbbsShapeUp->Write();
+                    hist_bbbsShapeDown->Write();
 
-                    }
+                  } // END bin loop
 
-                    out_bkgd->cd();
-                  } // END if DYJets
+                } // END loop over bin-by-bin systs
 
 
-                } // END if Central
+              } // END if Central
+              else{
+
+                //==== channel depedent nuisances for this systmeatic
+                if(syst.Contains("DYReshapeEEMM")){
+                  hist_bkgd->SetName(sample+"_"+channel+shapehistname_suffix);
+                }
                 else{
-
-                  //==== channel depedent nuisances for this systmeatic
-                  if(syst.Contains("DYReshapeEEMM")){
-                    hist_bkgd->SetName(sample+"_"+channel+shapehistname_suffix);
-                  }
-                  else{
-                    hist_bkgd->SetName(sample+shapehistname_suffix);
-                  }
-
-
+                  hist_bkgd->SetName(sample+shapehistname_suffix);
                 }
 
-                out_bkgd->cd();
-                hist_bkgd->Write();
 
               }
+
+              out_bkgd->cd();
+              hist_bkgd->Write();
 
             }
 
@@ -548,6 +547,41 @@ void Make_DYShape(int Year=2016){
 
                   m.hist_AlphaSUp->Write();
                   m.hist_AlphaSDn->Write();
+
+                  //==== bin-by-bin
+
+                  for(unsigned int i_bbbs=0; i_bbbs<binBybinSysts.size(); i_bbbs++){
+                    TString binBybinSyst = binBybinSysts.at(i_bbbs);
+
+                    //==== for correlated 
+                    TString bbbs_nuisancePrefix = binBybinSyst;
+                    //==== for uncorrelated
+                    if( !IsCorrelated(binBybinSyst) ) bbbs_nuisancePrefix = "Run"+str_Year+"_"+binBybinSyst;
+
+                    TH1D *hist_bbbsUp = (TH1D *)file_sig->Get("Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region);
+                    hist_bbbsUp = RebinWRMass(hist_bbbsUp, Suffix+"_"+region, Year, true);
+
+                    TH1D *hist_bbbsDown = (TH1D *)file_sig->Get("Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region);
+                    hist_bbbsDown = RebinWRMass(hist_bbbsDown, Suffix+"_"+region, Year, true);
+
+                    for(int z=1; z<=hist_sig->GetXaxis()->GetNbins(); z++){
+
+                      double this_nominal = hist_sig->GetBinContent(z); // this is already scaled
+                      double this_Up = hist_bbbsUp->GetBinContent(z) * signal_scale;
+                      double this_Down = hist_bbbsDown->GetBinContent(z) * signal_scale;
+
+                      TH1D *hist_bbbsShapeUp =   (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_"+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Up");
+                      TH1D *hist_bbbsShapeDown = (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_"+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Down");
+
+                      hist_bbbsShapeUp->SetBinContent(z, this_Up);
+                      hist_bbbsShapeDown->SetBinContent(z, this_Down);
+
+                      hist_bbbsShapeUp->Write();
+                      hist_bbbsShapeDown->Write();
+
+                    } // END bin loop
+
+                  } // END loop over bin-by-bin systs
 
 
                 } // END if central

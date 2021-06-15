@@ -918,4 +918,12 @@ bool IsCorrelated(TString syst){
 
 }
 
+bool UseBinByBin(TString syst){
+
+  if( syst.Contains("ElectronEn") ) return true;
+
+  return false;
+
+}
+
 #endif

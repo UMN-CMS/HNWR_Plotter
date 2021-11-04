@@ -921,6 +921,12 @@ bool IsCorrelated(TString syst){
 bool UseBinByBin(TString syst){
 
   if( syst.Contains("ElectronEn") ) return true;
+  if( syst.Contains("MuonEn") ) return true;
+  if( syst.Contains("JetMass") ) return true;
+  if( syst.Contains("JetEn") ) return true;
+  if( syst.Contains("JetRes") ) return true;
+  if( syst.Contains("ElectronRes") ) return true;
+
 
   return false;
 

@@ -47,7 +47,7 @@ class LRSMSignalInfo:
     print '(%d, %d, %f, %f)'%(self.mWR, self.mN, self.xsec, self.kfactor)
   def GetTLatexAlias(self):
     if self.xsecScale!=1.:
-      self.TLatexAlias = "%d #times (m_{W_{R}}, m_{N}) = (%d, %d) GeV"%(self.xsecScale, self.mWR, self.mN)
+      self.TLatexAlias = "%d#times(m_{W_{R}}, m_{N}) = (%d, %d) GeV"%(self.xsecScale, self.mWR, self.mN)
 
     return self.TLatexAlias
 
@@ -247,7 +247,8 @@ class Plotter:
           print '[DEBUG] Trying to get data histogram..'
         h_Data = f_Data.Get(Region.Name+'/'+Variable.Name+'_'+Region.Name)
         if not h_Data:
-          print Variable.Name+'_'+Region.Name+'.pdf ==> No data, skipped'
+          print f_Data.GetName()
+          print Region.Name+'/'+Variable.Name+'_'+Region.Name+' ==> No data, skipped'
           continue
 
         ## Make overflow
@@ -538,14 +539,14 @@ class Plotter:
         ## With Signal
         else:
           if Region.DrawRatio:
-            lg = ROOT.TLegend(0.55, 0.46, 0.92, 0.90)
+            lg = ROOT.TLegend(0.40, 0.46, 0.92, 0.90)
           else:
             lg = ROOT.TLegend(0.50, 0.56, 0.92, 0.90)
         lg.SetBorderSize(0)
         lg.SetFillStyle(0)
 
         if not self.NoErrorBand:
-          lg.AddEntry(gr_Bkgd_TotErr, "Stat.+syst. uncert.", "f")
+          lg.AddEntry(gr_Bkgd_TotErr, "Stat. #oplus syst. uncert.", "f")
         ## dummy graph for legend..
         ## this is because h_Data does not have horizontal error bars,
         ## and gr_data does not have points
@@ -604,8 +605,9 @@ class Plotter:
 
         latex_CMSPriliminary.SetNDC()
         latex_Lumi.SetNDC()
-        latex_CMSPriliminary.SetTextSize(0.035)
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}")
+        latex_CMSPriliminary.SetTextSize(0.055)
+        #latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}")
+        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS}")
 
         latex_Lumi.SetTextSize(0.035)
         latex_Lumi.SetTextFont(42)
@@ -636,11 +638,22 @@ class Plotter:
 
         if (self.ErrorFromShape):
           #if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
-          if ('DYCR' in Region.Name):
-            h_dummy_down.GetYaxis().SetRangeUser(0.70,1.30)
-            #h_dummy_down.GetYaxis().SetRangeUser(0.0,2.0)
+          if ("EMu" in Region.Name):
+            h_dummy_down.GetYaxis().SetRangeUser(0.,2.1)
+          elif ('SR' in Region.Name):
+
+            if ('SingleElectron_Resolved_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.6,3.1)
+            elif ('SingleMuon_Resolved_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.6,2.1)
+            elif ('SingleElectron_Boosted_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.6,1.8)
+            elif ('SingleMuon_Boosted_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.5,1.6)
+
           else:
-            h_dummy_down.GetYaxis().SetRangeUser(0.,2.8)
+            h_dummy_down.GetYaxis().SetRangeUser(0.60,1.50)
+            #h_dummy_down.GetYaxis().SetRangeUser(0.,2.8)
             #h_dummy_down.GetYaxis().SetRangeUser(0.0,2.0)
 
         h_dummy_down.SetNdivisions(504,"Y")
@@ -680,9 +693,9 @@ class Plotter:
 
           if ("_SR" in Region.Name) and ("EMu" not in Region.Name):
             if ("Resolved" in Region.Name):
-              h_dummy_up.GetYaxis().SetRangeUser( 1E-1, yMaxScale*yMax )
+              h_dummy_up.GetYaxis().SetRangeUser( 1E-1, 100*yMax )
             else:
-              h_dummy_up.GetYaxis().SetRangeUser( 1, yMaxScale*yMax )
+              h_dummy_up.GetYaxis().SetRangeUser( 1E-1, 100*yMax )
           elif ("_DYCR" in Region.Name):
             if ("Resolved" in Region.Name):
               h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )

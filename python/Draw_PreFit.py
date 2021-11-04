@@ -26,9 +26,9 @@ dataset = os.environ['CATANVERSION']
 ENV_PLOT_PATH = os.environ['PLOT_PATH']
 
 ## Signal mass
-mWR, mN = 5000, 3000
+mWR, mN = 6000, 800
 if args.Category==1:
-  mWR, mN = 5000, 200
+  mWR, mN = 6000, 800
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
 LRSMSignalInfoToDraw.useOfficial = True
@@ -51,7 +51,7 @@ m.DataDirectory = str_Year
 m.Filename_prefix = "HNWRAnalyzer"
 m.Filename_suffix = ""
 m.Filename_skim = "_SkimTree_LRSMHighPt"
-m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PreFit/"+str_Year+"/"
+m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PreFit_2021_08_11_015246__NLOST_sch2018/"+str_Year+"/"
 
 #### Category
 m.ScaleMC = False

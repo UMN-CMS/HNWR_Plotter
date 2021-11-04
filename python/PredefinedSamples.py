@@ -9,7 +9,7 @@ SampleGroup_DY_2016 = SampleGroup(
   Year = 2016,
   Color=ROOT.kYellow,
   Style=1,
-  TLatexAlias='Z+Jets',
+  TLatexAlias='Z+jets',
   LatexAlias='ZJets'
 )
 SampleGroup_DY_2017 = SampleGroup(
@@ -19,7 +19,7 @@ SampleGroup_DY_2017 = SampleGroup(
   Year = 2017,
   Color=ROOT.kYellow,
   Style=1,
-  TLatexAlias='Z+Jets',
+  TLatexAlias='Z+jets',
   LatexAlias='ZJets'
 )
 SampleGroup_DY_2018 = SampleGroup(
@@ -29,7 +29,7 @@ SampleGroup_DY_2018 = SampleGroup(
   Year = 2018,
   Color=ROOT.kYellow,
   Style=1,
-  TLatexAlias='Z+Jets',
+  TLatexAlias='Z+jets',
   LatexAlias='ZJets'
 )
 

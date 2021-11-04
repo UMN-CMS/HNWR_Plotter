@@ -26,15 +26,18 @@ dataset = os.environ['CATANVERSION']
 ENV_PLOT_PATH = os.environ['PLOT_PATH']
 
 ## Signal mass
-mWR, mN = 5000, 3000
+mWR, mN = 6000, 800
+xsecScale = 1.
 if args.Category==1:
-  mWR, mN = 5000, 200
+  mWR, mN = 6000, 800
+  xsecScale = 20
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
 LRSMSignalInfoToDraw.useOfficial = True
 LRSMSignalInfoToDraw.Style = 5
 LRSMSignalInfoToDraw.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
 LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
+LRSMSignalInfoToDraw.xsecScale = xsecScale
 
 
 m = Plotter()
@@ -204,7 +207,7 @@ m.PrintVariables()
 m.ExtraLines='''tl = ROOT.TLatex()
 tl.SetNDC()
 tl.SetTextSize(0.037)
-tl.DrawLatex(0.2, 0.815, '#font[42]{Postfit}')
+tl.DrawLatex(0.2, 0.815, '#font[42]{Post-fit}')
 '''
 
 #### Draw

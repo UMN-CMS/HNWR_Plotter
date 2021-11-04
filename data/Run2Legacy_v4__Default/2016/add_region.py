@@ -2,6 +2,7 @@ import os
 
 Which = 'CR'
 Which = 'NoLSFCut'
+Which = 'SR'
 
 txtfiles = [
 'rebins',
@@ -10,7 +11,7 @@ txtfiles = [
 ]
 
 regionFrom = 'HNWR_SingleElectron_Boosted_SR'
-regionTo   = 'HNWR_SingleMuon_EMu_Boosted_CR'
+regionTo   = 'HNWR_SingleLepton_Boosted_SR'
 
 for txtfile in txtfiles:
 

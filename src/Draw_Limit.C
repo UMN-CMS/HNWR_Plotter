@@ -34,13 +34,13 @@ void Draw_Limit(int Year, TString dirname=""){
   }
   else if(Year==-1){
     //inputfile = "";
-    TotalLumi = "137 fb^{-1} (13 TeV)";
+    TotalLumi = "138 fb^{-1} (13 TeV)";
     str_Year = "YearCombined";
   }
 
   TLatex latex_CMSPriliminary;
   latex_CMSPriliminary.SetNDC();
-  latex_CMSPriliminary.SetTextSize(0.035);
+  latex_CMSPriliminary.SetTextSize(0.055);
 
   TLatex latex_Lumi;
   latex_Lumi.SetNDC();
@@ -567,7 +567,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
         hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleSize(0.040);
         hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitleOffset(1.30);
-        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("95% CL upper limit on cross section/ Theory (g_{R}=g_{L})");
+        hist2d_limit_exp_ratio_clone->GetZaxis()->SetTitle("95% CL upper limit on cross section/ Theory (g_{R}= g_{L})");
         hist2d_limit_exp_ratio_clone->Draw("colzsame");
         hist2d_limit_exp_ratio_clone->Draw("axissame");
 
@@ -645,7 +645,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
     //lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
     //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
-    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (Resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (resolved, 36 fb^{-1})", "l");
 
     //g0->Draw("same");
 
@@ -654,7 +654,8 @@ void Draw_Limit(int Year, TString dirname=""){
     hist_dummy->Draw("axissame");
 
     c_2D->cd();
-    latex_CMSPriliminary.DrawLatex(0.13, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+    //latex_CMSPriliminary.DrawLatex(0.13, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+    latex_CMSPriliminary.DrawLatex(0.13, 0.96, "#font[62]{CMS}");
     latex_Lumi.DrawLatex(0.66, 0.96, TotalLumi);
 
     TLatex latex_ch;
@@ -767,7 +768,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->AddEntry( gr_exp, "Expected limit", "l");
         lg->AddEntry( gr_exp_1sd, "68% expected", "f");
         lg->AddEntry( gr_exp_2sd, "95% expected", "f");
-        lg->AddEntry( gr_xsec, "Theory (g_{R}=g_{L})", "l");
+        lg->AddEntry( gr_xsec, "Theory (g_{R}= g_{L})", "l");
 
         TCanvas *c_1D_vsN = new TCanvas("c1", "", 800, 800);
         canvas_margin(c_1D_vsN);
@@ -815,13 +816,14 @@ void Draw_Limit(int Year, TString dirname=""){
         TLatex str_m_WR;
         str_m_WR.SetNDC();
         str_m_WR.SetTextSize(0.035);
-        str_m_WR.DrawLatex(0.55, 0.85, "m_{WR} = "+TString::Itoa(m_WR,10)+" GeV");
+        str_m_WR.DrawLatex(0.55, 0.85, "m_{W_{R}} = "+TString::Itoa(m_WR,10)+" GeV");
         if(channel=="EE")        latex_ch.DrawLatex(0.55, 0.80, region+" ee channel");
         else if(channel=="MuMu") latex_ch.DrawLatex(0.55, 0.80, region+" #mu#mu channel");
 
         lg->Draw();
 
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+        //latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS}");
         latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.pdf");
@@ -948,7 +950,7 @@ void Draw_Limit(int Year, TString dirname=""){
         lg->AddEntry( gr_exp, "Expected limit", "l");
         lg->AddEntry( gr_exp_1sd, "68% expected", "f");
         lg->AddEntry( gr_exp_2sd, "95% expected", "f");
-        lg->AddEntry( gr_xsec, "Theory (g_{R}=g_{L})", "l");
+        lg->AddEntry( gr_xsec, "Theory (g_{R}= g_{L})", "l");
 
         TCanvas *c_1D_vsN = new TCanvas("c1", "", 800, 800);
         canvas_margin(c_1D_vsN);
@@ -1001,7 +1003,7 @@ void Draw_Limit(int Year, TString dirname=""){
           NMassString = "m_{N} = "+TString::Itoa(testN,10)+" GeV";
         }
         else{
-          NMassString = "m_{N} = m_{WR}/2";
+          NMassString = "m_{N} = m_{W_{R}}/2";
         }
 
         str_m_WR.DrawLatex(0.55, 0.85, NMassString);
@@ -1010,7 +1012,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
         lg->Draw();
 
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+        //latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
+        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS}");
         latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
 

@@ -7,8 +7,8 @@ def canvas_margin(c1, c1_up, c1_down):
   c1_up.SetLeftMargin( 0.15 )
   c1_up.SetRightMargin( 0.032 )
 
-  c1_down.SetTopMargin( 0.035 )
-  c1_down.SetBottomMargin( 0.4 )
+  c1_down.SetTopMargin( 0.060 )
+  c1_down.SetBottomMargin( 0.35 )
   c1_down.SetLeftMargin( 0.15 )
   c1_down.SetRightMargin( 0.032 )
 
@@ -33,8 +33,8 @@ def hist_axis(hist, hist_compare):
   ##==== bottom plot
   hist_compare.SetTitle("")
 
-  hist_compare.GetXaxis().SetLabelSize(0.13)
-  hist_compare.GetXaxis().SetTitleSize(0.18)
+  hist_compare.GetXaxis().SetLabelSize(0.11)
+  hist_compare.GetXaxis().SetTitleSize(0.16)
 
   hist_compare.GetYaxis().SetLabelSize(0.13)
   hist_compare.GetYaxis().SetTitleSize(0.16)

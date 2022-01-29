@@ -31,7 +31,7 @@ def TotalLumi(DataYear):
   if DataYear==2018:
     return "59.74"
   if DataYear<0:
-    return "137"
+    return "138"
   else:
     print "[mylib.py, TotalLumi()] Wrong DataYear : %d"%DataYear
     return "35.9"
@@ -134,7 +134,24 @@ def RebinWRMass(hist, region, DataYear):
 
   n_bin = len(vec_bins)-1
   hist = hist.Rebin(n_bin, hist.GetName(), array("d", vec_bins) )
-  return hist
+
+  return ChangeGeVToTeVXaxis(hist)
+  #return hist
+
+def ChangeGeVToTeVXaxis(h):
+
+  x_New = []
+  x_New.append( h.GetXaxis().GetBinLowEdge(1)/1000. )
+  for ix in range(0, h.GetXaxis().GetNbins()):
+    iBin = ix+1
+    x_New.append( h.GetXaxis().GetBinUpEdge(iBin)/1000. )
+  h_New = ROOT.TH1D(h.GetName(), '', len(x_New)-1, array("d", x_New))
+  for ix in range(0, h.GetXaxis().GetNbins()):
+    iBin = ix+1
+    h_New.SetBinContent(iBin, h.GetBinContent(iBin))
+    h_New.SetBinError(iBin, h.GetBinError(iBin))
+  return h_New
+
 
 def RebinJetPt(hist, region, DataYear):
 

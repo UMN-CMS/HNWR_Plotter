@@ -47,7 +47,8 @@ class LRSMSignalInfo:
     print '(%d, %d, %f, %f)'%(self.mWR, self.mN, self.xsec, self.kfactor)
   def GetTLatexAlias(self):
     if self.xsecScale!=1.:
-      self.TLatexAlias = "%d#times(m_{W_{R}}, m_{N}) = (%d, %d) GeV"%(self.xsecScale, self.mWR, self.mN)
+      #self.TLatexAlias = "%d#times(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV"%(self.xsecScale, self.mWR/1000., self.mN/1000.)
+      self.TLatexAlias = "(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV (#times%d)"%(self.mWR/1000., self.mN/1000., self.xsecScale)
 
     return self.TLatexAlias
 
@@ -122,6 +123,8 @@ class Plotter:
     self.AddErrorLinear = False
 
     self.NoErrorBand = False
+
+    self.DrawSignalUnbinned = False
 
   def PrintBorder(self):
     print '--------------------------------------------------------------------------'
@@ -234,9 +237,9 @@ class Plotter:
         xtitle = Variable.TLatexAlias
         if Variable.Name=="WRCand_Mass":
           if "Resolved" in Region.Name:
-            xtitle = "m_{lljj} (GeV)"
+            xtitle = "m_{lljj} (TeV)"
           else:
-            xtitle = "m_{lJ} (GeV)"
+            xtitle = "m_{lJ} (TeV)"
 
         ## Save hists
         ## For legend later..
@@ -542,6 +545,8 @@ class Plotter:
             lg = ROOT.TLegend(0.40, 0.46, 0.92, 0.90)
           else:
             lg = ROOT.TLegend(0.50, 0.56, 0.92, 0.90)
+        if "NoLSFCut" in self.OutputDirectory:
+          lg = ROOT.TLegend(0.42, 0.38, 0.90, 0.80)
         lg.SetBorderSize(0)
         lg.SetFillStyle(0)
 
@@ -573,8 +578,8 @@ class Plotter:
 
         c1 = ROOT.TCanvas('c1', '', 800, 800)
 
-        c1_up = ROOT.TPad("c1_up", "", 0, 0.25, 1, 1)
-        c1_down = ROOT.TPad("c1_down", "", 0, 0, 1, 0.25)
+        c1_up = ROOT.TPad("c1_up", "", 0, 0.30, 1, 1)
+        c1_down = ROOT.TPad("c1_down", "", 0, 0, 1, 0.30)
         if Region.DrawRatio:
           c1, c1_up, c1_down = canvas_margin.canvas_margin(c1, c1_up, c1_down)
           c1.Draw()
@@ -607,7 +612,10 @@ class Plotter:
         latex_Lumi.SetNDC()
         latex_CMSPriliminary.SetTextSize(0.055)
         #latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}")
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS}")
+        if "NoLSFCut" in self.OutputDirectory:
+          latex_CMSPriliminary.DrawLatex(0.2, 0.88, "#font[62]{CMS} #font[42]{#it{#scale[0.76]{Supplementary}}}")
+        else:
+          latex_CMSPriliminary.DrawLatex(0.2, 0.88, "#font[62]{CMS}")
 
         latex_Lumi.SetTextSize(0.035)
         latex_Lumi.SetTextFont(42)
@@ -635,21 +643,38 @@ class Plotter:
           h_dummy_down.GetYaxis().SetRangeUser(0.70,1.30)
         if ('DYCR2' in Region.Name):
           h_dummy_down.GetYaxis().SetRangeUser(0.50,1.60)
+        if Variable.Name=="HNFatJet_LSF":
+          h_dummy_down.GetYaxis().SetRangeUser(0.30,2.50)
 
         if (self.ErrorFromShape):
-          #if ('DYCR' in Region.Name) and ('PostFit' in self.OutputDirectory):
           if ("EMu" in Region.Name):
-            h_dummy_down.GetYaxis().SetRangeUser(0.,2.1)
-          elif ('SR' in Region.Name):
-
-            if ('SingleElectron_Resolved_SR' in Region.Name):
-              h_dummy_down.GetYaxis().SetRangeUser(0.6,3.1)
-            elif ('SingleMuon_Resolved_SR' in Region.Name):
+            if ('EMu_Resolved_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.2,2.1)
+            elif ('SingleElectron_EMu_Boosted_CR' in Region.Name):
               h_dummy_down.GetYaxis().SetRangeUser(0.6,2.1)
+            elif ('SingleMuon_EMu_Boosted_CR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.2,1.5)
+            h_dummy_down.GetYaxis().SetRangeUser(0.2,2.0)
+          elif ('SR' in Region.Name):
+            if ('SingleElectron_Resolved_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.5,3.1)
+            elif ('SingleMuon_Resolved_SR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.5,2.1)
             elif ('SingleElectron_Boosted_SR' in Region.Name):
-              h_dummy_down.GetYaxis().SetRangeUser(0.6,1.8)
+              h_dummy_down.GetYaxis().SetRangeUser(0.5,1.8)
             elif ('SingleMuon_Boosted_SR' in Region.Name):
               h_dummy_down.GetYaxis().SetRangeUser(0.5,1.6)
+            h_dummy_down.GetYaxis().SetRangeUser(0.5,2.5)
+          elif ('DYCR' in Region.Name):
+            if ('SingleElectron_Boosted_DYCR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.8,1.2)
+            elif ('SingleElectron_Resolved_DYCR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.7,1.4)
+            elif ('SingleMuon_Boosted_DYCR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.8,1.2)
+            elif ('SingleMuon_Resolved_DYCR' in Region.Name):
+              h_dummy_down.GetYaxis().SetRangeUser(0.7,1.2)
+            h_dummy_down.GetYaxis().SetRangeUser(0.7,1.4)
 
           else:
             h_dummy_down.GetYaxis().SetRangeUser(0.60,1.50)
@@ -698,11 +723,11 @@ class Plotter:
               h_dummy_up.GetYaxis().SetRangeUser( 1E-1, 100*yMax )
           elif ("_DYCR" in Region.Name):
             if ("Resolved" in Region.Name):
-              h_dummy_up.GetYaxis().SetRangeUser( yMin, yMaxScale*yMax )
+              h_dummy_up.GetYaxis().SetRangeUser( yMin, 100*yMax )
             else:
               h_dummy_up.GetYaxis().SetRangeUser( yMin, 50*yMax )
-          elif ("NoBJet" in Region.Name):
-            h_dummy_up.GetYaxis().SetRangeUser( 1E-2, 4*yMax )
+          elif ("EMu" in Region.Name):
+            h_dummy_up.GetYaxis().SetRangeUser( yMin, 100*yMax )
 
         if (Variable.Name=="ZCand_Mass" or Variable.Name=="DiJet_Mass") and ("_DYCR" in Region.Name):
           h_dummy_up.GetYaxis().SetRangeUser(10, 2E5)
@@ -906,7 +931,7 @@ class Plotter:
         channelname = ROOT.TLatex()
         channelname.SetNDC()
         channelname.SetTextSize(0.037)
-        channelname.DrawLatex(0.2, 0.88, "#font[42]{"+Region.TLatexAlias+"}")
+        channelname.DrawLatex(0.2, 0.82, "#font[42]{"+Region.TLatexAlias+"}")
 
         ## Extra lines
         exec(self.ExtraLines)

@@ -27,10 +27,10 @@ ENV_PLOT_PATH = os.environ['PLOT_PATH']
 
 ## Signal mass
 mWR, mN = 6000, 800
-xsecScale = 1.
+xsecScale = 5.
 if args.Category==1:
   mWR, mN = 6000, 800
-  xsecScale = 20
+  xsecScale = 5.
 LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
 LRSMSignalInfoToDraw.Color = ROOT.kBlack
 LRSMSignalInfoToDraw.useOfficial = True
@@ -199,7 +199,7 @@ m.PrintRegions()
 
 #### Define Variables
 m.VariablesToDraw = [
-  Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
+  Variable('WRCand_Mass', 'm_{W_{R}} (TeV)', 'TeV'),
 ]
 m.PrintVariables()
 
@@ -207,7 +207,7 @@ m.PrintVariables()
 m.ExtraLines='''tl = ROOT.TLatex()
 tl.SetNDC()
 tl.SetTextSize(0.037)
-tl.DrawLatex(0.2, 0.815, '#font[42]{Post-fit}')
+tl.DrawLatex(0.2, 0.755, '#font[42]{Post-fit}')
 '''
 
 #### Draw

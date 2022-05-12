@@ -46,9 +46,15 @@ class LRSMSignalInfo:
   def Print(self):
     print '(%d, %d, %f, %f)'%(self.mWR, self.mN, self.xsec, self.kfactor)
   def GetTLatexAlias(self):
-    if self.xsecScale!=1.:
-      #self.TLatexAlias = "%d#times(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV"%(self.xsecScale, self.mWR/1000., self.mN/1000.)
-      self.TLatexAlias = "(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV (#times%d)"%(self.mWR/1000., self.mN/1000., self.xsecScale)
+    if self.xsecScale<0.1:
+      self.TLatexAlias = "%1.2f#times(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV"%(self.xsecScale, self.mWR/1000., self.mN/1000.)
+    elif self.xsecScale<1.:
+      self.TLatexAlias = "%1.1f#times(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV"%(self.xsecScale, self.mWR/1000., self.mN/1000.)
+    elif self.xsecScale!=0.:
+      self.TLatexAlias = "%d#times(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV"%(self.xsecScale, self.mWR/1000., self.mN/1000.)
+      #self.TLatexAlias = "(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV (#times%d)"%(self.mWR/1000., self.mN/1000., self.xsecScale)
+    else:
+      self.TLatexAlias = "(m_{W_{R}}, m_{N}) = (%1.1f, %1.1f) TeV"%(self.mWR/1000., self.mN/1000.)
 
     return self.TLatexAlias
 
@@ -124,7 +130,7 @@ class Plotter:
 
     self.NoErrorBand = False
 
-    self.DrawSignalUnbinned = False
+    self.FixedBinWidth = -1 # TeV
 
   def PrintBorder(self):
     print '--------------------------------------------------------------------------'
@@ -200,6 +206,7 @@ class Plotter:
 
     tdrstyle.setTDRStyle()
     ROOT.TH1.AddDirectory(False)
+    ROOT.gROOT.SetBatch(True)
 
     for Region in self.RegionsToDraw:
 
@@ -503,8 +510,18 @@ class Plotter:
         for i in range(0, gr_Data.GetN()):
           N = gr_Data.GetY()[i]
 
+          ## Scale if back before divided by the bin width
+          this_BinWidthScale = 1.
+          if self.FixedBinWidth>0:
+            this_BinWidthScale = ( h_Data.GetXaxis().GetBinUpEdge(i+1) - h_Data.GetXaxis().GetBinLowEdge(i+1) ) / self.FixedBinWidth
+            N *= this_BinWidthScale
+
           L = 0.                                          if (N==0.) else (ROOT.Math.gamma_quantile(alpha/2.,N,1.))
           U = ( ROOT.Math.gamma_quantile_c(alpha,N+1,1) ) if (N==0.) else (ROOT.Math.gamma_quantile_c(alpha/2.,N+1.,1.))
+
+          N /= this_BinWidthScale
+          L /= this_BinWidthScale
+          U /= this_BinWidthScale
 
           #print '%d - %f + %f'%(N, N-L, U-N)
 
@@ -542,7 +559,7 @@ class Plotter:
         ## With Signal
         else:
           if Region.DrawRatio:
-            lg = ROOT.TLegend(0.40, 0.46, 0.92, 0.90)
+            lg = ROOT.TLegend(0.50, 0.44, 0.92, 0.90)
           else:
             lg = ROOT.TLegend(0.50, 0.56, 0.92, 0.90)
         if "NoLSFCut" in self.OutputDirectory:
@@ -623,7 +640,9 @@ class Plotter:
 
         #### axis histograms
 
-        h_dummy_up = ROOT.TH1D('h_dumy_up', '', nBin, xBins)
+        h_dummy_up = ROOT.TH1D('h_dummy_up', '', nBin, xBins)
+        if self.FixedBinWidth>0:
+          h_dummy_up = ROOT.TH1D('h_dummy_up', '', 720, 0.8, 8.)
         h_dummy_up.GetXaxis().SetRangeUser(xMin, xMax)
         if nRebin>0:
           binsize = h_dummy_up.GetXaxis().GetBinUpEdge(1)-h_dummy_up.GetXaxis().GetBinLowEdge(1)
@@ -635,8 +654,10 @@ class Plotter:
           h_dummy_up.GetYaxis().SetTitle('Events / bin')
         if Variable.Name=='WRCand_Mass':
           h_dummy_up.GetYaxis().SetTitle('Events / bin')
+          if self.FixedBinWidth>0:
+            h_dummy_up.GetYaxis().SetTitle('Events / %1.1fTeV'%(self.FixedBinWidth))
 
-        h_dummy_down = ROOT.TH1D('h_dumy_down', '', nBin, xBins)
+        h_dummy_down = ROOT.TH1D('h_dummy_down', '', nBin, xBins)
         h_dummy_down.GetYaxis().SetRangeUser(0.,2.0)
 
         if ('DYCR' in Region.Name):
@@ -776,6 +797,7 @@ class Plotter:
         ## Signal
         LeptonChannel = "EE" if ("Electron" in Region.Name) else "MuMu"
         h_Sigs = []
+        gr_Sigs = []
         for Sig in self.SignalsToDraw:
 
           fname_Sig = self.Filename_prefix+'_WRtoNLtoLLJJ_WR%d_N%d'%(Sig.mWR,Sig.mN)+self.Filename_suffix+'.root'
@@ -795,6 +817,15 @@ class Plotter:
           h_Sig.GetXaxis().SetRangeUser(xMin,xMax)
           h_Sig = mylib.MakeOverflowBin(h_Sig)
 
+          ## Clone for fine bin
+          h_SigFineBinned = h_Sig.Clone(h_Sig.GetName()+'_FineBinned')
+          if self.FixedBinWidth>0:
+            signal_dx = h_SigFineBinned.GetXaxis().GetBinUpEdge(1)-h_SigFineBinned.GetXaxis().GetBinLowEdge(1)
+            this_signal_rebin = int(self.FixedBinWidth*1000 / signal_dx)
+            h_SigFineBinned.Rebin( this_signal_rebin )
+            h_SigFineBinned.Scale( Sig.xsec * Sig.kfactor * Sig.xsecScale )
+            h_SigFineBinned = mylib.ChangeGeVToTeVXaxis(h_SigFineBinned)
+
           ## Rebin
           h_Sig = self.Rebin(h_Sig, Region.Name, Variable.Name, nRebin)
 
@@ -813,7 +844,32 @@ class Plotter:
           lg.AddEntry(h_Sig, Sig.GetTLatexAlias(), 'l')
 
           ## Draw
-          h_Sig.Draw("histsame")
+          if self.FixedBinWidth>0:
+
+            if Sig.mWR==6000 and Sig.mN==800:
+              h_Sig.Draw("histsame")
+
+            #else:
+              h_SigFineBinned.Smooth()
+
+              gr_SigFineBinned = ROOT.TGraph(h_SigFineBinned)
+              gr_SigFineBinned.SetLineColor(Sig.Color)
+              gr_SigFineBinned.SetLineStyle(2)
+              gr_SigFineBinned.SetLineWidth(3)
+
+              h_SigFineBinned.SetLineColor(Sig.Color)
+              h_SigFineBinned.SetLineStyle(2)
+              h_SigFineBinned.SetLineWidth(3)
+              h_SigFineBinned.SetMarkerSize(0)
+
+              gr_SigFineBinned.Draw("csame")
+              #h_SigFineBinned.Draw("csame")
+
+              lg.AddEntry(gr_SigFineBinned, Sig.GetTLatexAlias()+', unbinned', 'l')
+              gr_Sigs.append(gr_SigFineBinned)
+              h_Sigs.append(h_SigFineBinned)
+          else:
+            h_Sig.Draw("histsame")
 
         h_dummy_up.Draw("axissame")
 

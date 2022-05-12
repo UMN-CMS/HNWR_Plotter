@@ -62,6 +62,7 @@ void Make_ShapeForLimit(int Year=2016){
     systs.push_back( "PrefireUp" );
     systs.push_back( "PrefireDown" );
   }
+  TFile *f_BadNuisanceShape = new TFile("/data6/Users/jskim/HNWR_Plotter/data/Run2Legacy_v4__Default/BadNuisanceShapes/BadNuisanceCombinedShape.root");
   vector<TString> binBybinSysts = {
     "ElectronEn",
     "MuonEn",
@@ -176,9 +177,6 @@ void Make_ShapeForLimit(int Year=2016){
         TString nuisancePrefix = "";
         //==== for uncorrelated
         if( !IsCorrelated(syst) ) nuisancePrefix = "Run"+str_Year+"_";
-
-        //==== bin-by-bin syst will be treated in Central. Safe gaurd
-        //if(UseBinByBin(syst)) continue;
 
         cout << "@@@@     syst = " << syst << endl;
 
@@ -304,43 +302,19 @@ void Make_ShapeForLimit(int Year=2016){
                   //==== for uncorrelated
                   if( !IsCorrelated(binBybinSyst) ) bbbs_nuisancePrefix = "Run"+str_Year+"_"+binBybinSyst;
 
-                  TH1D *hist_bbbsUp = (TH1D *)file_sample->Get("Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region);
-                  hist_bbbsUp = RebinWRMass(hist_bbbsUp, Suffix+"_"+region, Year, true);
+                  //==== This shape file
+                  TH1D *h_thisShapefile_Up = (TH1D *)f_BadNuisanceShape->Get(dirname+"_"+binBybinSyst+"Up");
+                  TH1D *h_thisShapefile_Down = (TH1D *)f_BadNuisanceShape->Get(dirname+"_"+binBybinSyst+"Down");
 
-                  TH1D *hist_bbbsDown = (TH1D *)file_sample->Get("Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region);
-                  hist_bbbsDown = RebinWRMass(hist_bbbsDown, Suffix+"_"+region, Year, true);
+                  //==== new shape file
+                  TH1D *h_this_NewUp = (TH1D *)hist_bkgd->Clone(sample+"_"+bbbs_nuisancePrefix+"Up");
+                  TH1D *h_this_NewDown = (TH1D *)hist_bkgd->Clone(sample+"_"+bbbs_nuisancePrefix+"Down");
+                  h_this_NewUp->Multiply(h_thisShapefile_Up);
+                  h_this_NewDown->Multiply(h_thisShapefile_Down);
+                  out_bkgd->cd();
+                  h_this_NewUp->Write();
+                  h_this_NewDown->Write();
 
-                  //==== Test1) Normalization
-                  double integral_nominal = hist_bkgd->Integral();
-                  double integral_Up = hist_bbbsUp->Integral();
-                  double integral_Down = hist_bbbsDown->Integral();
-
-                  double this_diff_integral_Up = fabs(integral_nominal-integral_Up);
-                  double this_diff_integral_Down = fabs(integral_nominal-integral_Down);
-                  double this_bbbs_err = sqrt( ( this_diff_integral_Up*this_diff_integral_Up + this_diff_integral_Down*this_diff_integral_Down )/2. );
-                  double this_bbbs_relerr = this_bbbs_err/integral_nominal;
-
-                  for(int z=1; z<=hist_bkgd->GetXaxis()->GetNbins(); z++){
-
-                    double this_nominal = hist_bkgd->GetBinContent(z);
-                    double this_Up = hist_bbbsUp->GetBinContent(z);
-                    double this_Down = hist_bbbsDown->GetBinContent(z);
-
-                    TH1D *hist_bbbsShapeUp =   (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Up");
-                    TH1D *hist_bbbsShapeDown = (TH1D *)hist_bkgd->Clone(sample+"_"+ResolvedORBoosted+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Down");
-
-/*
-                    hist_bbbsShapeUp->SetBinContent(z, this_Up);
-                    hist_bbbsShapeDown->SetBinContent(z, this_Down);
-*/
-
-                    hist_bbbsShapeUp->SetBinContent(z, this_nominal * (1.+this_bbbs_relerr) );
-                    hist_bbbsShapeDown->SetBinContent(z, this_nominal * (1.-this_bbbs_relerr) );
-
-                    hist_bbbsShapeUp->Write();
-                    hist_bbbsShapeDown->Write();
-
-                  } // END bin loop
 
                 } // END loop over bin-by-bin systs
 
@@ -358,8 +332,11 @@ void Make_ShapeForLimit(int Year=2016){
 
               }
 
-              out_bkgd->cd();
-              hist_bkgd->Write();
+              //==== UseBinByBin will be written from "Central"
+              if( !UseBinByBin(syst) ){
+                out_bkgd->cd();
+                hist_bkgd->Write();
+              }
 
             } // hist exist
 
@@ -667,58 +644,6 @@ void Make_ShapeForLimit(int Year=2016){
 
                   m.hist_AlphaSUp->Write();
                   m.hist_AlphaSDn->Write();
-
-
-                  //==== bin-by-bin
-
-                  for(unsigned int i_bbbs=0; i_bbbs<binBybinSysts.size(); i_bbbs++){
-                    TString binBybinSyst = binBybinSysts.at(i_bbbs);
-
-                    //==== for correlated 
-                    TString bbbs_nuisancePrefix = binBybinSyst;
-                    //==== for uncorrelated
-                    if( !IsCorrelated(binBybinSyst) ) bbbs_nuisancePrefix = "Run"+str_Year+"_"+binBybinSyst;
-
-                    TH1D *hist_bbbsUp = (TH1D *)file_sig->Get("Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Up_"+Suffix+"_"+region);
-                    hist_bbbsUp = RebinWRMass(hist_bbbsUp, Suffix+"_"+region, Year, true);
-
-                    TH1D *hist_bbbsDown = (TH1D *)file_sig->Get("Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region+"/"+ShapeVarName+"_Syst_"+binBybinSyst+"Down_"+Suffix+"_"+region);
-                    hist_bbbsDown = RebinWRMass(hist_bbbsDown, Suffix+"_"+region, Year, true);
-
-                    //==== Test1) Normalization
-                    double integral_nominal = hist_sig->Integral();
-                    double integral_Up = hist_bbbsUp->Integral() * signal_scale;
-                    double integral_Down = hist_bbbsDown->Integral() * signal_scale;
-
-                    double this_diff_integral_Up = fabs(integral_nominal-integral_Up);
-                    double this_diff_integral_Down = fabs(integral_nominal-integral_Down);
-                    double this_bbbs_err = sqrt( ( this_diff_integral_Up*this_diff_integral_Up + this_diff_integral_Down*this_diff_integral_Down )/2. );
-                    double this_bbbs_relerr = this_bbbs_err/integral_nominal;
-
-                    for(int z=1; z<=hist_sig->GetXaxis()->GetNbins(); z++){
-
-                      double this_nominal = hist_sig->GetBinContent(z); // this is already scaled
-                      double this_Up = hist_bbbsUp->GetBinContent(z) * signal_scale;
-                      double this_Down = hist_bbbsDown->GetBinContent(z) * signal_scale;
-
-                      TH1D *hist_bbbsShapeUp =   (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_"+ResolvedORBoosted+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Up");
-                      TH1D *hist_bbbsShapeDown = (TH1D *)hist_sig->Clone("WR"+TString::Itoa(m_WR,10)+"_N"+TString::Itoa(m_N,10)+"_"+ResolvedORBoosted+bbbs_nuisancePrefix+"Bin"+TString::Itoa(z-1,10)+"Down");
-
-/*
-                      hist_bbbsShapeUp->SetBinContent(z, this_Up);
-                      hist_bbbsShapeDown->SetBinContent(z, this_Down);
-*/
-
-                      hist_bbbsShapeUp->SetBinContent(z, this_nominal * (1.+this_bbbs_relerr) );
-                      hist_bbbsShapeDown->SetBinContent(z, this_nominal * (1.-this_bbbs_relerr) );
-
-                      hist_bbbsShapeUp->Write();
-                      hist_bbbsShapeDown->Write();
-
-                    } // END bin loop
-
-                  } // END loop over bin-by-bin systs
-
 
                 } // END if central
 

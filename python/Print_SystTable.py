@@ -6,7 +6,7 @@ from IsCorrelated import IsCorrelated
 def IsCorrelatedToString(syst):
 
   if IsCorrelated(syst):
-    return "Correlated"
+    return "Fully correlated"
   else:
     return "Uncorrelated"
 
@@ -79,13 +79,13 @@ ToRuns = [
     'DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped',
     '\\DYJ',
     [ 
-      ["ZPtRw","\\PZ-\\pt correction, MC stat."],
-      ["ZPtRwQCDScale","\\PZ-\\pt correction, QCD scale"],
-      ["ZPtRwQCDPDFError","\\PZ-\\pt correction, QCD PDF error"],
-      ["ZPtRwQCDPDFAlphaS","\\PZ-\\pt correction, QCD PDF \\alpS"],
-      ["ZPtRwEW1","\\PZ-\\pt correction, EW1~\cite{Lindert:2017olm}"],
-      ["ZPtRwEW2","\\PZ-\\pt correction, EW2~\cite{Lindert:2017olm}"],
-      ["ZPtRwEW3","\\PZ-\\pt correction, EW3~\cite{Lindert:2017olm}"],
+      ["ZPtRw","\\pt(\\PZ) correction, MC stat."],
+      ["ZPtRwQCDScale","\\pt(\\PZ) correction, renorm./fact. scales"],
+      ["ZPtRwQCDPDFError","\\pt(\\PZ) correction, PDF replicas"],
+      ["ZPtRwQCDPDFAlphaS","\\pt(\\PZ) correction, PDF \\alpS"],
+      ["ZPtRwEW1","\\pt(\\PZ) correction, EW1~\cite{Lindert:2017olm}"],
+      ["ZPtRwEW2","\\pt(\\PZ) correction, EW2~\cite{Lindert:2017olm}"],
+      ["ZPtRwEW3","\\pt(\\PZ) correction, EW3~\cite{Lindert:2017olm}"],
       ["DYReshapeSyst","DY reshape"],
       #["DYReshapeEEMM", "DY ratio (flavor dependent)"],
     ],
@@ -234,9 +234,9 @@ print 'Rare SM background normalization & Others & '+IsCorrelatedToString('Other
 
 #### PDF uncertainty for signal
 
-PDFErrorSet_out = 'PDF error & Signal & Correlated'
-AlphaS_out = '\\alpS & Signal & Correlated'
-Scale_out = 'renormalization/factorization scales & Signal & Correlated'
+PDFErrorSet_out = 'PDF replicas & Signal & Fully correlated'
+AlphaS_out = '\\alpS & Signal & Fully correlated'
+Scale_out = 'Renorm./fact. scales & Signal & Fully correlated'
 
 for channel in channels:
 

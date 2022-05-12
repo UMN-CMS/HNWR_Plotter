@@ -146,12 +146,23 @@ def ChangeGeVToTeVXaxis(h):
     iBin = ix+1
     x_New.append( h.GetXaxis().GetBinUpEdge(iBin)/1000. )
   h_New = ROOT.TH1D(h.GetName(), '', len(x_New)-1, array("d", x_New))
+
+  targetBinWidth = 0.2#TeV
+
   for ix in range(0, h.GetXaxis().GetNbins()):
     iBin = ix+1
-    h_New.SetBinContent(iBin, h.GetBinContent(iBin))
-    h_New.SetBinError(iBin, h.GetBinError(iBin))
-  return h_New
 
+    new_BinContent = h.GetBinContent(iBin)
+    new_BinError = h.GetBinError(iBin)
+
+    #this_BinWidth = h_New.GetXaxis().GetBinUpEdge(iBin) - h_New.GetXaxis().GetBinLowEdge(iBin)
+    #new_BinContent = new_BinContent/this_BinWidth * targetBinWidth
+    #new_BinError = new_BinError/this_BinWidth * targetBinWidth
+
+    h_New.SetBinContent(iBin, new_BinContent)
+    h_New.SetBinError(iBin, new_BinError)
+
+  return h_New
 
 def RebinJetPt(hist, region, DataYear):
 

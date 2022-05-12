@@ -120,8 +120,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
     cout << "@@@@ channel = " << channel << endl;
 
-    TLegend *lg = new TLegend(0.15, 0.62, 0.55, 0.94);
-    lg->SetMargin(0.2);
+    TLegend *lg = new TLegend(0.15, 0.55, 0.45, 0.94);
+    lg->SetMargin(0.2);   
     lg->SetBorderSize(0);
     lg->SetFillStyle(0);
 
@@ -136,8 +136,8 @@ void Draw_Limit(int Year, TString dirname=""){
       is >> a;
       is >> b;
 
-      atlas_mZp.push_back(a*1000.);
-      atlas_mN.push_back(b*1000.);
+      atlas_mZp.push_back(a);
+      atlas_mN.push_back(b);
     }
 
     const int N_atlas = atlas_mZp.size();
@@ -147,8 +147,8 @@ void Draw_Limit(int Year, TString dirname=""){
       mN_atlas[i_atlas] = atlas_mN.at(i_atlas);
     }
 
-    mZp_atlas[N_atlas] = 600.;
-    mN_atlas[N_atlas] = 50.;
+    mZp_atlas[N_atlas] = 0.600;
+    mN_atlas[N_atlas] = 0.050;
     mZp_atlas[N_atlas+1] = atlas_mZp.at(0);
     mN_atlas[N_atlas+1] = atlas_mN.at(0);
 
@@ -168,8 +168,8 @@ void Draw_Limit(int Year, TString dirname=""){
       is >> a;
       is >> b;
 
-      atlas_boosted_mZp.push_back(a);
-      atlas_boosted_mN.push_back(b);
+      atlas_boosted_mZp.push_back(a/1000.);
+      atlas_boosted_mN.push_back(b/1000.);
     }
 
     const int N_atlas_boosted = atlas_boosted_mZp.size();
@@ -179,8 +179,8 @@ void Draw_Limit(int Year, TString dirname=""){
       mN_atlas_boosted[i_atlas_boosted] = atlas_boosted_mN.at(i_atlas_boosted);
     }
 
-    mZp_atlas_boosted[N_atlas_boosted] = 600.;
-    mN_atlas_boosted[N_atlas_boosted] = 50.;
+    mZp_atlas_boosted[N_atlas_boosted] = 0.600;
+    mN_atlas_boosted[N_atlas_boosted] = 0.050;
     mZp_atlas_boosted[N_atlas_boosted+1] = atlas_boosted_mZp.at(0);
     mN_atlas_boosted[N_atlas_boosted+1] = atlas_boosted_mN.at(0);
 
@@ -201,8 +201,8 @@ void Draw_Limit(int Year, TString dirname=""){
       is >> a;
       is >> b;
 
-      EXO17011_mZp.push_back(a);
-      EXO17011_mN.push_back(b);
+      EXO17011_mZp.push_back(a/1000.);
+      EXO17011_mN.push_back(b/1000.);
     }
 
     const int N_EXO17011 = EXO17011_mZp.size();
@@ -348,36 +348,38 @@ void Draw_Limit(int Year, TString dirname=""){
 
     //==== 2D binning
     //==== 1) WR
-    int target_WR_max = 6000;
-    int target_WR_min = 0;
-    int target_WR_d_bin = 200;
-    double bin_WR_max = target_WR_max+target_WR_d_bin/2;
-    double bin_WR_min = target_WR_min-target_WR_d_bin/2;
+    double target_WR_max = 6.;
+    double target_WR_min = 0.;
+    double target_WR_d_bin = 0.2;
+    double bin_WR_max = target_WR_max+target_WR_d_bin/2.;
+    double bin_WR_min = target_WR_min-target_WR_d_bin/2.;
     int bin_WR_n = (bin_WR_max-bin_WR_min)/target_WR_d_bin;
+    bin_WR_n = 31;
     //==== 2) N
-    int target_N_max = 6000;
-    int target_N_min = 0;
-    int target_N_d_bin = 200;
-    double bin_N_max = target_N_max+target_N_d_bin/2;
-    double bin_N_min = target_N_min-target_N_d_bin/2;
+    double target_N_max = 6.;
+    double target_N_min = 0.;
+    double target_N_d_bin = 0.2;
+    double bin_N_max = target_N_max+target_N_d_bin/2.;
+    double bin_N_min = target_N_min-target_N_d_bin/2.;
     int bin_N_n = (bin_N_max-bin_N_min)/target_N_d_bin;
+    bin_N_n = 31;
 
-    TH2D *hist_dummy = new TH2D("hist_dummy", "", 71, -100, 7000, 71, -100, 7000);
+    TH2D *hist_dummy = new TH2D("hist_dummy", "", 71, -0.1, 7., 71, -0.1, 7.);
     hist_axis(hist_dummy);
 
-    hist_dummy->GetYaxis()->SetLabelSize(0.035);
-    hist_dummy->GetXaxis()->SetLabelSize(0.035);
+    hist_dummy->GetYaxis()->SetLabelSize(0.045);
+    hist_dummy->GetXaxis()->SetLabelSize(0.045);
     hist_dummy->GetYaxis()->SetTitleSize(0.06);
     hist_dummy->GetXaxis()->SetTitleSize(0.057);
     hist_dummy->GetYaxis()->SetTitleOffset(1.0);
     hist_dummy->GetXaxis()->SetTitleOffset(0.93);
 
     hist_dummy->Draw("hist");
-    hist_dummy->GetYaxis()->SetTitle("m_{N} (GeV)");
-    hist_dummy->GetXaxis()->SetRangeUser(800., 5700.);
-    hist_dummy->GetYaxis()->SetRangeUser(100., 5700.);
+    hist_dummy->GetYaxis()->SetTitle("m_{N} (TeV)");
+    hist_dummy->GetXaxis()->SetRangeUser(0.8, 5.7);
+    hist_dummy->GetYaxis()->SetRangeUser(0.1, 5.7);
     hist_dummy->GetZaxis()->SetRangeUser(1E-4, 20);
-    hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
+    hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (TeV)");
 
     //==== To draw again after
     TH2D *hist2d_limit_exp_ratio_Combined;
@@ -407,8 +409,8 @@ void Draw_Limit(int Year, TString dirname=""){
 
             //cout << m.mass_WR << "\t" << m.mass_N << endl;
 
-            vec_wr.push_back( m.mass_WR );
-            vec_n.push_back( m.mass_N );
+            vec_wr.push_back( m.mass_WR/1000. );
+            vec_n.push_back( m.mass_N/1000. );
             vec_limit_exp.push_back( m.LimitResults.at(l).limit_exp );
             vec_limit_exp_1sdUp.push_back( m.LimitResults.at(l).limit_exp_1sdUp );
             vec_limit_exp_1sdDn.push_back( m.LimitResults.at(l).limit_exp_1sdDn );
@@ -645,7 +647,7 @@ void Draw_Limit(int Year, TString dirname=""){
 
     //lg->AddEntry( gr_atlas, "ATLAS 13 TeV (Resolved, 36 fb^{-1})", "l");
     //lg->AddEntry( gr_atlas_boosted, "ATLAS 13 TeV (Boosted, 80 fb^{-1})", "l");
-    lg->AddEntry( gr_EXO17011, "CMS 13 TeV (resolved, 36 fb^{-1})", "l");
+    lg->AddEntry( gr_EXO17011, "#splitline{CMS 13 TeV}{(resolved, 36 fb^{-1})}", "l");
 
     //g0->Draw("same");
 
@@ -655,16 +657,18 @@ void Draw_Limit(int Year, TString dirname=""){
 
     c_2D->cd();
     //latex_CMSPriliminary.DrawLatex(0.13, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-    latex_CMSPriliminary.DrawLatex(0.13, 0.96, "#font[62]{CMS}");
+    latex_CMSPriliminary.DrawLatex(0.55, 0.88, "#font[62]{CMS}");
     latex_Lumi.DrawLatex(0.66, 0.96, TotalLumi);
 
     TLatex latex_ch;
     latex_ch.SetNDC();
     latex_ch.SetTextSize(0.040);
-    if(channel=="EE")        latex_ch.DrawLatex(0.20, 0.5, "ee channel");
-    else if(channel=="MuMu") latex_ch.DrawLatex(0.20, 0.5, "#mu#mu channel");
+    if(channel=="EE")        latex_ch.DrawLatex(0.55, 0.84, "#font[42]{ee channel}");
+    else if(channel=="MuMu") latex_ch.DrawLatex(0.55, 0.84, "#font[42]{#mu#mu channel}");
 
     c_2D->SaveAs(plotpath+"/2D_"+channel+".pdf");
+    out_rootfile->cd();
+    c_2D->Write();
     c_2D->Close();
 
     //==== 1D : Limit vs N, for each WR
@@ -716,7 +720,7 @@ void Draw_Limit(int Year, TString dirname=""){
             cout << "[1D : Limit vs N, for each WR] no result for WR = " << m_WR << ", N = " << m_N << endl;
           }
 
-          x_N[it_N] = m_N;
+          x_N[it_N] = m_N/1000.;
           y_exp[it_N] = this_result.limit_exp/2.;
 
           y_exp_1sdUp[it_N] = (this_result.limit_exp_1sdUp - this_result.limit_exp)/2.;
@@ -775,12 +779,12 @@ void Draw_Limit(int Year, TString dirname=""){
         c_1D_vsN->cd();
         c_1D_vsN->SetLogy();
 
-        TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7000.);
+        TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7.);
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
         hist_dummy->GetXaxis()->SetRangeUser(this_m_Ns.at(0), this_m_Ns.at(this_m_Ns.size()-1));
-        hist_dummy->GetXaxis()->SetRangeUser(0., 6800.);
-        hist_dummy->GetXaxis()->SetTitle("m_{N} (GeV)");
+        hist_dummy->GetXaxis()->SetRangeUser(0., 6.8);
+        hist_dummy->GetXaxis()->SetTitle("m_{N} (TeV)");
         hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarroweeq#bar{q'}) (fb)");
         if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muq#bar{q'}) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
@@ -827,6 +831,8 @@ void Draw_Limit(int Year, TString dirname=""){
         latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
         c_1D_vsN->SaveAs(plotpath+"/1D_"+channel+"_"+region+"_WR"+TString::Itoa(m_WR,10)+"_Limit_vs_N.pdf");
+        out_rootfile->cd();
+        c_1D_vsN->Write();
         c_1D_vsN->Close();
 
       } // END Loop over regions
@@ -836,7 +842,7 @@ void Draw_Limit(int Year, TString dirname=""){
     //==== 1D : Limit vs WR, for each N
     //==== negative N means N=WR/2
 
-    vector<double> test_Ns = {-500, 100, 200, 400, 600, 800};
+    vector<double> test_Ns = {-500, 200, 800};
 
     for(int z=0; z<test_Ns.size(); z++){
 
@@ -898,7 +904,7 @@ void Draw_Limit(int Year, TString dirname=""){
           }
 
 
-          x_WR[it_N] = this_lrsm.mass_WR;
+          x_WR[it_N] = this_lrsm.mass_WR/1000.;
           y_exp[it_N] = this_result.limit_exp/2.;
 
           y_exp_1sdUp[it_N] = (this_result.limit_exp_1sdUp - this_result.limit_exp)/2.;
@@ -957,11 +963,13 @@ void Draw_Limit(int Year, TString dirname=""){
         c_1D_vsN->cd();
         c_1D_vsN->SetLogy();
 
-        TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7000.);
+        TH1D *hist_dummy = new TH1D("hist_dummy", "", 7000, 0., 7.);
         hist_dummy->Draw("hist");
         hist_axis(hist_dummy);
-        hist_dummy->GetXaxis()->SetRangeUser(800,6000);
-        hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (GeV)");
+        hist_dummy->GetXaxis()->SetLabelSize(0.045);
+        hist_dummy->GetXaxis()->SetTitleSize(0.06);
+        hist_dummy->GetXaxis()->SetRangeUser(0.8,6.);
+        hist_dummy->GetXaxis()->SetTitle("m_{W_{R}} (TeV)");
         hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarroweeq#bar{q'}) (fb)");
         if(channel=="MuMu") hist_dummy->GetYaxis()->SetTitle("#sigma(pp#rightarrowW_{R})#bf{#it{#Beta}}(W_{R}#rightarrow#mu#muq#bar{q'}) (fb)");
         hist_dummy->GetYaxis()->SetRangeUser(1E-4, 1E4); 
@@ -1006,14 +1014,23 @@ void Draw_Limit(int Year, TString dirname=""){
           NMassString = "m_{N} = m_{W_{R}}/2";
         }
 
-        str_m_WR.DrawLatex(0.55, 0.85, NMassString);
-        if(channel=="EE")        latex_ch.DrawLatex(0.55, 0.80, region+" ee channel");
-        else if(channel=="MuMu") latex_ch.DrawLatex(0.55, 0.80, region+" #mu#mu channel");
+        if(testN==200){
+          NMassString = "m_{N} = 0.2 TeV";
+        }
+
+
+        str_m_WR.DrawLatex(0.55, 0.82, "#font[42]{"+NMassString+"}");
+        if(channel=="EE")        latex_ch.DrawLatex(0.55, 0.77, "#font[42]{"+region+" ee channel}");
+        else if(channel=="MuMu") latex_ch.DrawLatex(0.55, 0.77, "#font[42]{"+region+" #mu#mu channel}");
 
         lg->Draw();
 
-        //latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-        latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS}");
+        if(testN==800){
+          latex_CMSPriliminary.DrawLatex(0.55, 0.87, "#font[62]{CMS} #font[42]{#it{#scale[0.76]{Supplementary}}}");
+        }
+        else{
+          latex_CMSPriliminary.DrawLatex(0.55, 0.87, "#font[62]{CMS}");
+        }
         latex_Lumi.DrawLatex(0.73, 0.96, TotalLumi);
 
 
@@ -1026,6 +1043,8 @@ void Draw_Limit(int Year, TString dirname=""){
         }
 
         c_1D_vsN->SaveAs(plotpath+"/"+outname+".pdf");
+        out_rootfile->cd();
+        c_1D_vsN->Write();
         c_1D_vsN->Close();
 
       }

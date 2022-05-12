@@ -26,18 +26,39 @@ dataset = os.environ['CATANVERSION']
 ENV_PLOT_PATH = os.environ['PLOT_PATH']
 
 ## Signal mass
-mWR, mN = 6000, 800
-xsecScale = 5.
+LRSMSignalInfoToDraw_Common = LRSMSignalInfo(mWR = 6000, mN = 800)
+LRSMSignalInfoToDraw_Common.Color = ROOT.kBlack
+LRSMSignalInfoToDraw_Common.useOfficial = True
+LRSMSignalInfoToDraw_Common.Style = 2
+LRSMSignalInfoToDraw_Common.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', 6000, 800)
+LRSMSignalInfoToDraw_Common.kfactor = mylib.GetKFactor(6000, 800)
+LRSMSignalInfoToDraw_Common.xsecScale = 5.
+
+mWR, mN = 4800, 2400
+xsecScale = 1.
 if args.Category==1:
-  mWR, mN = 6000, 800
-  xsecScale = 5.
-LRSMSignalInfoToDraw = LRSMSignalInfo(mWR = mWR, mN = mN)
-LRSMSignalInfoToDraw.Color = ROOT.kBlack
-LRSMSignalInfoToDraw.useOfficial = True
-LRSMSignalInfoToDraw.Style = 5
-LRSMSignalInfoToDraw.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
-LRSMSignalInfoToDraw.kfactor = mylib.GetKFactor(mWR,mN)
-LRSMSignalInfoToDraw.xsecScale = xsecScale
+  mWR, mN = 4800, 200
+  xsecScale = 1.
+LRSMSignalInfoToDraw_Each = LRSMSignalInfo(mWR = mWR, mN = mN)
+LRSMSignalInfoToDraw_Each.Color = ROOT.kBlack
+LRSMSignalInfoToDraw_Each.useOfficial = True
+LRSMSignalInfoToDraw_Each.Style = 3
+LRSMSignalInfoToDraw_Each.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+LRSMSignalInfoToDraw_Each.kfactor = mylib.GetKFactor(mWR, mN)
+LRSMSignalInfoToDraw_Each.xsecScale = xsecScale
+
+mWR, mN = 3200, 1600
+xsecScale = 0.1
+if args.Category==1:
+  mWR, mN = 3200, 200
+  xsecScale = 0.01
+LRSMSignalInfoToDraw_Each2 = LRSMSignalInfo(mWR = mWR, mN = mN)
+LRSMSignalInfoToDraw_Each2.Color = ROOT.kBlack
+LRSMSignalInfoToDraw_Each2.useOfficial = True
+LRSMSignalInfoToDraw_Each2.Style = 4
+LRSMSignalInfoToDraw_Each2.xsec = mylib.GetSignalXsec(WORKING_DIR+'/data/'+dataset+'/xsec_190705_GenXsecAN_eeANDmm.txt', mWR, mN)
+LRSMSignalInfoToDraw_Each2.kfactor = mylib.GetKFactor(mWR, mN)
+LRSMSignalInfoToDraw_Each2.xsecScale = xsecScale
 
 
 m = Plotter()
@@ -58,6 +79,7 @@ m.OutputDirectory = ENV_PLOT_PATH+"/"+dataset+"/PostFit/"+str_Year+"/"
 
 #### Category
 m.ScaleMC = False
+#m.FixedBinWidth = 0.2
 
 #### Systematic
 tmp_Systematics = []
@@ -109,7 +131,12 @@ else:
   ]
 
 #### Signal
-m.SignalsToDraw = [LRSMSignalInfoToDraw]
+m.SignalsToDraw = [
+  #LRSMSignalInfoToDraw_Common,
+  LRSMSignalInfoToDraw_Each,
+  LRSMSignalInfoToDraw_Each2,
+  LRSMSignalInfoToDraw_Common,
+]
 
 #### Print
 m.PrintSamples()

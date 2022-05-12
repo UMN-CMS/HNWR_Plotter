@@ -1,5 +1,6 @@
 import os,ROOT,math
 import CMS_lumi, tdrstyle
+import mylib
 
 WORKING_DIR = os.environ['PLOTTER_WORKING_DIR']
 dataset = os.environ['CATANVERSION']
@@ -12,12 +13,16 @@ Years = [
 ]
 
 Bkgds = [
-'TTLX_powheg',
-'DYJets_MG_HT_Reweighted',
+"Others",
+"NonPrompt",
+"TT_TW",
+"DYJets_MG_HT_ReweightedQCDErrorEWCorr_Reshaped",
 ]
 BkgdAliases = [
+'Others',
+'nonprompt',
 '\\ttbar',
-'DY'
+'DY',
 ]
 
 Suffixs = [
@@ -34,8 +39,8 @@ for Year in Years:
 
   base_filepath = WORKING_DIR+"/rootfiles/"+dataset+"/Regions/"+Year
 
-  Bkgds = []
-  BkgdAliases = []
+  #Bkgds = []
+  #BkgdAliases = []
 
   for i_S in range(0,len(Suffixs)):
 
@@ -191,6 +196,8 @@ for Year in Years:
           mWR = Signal[0]
           mN = Signal[1]
 
+          kf = mylib.GetKFactor(int(mWR), int(mN))
+
           SignalDir = "Signal_EE"
           if Suffix=="SingleMuon":
             SignalDir = "Signal_MuMu"
@@ -198,7 +205,7 @@ for Year in Years:
           h = f.Get('CutFlow/'+Cut+'_HNWR')
           y = 0.
           if h:
-            y = h.GetBinContent(1)
+            y = h.GetBinContent(1)*kf
           row += '%1.2f' % (y*Xsec)+'&'
 
         row = row[:-1]

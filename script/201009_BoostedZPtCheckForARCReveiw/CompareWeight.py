@@ -15,6 +15,8 @@ PLOT_PATH = os.environ['PLOT_PATH']
 
 Years = [
 "2016",
+"2017",
+"2018",
 ]
 
 Channels = [
@@ -27,8 +29,8 @@ for Year in Years:
   outDir = PLOT_PATH+'/'+dataset+'/201009_ZPtCheckForARCReveiw/'+Year+'/'
   os.system('mkdir -p '+outDir)
 
-  lines_Before = open('2016_Before.txt').readlines()
-  lines_After = open('2016_After.txt').readlines()
+  lines_Before = open(Year+'_Before.txt').readlines()
+  lines_After = open(Year+'_After.txt').readlines()
 
   for Channel in Channels:
 
@@ -109,7 +111,7 @@ for Year in Years:
     c1_down.cd()
 
     h_Ratio.Draw('hist')
-    h_Ratio.GetYaxis().SetRangeUser(-0.20, 0.20)
+    h_Ratio.GetYaxis().SetRangeUser(-0.40, 0.40)
     h_Ratio.SetNdivisions(504,"Y")
 
     ## Overall
@@ -191,7 +193,7 @@ for Year in Years:
     c2_down.cd()
 
     h_Ratio.Draw('hist')
-    h_Ratio.GetYaxis().SetRangeUser(0.80, 1.20)
+    h_Ratio.GetYaxis().SetRangeUser(0.50, 1.50)
 
     ## Overall
 

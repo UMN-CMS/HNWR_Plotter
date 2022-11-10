@@ -213,22 +213,22 @@ if args.Category==1:
 
 #### Define Variables
 m.VariablesToDraw = [
-  Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
+  #Variable('ZCand_Pt', 'p_{T}^{ll} (GeV)', 'GeV'),
   Variable('ZCand_Mass', 'm_{ll} (GeV)', 'GeV'),
   Variable('WRCand_Mass', 'm_{W_{R}} (GeV)', 'GeV'),
-  Variable('Lepton_0_Pt', 'p_{T} of the leading lepton', 'GeV'),
-  Variable('Lepton_0_Eta', '#eta of the leading lepton', ''),
-  Variable('Lepton_1_Pt', 'p_{T} of the subleading lepton', 'GeV'),
-  Variable('Lepton_1_Eta', '#eta of the subleading lepton', ''),
-  Variable('HNFatJet_Eta', '#eta of the AK8 jet', ''),
-  Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
-  Variable('Jet_0_Pt', 'p_{T} of the leading jet', 'GeV'),
-  Variable('Jet_1_Pt', 'p_{T} of the subleading jet', 'GeV'),
-  Variable('DiJet_Pt', 'p_{T} of the dijet', 'GeV'),
-  Variable('DiJet_Mass', 'm(jj)', 'GeV'),
-  Variable('Jet_0_Eta', '#eta of the leading jet', 'GeV'),
-  Variable('Jet_1_Eta', '#eta of the subleading jet', 'GeV'),
-  Variable('dRj1j2', '#Delta R(j1,j2)', ''),
+  #Variable('Lepton_0_Pt', 'p_{T} of the leading lepton', 'GeV'),
+  #Variable('Lepton_0_Eta', '#eta of the leading lepton', ''),
+  #Variable('Lepton_1_Pt', 'p_{T} of the subleading lepton', 'GeV'),
+  #Variable('Lepton_1_Eta', '#eta of the subleading lepton', ''),
+  #Variable('HNFatJet_Eta', '#eta of the AK8 jet', ''),
+  #Variable('HNFatJet_Pt', 'p_{T} of the AK8 jet (GeV)', 'GeV'),
+  #Variable('Jet_0_Pt', 'p_{T} of the leading jet', 'GeV'),
+  #Variable('Jet_1_Pt', 'p_{T} of the subleading jet', 'GeV'),
+  #Variable('DiJet_Pt', 'p_{T} of the dijet', 'GeV'),
+  #Variable('DiJet_Mass', 'm(jj)', 'GeV'),
+  #Variable('Jet_0_Eta', '#eta of the leading jet', 'GeV'),
+  #Variable('Jet_1_Eta', '#eta of the subleading jet', 'GeV'),
+  #Variable('dRj1j2', '#Delta R(j1,j2)', ''),
 ]
 m.PrintVariables()
 

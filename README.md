@@ -19,8 +19,12 @@ cd ${PLOTTER_WORKING_DIR}
 ## now draw plots
 ```
 source script/run_SR.sh
+source script/run_CR.sh
 ```
+In those scripts you can see how to run commands for python/Draw_SR.py or python/Draw_CR.py to draw specific regions/years.
+
 ## plot path
 ```
 cd $PLOTTER_WORKING_DIR/output/Run2Legacy_v4__Default/SR/YearCombined/
+cd $PLOTTER_WORKING_DIR/output/Run2Legacy_v4__Default/CR/YearCombined/
 ```
